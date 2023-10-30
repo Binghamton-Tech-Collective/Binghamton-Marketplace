@@ -1,16 +1,18 @@
-export "models/model.dart";
-export "models/data/user.dart";
-export "models/view/login.dart";
+export "src/models/model.dart";
+export "src/models/data/user.dart";
+export "src/models/view/login.dart";
 
-import "models/model.dart";
-import "models/data/user.dart";
+import "src/models/model.dart";
+import "src/models/data/user.dart";
 
-class Models extends Model {
+/// A [DataModel] to manage all other data models.
+class Models extends DataModel {
+  /// The user data model.
   final user = UserModel();
 
   @override
-  void init() {
-    user.init();
+  Future<void> init() async {
+    await user.init();
   }
 
   @override
@@ -20,4 +22,5 @@ class Models extends Model {
   }
 }
 
+/// The global data model singleton.
 final models = Models();
