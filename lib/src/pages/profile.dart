@@ -10,8 +10,12 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
 
   @override
   Widget build(BuildContext context, ProfileViewModel model) => Scaffold(
-    body: model.isLoading 
-      ? const Center(child: CircularProgressIndicator())
-      : Text("Your name is ${model.name} and you have ${model.numLikes} likes"),
+    body: Center(child: model.isLoading 
+      ? const CircularProgressIndicator()
+      : Text(
+        "Your name is ${model.name} and you have ${model.numLikes} likes",
+        style: context.textTheme.headlineLarge,
+      ),
+    ),
   );
 }
