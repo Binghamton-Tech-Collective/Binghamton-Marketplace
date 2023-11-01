@@ -1,6 +1,7 @@
 export "src/models/model.dart";
 export "src/models/data/user.dart";
 export "src/models/view/login.dart";
+export "src/models/view/profile.dart";
 
 import "src/models/model.dart";
 import "src/models/data/user.dart";

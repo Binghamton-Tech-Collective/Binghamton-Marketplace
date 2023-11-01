@@ -1,3 +1,4 @@
+import "package:btc_market/src/pages/profile.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       useMaterial3: true,
     ),
-    home: const MyHomePage(title: "Flutter Demo Home Page"),
+    // home: const MyHomePage(title: "Flutter Demo Home Page"),
+    home: ProfilePage(),
   );
 }
 
