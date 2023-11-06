@@ -17,9 +17,9 @@ class UserModel extends DataModel {
   bool get isSignedIn => user != null;
 
   /// Signs the user in with the given username and password, then updates [user].
-  void signIn(String username, String password) {
+  Future<void> signIn(String username, String password) async {
     // authenticate with Firebase Authentication
-    user = services.database.getUserProfile();
+    user = await services.database.getUserProfile(username);
     notifyListeners();
   } 
 

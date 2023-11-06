@@ -10,12 +10,19 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
 
   @override
   Widget build(BuildContext context, ProfileViewModel model) => Scaffold(
-    body: Center(child: model.isLoading 
-      ? const CircularProgressIndicator()
-      : Text(
-        "Your name is ${model.name} and you have ${model.numLikes} likes",
-        style: context.textTheme.headlineLarge,
-      ),
+    body: Column(
+      children: [
+        if (models.user.isSignedIn) Text(
+          "Your name is ${model.name} and you have ${model.numLikes} likes",
+          style: context.textTheme.headlineLarge,
+        ),
+        ElevatedButton(
+          onPressed: () async { 
+            await model.signIn();
+          }, 
+          child: const Text("Sign in with Google"),
+        ),
+      ],
     ),
   );
 }

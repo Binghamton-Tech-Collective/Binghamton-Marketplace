@@ -1,4 +1,5 @@
-import "../model.dart";
+import "package:btc_market/models.dart";
+import "package:btc_market/services.dart";
 
 /// A view model for the profile page.
 /// 
@@ -12,19 +13,21 @@ import "../model.dart";
 /// access the name from there. 
 class ProfileViewModel extends ViewModel {
   /// The user's name.
-  late String name;
+  String? name;
 
   /// The user's number of likes.
-  late int numLikes;
+  int? numLikes;
   
   @override
-  Future<void> init() async {
-    isLoading = true;
-    // Simulates a delay 
-    await Future<void>.delayed(const Duration(seconds: 2));
-    name = "Levi";
-    numLikes = 5;
+  Future<void> init() async { }
+
+  /// Signs the user in and downloads their data. 
+  Future<void> signIn() async {
+    final user = await services.auth.signIn();
+    if (user == null) return;
+    final profile = await services.database.getUserProfile(user.uid);
+    name = profile.name;
+    numLikes = profile.numLikes;
     notifyListeners();
-    isLoading = false;
   }
 }
