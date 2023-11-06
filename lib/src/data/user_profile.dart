@@ -1,23 +1,23 @@
 import "json.dart";
 
 /// A user of the app. Can be a customer or seller.
-class User {
+class UserProfile {
   /// The user's name.
   final String name;
   /// The user's ID.
   final String userId;
   /// The number of likes this user has.
-  final int numLikes;
+  int numLikes;
 
   /// Creates a new User object.
-  User({
+  UserProfile({
     required this.name, 
     required this.userId,
     required this.numLikes,
   });
 
   /// Creates a new User object from a JSON object.
-  User.fromJson(Json json) : 
+  UserProfile.fromJson(Json json) : 
     name = json["name"],
     numLikes = json["numLikes"],
     userId = json["userId"];

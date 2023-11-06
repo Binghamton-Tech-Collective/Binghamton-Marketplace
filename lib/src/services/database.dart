@@ -8,9 +8,9 @@ class Database extends Service {
   /// The Cloud Firestore plugin.
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
-  /// A collection of [User] objects.
-  CollectionReference<User> get users => firestore.collection("users").withConverter<User>(
-    fromFirestore: (snapshot, _) => User.fromJson(snapshot.data()!),
+  /// A collection of [UserProfile] objects.
+  CollectionReference<UserProfile> get users => firestore.collection("users").withConverter<UserProfile>(
+    fromFirestore: (snapshot, _) => UserProfile.fromJson(snapshot.data()!),
     toFirestore: (user, _) => user.toJson(),
   );
   
@@ -26,14 +26,14 @@ class Database extends Service {
   }
 
   /// Gets the currently signed-in user's profile.
-  Future<User> getUserProfile(String userId) async { 
+  Future<UserProfile?> getUserProfile(String userId) async { 
     final doc = users.doc(userId);
     final snapshot = await doc.get();
-    return snapshot.data()!;
+    return snapshot.data();
   }
 
   /// Saves the user's profile to their user document (in [users]).
-  Future<void> saveUserProfile(User user) async {
+  Future<void> saveUserProfile(UserProfile user) async {
     final doc = users.doc(user.userId);
     await doc.set(user);
   }

@@ -11,18 +11,25 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
   @override
   Widget build(BuildContext context, ProfileViewModel model) => Scaffold(
     body: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (models.user.isSignedIn) Text(
-          "Your name is ${model.name} and you have ${model.numLikes} likes",
-          style: context.textTheme.headlineLarge,
-        ),
-        ElevatedButton(
-          onPressed: () async { 
-            await model.signIn();
-          }, 
+        if (models.user.isSignedIn) ElevatedButton(
+          onPressed: model.signOut,
+          child: const Text("Sign out"),
+        ) else ElevatedButton(
+          onPressed: model.signIn,
           child: const Text("Sign in with Google"),
+        ),
+        if (models.user.isSignedIn) Text(
+          // We use ! because we *know* that [model.profile] is non-null because we checked [isSignedIn]
+          "Your name is ${model.profile!.name} and you have ${model.profile!.numLikes} likes",
+          style: context.textTheme.headlineLarge,
         ),
       ],
     ),
+    floatingActionButton: models.user.isSignedIn ? FloatingActionButton(
+      onPressed: model.incrementLikes,
+      child: const Icon(Icons.add),
+    ) : null,
   );
 }

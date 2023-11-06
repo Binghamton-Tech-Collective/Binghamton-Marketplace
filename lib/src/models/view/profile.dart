@@ -1,3 +1,4 @@
+import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 
@@ -7,27 +8,30 @@ import "package:btc_market/services.dart";
 /// fields are "late", meaning they don't initialize to null but rather they don't initialize at
 /// all. You are not allowed to access them until they are given a concrete, non-null value, so
 /// we set [isLoading] to true to signal that the UI should load something else in the meantime.
-/// 
-/// As an aside, normally you wouldn't have a separate field for [name], [numLikes], etc, but 
-/// instead you'd have a `SellerProfile` class and have *that* be a field here, and you can
-/// access the name from there. 
 class ProfileViewModel extends ViewModel {
-  /// The user's name.
-  String? name;
-
-  /// The user's number of likes.
-  int? numLikes;
-  
+  /// The currently-signed in user's profile.
+  UserProfile? get profile => models.user.profile;
+    
   @override
   Future<void> init() async { }
 
   /// Signs the user in and downloads their data. 
   Future<void> signIn() async {
-    final user = await services.auth.signIn();
-    if (user == null) return;
-    final profile = await services.database.getUserProfile(user.uid);
-    name = profile.name;
-    numLikes = profile.numLikes;
+    await models.user.signIn();
+    notifyListeners();
+  }
+
+  /// Signs the user out of the app and refreshes the page.
+  Future<void> signOut() async {
+    await models.user.signOut();
+    notifyListeners();
+  }
+
+  /// Adds one like to the user's like count.
+  Future<void> incrementLikes() async {
+    if (profile == null) return;
+    profile!.numLikes++;
+    await services.database.saveUserProfile(profile!);
     notifyListeners();
   }
 }
