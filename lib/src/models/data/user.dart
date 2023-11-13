@@ -8,6 +8,7 @@ class UserModel extends DataModel {
   /// The currently signed-in user.
   UserProfile? userProfile;
 
+  /// The seller profile owned by this user, if any.
   SellerProfile? sellerProfile;
 
   @override
@@ -27,7 +28,6 @@ class UserModel extends DataModel {
       userProfile = UserProfile(
         name: services.auth.user!.displayName!,
         id: services.auth.user!.uid,
-        numLikes: 0,
       );
       await services.database.saveUserProfile(userProfile!);
     }

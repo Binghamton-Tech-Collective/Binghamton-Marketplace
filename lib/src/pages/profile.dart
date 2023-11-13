@@ -22,7 +22,7 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
         ),
         if (models.user.isSignedIn) Text(
           // We use ! because we *know* that [model.profile] is non-null because we checked [isSignedIn]
-          "Your name is ${model.profile!.name} and you have ${model.profile!.numLikes} likes",
+          "Your name is ${model.profile!.name} and you have ${model.numLikes} likes",
           style: context.textTheme.headlineLarge,
         ),
       ],

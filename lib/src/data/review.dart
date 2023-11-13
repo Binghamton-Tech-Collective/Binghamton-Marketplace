@@ -1,21 +1,39 @@
-class Review { 
-  final String id;
-  final String authorName;
-  final DateTime dateTime;
-  final int stars;
-  final String body;
-  final String authorID;
-  final String? productID;
-  final String? sellerID;
+import "types.dart";
 
+/// A review about a specific product or just a seller themselves.
+class Review { 
+  /// This review's unique Review ID.
+  final ReviewID id;
+  /// The author's unique User ID. 
+  final UserID authorID;
+  /// The unique Product ID of the product this is reviewing.
+  /// 
+  /// If this review is not about a product, this will be null.
+  final ProductID? productID;
+  /// The unique Seller ID of the seller this review is about.
+  final SellerID sellerID;
+
+  /// The name of the user who created this review. 
+  final String authorName;
+  /// The date and time this review was created.
+  final DateTime dateTime;
+  /// The number of stars the reviewer gave.
+  final int stars;
+  /// The title of the review.
+  final String title;
+  /// The body of the review.
+  final String body;
+
+  /// A constructor to make a new review.
   const Review({
     required this.id,
-    required this.authorName,
     required this.authorID,
+    required this.sellerID,
+    required this.authorName,
     required this.dateTime, 
     required this.stars, 
-    required this.body, 
-    this.productID, 
-    this.sellerID,
+    required this.title,
+    required this.body,
+    this.productID,
   });
 }

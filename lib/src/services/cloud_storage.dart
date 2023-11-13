@@ -1,6 +1,7 @@
 import "dart:io";
 import "service.dart";
 
+/// A service to use CRUD operations on Google Cloud Storage for Firebase. 
 class CloudStorageService extends Service {
   @override
   Future<void> init() async { }
@@ -8,9 +9,6 @@ class CloudStorageService extends Service {
   @override
   Future<void> dispose() async  { }
 
-  Future<String> uploadPhoto(File photo) async {
-    // upload to Google Cloud/Firebase Storage
-    // return the URL
-    return "";
-  }
+  /// Uploads the file to Google Cloud Storage.
+  Future<void> uploadFile({required File file, required String path}) async { }
 }

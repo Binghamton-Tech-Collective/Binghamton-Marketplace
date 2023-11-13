@@ -26,7 +26,7 @@ class Database extends Service {
   }
 
   /// Gets the currently signed-in user's profile.
-  Future<UserProfile?> getUserProfile(String userId) async { 
+  Future<UserProfile?> getUserProfile(UserID userId) async { 
     final doc = users.doc(userId);
     final snapshot = await doc.get();
     return snapshot.data();
@@ -38,13 +38,9 @@ class Database extends Service {
     await doc.set(user);
   }
 
-  Future<List<Review>> getReviewsBySellerID(String id) async {
-    // query the database for Reviews with sellerID=id
-    return [];  // for testing
-  }
+  /// Gets a list of reviews for the seller with the given ID. 
+  Future<List<Review>> getReviewsBySellerID(SellerID id) async => [];
 
-  Future<SellerProfile?> getSellerProfile(String userID) async {
-    // get /sellers/userID. If it doesn't exist, return null;
-    return null;  // for testing
-  }
+  /// Gets the seller profile owned by the given user ID
+  Future<SellerProfile?> getSellerProfile(UserID userID) async => null;
 }

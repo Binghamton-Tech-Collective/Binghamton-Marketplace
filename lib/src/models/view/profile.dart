@@ -9,6 +9,9 @@ import "package:btc_market/services.dart";
 /// all. You are not allowed to access them until they are given a concrete, non-null value, so
 /// we set [isLoading] to true to signal that the UI should load something else in the meantime.
 class ProfileViewModel extends ViewModel {
+  /// The number of likes the user has.
+  int numLikes = 0;
+  
   /// The currently-signed in user's profile.
   UserProfile? get profile => models.user.userProfile;
     
@@ -30,7 +33,7 @@ class ProfileViewModel extends ViewModel {
   /// Adds one like to the user's like count.
   Future<void> incrementLikes() async {
     if (profile == null) return;
-    profile!.numLikes++;
+    numLikes++;
     await services.database.saveUserProfile(profile!);
     notifyListeners();
   }
