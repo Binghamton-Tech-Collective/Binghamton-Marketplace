@@ -34,7 +34,17 @@ class Database extends Service {
 
   /// Saves the user's profile to their user document (in [users]).
   Future<void> saveUserProfile(UserProfile user) async {
-    final doc = users.doc(user.userId);
+    final doc = users.doc(user.id);
     await doc.set(user);
+  }
+
+  Future<List<Review>> getReviewsBySellerID(String id) async {
+    // query the database for Reviews with sellerID=id
+    return [];  // for testing
+  }
+
+  Future<SellerProfile?> getSellerProfile(String userID) async {
+    // get /sellers/userID. If it doesn't exist, return null;
+    return null;  // for testing
   }
 }
