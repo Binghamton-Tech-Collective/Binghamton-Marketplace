@@ -12,7 +12,7 @@ class SellerProfile {
   /// The User ID of this seller's owner.
   final UserID userID;
   /// The path to this seller's image.
-  final String imagePath;
+  String imagePath;
   /// The seller's biography or description.
   final String bio;
   /// The seller's contact information.
@@ -28,23 +28,29 @@ class SellerProfile {
   });
 
   /// Calculates the average rating out of all the seller's reviews.
-  int calculateAverageRating(List<Review> reviews) => 0;
+  int calculateAverageRating(List<Review> reviews) { 
+      var rating = 0;
+      for (const review in review) {
+          rating += review.stars;
+      }
+
+      return rating ~/ reviews.length;
 }
 
 /// Represents contact information for a seller.
 class ContactInfo {
   /// The seller's email address.
-  final String email;
+  String email;
   /// The seller's phone number, if provided.
-  final String? phoneNumber;
+  String? phoneNumber;
   /// The seller's TikTok username, if provided.
-  final String? tikTokUsername;
+  String? tikTokUsername;
   /// The seller's Instagram handle, if provided.
-  final String? instagramHandle;
+  String? instagramHandle;
   /// The seller's Twitter/X username, if provided. 
-  final String? twitterUsername;
+  String? twitterUsername;
   /// The seller's LinkedIn username, if provided.
-  final String? linkedinUsername;
+  String? linkedInUsername;
 
   /// Creates contact info for a seller.
   const ContactInfo({
@@ -53,6 +59,6 @@ class ContactInfo {
     this.tikTokUsername,
     this.instagramHandle,
     this.twitterUsername,
-    this.linkedinUsername,
+    this.linkedInUsername,
   });
 }
