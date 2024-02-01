@@ -18,12 +18,7 @@ class Message {
     required this.timeSent,
     required this.content,
     required this.author,
-    this.imagePath = null,
-    this.timeEdited = null,
+    required this.imagePath,
+    required this.timeEdited,
   });
-
-  void edit(String newContent, DateTime timeEdited) {
-    content = newContent;
-    timeEdited = editTime;
-  }
 }

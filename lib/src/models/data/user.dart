@@ -28,6 +28,8 @@ class UserModel extends DataModel {
       userProfile = UserProfile(
         name: services.auth.user!.displayName!,
         id: services.auth.user!.uid,
+        productsWatchlist: services.auth.user!.productsWatchlist!,
+        sellersWatchlist: services.auth.user!.sellersWatchlist!,
       );
       await services.database.saveUserProfile(userProfile!);
     }

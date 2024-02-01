@@ -16,6 +16,6 @@ class Notification {
     required this.timeSent,
     required this.sellerID,
     required this.content,
-    this.productID = null,
+    required this.productID,
   });
 }

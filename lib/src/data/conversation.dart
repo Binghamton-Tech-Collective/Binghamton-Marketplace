@@ -1,19 +1,20 @@
 import "types.dart";
+import "message.dart";
 
 /// A conversation between a user and a seller
 class Conversation {
-    /// The IDs of the sellers/users involved
-    List<String> members;
+  /// The IDs of the sellers/users involved
+  final List<String> members;
   /// The message history
-  List<Message> messages;
+  final List<Message> messages;
   /// The product being discussed, if any
   final ProductID? product;
 
   /// A constructor to create a new Conversation.
   const Conversation({
     required this.members,
-    this.messages = <Message>[],
-    this.product = null,
+    required this.messages,
+    required this.product,
   });
 
   /// Add a [Message] to the conversation (generally by sending a new one)

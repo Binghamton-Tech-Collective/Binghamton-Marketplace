@@ -1,4 +1,6 @@
 import "types.dart";
+import "product.dart";
+import "seller_profile.dart";
 
 /// A user of the app. Can be a customer or seller.
 class UserProfile {
@@ -7,16 +9,16 @@ class UserProfile {
   /// The user's ID.
   final UserID id;
   /// The products on the user's watchlist
-  List<Product> productsWatchlist;
+  final List<Product> productsWatchlist;
   /// The sellers on the user's watchlist
-  List<SellerProfile> sellersWatchlist;
+  final List<SellerProfile> sellersWatchlist;
 
   /// Creates a new User object.
   UserProfile({
     required this.name, 
     required this.id,
-    productsWatchlist = <Product>[],
-    sellersWatchlist = <SellerProfile>[],
+    required this.productsWatchlist,
+    required this.sellersWatchlist,
   });
 
   /// Creates a new User object from a JSON object.
