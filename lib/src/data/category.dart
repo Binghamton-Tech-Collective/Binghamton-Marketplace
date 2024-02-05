@@ -15,7 +15,6 @@ class Category {
     required this.title,
     required this.description,
     required this.imagePath,
-    this.delisted = false,
   });
 
   /**
