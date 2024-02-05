@@ -23,8 +23,8 @@ class Product {
   /// The price of this product
   final double price;
 
-  /// The category in which the Product belongs to
-  final Category category;
+  /// The categories in which the Product can be mapped to
+  final Set<Category> categories;
 
   /// How many of this product are currently available.
   final int quantity;
@@ -50,7 +50,7 @@ class Product {
     required this.price,
     required this.quantity,
     required this.imagePaths,
-    required this.category,
+    required this.categories,
     this.delisted = false,
   });
 }
