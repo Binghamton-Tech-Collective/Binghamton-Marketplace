@@ -29,8 +29,7 @@ class SellerProfileViewModel extends ViewModel {
 
   String? getImageURL() => profile?.imagePath;
 
-  /// The getName() will return the name of the seller
-
+  /// Returns the name of the seller
   String? getName() => profile?.name;
 
   /// The getSellerDescription method will return the description that can be used as a bio for the seller.
