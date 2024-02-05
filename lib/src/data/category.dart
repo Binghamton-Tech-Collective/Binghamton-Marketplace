@@ -1,16 +1,14 @@
 import 'types.dart';
 
 class Category {
-  // Stores the unique ID for this category
+  /// Stores the unique ID for this category
   final CategoryID categoryID;
-  // Stores the name of the category
+  /// Stores the name of the category
   final String title;
-  // Stores a brief description for the category
+  /// Stores a brief description for the category
   final String description;
-  // Stores the link of the thumbnail for this category
+  /// Stores the link of the thumbnail for this category
   final String imagePath;
-  // When none of the products of the category are available, the category is still shown since the Product is not delisted. If the seller wants to get rid of the listing, they can simply set this to 'true' to hide this particular category from buyers.
-  final bool delisted;
 
   const Category({
     required this.categoryID,
