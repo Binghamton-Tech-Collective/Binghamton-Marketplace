@@ -1,14 +1,24 @@
-import 'types.dart';
+import "package:flutter/foundation.dart";
 
+import "types.dart";
+
+@immutable
+
+/// The class category is used to place the products in one of the Category bucket
 class Category {
   /// Stores the unique ID for this category
   final CategoryID categoryID;
+
   /// Stores the name of the category
   final String title;
+
   /// Stores a brief description for the category
   final String description;
+
   /// Stores the link of the thumbnail for this category
   final String imagePath;
+
+  /// Constructor to initialize the instances of Category class
 
   const Category({
     required this.categoryID,
@@ -17,18 +27,10 @@ class Category {
     required this.imagePath,
   });
 
-  /**
-   * The below methods will be used to define how to Objects of Category class are compared for equality.
-   * By default, the compiler checks the memory location of the Objects created and return true if they point to the same memory address.
-   * However, when we create a Set of Category for our seller profile view model, we want to define the equality on the basis of the categoryID.
-   * Since each category has a different id, two objects with the same category id will be considered as duplicates and only entered in the Set once.
-   */
-
   @override
   int get hashCode => categoryID.hashCode;
 
   @override
-  bool operator ==(other) {
-    return other is Category && other.categoryID == categoryID;
-  }
+  bool operator ==(Object other) =>
+      other is Category && other.categoryID == categoryID;
 }
