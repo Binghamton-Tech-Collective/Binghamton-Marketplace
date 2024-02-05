@@ -23,7 +23,7 @@ class SellerProfileViewModel extends ViewModel {
     isLoading = true;
     // get the seller's products, reviews, categories, etc
     profile = models.user.sellerProfile!;
-    productList = productListings;
+    productList = await productListings;
     categories = getCategories();
     isLoading = false;
   }
@@ -52,5 +52,5 @@ class SellerProfileViewModel extends ViewModel {
   /// The method will return the list of the products from the database
   /// Returning a dummy list
   /// The actual code will run a firebase query returning all the Products for a particular seller.
-  List<Product> get productListings => <Product>[];
+  Future<List<Product>> get productListings async => <Product>[];
 }
