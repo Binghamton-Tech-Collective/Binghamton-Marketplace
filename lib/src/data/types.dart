@@ -6,7 +6,8 @@ typedef UserID = String;
 
 /// A unique ID for every product.
 typedef ProductID = String;
-// A unique ID for every Category
+
+/// A unique ID for every Category
 typedef CategoryID = String;
 
 /// A unique ID for every seller.

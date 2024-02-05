@@ -23,13 +23,25 @@ class SellerProfileViewModel extends ViewModel {
     isLoading = true;
     // get the seller's products, reviews, categories, etc
     profile = models.user.sellerProfile!;
-    productList = await productListings;
-    categories = getCategories();
+    await fetchProducts();
+    fetchCategories();
     isLoading = false;
   }
 
-  /// The getImageURL() will return the link to the profile picture of the user.
+  /// Populates the Product List of Seller.
+  Future<void> fetchProducts() async {
+    // Will add the code here to fetch the product list and intialize the instance variable
+    productList = <Product>[];
+  }
 
+  /// Populates the Categories set by iterating the products
+  void fetchCategories() {
+    for (final product in productList) {
+      categories.addAll(product.categories);
+    }
+  }
+
+  /// Returns the link to the profile picture of the user.
   String getImageURL() => profile.imagePath;
 
   /// Returns the name of the seller
@@ -38,19 +50,11 @@ class SellerProfileViewModel extends ViewModel {
   /// The method will return the description that can be used as a bio for the seller.
   String get sellerDescription => profile.bio;
 
-  /// The method will iterate through all the products that are listed in teh above list.
-  /// It will then check what category does the product belong to.
-  /// It will add the category to the set if the cateogry is not present in the set.
-
-  Set<Category> getCategories() {
-    for (final index in productList) {
-      categories.addAll(index.categories);
-    }
-    return categories;
-  }
-
   /// The method will return the list of the products from the database
   /// Returning a dummy list
   /// The actual code will run a firebase query returning all the Products for a particular seller.
-  Future<List<Product>> get productListings async => <Product>[];
+  Future<List<Product>> get sellerProducts async => productList;
+
+  /// A getter method to return all the categories that the seller has listed
+  Set<Category> get sellerCategories => categories;
 }
