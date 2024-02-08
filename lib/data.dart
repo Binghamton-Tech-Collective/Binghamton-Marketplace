@@ -1,3 +1,4 @@
+export "src/data/category.dart";
 export "src/data/types.dart";
 export "src/data/user_profile.dart";
 export "src/data/seller_profile.dart";

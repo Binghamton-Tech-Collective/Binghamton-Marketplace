@@ -2,9 +2,8 @@ import "package:flutter/foundation.dart";
 
 import "types.dart";
 
-@immutable
-
 /// The class category is used to place the products in one of the Category bucket
+@immutable
 class Category {
   /// Stores the unique ID for this category
   final CategoryID categoryID;
