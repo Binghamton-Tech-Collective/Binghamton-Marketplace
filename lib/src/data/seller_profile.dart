@@ -6,6 +6,7 @@ import "types.dart";
 /// Every user has a user profile and an associated User ID. If a user wants to sell on the app,
 /// they can also create a seller profile with some basic information about themselves. Users can
 /// then view these profiles as well as the products and reviews associated with them.
+
 class SellerProfile {
   /// The seller's unique Seller ID.
   final SellerID id;
@@ -29,6 +30,23 @@ class SellerProfile {
 
   /// Calculates the average rating out of all the seller's reviews.
   int calculateAverageRating(List<Review> reviews) => 0;
+
+  /// Creates a new seller object from a JSON object.
+  SellerProfile.fromJson(Json json) : 
+    id = json["id"],
+    userID = json["userID"],
+    imagePath = json["imagePath"],
+    bio = json["bio"],
+    contact = json["contact"];
+
+  /// Convert this seller to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "userID": userID,
+    "imagePath": imagePath,
+    "bio": bio,
+    "contact": contact,
+  };
 }
 
 /// Represents contact information for a seller.

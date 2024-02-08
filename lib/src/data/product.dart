@@ -11,8 +11,7 @@ class Product {
   final ProductID id;
   /// The seller's unique Seller ID.
   final SellerID sellerID;
-
-  /// The title or name of the product.
+  /// The title or a name of the product.
   final String title;
   /// The product's description.
   final String description;
@@ -42,4 +41,27 @@ class Product {
     required this.imagePaths, 
     this.delisted = false,
   });
+
+
+      /// Creates a new review object from a JSON object.
+    Product.fromJson(Json json) : 
+    id = json["id"],
+    sellerID = json["sellerID"],
+    title = json["title"],
+    description = json["description"],
+    price = json["price"],
+    quantity = json["quantity"],
+    imagePaths = json["imagePaths"],
+    delisted = json["delisted"];
+    
+  /// Convert this review to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "sellerID": sellerID,
+    "title": title,
+    "description": description,
+    "quantity": quantity,
+    "imagePaths": imagePaths,
+    "delisted": delisted,
+  };
 }
