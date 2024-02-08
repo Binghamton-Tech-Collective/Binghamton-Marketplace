@@ -12,7 +12,7 @@ class UserModel extends DataModel {
   SellerProfile? sellerProfile;
 
   @override
-  Future<void> init() async { 
+  Future<void> init() async {
     // Try to automatically sign-in
   }
 
@@ -24,7 +24,8 @@ class UserModel extends DataModel {
     final uid = await services.auth.signIn();
     if (uid == null) return;
     userProfile = await services.database.getUserProfile(uid);
-    if (userProfile == null) {  // create and save a new user profile
+    if (userProfile == null) {
+      // create and save a new user profile
       userProfile = UserProfile(
         name: services.auth.user!.displayName!,
         id: services.auth.user!.uid,
