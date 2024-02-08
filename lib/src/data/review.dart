@@ -36,4 +36,29 @@ class Review {
     required this.body,
     this.productID,
   });
+
+  /// Creates a new Review object from a JSON object.
+  Review.fromJson(Json json) : 
+    id = json["id"],
+    authorID = json["authorID"],
+    sellerID = json["sellerID"],
+    authorName = json["authorName"],
+    dateTime = json["dateTime"], 
+    stars = json["stars"], 
+    title = json["title"],
+    body = json["body"],
+    productID = json["productID"];
+
+  /// Convert this Message to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "authorID": authorID,
+    "sellerID": sellerID,
+    "authorName": authorName,
+    "dateTime": dateTime, 
+    "stars": stars, 
+    "title": title,
+    "body": body,
+    "productID": productID,
+  };
 }

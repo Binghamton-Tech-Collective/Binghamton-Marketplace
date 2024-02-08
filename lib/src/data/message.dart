@@ -21,4 +21,36 @@ class Message {
     required this.imagePath,
     required this.timeEdited,
   });
+
+  /// Creates a new Message object from a JSON object.
+  Message.fromJson(Json json) : 
+    timeSent = json["timeSent"],
+    content = json["content"],
+    author = json["author"],
+    imagePath = json["imagePath"],
+    timeEdited = json["timeEdited"];
+
+  /// Convert this Message to its JSON representation
+  Json toJson() => {
+    "timeSent": timeSent,
+    "content": content,
+    "author": author,
+    "imagePath": imagePath,
+    "timeEdited": timeEdited,
+  };
+   
+  @override
+  bool operator ==(covariant Message other) {
+    if (identical(this, other)) return true;
+    return timeSent == other.timeSent &&
+           timeEdited == other.timeEdited &&
+           author == other.author &&
+           imagePath == other.imagePath &&
+           content == other.content;
+  }
+
+  @override
+  int get hashCode => (((timeSent.hashCode * 31 + timeEdited.hashCode) * 31 +
+              author.hashCode) * 31 + imagePath.hashCode) * 31 +
+              content.hashCode;
 }

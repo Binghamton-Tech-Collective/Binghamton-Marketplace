@@ -1,6 +1,4 @@
 import "types.dart";
-import "product.dart";
-import "seller_profile.dart";
 
 /// A user of the app. Can be a customer or seller.
 class UserProfile {
@@ -9,9 +7,9 @@ class UserProfile {
   /// The user's ID.
   final UserID id;
   /// The products on the user's watchlist
-  final List<Product> productsWatchlist;
+  final Set<ProductID> productsWatchlist;
   /// The sellers on the user's watchlist
-  final List<SellerProfile> sellersWatchlist;
+  final Set<SellerID> sellersWatchlist;
 
   /// Creates a new User object.
   UserProfile({
@@ -25,20 +23,24 @@ class UserProfile {
   UserProfile.fromJson(Json json) : 
     name = json["name"],
     id = json["id"],
-    productsWatchlist = json["productsWatchlist"],
-    sellersWatchlist = json["sellersWatchlist"];
+    productsWatchlist = Set<String>.from(json["productsWatchlist"]),
+    sellersWatchlist = Set<String>.from(json["sellersWatchlist"]);
 
   /// Convert this user to its JSON representation
   Json toJson() => {
     "name": name,
     "id": id,
-    "productsWatchlist": productsWatchlist,
-    "sellersWatchlist": sellersWatchlist,
+    "productsWatchlist": List<String>.from(productsWatchlist),
+    "sellersWatchlist": List<String>.from(sellersWatchlist),
   };
 
-  void watchProduct(Product product) => productsWatchlist.add(product);
-  void unwatchProduct(Product product) => productsWatchlist.remove(product);
+  /// Add a Product to the User's watchlist, by ProductID
+  void watchProduct(ProductID product) => productsWatchlist.add(product);
+  /// Remove a Product from the User's watchlist, by ProductID
+  void unwatchProduct(ProductID product) => productsWatchlist.remove(product);
 
-  void watchSeller(SellerProfile seller) => sellersWatchlist.add(seller);
-  void unwatchSeller(SellerProfile seller) => sellersWatchlist.remove(seller);
+  /// Add a Seller to the User's watchlist, by SellerID
+  void watchSeller(SellerID seller) => sellersWatchlist.add(seller);
+  /// Remove a Seller from the User's watchlist, by SellerID
+  void unwatchSeller(SellerID seller) => sellersWatchlist.remove(seller);
 }

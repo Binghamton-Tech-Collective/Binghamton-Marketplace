@@ -27,6 +27,23 @@ class SellerProfile {
     required this.contact,
   });
 
+  /// Creates a new SellerProfilej object from a JSON object.
+  SellerProfile.fromJson(Json json) : 
+    id = json["id"],
+    userID = json["userID"],
+    imagePath = json["imagePath"],
+    bio = json["bio"],
+    contact = ContactInfo.fromJson(json["contact"]);
+
+  /// Convert this SellerProfilej to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "userID": userID,
+    "imagePath": imagePath,
+    "bio": bio,
+    "contact": contact.toJson(),
+  };
+
   /// Calculates the average rating out of all the seller's reviews.
   int calculateAverageRating(List<Review> reviews) { 
       var rating = 0;
@@ -62,4 +79,23 @@ class ContactInfo {
     required this.twitterUsername,
     required this.linkedInUsername,
   });
+
+  /// Creates a new ContactInfo object from a JSON object.
+  ContactInfo.fromJson(Json json) : 
+    email = json["email"],
+    phoneNumber = json["phoneNumber"], 
+    tikTokUsername = json["tikTokUsername"],
+    instagramHandle = json["instagramHandle"],
+    twitterUsername = json["twitterUsername"],
+    linkedInUsername = json["linkedInUsername"];
+
+  /// Convert this ContactInfo to its JSON representation
+  Json toJson() => {
+    "email": email,
+    "phoneNumber": phoneNumber, 
+    "tikTokUsername": tikTokUsername,
+    "instagramHandle": instagramHandle,
+    "twitterUsername": twitterUsername,
+    "linkedInUsername": linkedInUsername,
+  };
 }

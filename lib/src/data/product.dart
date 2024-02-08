@@ -42,4 +42,26 @@ class Product {
     required this.imagePaths, 
     this.delisted = false,
   });
+  /// Creates a new Product object from a JSON object.
+  Product.fromJson(Json json) : 
+    id = json["id"],
+    sellerID = json["sellerID"],
+    title = json["title"], 
+    description = json["description"], 
+    price = json["price"], 
+    quantity = json["quantity"], 
+    imagePaths = json["imagePaths"], 
+    delisted = json["delisted"];
+
+  /// Convert this Product to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "sellerID": sellerID,
+    "title": title, 
+    "description": description, 
+    "price": price, 
+    "quantity": quantity, 
+    "imagePaths": imagePaths, 
+    "delisted": delisted,
+  };
 }
