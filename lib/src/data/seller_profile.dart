@@ -46,6 +46,7 @@ class SellerProfile {
   /// Convert this SellerProfile to its JSON representation
   Json toJson() => {
     "id": id,
+    "name": name,
     "userID": userID,
     "imageURL": imageURL,
     "bio": bio,
