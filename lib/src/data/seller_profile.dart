@@ -27,7 +27,7 @@ class SellerProfile {
     required this.contact,
   });
 
-  /// Creates a new SellerProfilej object from a JSON object.
+  /// Creates a new SellerProfile object from a JSON object.
   SellerProfile.fromJson(Json json) : 
     id = json["id"],
     userID = json["userID"],
@@ -35,7 +35,7 @@ class SellerProfile {
     bio = json["bio"],
     contact = ContactInfo.fromJson(json["contact"]);
 
-  /// Convert this SellerProfilej to its JSON representation
+  /// Convert this SellerProfile to its JSON representation
   Json toJson() => {
     "id": id,
     "userID": userID,

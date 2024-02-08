@@ -1,6 +1,8 @@
 import "types.dart";
+import "package:meta/meta.dart";
 
 /// A message, sent from a user to a seller or vice versa
+@immutable
 class Message {
   /// The time the message was sent
   final DateTime timeSent;
@@ -24,19 +26,19 @@ class Message {
 
   /// Creates a new Message object from a JSON object.
   Message.fromJson(Json json) : 
-    timeSent = json["timeSent"],
+    timeSent = DateTime.parse(json["timeSent"]),
     content = json["content"],
     author = json["author"],
     imagePath = json["imagePath"],
-    timeEdited = json["timeEdited"];
+    timeEdited = DateTime.parse(json["timeEdited"]);
 
   /// Convert this Message to its JSON representation
   Json toJson() => {
-    "timeSent": timeSent,
+    "timeSent": timeSent.toIso8601String(),
     "content": content,
     "author": author,
     "imagePath": imagePath,
-    "timeEdited": timeEdited,
+    "timeEdited": timeEdited?.toIso8601String(),
   };
    
   @override

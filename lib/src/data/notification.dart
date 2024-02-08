@@ -21,14 +21,14 @@ class Notification {
 
   /// Creates a new Notification object from a JSON object.
   Notification.fromJson(Json json) : 
-    timeSent = json["timeSent"],
+    timeSent = DateTime.parse(json["timeSent"]),
     sellerID = json["sellerID"],
     content = json["content"],
     productID = json["productID"];
 
   /// Convert this Notification to its JSON representation
   Json toJson() => {
-    "timeSent": timeSent,
+    "timeSent": timeSent.toIso8601String(),
     "sellerID": sellerID,
     "content": content,
     "productID": productID,
