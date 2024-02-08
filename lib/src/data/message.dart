@@ -11,7 +11,7 @@ class Message {
   /// The ID of the seller the message is from
   final SellerID author;
   /// The path to the image in the message, if any
-  final String? imagePath;
+  final String? imageURL;
   /// The time the message was edited, if ever
   final DateTime? timeEdited;
 
@@ -20,7 +20,7 @@ class Message {
     required this.timeSent,
     required this.content,
     required this.author,
-    required this.imagePath,
+    required this.imageURL,
     required this.timeEdited,
   });
 
@@ -29,7 +29,7 @@ class Message {
     timeSent = DateTime.parse(json["timeSent"]),
     content = json["content"],
     author = json["author"],
-    imagePath = json["imagePath"],
+    imageURL = json["imageURL"],
     timeEdited = DateTime.parse(json["timeEdited"]);
 
   /// Convert this Message to its JSON representation
@@ -37,7 +37,7 @@ class Message {
     "timeSent": timeSent.toIso8601String(),
     "content": content,
     "author": author,
-    "imagePath": imagePath,
+    "imageURL": imageURL,
     "timeEdited": timeEdited?.toIso8601String(),
   };
    
@@ -47,12 +47,12 @@ class Message {
     return timeSent == other.timeSent &&
            timeEdited == other.timeEdited &&
            author == other.author &&
-           imagePath == other.imagePath &&
+           imageURL == other.imageURL &&
            content == other.content;
   }
 
   @override
   int get hashCode => (((timeSent.hashCode * 31 + timeEdited.hashCode) * 31 +
-              author.hashCode) * 31 + imagePath.hashCode) * 31 +
+              author.hashCode) * 31 + imageURL.hashCode) * 31 +
               content.hashCode;
 }

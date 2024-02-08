@@ -12,7 +12,7 @@ class SellerProfile {
   /// The User ID of this seller's owner.
   final UserID userID;
   /// The path to this seller's image.
-  final String imagePath;
+  final String imageURL;
   /// The seller's biography or description.
   final String bio;
   /// The seller's contact information.
@@ -22,7 +22,7 @@ class SellerProfile {
   const SellerProfile({
     required this.id,
     required this.userID,
-    required this.imagePath,
+    required this.imageURL,
     required this.bio,
     required this.contact,
   });
@@ -31,7 +31,7 @@ class SellerProfile {
   SellerProfile.fromJson(Json json) : 
     id = json["id"],
     userID = json["userID"],
-    imagePath = json["imagePath"],
+    imageURL = json["imageURL"],
     bio = json["bio"],
     contact = ContactInfo.fromJson(json["contact"]);
 
@@ -39,7 +39,7 @@ class SellerProfile {
   Json toJson() => {
     "id": id,
     "userID": userID,
-    "imagePath": imagePath,
+    "imageURL": imageURL,
     "bio": bio,
     "contact": contact.toJson(),
   };

@@ -21,7 +21,7 @@ class Product {
   /// How many of this product are currently available.
   final int quantity;
   /// A list of images to show in this product's page.
-  final List<String> imagePaths;
+  final List<String> imageURLs;
   /// Whether this product has been de-listed.
   /// 
   /// When an item is no longer available, it is still shown but [quantity] will be set to zero.
@@ -39,7 +39,7 @@ class Product {
     required this.description, 
     required this.price, 
     required this.quantity, 
-    required this.imagePaths, 
+    required this.imageURLs, 
     this.delisted = false,
   });
   /// Creates a new Product object from a JSON object.
@@ -50,7 +50,7 @@ class Product {
     description = json["description"], 
     price = json["price"], 
     quantity = json["quantity"], 
-    imagePaths = json["imagePaths"], 
+    imageURLs = json["imageURLs"], 
     delisted = json["delisted"];
 
   /// Convert this Product to its JSON representation
@@ -61,7 +61,7 @@ class Product {
     "description": description, 
     "price": price, 
     "quantity": quantity, 
-    "imagePaths": imagePaths, 
+    "imageURLs": imageURLs, 
     "delisted": delisted,
   };
 }
