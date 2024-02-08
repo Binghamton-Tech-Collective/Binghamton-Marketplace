@@ -61,6 +61,7 @@ class Product {
     price = json["price"], 
     quantity = json["quantity"], 
     imageURLs = json["imageURLs"], 
+    categories = json["categories"],
     delisted = json["delisted"];
 
   /// Convert this Product to its JSON representation

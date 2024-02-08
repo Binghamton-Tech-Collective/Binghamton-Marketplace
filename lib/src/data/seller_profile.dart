@@ -37,6 +37,7 @@ class SellerProfile {
   /// Creates a new SellerProfile object from a JSON object.
   SellerProfile.fromJson(Json json) : 
     id = json["id"],
+    name = json["name"],
     userID = json["userID"],
     imageURL = json["imageURL"],
     bio = json["bio"],
