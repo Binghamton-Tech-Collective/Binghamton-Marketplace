@@ -5,11 +5,10 @@ import "package:btc_market/models.dart";
 class SellerProfileViewModel extends ViewModel {
   /// Populates the Categories set by iterating the products
   static Set<Category> getCategories(List<Product> products) => {
-    for (final product in products)
-      ...product.categories,
-  };
-  
-  // The profile variable will hold the object of Seller Profile
+        for (final product in products) ...product.categories,
+      };
+
+  /// The profile variable will hold the object of Seller Profile
   /// The profile will get the seller profile info from model of seller profile.
   late final SellerProfile profile;
 
@@ -38,12 +37,17 @@ class SellerProfileViewModel extends ViewModel {
     productList = <Product>[];
   }
 
+  /// Returns the entire Seller Profile
+  /// This will be useful to fetch any information such as image, contact, etc
+
+  SellerProfile get sellerProfile => profile;
+
   /// Returns the link to the profile picture of the user.
-  String getImageURL() => profile.imagePath;
+  // String getImageURL() => profile.imagePath;
 
-  /// Returns the name of the seller
-  String get name => profile.name;
+  // /// Returns the name of the seller
+  // String get name => profile.name;
 
-  /// The method will return the description that can be used as a bio for the seller.
-  String get sellerDescription => profile.bio;
+  // /// The method will return the description that can be used as a bio for the seller.
+  // String get sellerDescription => profile.bio;
 }
