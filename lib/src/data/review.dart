@@ -6,13 +6,10 @@ class Review {
   final ReviewID id;
   /// The author's unique User ID. 
   final UserID authorID;
-  /// The unique Product ID of the product this is reviewing.
-  /// 
-  /// If this review is not about a product, this will be null.
+  /// The unique Product ID of the product this is reviewing, if any.
   final ProductID? productID;
   /// The unique Seller ID of the seller this review is about.
   final SellerID sellerID;
-
   /// The name of the user who created this review. 
   final String authorName;
   /// The date and time this review was created.
@@ -61,4 +58,13 @@ class Review {
     "body": body,
     "productID": productID,
   };
+}
+
+/// Calculates the average rating out of all the seller's reviews.
+int calculateAverageRating(List<Review> reviews) { 
+  var rating = 0;
+  for (final review in reviews) {
+    rating += review.stars;
+  }
+  return rating ~/ reviews.length;
 }

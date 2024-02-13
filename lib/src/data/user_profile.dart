@@ -19,6 +19,14 @@ class UserProfile {
     required this.sellersWatchlist,
   });
 
+  /// Creates a new profile, with all the default fields.
+  UserProfile.newProfile({
+    required this.name,
+    required this.id,
+  }) : 
+    productsWatchlist = {},
+    sellersWatchlist = {};
+
   /// Creates a new User object from a JSON object.
   UserProfile.fromJson(Json json) : 
     name = json["name"],

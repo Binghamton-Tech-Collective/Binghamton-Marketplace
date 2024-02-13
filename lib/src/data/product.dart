@@ -63,7 +63,10 @@ class Product {
     price = json["price"], 
     quantity = json["quantity"], 
     imageURLs = json["imageURLs"], 
-    categories = json["categories"],
+    categories = {
+      for (final categoryJson in json["categories"])
+        Category.fromJson(categoryJson),
+    },
     delisted = json["delisted"];
 
   /// Convert this Product to its JSON representation
@@ -75,6 +78,10 @@ class Product {
     "price": price, 
     "quantity": quantity, 
     "imageURLs": imageURLs, 
+    "categories": [
+      for (final category in categories)
+        category.toJson(),
+    ],
     "delisted": delisted,
   };
 }

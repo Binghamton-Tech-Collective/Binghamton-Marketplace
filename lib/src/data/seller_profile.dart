@@ -1,4 +1,3 @@
-import "review.dart";
 import "types.dart";
 
 /// Represents information about a seller.
@@ -17,7 +16,8 @@ class SellerProfile {
   final UserID userID;
 
   /// The path to this seller's image.
-  final String imageURL;
+  final String imageUrl;
+
   /// The seller's biography or description.
   final String bio;
 
@@ -29,7 +29,7 @@ class SellerProfile {
     required this.id,
     required this.name,
     required this.userID,
-    required this.imageURL,
+    required this.imageUrl,
     required this.bio,
     required this.contact,
   });
@@ -39,7 +39,7 @@ class SellerProfile {
     id = json["id"],
     name = json["name"],
     userID = json["userID"],
-    imageURL = json["imageURL"],
+    imageUrl = json["imageUrl"],
     bio = json["bio"],
     contact = ContactInfo.fromJson(json["contact"]);
 
@@ -48,20 +48,10 @@ class SellerProfile {
     "id": id,
     "name": name,
     "userID": userID,
-    "imageURL": imageURL,
+    "imageUrl": imageUrl,
     "bio": bio,
     "contact": contact.toJson(),
   };
-
-  /// Calculates the average rating out of all the seller's reviews.
-  int calculateAverageRating(List<Review> reviews) { 
-      var rating = 0;
-      for (final review in reviews) {
-          rating += review.stars;
-      }
-
-      return rating ~/ reviews.length;
-  }
 }
 
 /// Represents contact information for a seller.

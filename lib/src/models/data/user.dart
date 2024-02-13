@@ -26,11 +26,9 @@ class UserModel extends DataModel {
     userProfile = await services.database.getUserProfile(uid);
     if (userProfile == null) {
       // create and save a new user profile
-      userProfile = UserProfile(
+      userProfile = UserProfile.newProfile(
         name: services.auth.user!.displayName!,
         id: services.auth.user!.uid,
-        productsWatchlist: {},
-        sellersWatchlist: {},
       );
       await services.database.saveUserProfile(userProfile!);
     }
