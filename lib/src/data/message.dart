@@ -42,17 +42,19 @@ class Message {
   };
    
   @override
-  bool operator ==(covariant Message other) {
-    if (identical(this, other)) return true;
-    return timeSent == other.timeSent &&
-           timeEdited == other.timeEdited &&
-           author == other.author &&
-           imageURL == other.imageURL &&
-           content == other.content;
-  }
+  bool operator ==(Object other) => other is Message
+    && timeSent == other.timeSent
+    && timeEdited == other.timeEdited
+    && author == other.author
+    && imageURL == other.imageURL
+    && content == other.content;
 
   @override
-  int get hashCode => (((timeSent.hashCode * 31 + timeEdited.hashCode) * 31 +
-              author.hashCode) * 31 + imageURL.hashCode) * 31 +
-              content.hashCode;
+  int get hashCode => Object.hash(
+    timeSent,
+    timeEdited,
+    author,
+    imageURL,
+    content,
+  );
 }

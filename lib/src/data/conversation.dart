@@ -11,8 +11,8 @@ class Conversation {
   final SellerID sellerID;
   /// The message history
   final List<Message> messages;
-  /// The product being discussed, if any
-  final ProductID? product;
+  /// The ID of the product being discussed, if any
+  final ProductID? productID;
 
   /// A constructor to create a new Conversation.
   const Conversation({
@@ -20,7 +20,7 @@ class Conversation {
     required this.sellerUID,
     required this.sellerID,
     required this.messages,
-    required this.product,
+    required this.productID,
   });
 
   /// Creates a new Conversation object from a JSON object.
@@ -32,7 +32,7 @@ class Conversation {
       for (final messageJson in json["messages"])
           Message.fromJson(messageJson),
     ],
-    product = json["product"];
+    productID = json["productID"];
 
   /// Convert this Conversation to its JSON representation
   Json toJson() => {
@@ -43,7 +43,7 @@ class Conversation {
       for (final message in messages)
           message.toJson(),
     ],
-    "product": product,
+    "productID": productID,
   };
 
   /// Add a [Message] to the conversation (generally by sending a new one)

@@ -31,6 +31,7 @@ class Product {
 
   /// A list of images to show in this product's page.
   final List<String> imageURLs;
+
   /// Whether this product has been de-listed.
   ///
   /// When an item is no longer available, it is still shown but [quantity] will be set to zero.
@@ -52,6 +53,7 @@ class Product {
     required this.categories,
     this.delisted = false,
   });
+
   /// Creates a new Product object from a JSON object.
   Product.fromJson(Json json) : 
     id = json["id"],

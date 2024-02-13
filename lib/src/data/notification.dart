@@ -4,12 +4,12 @@ import "types.dart";
 class Notification {
   /// The time the Notification was sent
   final DateTime timeSent;
-  /// The ID of the seller the Notification is from
-  final SellerID sellerID;
-  /// The ID of the product the Notification is for, if any
-  final ProductID? productID;
   /// The contents of the Notification
   final String content;
+  /// The ID of the seller the Notification is from, if any
+  final SellerID? sellerID;
+  /// The ID of the product the Notification is for, if any
+  final ProductID? productID;
 
   /// A constructor to create a new Notification.
   const Notification({

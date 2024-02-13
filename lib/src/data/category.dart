@@ -18,7 +18,6 @@ class Category {
   final String imagePath;
 
   /// Constructor to initialize the instances of Category class
-
   const Category({
     required this.categoryID,
     required this.title,
