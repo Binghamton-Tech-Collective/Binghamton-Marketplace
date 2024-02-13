@@ -25,18 +25,29 @@ class SellerProfile {
   /// The seller's contact information.
   final ContactInfo contact;
 
+  /// Reviews of the Seller
+  final List<Review> reviews;
+
   /// Creates a seller's profile.
-  const SellerProfile({
-    required this.id,
-    required this.name,
-    required this.userID,
-    required this.imagePath,
-    required this.bio,
-    required this.contact,
-  });
+  const SellerProfile(
+      {required this.id,
+      required this.name,
+      required this.userID,
+      required this.imagePath,
+      required this.bio,
+      required this.contact,
+      this.reviews = const []});
 
   /// Calculates the average rating out of all the seller's reviews.
-  int calculateAverageRating(List<Review> reviews) => 0;
+  // int calculateAverageRating(List<Review> reviews) => 0;
+  double calculateAverageRating() {
+    var sum = 0;
+    for (final review in reviews) {
+      sum += review.stars;
+    }
+    final average = sum / reviews.length;
+    return average;
+  }
 }
 
 /// Represents contact information for a seller.
