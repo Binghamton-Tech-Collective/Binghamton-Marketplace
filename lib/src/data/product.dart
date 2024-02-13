@@ -30,7 +30,7 @@ class Product {
   final int quantity;
 
   /// A list of images to show in this product's page.
-  final List<String> imageURLs;
+  final List<String> imageUrls;
 
   /// Whether this product has been de-listed.
   ///
@@ -49,7 +49,7 @@ class Product {
     required this.description,
     required this.price,
     required this.quantity,
-    required this.imageURLs,
+    required this.imageUrls,
     required this.categories,
     this.delisted = false,
   });
@@ -62,7 +62,7 @@ class Product {
     description = json["description"], 
     price = json["price"], 
     quantity = json["quantity"], 
-    imageURLs = json["imageURLs"], 
+    imageUrls = json["imageUrls"], 
     categories = {
       for (final categoryJson in json["categories"])
         Category.fromJson(categoryJson),
@@ -77,7 +77,7 @@ class Product {
     "description": description, 
     "price": price, 
     "quantity": quantity, 
-    "imageURLs": imageURLs, 
+    "imageUrls": imageUrls, 
     "categories": [
       for (final category in categories)
         category.toJson(),
