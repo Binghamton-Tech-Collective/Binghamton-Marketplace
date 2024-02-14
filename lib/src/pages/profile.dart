@@ -1,7 +1,7 @@
-import "package:btc_market/src/models/view/sellerprofile.dart";
-import "package:btc_market/src/widgets/product.dart";
 import "package:flutter/material.dart";
+
 import "package:btc_market/widgets.dart";
+import "package:btc_market/models.dart";
 
 /// The profile page.
 class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
@@ -72,23 +72,21 @@ class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                     left: 125,
                     child: Row(
                       children: [
-                          ActionChip(
-                            labelPadding: const EdgeInsets.all(0),           
-                            avatar: const Icon(Icons.phone),
-                            shape: const StadiumBorder(),
-                            label: const SizedBox(),
-                            onPressed: () {},
-                          ),
-                          const VerticalDivider(
-                            width: 4,
-                          ),
-                          ActionChip(
-                            labelPadding: const EdgeInsets.all(0),
-                            avatar: const Icon(Icons.email),
-                            shape: const StadiumBorder(),
-                            label: const SizedBox(),
-                            onPressed: () {},
-                          ),
+                        ActionChip(
+                          avatar: const Icon(Icons.phone),
+                          shape: const StadiumBorder(),
+                          label: const SizedBox(),
+                          onPressed: () {},
+                        ),
+                        const VerticalDivider(
+                          width: 4,
+                        ),
+                        ActionChip(
+                          avatar: const Icon(Icons.email),
+                          shape: const StadiumBorder(),
+                          label: const SizedBox(),
+                          onPressed: () {},
+                        ),
                       ],
                     ),
                   ),

@@ -5,10 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Flutter (iPhone 15 Pro Max)",
+      "name": "iPhone Simulator",
       "request": "launch",
       "type": "dart",
       "args": ["-d", "Simulator"],
+    },
+    {
+      "name": "Web",
+      "request": "launch",
+      "type": "dart",
+      "args": ["-d", "chrome"],
     },
   ]
 }

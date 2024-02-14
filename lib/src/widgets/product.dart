@@ -1,11 +1,10 @@
 import "package:flutter/material.dart";
 
-import "package:btc_market/data.dart";
-
 /// A widget to show off a product.
 class ProductWidget extends StatelessWidget{
-  // final Product product;
+  /// An empty constructor
   const ProductWidget();
+
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start ,
