@@ -6,13 +6,10 @@ class Review {
   final ReviewID id;
   /// The author's unique User ID. 
   final UserID authorID;
-  /// The unique Product ID of the product this is reviewing.
-  /// 
-  /// If this review is not about a product, this will be null.
+  /// The unique Product ID of the product this is reviewing, if any.
   final ProductID? productID;
   /// The unique Seller ID of the seller this review is about.
   final SellerID sellerID;
-
   /// The name of the user who created this review. 
   final String authorName;
   /// The date and time this review was created.
@@ -37,28 +34,37 @@ class Review {
     this.productID,
   });
 
-    /// Creates a new review object from a JSON object.
-    Review.fromJson(Json json) : 
+  /// Creates a new Review object from a JSON object.
+  Review.fromJson(Json json) : 
     id = json["id"],
     authorID = json["authorID"],
     sellerID = json["sellerID"],
-    productID = json["productID"],
     authorName = json["authorName"],
-    dateTime = json["dateTime"],
-    stars = json["stars"],
+    dateTime = DateTime.parse(json["dateTime"]), 
+    stars = json["stars"], 
     title = json["title"],
-    body = json["body"];
-    
-  /// Convert this review to its JSON representation
+    body = json["body"],
+    productID = json["productID"];
+
+  /// Convert this Message to its JSON representation
   Json toJson() => {
     "id": id,
     "authorID": authorID,
     "sellerID": sellerID,
     "authorName": authorName,
-    "productID": productID,
-    "dateTime": dateTime,
-    "stars": stars,
+    "dateTime": dateTime.toIso8601String(), 
+    "stars": stars, 
     "title": title,
     "body": body,
+    "productID": productID,
   };
+}
+
+/// Calculates the average rating out of all the seller's reviews.
+int calculateAverageRating(List<Review> reviews) { 
+  var rating = 0;
+  for (final review in reviews) {
+    rating += review.stars;
+  }
+  return rating ~/ reviews.length;
 }

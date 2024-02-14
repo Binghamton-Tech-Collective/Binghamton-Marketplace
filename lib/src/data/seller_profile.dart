@@ -1,4 +1,3 @@
-import "review.dart";
 import "types.dart";
 
 /// Represents information about a seller.
@@ -18,7 +17,7 @@ class SellerProfile {
   final UserID userID;
 
   /// The path to this seller's image.
-  final String imagePath;
+  final String imageUrl;
 
   /// The seller's biography or description.
   final String bio;
@@ -31,29 +30,28 @@ class SellerProfile {
     required this.id,
     required this.name,
     required this.userID,
-    required this.imagePath,
+    required this.imageUrl,
     required this.bio,
     required this.contact,
   });
 
-  /// Calculates the average rating out of all the seller's reviews.
-  int calculateAverageRating(List<Review> reviews) => 0;
-
-  /// Creates a new seller object from a JSON object.
+  /// Creates a new SellerProfile object from a JSON object.
   SellerProfile.fromJson(Json json) : 
     id = json["id"],
+    name = json["name"],
     userID = json["userID"],
-    imagePath = json["imagePath"],
+    imageUrl = json["imageUrl"],
     bio = json["bio"],
-    contact = json["contact"];
+    contact = ContactInfo.fromJson(json["contact"]);
 
-  /// Convert this seller to its JSON representation
+  /// Convert this SellerProfile to its JSON representation
   Json toJson() => {
     "id": id,
+    "name": name,
     "userID": userID,
-    "imagePath": imagePath,
+    "imageUrl": imageUrl,
     "bio": bio,
-    "contact": contact,
+    "contact": contact.toJson(),
   };
 }
 
@@ -75,15 +73,34 @@ class ContactInfo {
   final String? twitterUsername;
 
   /// The seller's LinkedIn username, if provided.
-  final String? linkedinUsername;
+  final String? linkedInUsername;
 
   /// Creates contact info for a seller.
   const ContactInfo({
     required this.email,
-    this.phoneNumber,
-    this.tikTokUsername,
-    this.instagramHandle,
-    this.twitterUsername,
-    this.linkedinUsername,
+    required this.phoneNumber, 
+    required this.tikTokUsername,
+    required this.instagramHandle,
+    required this.twitterUsername,
+    required this.linkedInUsername,
   });
+
+  /// Creates a new ContactInfo object from a JSON object.
+  ContactInfo.fromJson(Json json) : 
+    email = json["email"],
+    phoneNumber = json["phoneNumber"], 
+    tikTokUsername = json["tikTokUsername"],
+    instagramHandle = json["instagramHandle"],
+    twitterUsername = json["twitterUsername"],
+    linkedInUsername = json["linkedInUsername"];
+
+  /// Convert this ContactInfo to its JSON representation
+  Json toJson() => {
+    "email": email,
+    "phoneNumber": phoneNumber, 
+    "tikTokUsername": tikTokUsername,
+    "instagramHandle": instagramHandle,
+    "twitterUsername": twitterUsername,
+    "linkedInUsername": linkedInUsername,
+  };
 }
