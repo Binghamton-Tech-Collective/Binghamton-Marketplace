@@ -1,16 +1,15 @@
+import "package:btc_market/src/models/view/sellerprofile.dart";
 import "package:btc_market/src/widgets/product.dart";
 import "package:flutter/material.dart";
-
-import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
-
-class ProfilePage extends ReactiveWidget<ProfileViewModel> {
+/// The profile page.
+class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   @override
-  ProfileViewModel createModel() => ProfileViewModel();
+  SellerProfileViewModel createModel() => SellerProfileViewModel();
 
   @override
-  Widget build(BuildContext context, ProfileViewModel model) => Scaffold(
+  Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
     body: Center(child: model.isLoading
       ? const CircularProgressIndicator()
       : CustomScrollView(
@@ -30,7 +29,7 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
                       color: const Color.fromARGB(255, 0, 65, 44),
                       alignment: const Alignment(0.75, 1),
                       child: Text(
-                        model.name,
+                        "Samuel Montes",
                         style: Theme.of(context).textTheme.headlineLarge
                         ?.copyWith(color: Colors.white),
                       ),

@@ -1,11 +1,11 @@
 import "../model.dart";
 
-class ProductPageViewModel extends ViewModel  {
-  //Product name
+/// The view model for the product page.
+class ProductViewModel extends ViewModel  {
+  /// Product name
   late String productName;
 
-  //The price
-  // ignore: public_member_api_docs
+  /// The price
   late double productPrice;
 
   @override
