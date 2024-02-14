@@ -5,7 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "BTC Market (Web)",
+      "name": "iPhone Simulator",
+      "request": "launch",
+      "type": "dart",
+      "args": ["-d", "Simulator"],
+    },
+    {
+      "name": "Web",
       "request": "launch",
       "type": "dart",
       "args": ["-d", "chrome"],

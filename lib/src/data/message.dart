@@ -1,5 +1,6 @@
-import "types.dart";
 import "package:meta/meta.dart";
+
+import "types.dart";
 
 /// A message, sent from a user to a seller or vice versa
 @immutable
