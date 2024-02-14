@@ -1,23 +1,26 @@
-import "json.dart";
+import "types.dart";
 
 /// A user of the app. Can be a customer or seller.
-class User {
+class UserProfile {
   /// The user's name.
   final String name;
   /// The user's ID.
-  final int userId;
+  final UserID id;
 
   /// Creates a new User object.
-  User({required this.name, required this.userId});
+  UserProfile({
+    required this.name, 
+    required this.id,
+  });
 
   /// Creates a new User object from a JSON object.
-  User.fromJson(Json json) : 
+  UserProfile.fromJson(Json json) : 
     name = json["name"],
-    userId = json["userId"];
+    id = json["id"];
 
   /// Convert this user to its JSON representation
   Json toJson() => {
     "name": name,
-    "userId": userId,
+    "id": id,
   };
 }

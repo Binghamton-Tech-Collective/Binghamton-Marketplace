@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458210387235",
+    "project_id": "btc-market-575d9",
+    "storage_bucket": "btc-market-575d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458210387235:android:eb2a786bd64acb5c8f9896",
+        "android_client_info": {
+          "package_name": "com.example.btc_market"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRBm2uVFlO4lxUYSAj7n4QxPTTEjRe8uM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

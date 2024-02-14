@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
-
+/// The profile page.
 class ProfilePage extends ReactiveWidget<ProfileViewModel> {
   @override
   ProfileViewModel createModel() => ProfileViewModel();
