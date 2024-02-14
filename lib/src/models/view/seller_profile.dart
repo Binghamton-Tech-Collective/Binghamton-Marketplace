@@ -1,6 +1,6 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
-import "package:btc_market/services.dart";
+// import "package:btc_market/services.dart";
 
 /// This view model includes the logic required for the SellerProfile view
 class SellerProfileViewModel extends ViewModel {
