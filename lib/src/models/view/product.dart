@@ -8,7 +8,7 @@ class ProductViewModel extends ViewModel {
   late final Product product;
 
   /// Stores the information about the Seller
-  late final SellerProfile profile;
+  late final SellerProfile sellerProfile;
 
   /// Storing the list of all reviews for this particular seller
   late final List<Review> reviews;
@@ -18,5 +18,39 @@ class ProductViewModel extends ViewModel {
 
   /// Returns the average rating of the Seller
 
-  double get averageRating => profile.calculateAverageRating();
+  double get averageRating => calculateAverageRating(reviews);
 }
+
+
+
+
+/**
+ * Reference Code
+ * class ProductViewModel {
+  late final Product product;
+  late final SellerProfile profile;
+  late final List<Review> reviews;
+  final ProductID? id;
+  
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  set isLoading(bool value) {
+    _isLoading = value;
+//     notifyListeners();
+  }
+  
+  ProductViewModel.fromProduct(this.product) : 
+    id = null;
+  
+  ProductViewModel.fromID(this.id);
+  
+  Future<void> init() async {
+    isLoading = true;
+    if (id != null) {
+      product = await getProduct(id);
+    }
+    profile = await getSellerProfile();
+    reviews = await ...
+    isLoading = false;
+  }
+ */
