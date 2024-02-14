@@ -76,4 +76,12 @@ class Database extends Service {
     final snapshot = await doc.get();
     return snapshot.data();
   }
+
+  /// Gets the product from the the given product ID
+  Future<Product?> getProduct(ProductID productID) async {
+    final doc = products.doc(productID);
+    final snapshot = await doc.get();
+    return snapshot.data();
+  }
+
 }
