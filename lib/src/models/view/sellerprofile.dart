@@ -39,7 +39,7 @@ class SellerProfileViewModel extends ViewModel {
   }
 
   /// Returns the link to the profile picture of the user.
-  String getImageURL() => profile.imagePath;
+  String getImageURL() => profile.imageUrl;
 
   /// Returns the name of the seller
   String get name => profile.name;

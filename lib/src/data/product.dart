@@ -30,7 +30,7 @@ class Product {
   final int quantity;
 
   /// A list of images to show in this product's page.
-  final List<String> imagePaths;
+  final List<String> imageUrls;
 
   /// Whether this product has been de-listed.
   ///
@@ -49,8 +49,39 @@ class Product {
     required this.description,
     required this.price,
     required this.quantity,
-    required this.imagePaths,
+    required this.imageUrls,
     required this.categories,
     this.delisted = false,
   });
+
+  /// Creates a new Product object from a JSON object.
+  Product.fromJson(Json json) : 
+    id = json["id"],
+    sellerID = json["sellerID"],
+    title = json["title"], 
+    description = json["description"], 
+    price = json["price"], 
+    quantity = json["quantity"], 
+    imageUrls = json["imageUrls"], 
+    categories = {
+      for (final categoryJson in json["categories"])
+        Category.fromJson(categoryJson),
+    },
+    delisted = json["delisted"];
+
+  /// Convert this Product to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "sellerID": sellerID,
+    "title": title, 
+    "description": description, 
+    "price": price, 
+    "quantity": quantity, 
+    "imageUrls": imageUrls, 
+    "categories": [
+      for (final category in categories)
+        category.toJson(),
+    ],
+    "delisted": delisted,
+  };
 }
