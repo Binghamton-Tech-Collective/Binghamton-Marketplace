@@ -26,9 +26,9 @@ class SellerProfileViewModel extends ViewModel {
   @override
   Future<void> init() async {
     isLoading = true;
-    profile = models.user.sellerProfile!;
-    productList = await services.database.getProductsBySellerID(profile.id);
-    categories = getCategories(productList);
+    // profile = models.user.sellerProfile!;
+    // productList = await services.database.getProductsBySellerID(profile.id);
+    // categories = getCategories(productList);
     isLoading = false;
   }
 
