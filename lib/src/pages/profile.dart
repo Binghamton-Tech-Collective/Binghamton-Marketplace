@@ -80,6 +80,7 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
         ),
         SliverToBoxAdapter(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("Seller Categories",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -106,23 +107,27 @@ class ProfilePage extends ReactiveWidget<ProfileViewModel> {
             margin: const EdgeInsets.all(15),
             color: Colors.white,
             height: 170,
-            child: Stack(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   "Listings",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                ListView.separated(
-                  itemBuilder: (_,i) => const SizedBox(
-                    width: 170,
-                    child: Placeholder(),
-                  ), 
-                  separatorBuilder: (BuildContext context, int i) => const SizedBox(
-                    width: 20,
-                  ), 
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
+                SizedBox(
+                  height: 100,
+                  child: ListView.separated(
+                    itemBuilder: (_,i) => const SizedBox(
+                      width: 170,
+                      child: Placeholder(),
+                    ), 
+                    separatorBuilder: (BuildContext context, int i) => const SizedBox(
+                      width: 20,
+                    ), 
+                    itemCount: 10,
+                    scrollDirection: Axis.horizontal,
                   ),
+                ),
               ],
             ),
           ),

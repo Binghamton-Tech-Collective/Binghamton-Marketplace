@@ -9,12 +9,12 @@ import "package:btc_market/models.dart";
 /// we set [isLoading] to true to signal that the UI should load something else in the meantime.
 class ProfileViewModel extends ViewModel {
   /// The profile of the currently signed-in user.
-  late final UserProfile profile;
+  late final UserProfile? profile;
   
   @override
   Future<void> init() async {
     isLoading = true;
-    profile = models.user.userProfile!;
+    profile = models.user.userProfile;
     isLoading = false;
   }
 }
