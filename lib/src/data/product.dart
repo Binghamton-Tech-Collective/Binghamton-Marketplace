@@ -13,8 +13,7 @@ class Product {
 
   /// The seller's unique Seller ID.
   final SellerID sellerID;
-
-  /// The title or name of the product.
+  /// The title or a name of the product.
   final String title;
 
   /// The product's description.
