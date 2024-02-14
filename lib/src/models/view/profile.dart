@@ -12,7 +12,6 @@ import "../model.dart";
 /// access the name from there. 
 class ProfileViewModel extends ViewModel {
 
-  // ignore: public_member_api_docs
   late String name;
   late String major;
   

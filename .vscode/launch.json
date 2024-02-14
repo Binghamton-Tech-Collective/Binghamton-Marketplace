@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "BTC Market (Web)",
+      "name": "Flutter (iPhone 15 Pro Max)",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "chrome"],
+      "args": ["-d", "Simulator"],
     },
   ]
 }

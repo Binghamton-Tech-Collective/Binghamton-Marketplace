@@ -5,6 +5,7 @@ class ProductPageViewModel extends ViewModel  {
   late String productName;
 
   //The price
+  // ignore: public_member_api_docs
   late double productPrice;
 
   @override
