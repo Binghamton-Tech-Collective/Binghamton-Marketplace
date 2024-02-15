@@ -2,19 +2,37 @@ import "package:btc_market/data.dart";
 
 import "../model.dart";
 
-/// A view model to store all the products on the products page.
 class ProductsViewModel extends ViewModel {
-  /// All the products.
-  final List<Product> products = [];
-  /// The hot or recently viewed products.
-  final List<Product> hotProducts = [];
-  /// The currently selected tags to filter on.
-  List<String> tags = [];
-
+  List<Product> get allProducts => [];
+  Set<Category> get categories => {};
+  List<Product> get productsToShow => [];
+  
   @override
   Future<void> init() async {
-    isLoading = true;
-    // load all the data from the database
-    isLoading = false;
+    
+  }
+
+  Future<void> search(String query) async {
+
+  }
+
+  Future<void> filterByRating(int numStars) async {
+
+  }
+
+  Future<void> sortByDate() async {
+
+  }
+
+  Future<void> sortByPrice({bool ascending = true}) async {
+
+  }
+
+  Future<void> toggleCategory(Category category) async {
+
+  }
+
+  void openProduct(Product product) {
+
   }
 }
