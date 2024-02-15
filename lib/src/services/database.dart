@@ -13,6 +13,24 @@ class Database extends Service {
     fromFirestore: (snapshot, _) => UserProfile.fromJson(snapshot.data()!),
     toFirestore: (user, _) => user.toJson(),
   );
+
+  /// A collection of [SellerProfile] objects.
+  CollectionReference<SellerProfile> get sellers => firestore.collection("sellers").withConverter<SellerProfile>(
+    fromFirestore: (snapshot, _) => SellerProfile.fromJson(snapshot.data()!),
+    toFirestore: (seller, _) => seller.toJson(),
+  );
+  
+  /// A collection of [Review] objects.
+  CollectionReference<Review> get reviews => firestore.collection("reviews").withConverter<Review>(
+    fromFirestore: (snapshot, _) => Review.fromJson(snapshot.data()!),
+    toFirestore: (review, _) => review.toJson(),
+  );
+
+  /// A collection of [Product] objects.
+  CollectionReference<Product> get products => firestore.collection("products").withConverter<Product>(
+    fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),
+    toFirestore: (product, _) => product.toJson(),
+  );
   
   @override
   Future<void> init() async { 
@@ -38,9 +56,24 @@ class Database extends Service {
     await doc.set(user);
   }
 
-  /// Gets a list of reviews for the seller with the given ID. 
-  Future<List<Review>> getReviewsBySellerID(SellerID id) async => [];
+  /// Gets a list of reviews for the seller with the given [sellerID]. 
+  Future<List<Review>> getReviewsBySellerID(SellerID sellerID) async => [
+    // make a for loop for all the snapshots in the query
+    for (final document in (await reviews.where("sellerID", isEqualTo: sellerID).get()).docs)    
+      // get the data out of the snapshot
+      document .data(),
+  ];
+
+    /// Gets a list of products listed by the seller with the given [sellerID]. 
+  Future<List<Product>> getProductsBySellerID(SellerID sellerID) async => [
+    for (final document in (await products.where("sellerID", isEqualTo: sellerID).get()).docs)
+      document.data(),
+  ];
 
   /// Gets the seller profile owned by the given user ID
-  Future<SellerProfile?> getSellerProfile(UserID userID) async => null;
+  Future<SellerProfile?> getSellerProfile(UserID userID) async {
+    final doc = sellers.doc(userID);
+    final snapshot = await doc.get();
+    return snapshot.data();
+  }
 }

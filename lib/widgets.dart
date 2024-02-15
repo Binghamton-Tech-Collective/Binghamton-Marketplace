@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 
 export "src/widgets/reactive_widget.dart";
+export "src/widgets/product.dart";
 
 /// Convenience functions on [BuildContext].
 extension BuildContextUtils on BuildContext {

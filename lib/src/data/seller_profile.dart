@@ -1,4 +1,3 @@
-import "review.dart";
 import "types.dart";
 
 /// Represents information about a seller.
@@ -6,6 +5,7 @@ import "types.dart";
 /// Every user has a user profile and an associated User ID. If a user wants to sell on the app,
 /// they can also create a seller profile with some basic information about themselves. Users can
 /// then view these profiles as well as the products and reviews associated with them.
+
 class SellerProfile {
   /// The seller's unique Seller ID.
   final SellerID id;
@@ -17,7 +17,7 @@ class SellerProfile {
   final UserID userID;
 
   /// The path to this seller's image.
-  final String imagePath;
+  final String imageUrl;
 
   /// The seller's biography or description.
   final String bio;
@@ -30,20 +30,29 @@ class SellerProfile {
     required this.id,
     required this.name,
     required this.userID,
-    required this.imagePath,
+    required this.imageUrl,
     required this.bio,
     required this.contact,
   });
 
-  /// Calculates the average rating out of all the seller's reviews.
-  double calculateAverageRating(List<Review> reviews) {
-    var sum = 0;
-    for (final review in reviews) {
-      sum += review.stars;
-    }
-    final average = sum / reviews.length;
-    return average;
-  }
+  /// Creates a new SellerProfile object from a JSON object.
+  SellerProfile.fromJson(Json json) : 
+    id = json["id"],
+    name = json["name"],
+    userID = json["userID"],
+    imageUrl = json["imageUrl"],
+    bio = json["bio"],
+    contact = ContactInfo.fromJson(json["contact"]);
+
+  /// Convert this SellerProfile to its JSON representation
+  Json toJson() => {
+    "id": id,
+    "name": name,
+    "userID": userID,
+    "imageUrl": imageUrl,
+    "bio": bio,
+    "contact": contact.toJson(),
+  };
 }
 
 /// Represents contact information for a seller.
@@ -64,15 +73,34 @@ class ContactInfo {
   final String? twitterUsername;
 
   /// The seller's LinkedIn username, if provided.
-  final String? linkedinUsername;
+  final String? linkedInUsername;
 
   /// Creates contact info for a seller.
   const ContactInfo({
     required this.email,
-    this.phoneNumber,
-    this.tikTokUsername,
-    this.instagramHandle,
-    this.twitterUsername,
-    this.linkedinUsername,
+    required this.phoneNumber, 
+    required this.tikTokUsername,
+    required this.instagramHandle,
+    required this.twitterUsername,
+    required this.linkedInUsername,
   });
+
+  /// Creates a new ContactInfo object from a JSON object.
+  ContactInfo.fromJson(Json json) : 
+    email = json["email"],
+    phoneNumber = json["phoneNumber"], 
+    tikTokUsername = json["tikTokUsername"],
+    instagramHandle = json["instagramHandle"],
+    twitterUsername = json["twitterUsername"],
+    linkedInUsername = json["linkedInUsername"];
+
+  /// Convert this ContactInfo to its JSON representation
+  Json toJson() => {
+    "email": email,
+    "phoneNumber": phoneNumber, 
+    "tikTokUsername": tikTokUsername,
+    "instagramHandle": instagramHandle,
+    "twitterUsername": twitterUsername,
+    "linkedInUsername": linkedInUsername,
+  };
 }

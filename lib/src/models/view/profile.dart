@@ -1,6 +1,5 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
-import "package:btc_market/services.dart";
 
 /// A view model for the profile page.
 /// 
@@ -9,32 +8,13 @@ import "package:btc_market/services.dart";
 /// all. You are not allowed to access them until they are given a concrete, non-null value, so
 /// we set [isLoading] to true to signal that the UI should load something else in the meantime.
 class ProfileViewModel extends ViewModel {
-  /// The number of likes the user has.
-  int numLikes = 0;
+  /// The profile of the currently signed-in user.
+  late final UserProfile? profile;
   
-  /// The currently-signed in user's profile.
-  UserProfile? get profile => models.user.userProfile;
-    
   @override
-  Future<void> init() async { }
-
-  /// Signs the user in and downloads their data. 
-  Future<void> signIn() async {
-    await models.user.signIn();
-    notifyListeners();
-  }
-
-  /// Signs the user out of the app and refreshes the page.
-  Future<void> signOut() async {
-    await models.user.signOut();
-    notifyListeners();
-  }
-
-  /// Adds one like to the user's like count.
-  Future<void> incrementLikes() async {
-    if (profile == null) return;
-    numLikes++;
-    await services.database.saveUserProfile(profile!);
-    notifyListeners();
+  Future<void> init() async {
+    isLoading = true;
+    profile = models.user.userProfile;
+    isLoading = false;
   }
 }
