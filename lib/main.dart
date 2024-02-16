@@ -5,6 +5,7 @@ import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   services.init();
   models.init();
   runApp(BtcMarket());

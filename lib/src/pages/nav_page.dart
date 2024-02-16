@@ -18,7 +18,7 @@ class NavPageState extends State<NavPage>{
     const Text("Message"),
     const Text("List Product"),
     ProfilePage(),
-    const Text("Notifications"),
+    const Text("Watchlist"),
   ];
 
 void _onItemTap(int index){
@@ -53,7 +53,7 @@ void _onItemTap(int index){
           ),
         NavigationDestination(
           icon: Icon(Icons.notifications),
-          label: "Notifications",
+          label: "Watchlist",
         ),
       ],
     ),

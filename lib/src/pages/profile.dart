@@ -75,7 +75,7 @@ class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                         ActionChip(
                           avatar: const Icon(Icons.phone),
                           shape: const StadiumBorder(),
-                          label: const SizedBox(),
+                          label: const Text("Call"),
                           onPressed: () {},
                         ),
                         const VerticalDivider(
@@ -115,24 +115,19 @@ class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                     child: SizedBox(
                       height: 125,
                       child: ListView.separated(
-                      itemBuilder: (_,i) => const CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 40,
-                        child: Column(
+                        itemBuilder: (_,i) => Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: Text("Test"),
-                              ),
+                          children: const [
+                            const CircleAvatar(backgroundColor: Colors.red, radius: 40),
+                            const SizedBox(height: 10),
+                            const Text("Test"),
                           ],
                         ),
-                      ), 
-                      separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                        separatorBuilder: (BuildContext context, int index) => const SizedBox(
                           width: 20,
-                      ), 
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
+                        ), 
+                        itemCount: 10,
+                        scrollDirection: Axis.horizontal,
                       ),
                     ), 
                   ), 
