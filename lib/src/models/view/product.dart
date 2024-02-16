@@ -25,7 +25,7 @@ class ProductViewModel extends ViewModel {
   @override
   Future<void> init() async {
     isLoading = true;
-    // this.product = getProduct(this.id);
+    // this.product = getProduct(this.id)
     // sellerProfile = await getSellerProfile(this.product.sellerID);
     // reviews = await getReviews(this.id);
     isLoading = false;
