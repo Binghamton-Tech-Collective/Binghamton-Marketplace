@@ -45,7 +45,7 @@ Product Description:The Binghamton Marketplace App (not the finalized app name) 
 
 ### Server
 
-- [Firebase console](https://console.firebase.google.com/project/btc-market-575d9/overview)
+<!-- - [Firebase console](https://console.firebase.google.com/project/btc-market-575d9/overview) -->
 - [Firebase docs](https://firebase.google.com/docs/build)
 
 <!-- A new Flutter project.
