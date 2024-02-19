@@ -19,14 +19,36 @@ Product Description:The Binghamton Marketplace App (not the finalized app name) 
 
 
 # For Developers
----
+
 ## Important Links
+
+### General
+
+- [Install Flutter](https://docs.flutter.dev/get-started/install)
+- [Dartpad](https://docs.flutter.dev/get-started/install)
+- [Github Repository](https://github.com/Binghamton-Tech-Collective/Binghamton-Marketplace)
+- [Dart/Flutter Packages](https://pub.dev/)
+- [Flutter/Dart API](https://api.flutter.dev/)
+- [Install Flutter](https://docs.flutter.dev/get-started/install)
 - [Install Flutter](https://docs.flutter.dev/get-started/install)
 
+### Frontend
 
+- [Material Design](https://m3.material.io/)
+- [Flutter's widget catalog](https://docs.flutter.dev/ui/widgets)
+- [Flutter layout docs](https://docs.flutter.dev/ui/layout) --read the other pages on the sidebar!
 
+### Backend
 
-A new Flutter project.
+- [Flutter's State Management](https://docs.flutter.dev/data-and-backend/state-mgmt/intro)
+- [MVVM and MVC](https://builtin.com/software-engineering-perspectives/mvvm-architecture)
+
+### Server
+
+- [Firebase console](https://console.firebase.google.com/project/btc-market-575d9/overview)
+- [Firebase docs](https://firebase.google.com/docs/build)
+
+<!-- A new Flutter project.
 
 
 
@@ -41,4 +63,4 @@ A few resources to get you started if this is your first Flutter project:
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+samples, guidance on mobile development, and a full API reference. -->
