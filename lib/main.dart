@@ -14,8 +14,8 @@ void main() {
 /// Our main app. Remember, everything is a widget!
 class BtcMarket extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    home: NavPage(),
+  Widget build(BuildContext context) => MaterialApp.router(
+    routerConfig: router,
     theme: ThemeData(useMaterial3: true),
   );
 }
