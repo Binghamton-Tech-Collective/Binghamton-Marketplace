@@ -1,6 +1,23 @@
 import "category.dart";
 import "types.dart";
 
+/// The condition of a product.
+enum ProductCondition {
+  /// A new product, unopened.
+  new_("New"), 
+  /// A used product that is in new condition.
+  usedLikeNew("Used (like new)"),
+  /// A used product that is in fair condition.
+  usedFair("Used (fair)"),
+  /// A used product that is in poor condition.
+  usedPoor("Used (poor)");
+
+  /// The string to display in the UI.
+  final String displayName;
+  /// A const constructor.
+  const ProductCondition(this.displayName);
+}
+
 /// A product being sold on the Marketplace.
 ///
 /// A product can have multiple physical copies available for sale. When it is sold, it is not
@@ -40,6 +57,12 @@ class Product {
   /// profile, which is why they might wish to simply delist it instead.
   final bool delisted;
 
+  /// The condition of the product.
+  final ProductCondition condition;
+
+  /// When this product was listed.
+  final DateTime dateListed;
+
   /// A constructor to create a new product.
   const Product({
     required this.id,
@@ -50,6 +73,8 @@ class Product {
     required this.quantity,
     required this.imageUrls,
     required this.categories,
+    required this.condition,
+    required this.dateListed,
     this.delisted = false,
   });
 
@@ -66,6 +91,8 @@ class Product {
       for (final categoryJson in json["categories"])
         Category.fromJson(categoryJson),
     },
+    condition = ProductCondition.values.byName(json["condition"]),
+    dateListed = DateTime.parse(json["dateListed"]),
     delisted = json["delisted"];
 
   /// Convert this Product to its JSON representation
@@ -81,6 +108,8 @@ class Product {
       for (final category in categories)
         category.toJson(),
     ],
+    "condition": condition.name,
+    "dateListed": dateListed.toIso8601String(),
     "delisted": delisted,
   };
 }
