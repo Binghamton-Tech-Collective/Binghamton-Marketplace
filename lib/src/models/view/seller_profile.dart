@@ -1,15 +1,15 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/services.dart";
 // import "package:btc_market/services.dart";
 
 /// This view model includes the logic required for the SellerProfile view
 class SellerProfileViewModel extends ViewModel {
   /// Populates the Categories set by iterating the products
   static Set<Category> getCategories(List<Product> products) => {
-    for (final product in products)
-      ...product.categories,
-  };
-  
+        for (final product in products) ...product.categories,
+      };
+
   // The profile variable will hold the object of Seller Profile
   /// The profile will get the seller profile info from model of seller profile.
   late final SellerProfile profile;
@@ -26,9 +26,9 @@ class SellerProfileViewModel extends ViewModel {
   @override
   Future<void> init() async {
     isLoading = true;
-    // profile = models.user.sellerProfile!;
-    // productList = await services.database.getProductsBySellerID(profile.id);
-    // categories = getCategories(productList);
+    profile = models.user.sellerProfile!;
+    productList = await services.database.getProductsBySellerID(profile.id);
+    categories = getCategories(productList);
     isLoading = false;
   }
 
