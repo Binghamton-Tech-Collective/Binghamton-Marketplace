@@ -1,4 +1,5 @@
 import "package:btc_market/data.dart";
+import "package:btc_market/services.dart";
 import "../model.dart";
 
 /// The view model for the product page.
@@ -25,9 +26,23 @@ class ProductViewModel extends ViewModel {
   @override
   Future<void> init() async {
     isLoading = true;
-    // this.product = getProduct(this.id)
-    // sellerProfile = await getSellerProfile(this.product.sellerID);
-    // reviews = await getReviews(this.id);
+    // services.database.get
+    final tempProduct = await services.database.getProduct(id);
+    if (tempProduct == null) {
+      errorText = "Could not find product! $id";
+      isLoading = false;
+      return;
+    }
+    product = tempProduct;
+    final tempSellerProfile =
+        await services.database.getSellerProfile(product.sellerID);
+    if (tempSellerProfile == null) {
+      errorText = "Could not find sellerID! $product.sellerId";
+      isLoading = false;
+      return;
+    }
+    sellerProfile = tempSellerProfile;
+    // reviews = await getReviewsByProductID(this.id);
     isLoading = false;
   }
 }
