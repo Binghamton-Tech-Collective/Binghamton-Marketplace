@@ -42,7 +42,7 @@ class ProductViewModel extends ViewModel {
       return;
     }
     sellerProfile = tempSellerProfile;
-    // reviews = await getReviewsByProductID(this.id);
+    reviews = await services.database.getReviewsByProductID(id);
     isLoading = false;
   }
 }
