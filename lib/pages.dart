@@ -1,3 +1,4 @@
+import "package:btc_market/src/pages/product.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -11,6 +12,7 @@ class Routes {
   static const products = "/products";
   /// The profile route.
   static const profile = "/profile";
+
   /// The notifications route.
   static const notifications = "/notifications";
   /// The messages route.
@@ -43,6 +45,12 @@ final GoRouter router = GoRouter(
             path: Routes.profile,
             name: Routes.profile,
             builder: (context, state) => ProfilePage(),
+            routes: [
+              GoRoute(
+                path: ":id",
+                builder: (context, state) => const ProductPage("id"),
+              ),
+            ],
           ),
         ],),
         StatefulShellBranch(routes: [

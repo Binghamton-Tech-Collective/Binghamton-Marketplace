@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
 
 /// A widget to show off a product.
 class ProductWidget extends StatelessWidget{
@@ -14,7 +15,8 @@ class ProductWidget extends StatelessWidget{
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            debugPrint("Card Tapped");
+            //debugPrint("Card Tapped");
+            GoRouter.of(context).go("/profile/id");
           },
           child: const SizedBox(
             width: 170,
