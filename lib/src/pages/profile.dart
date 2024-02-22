@@ -115,12 +115,12 @@ class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                     child: SizedBox(
                       height: 125,
                       child: ListView.separated(
-                        itemBuilder: (_,i) => Column(
+                        itemBuilder: (_,i) => const Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            const CircleAvatar(backgroundColor: Colors.red, radius: 40),
-                            const SizedBox(height: 10),
-                            const Text("Test"),
+                          children:  [
+                             CircleAvatar(backgroundColor: Colors.red, radius: 40),
+                             SizedBox(height: 10),
+                             Text("Test"),
                           ],
                         ),
                         separatorBuilder: (BuildContext context, int index) => const SizedBox(

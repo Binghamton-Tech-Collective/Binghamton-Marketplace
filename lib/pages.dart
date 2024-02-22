@@ -13,7 +13,6 @@ class Routes {
   /// The profile route.
   static const profile = "/profile";
 
-  static const productPage = ":id";
   /// The notifications route.
   static const notifications = "/notifications";
   /// The messages route.
@@ -48,8 +47,7 @@ final GoRouter router = GoRouter(
             builder: (context, state) => ProfilePage(),
             routes: [
               GoRoute(
-                path: Routes.productPage,
-                name: Routes.productPage,
+                path: ":id",
                 builder: (context, state) => const ProductPage("id"),
               ),
             ],

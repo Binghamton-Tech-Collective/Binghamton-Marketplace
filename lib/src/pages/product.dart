@@ -4,11 +4,12 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
-import "package:flutter_social_button/flutter_social_button.dart";
 
 /// The products page.
 class ProductPage extends ReactiveWidget<ProductViewModel>{
+  /// ID of product
   final ProductID id;
+  /// const constructor
   const ProductPage(this.id);
   
   @override
