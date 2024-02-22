@@ -22,15 +22,51 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
       ),
       backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
     ),
-    body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    body: ListView(
         children: [
-          Container(
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: SizedBox(
+                width: double.infinity,
+                height: 200,
+                child: Placeholder(),
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text("Item Name",style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Spacer(),
+                    Text("Condition: "),
+                    Text("Brand New", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Text(r"$00.00",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                SizedBox(height: 5),
+                Text("Description:"),
+                Text("Handmade Crochet Mini potted sunflower", style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                Text("Category:"),
+                Chip(
+                  label: Text("Clothing", style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.grey,
+                  shape: StadiumBorder(),
+                ),
+              ],
+            ),
+          ), 
+                    Container(
             padding: const EdgeInsets.all(15),
             child: Row(
               children: [
                 const CircleAvatar(
-                  radius: 35,
+                  radius: 20,
                   backgroundImage: NetworkImage("https://media.licdn.com/dms/image/D4E03AQH1m-DsPxkXkQ/profile-displayphoto-shrink_800_800/0/1663694541598?e=2147483647&v=beta&t=jbiXqn5fY7dJUCgtYZ9a_KZrYWRmCHzg0YkJBdGoURg"),
                 ),
                 const SizedBox(width: 5),
@@ -52,79 +88,30 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
                     ),
                   ],
                 ),
-                const SizedBox(width: 30),
-                const SizedBox(
-                    child: Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: null,
-                          child: Row(
-                            children: [
-                              Icon(Icons.message),
-                              Text("Message"),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: null,
-                              iconSize: 30,
-                              disabledColor: Colors.black,
-                              icon: Icon(Icons.facebook),
-                            ),
-                            IconButton(
-                              onPressed: null,
-                              iconSize: 20,
-                              disabledColor: Colors.black,
-                              icon: Icon(Icons.snapchat),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                const Spacer(),
+                const IconButton(
+                  onPressed: null,
+                  iconSize: 30,
+                  disabledColor: Colors.black,
+                  icon: Icon(Icons.facebook),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  iconSize: 20,
+                  disabledColor: Colors.black,
+                  icon: const Icon(Icons.snapchat_outlined),
                 ),
               ],
             ),
           ),
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(15),
-              child: SizedBox(
-                width: 170,
-                height: 130,
-                child: Placeholder(),
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child:
+              ElevatedButton(
+              onPressed: () {}, 
+              style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
+              child: const Text("Contact Seller", style: TextStyle(color: Colors.white)),
               ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Item Name",style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-                Text("Price of item:"),
-                Text(r"$00.00",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-                SizedBox(height: 8),
-                Text("Condition:"),
-                Text("Brand New", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
-                Text("Description:"),
-                Text("Handmade Crochet Mini potted sunflower", style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
-                Text("Category:"),
-                Chip(
-                  label: Text("Clothing", style: TextStyle(color: Colors.white)),
-                  backgroundColor: Colors.grey,
-                  shape: StadiumBorder(),
-                ),
-              ],
-            ),
-          ), 
-          ElevatedButton(
-            onPressed: () {}, 
-            child: const Text("Contact Seller"),
           ),
         ],
       ),
