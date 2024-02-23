@@ -7,7 +7,7 @@ import "service.dart";
 /// Helpful functions to call on a [CollectionReference].
 extension CollectionUtils<T> on CollectionReference<T> {
   /// A wrapper around [withConverter].
-  Collection<R, I> convert<R, I extends String>({
+  Collection<R, I> convert<R, I>({
     required R Function(Json) fromJson,
     required Json Function(R) toJson,
   }) => Collection<R, I>(withConverter(
@@ -17,13 +17,13 @@ extension CollectionUtils<T> on CollectionReference<T> {
 }
 
 /// A safe view over [CollectionReference] that only allows the correct ID type.
-extension type Collection<T, I extends String>(CollectionReference<T> collection) implements CollectionReference<T> {
+extension type Collection<T, I>(CollectionReference<T> collection) implements CollectionReference<T> {
   /// Checks whether a document ID exists in this collection.
   Future<bool> contains(I id) async => (await doc(id).get()).exists;
 
   /// Gets the document with the given ID, or a new ID if needed.
   @redeclare
-  DocumentReference<T> doc([I? path]) => collection.doc(path);
+  DocumentReference<T> doc([I? path]) => collection.doc(path as String?);
 }
 
 /// Helpful functions to call on a [DocumentReference].
