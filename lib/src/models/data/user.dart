@@ -32,7 +32,8 @@ class UserModel extends DataModel {
       );
       await services.database.saveUserProfile(userProfile!);
     }
-    sellerProfile = await services.database.getSellerProfile(userProfile!.id);
+    // Need to change this to an attribute on the user's profile.
+    sellerProfile = await services.database.getSellerProfile(userProfile!.id as SellerID);
     notifyListeners();
   }
 
