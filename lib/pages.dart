@@ -1,10 +1,12 @@
-import "package:btc_market/src/pages/product.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
+
+import "package:btc_market/data.dart";
 
 import "src/pages/notifications.dart";
 import "src/pages/profile.dart";
 import "src/pages/shell.dart";
+import "src/pages/product.dart";
 
 /// All the routes in the app.
 class Routes {
@@ -48,7 +50,7 @@ final GoRouter router = GoRouter(
             routes: [
               GoRoute(
                 path: ":id",
-                builder: (context, state) => const ProductPage("id"),
+                builder: (context, state) => const ProductPage("id" as ProductID),
               ),
             ],
           ),
