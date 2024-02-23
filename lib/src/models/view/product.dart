@@ -26,7 +26,7 @@ class ProductViewModel extends ViewModel {
   @override
   Future<void> init() async {
     isLoading = true;
-    // services.database.get
+    print("Getting product: $id");
     final tempProduct = await services.database.getProduct(id);
     if (tempProduct == null) {
       errorText = "Could not find product! $id";
@@ -34,8 +34,7 @@ class ProductViewModel extends ViewModel {
       return;
     }
     product = tempProduct;
-    final tempSellerProfile =
-        await services.database.getSellerProfile(product.sellerID);
+    final tempSellerProfile = await services.database.getSellerProfile(product.sellerID);
     if (tempSellerProfile == null) {
       errorText = "Could not find sellerID! $product.sellerId";
       isLoading = false;

@@ -31,6 +31,12 @@ final GoRouter router = GoRouter(
               path: Routes.products,
               name: Routes.products,
               builder: (context, state) => NotificationsPage(),
+              routes: [
+                GoRoute(
+                  path: ":id",
+                  builder: (context, state) => ProductPage(state.pathParameters["id"]!),
+                ),
+              ],
             ),
         ],),
         StatefulShellBranch(routes: [
@@ -45,12 +51,6 @@ final GoRouter router = GoRouter(
             path: Routes.profile,
             name: Routes.profile,
             builder: (context, state) => ProfilePage(),
-            routes: [
-              GoRoute(
-                path: ":id",
-                builder: (context, state) => const ProductPage("id"),
-              ),
-            ],
           ),
         ],),
         StatefulShellBranch(routes: [

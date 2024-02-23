@@ -16,7 +16,7 @@ class ProductWidget extends StatelessWidget{
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
             //debugPrint("Card Tapped");
-            GoRouter.of(context).go("/profile/id");
+            GoRouter.of(context).push("/products/QnYb1Mz5eZV9jMQlQh4i");
           },
           child: const SizedBox(
             width: 170,

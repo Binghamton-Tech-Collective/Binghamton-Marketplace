@@ -23,98 +23,124 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
       ),
       backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
     ),
-    body: ListView(
-        children: [
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(5),
-              child: SizedBox(
-                width: double.infinity,
-                height: 200,
-                child: Placeholder(),
+    body: model.isLoading 
+      ? const Center(child: CircularProgressIndicator())
+      : model.errorText != null 
+        ? Center(child: Text(model.errorText!))
+        : ListView(
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Wrap(
+                    children: [
+                      for(final image in model.product.imageUrls)
+                        SizedBox(
+                          width: double.infinity,
+                          height: 200,
+                          child: Image.network(image),
+                        )
+                    ],
+                  ),
               ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(model.product.title,style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      Spacer(),
+                      Text("Condition: "),
+                      Text("Brand New", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                 Row(
                   children: [
-                    Text("Item Name",style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    Spacer(),
-                    Text("Condition: "),
-                    Text("Brand New", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-                Text(r"$00.00",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-                SizedBox(height: 5),
-                Text("Description:"),
-                Text("Handmade Crochet Mini potted sunflower", style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
-                Text("Category:"),
-                Chip(
-                  label: Text("Clothing", style: TextStyle(color: Colors.white)),
-                  backgroundColor: Colors.grey,
-                  shape: StadiumBorder(),
-                ),
-              ],
-            ),
-          ), 
-                    Container(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage("https://media.licdn.com/dms/image/D4E03AQH1m-DsPxkXkQ/profile-displayphoto-shrink_800_800/0/1663694541598?e=2147483647&v=beta&t=jbiXqn5fY7dJUCgtYZ9a_KZrYWRmCHzg0YkJBdGoURg"),
-                ),
-                const SizedBox(width: 5),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Samuel Montes"),
-                    Row(
-                      children: [const Text("18 sales | ", style: TextStyle(fontSize: 10),),
-                      RatingBarIndicator(
-                        rating: 2.5,
-                        itemSize: 10,
-                        itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                        ),
-                      ],
+                    Text("\$${model.product.price}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                    const Spacer(),
+                    if (model.averageRating != null) RatingBarIndicator(
+                      rating: model.averageRating as double, 
+                      itemSize: 20,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
                     ),
                   ],
-                ),
-                const Spacer(),
-                const IconButton(
-                  onPressed: null,
-                  iconSize: 30,
-                  disabledColor: Colors.black,
-                  icon: Icon(Icons.facebook),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  iconSize: 20,
-                  disabledColor: Colors.black,
-                  icon: const Icon(Icons.snapchat_outlined),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child:
-              ElevatedButton(
-              onPressed: () {}, 
-              style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
-              child: const Text("Contact Seller", style: TextStyle(color: Colors.white)),
+                 ),
+                  SizedBox(height: 5),
+                  Text("Description:"),
+                  Text(model.product.description, style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  Text("Category:"),
+                  Wrap(children: [
+                    for (final category in model.product.categories) ...[
+                      Chip(
+                      label: Text(category.title, style: TextStyle(color: Colors.white)),
+                      backgroundColor: Colors.grey,
+                      shape: StadiumBorder(),
+                    ),  
+                    const SizedBox(width: 5),
+                    ],
+                  ],),
+                ],
               ),
-          ),
-        ],
-      ),
-    );
+            ), 
+            Container(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(model.sellerProfile.imageUrl),
+                  ),
+                  const SizedBox(width: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                       Text("${model.sellerProfile.name}"),
+                      Row(
+                        children: [ RatingBarIndicator(
+                          rating: 2.5,
+                          itemSize: 15,
+                          itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  const IconButton(
+                    onPressed: null,
+                    iconSize: 30,
+                    disabledColor: Colors.black,
+                    icon: Icon(Icons.facebook),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    iconSize: 20,
+                    disabledColor: Colors.black,
+                    icon: const Icon(Icons.snapchat_outlined),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child:
+                ElevatedButton(
+                onPressed: () {}, 
+                style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
+                child: const Text("Contact Seller", style: TextStyle(color: Colors.white)),
+                ),
+            ),
+          ],
+        ),
+      );
 }
