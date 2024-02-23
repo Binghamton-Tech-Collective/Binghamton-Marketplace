@@ -36,6 +36,7 @@ linter:
     # Rules NOT in package:very_good_analysis
     prefer_double_quotes: true
     prefer_expression_function_bodies: true
+    annotate_redeclares: true
 
     # Rules to be disabled from package:very_good_analysis
     prefer_single_quotes: false  # prefer_double_quotes
