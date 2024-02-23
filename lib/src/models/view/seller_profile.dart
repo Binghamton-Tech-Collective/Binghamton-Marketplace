@@ -7,8 +7,8 @@ import "package:btc_market/services.dart";
 class SellerProfileViewModel extends ViewModel {
   /// Populates the Categories set by iterating the products
   static Set<Category> getCategories(List<Product> products) => {
-        for (final product in products) ...product.categories,
-      };
+    for (final product in products) ...product.categories,
+  };
 
   // The profile variable will hold the object of Seller Profile
   /// The profile will get the seller profile info from model of seller profile.
