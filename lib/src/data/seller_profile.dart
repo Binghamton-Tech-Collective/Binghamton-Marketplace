@@ -27,13 +27,13 @@ class SellerProfile {
 
   /// Creates a seller's profile.
   const SellerProfile({
-    required String email,
+    required this.id,
     required this.name,
     required this.userID,
     required this.imageUrl,
     required this.bio,
     required this.contact,
-  }) : id = email;
+  });
 
   /// Creates a new SellerProfile object from a JSON object.
   SellerProfile.fromJson(Json json) : 

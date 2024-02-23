@@ -17,13 +17,14 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   final twitterController = TextEditingController();
   final linkedinController = TextEditingController();
 
+  SellerID get sellerID => "";
   String get email => "";
   UserID get userID => "";
   String get imageUrl => "";
 
   @override
   SellerProfile build() => SellerProfile(
-    email: email,
+    id: sellerID,
     userID: userID,
     name: nameController.text,
     bio: bioController.text,

@@ -24,6 +24,9 @@ extension type Collection<T, I>(CollectionReference<T> collection) implements Co
   /// Gets the document with the given ID, or a new ID if needed.
   @redeclare
   DocumentReference<T> doc([I? path]) => collection.doc(path as String?);
+
+  /// Gets a new ID for this collection.
+  I get newID => doc().id as I;
 }
 
 /// Helpful functions to call on a [DocumentReference].
