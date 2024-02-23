@@ -17,9 +17,9 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   final twitterController = TextEditingController();
   final linkedinController = TextEditingController();
 
-  SellerID get sellerID => "";
+  SellerID get sellerID => "" as SellerID;
   String get email => "";
-  UserID get userID => "";
+  UserID get userID => "" as UserID;
   String get imageUrl => "";
 
   @override
