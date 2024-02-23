@@ -23,12 +23,12 @@ class UserModel extends DataModel {
   Future<void> signIn() async {
     final uid = await services.auth.signIn();
     if (uid == null) return;
-    userProfile = await services.database.getUserProfile(uid);
+    userProfile = await services.database.getUserProfile(uid as UserID);
     if (userProfile == null) {
       // create and save a new user profile
       userProfile = UserProfile.newProfile(
         name: services.auth.user!.displayName!,
-        id: services.auth.user!.uid,
+        id: services.auth.user!.uid as UserID,
       );
       await services.database.saveUserProfile(userProfile!);
     }
