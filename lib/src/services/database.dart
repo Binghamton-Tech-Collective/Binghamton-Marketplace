@@ -1,21 +1,29 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:btc_market/data.dart";
+import "package:meta/meta.dart";
 
 import "service.dart";
   
 /// Helpful functions to call on a [CollectionReference].
 extension CollectionUtils<T> on CollectionReference<T> {
   /// A wrapper around [withConverter].
-  CollectionReference<R> convert<R>({
+  Collection<R, I> convert<R, I>({
     required R Function(Json) fromJson,
     required Json Function(R) toJson,
-  }) => withConverter(
+  }) => Collection<R, I>(withConverter(
     fromFirestore: (snapshot, options) => fromJson(snapshot.data()!), 
     toFirestore: (item, options) => toJson(item),
-  );
+  ),);
+}
 
+/// A safe view over [CollectionReference] that only allows the correct ID type.
+extension type Collection<T, I>(CollectionReference<T> collection) implements CollectionReference<T> {
   /// Checks whether a document ID exists in this collection.
-  Future<bool> contains(String id) async => (await doc(id).get()).exists;
+  Future<bool> contains(I id) async => (await doc(id).get()).exists;
+
+  /// Gets the document with the given ID, or a new ID if needed.
+  @redeclare
+  DocumentReference<T> doc([I? path]) => collection.doc(path as String?);
 }
 
 /// Helpful functions to call on a [DocumentReference].
@@ -39,25 +47,25 @@ class Database extends Service {
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
   /// A collection of [UserProfile] objects.
-  CollectionReference<UserProfile> get users => firestore.collection("users").convert<UserProfile>(
+  Collection<UserProfile, UserID> get users => firestore.collection("users").convert(
     fromJson: UserProfile.fromJson,
     toJson: (user) => user.toJson(),
   );
 
   /// A collection of [SellerProfile] objects.
-  CollectionReference<SellerProfile> get sellers => firestore.collection("sellers").convert<SellerProfile>(
+  Collection<SellerProfile, SellerID> get sellers => firestore.collection("sellers").convert(
     fromJson: SellerProfile.fromJson,
     toJson: (seller) => seller.toJson(),
   );
   
   /// A collection of [Review] objects.
-  CollectionReference<Review> get reviews => firestore.collection("reviews").convert<Review>(
+  Collection<Review, ReviewID> get reviews => firestore.collection("reviews").convert(
     fromJson: Review.fromJson,
     toJson: (review) => review.toJson(),
   );
 
   /// A collection of [Product] objects.
-  CollectionReference<Product> get products => firestore.collection("products").convert<Product>(
+  Collection<Product, ProductID> get products => firestore.collection("products").convert(
     fromJson: Product.fromJson,
     toJson: (product) => product.toJson(),
   );
@@ -83,7 +91,7 @@ class Database extends Service {
     products.where("sellerID", isEqualTo: sellerID).getAll();
 
   /// Gets the seller profile owned by the given user ID
-  Future<SellerProfile?> getSellerProfile(UserID userID) => sellers.doc(userID).getData();
+  Future<SellerProfile?> getSellerProfile(SellerID sellerID) => sellers.doc(sellerID).getData();
 
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) => products.doc(productID).getData();
