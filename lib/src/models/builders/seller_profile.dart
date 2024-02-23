@@ -19,12 +19,11 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   String get email => "";
   UserID get userID => "";
-  String get imageUrl => "";  // <-- We need to discuss this
-  SellerID get sellerID => "";
+  String get imageUrl => "";
 
   @override
-  SellerProfile get value => SellerProfile(
-    id: sellerID,
+  SellerProfile build() => SellerProfile(
+    email: email,
     userID: userID,
     name: nameController.text,
     bio: bioController.text,
@@ -44,7 +43,16 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     // Check more conditions here. Be careful to only check what's required
     && bioController.text.isNotEmpty;
 
+  @override
+  Future<void> init() async {
+    // Load the user's email and name here 
+  }
+
+  Future<void> uploadImage() async {
+    // Pick a file, upload to Firebase Storage, then set [imageUrl]
+  }
+
   Future<void> save() async {
-    // ...
+    // Save the result of build() to Cloud Firestore.
   }
 }
