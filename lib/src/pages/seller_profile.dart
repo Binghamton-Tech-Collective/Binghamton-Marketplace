@@ -4,7 +4,7 @@ import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
 
 /// The profile page.
-class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
+class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   @override
   SellerProfileViewModel createModel() => SellerProfileViewModel();
 

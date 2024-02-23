@@ -4,7 +4,7 @@ import "package:go_router/go_router.dart";
 import "src/pages/editors/seller_profile.dart";
 
 import "src/pages/notifications.dart";
-import "src/pages/profile.dart";
+import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 
 /// All the routes in the app.
@@ -12,21 +12,21 @@ class Routes {
   /// The products route.
   static const products = "/products";
   /// The profile route.
-  static const sellerProfile = "/seller-profile";
-  /// The notifications route.
-  static const notifications = "/notifications";
+  static const sellers = "/sellers";
   /// The messages route.
   static const messages = "/messages";
-  /// The route to create a new seller profile.
-  /// 
-  /// This isn't the actual route used in the URL, just in the code.
-  static const createSellerProfile = "_create_seller_profile";
+  /// The user's profile route.
+  static const profile = "/my-profile";
 }
 
 /// The [GoRouter] that controls the routing logic for the app.
 final GoRouter router = GoRouter(
   initialLocation: Routes.products,
   routes: [
+    GoRoute(
+      path: "/",
+      redirect: (context, state) => Routes.products,
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => ShellPage(shell),
       branches: [
@@ -46,27 +46,32 @@ final GoRouter router = GoRouter(
         ],),
         StatefulShellBranch(routes: [
           GoRoute(
-            path: Routes.sellerProfile,
-            name: Routes.sellerProfile,
-            builder: (context, state) => ProfilePage(),
+            path: Routes.sellers,
+            name: Routes.sellers,
+            builder: (context, state) => const Placeholder(),
             routes: [
               GoRoute(
                 path: "create",
-                name: Routes.createSellerProfile,
                 builder: (context, state) => SellerProfileEditor(),
               ),
-              // Uncomment this to enable users to edit their profile
-              // GoRoute(
-              //   path: ":id",
-              //   builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"]!),
-              // ),
+              GoRoute(
+                path: ":id",
+                builder: (context, state) => SellerProfilePage(/* id: state.pathParameters["id"]! */),
+                // Uncomment this to allow users to edit their profile
+                // routes: [
+                //   GoRoute(
+                //     path: "edit",
+                //     builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"]),
+                //   ),
+                // ]
+              ),
             ],
           ),
         ],),
         StatefulShellBranch(routes: [
           GoRoute(
-            path: Routes.notifications,
-            name: Routes.notifications,
+            path: Routes.profile,
+            name: Routes.profile,
             builder: (context, state) => const Placeholder(),
           ),
         ],),
