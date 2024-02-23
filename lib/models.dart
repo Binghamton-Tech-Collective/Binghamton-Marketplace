@@ -1,6 +1,8 @@
 export "src/models/model.dart";
 export "src/models/data/user.dart";
 
+export "src/models/builders/seller_profile.dart";
+
 export "src/models/view/profile.dart";
 export "src/models/view/product.dart";
 export "src/models/view/notifications.dart";
