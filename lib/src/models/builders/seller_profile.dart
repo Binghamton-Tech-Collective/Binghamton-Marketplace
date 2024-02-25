@@ -1,7 +1,7 @@
+import "package:btc_market/models.dart";
+import "package:btc_market/services.dart";
 import "package:flutter/material.dart";
-
 import "package:btc_market/data.dart";
-
 import "../model.dart";
 
 extension on String {
@@ -10,6 +10,9 @@ extension on String {
 
 /// Class to create view model for sign up page for seller
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
+  /// Fetching the User from the model
+  final user = models.user;
+
   /// Name of the seller
   final nameController = TextEditingController();
 
@@ -32,10 +35,13 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   final linkedinController = TextEditingController();
 
   /// Fetching the seller ID.
-  SellerID get sellerID => "" as SellerID;
+  late final SellerID sellerID;
+  // SellerID get sellerID => "" as SellerID;
+
+  late final String email;
 
   /// Fetching the email address of the seller
-  String get email => "";
+  // String get email => user.userProfile;
 
   /// Fetching User ID of the seller
   UserID get userID => "" as UserID;
@@ -68,27 +74,26 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
       sellerID.toString().isNotEmpty &&
       userID.toString().isNotEmpty &&
       imageUrl.isNotEmpty &&
-      hasValidEmail(email);
+      email.isNotEmpty;
 
   @override
   Future<void> init() async {
     // Load the user's email and name here
+    sellerID = services.database.sellers.newID;
   }
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
     // Pick a file, upload to Firebase Storage, then set [imageUrl]
+    /**
+     * Package: file_picker => This function should be called here
+     * The functions will be in cloud_storage.dart and will be asynchronous
+     * Have a look at PlatformFile datatype
+     */
   }
 
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
     // Save the result of build() to Cloud Firestore.
-  }
-
-  /// Checking if the format of the email is correct and has a binghamton.edu domain
-
-  bool hasValidEmail(String email) {
-    final emailRegex = RegExp(r"^[\w-\.]+@binghamton\.edu$");
-    return emailRegex.hasMatch(email);
   }
 }
