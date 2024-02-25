@@ -2,7 +2,6 @@ import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 import "package:flutter/material.dart";
 import "package:btc_market/data.dart";
-import "../model.dart";
 
 extension on String {
   String? get nullIfEmpty => isEmpty ? null : this;
@@ -36,18 +35,30 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Fetching the seller ID.
   late final SellerID sellerID;
-  // SellerID get sellerID => "" as SellerID;
 
-  late final String email;
+  /// Email address of the seller
+  late final String sellerEmail;
+
+  /// userID of seller
+  late final UserID userIDofSeller;
 
   /// Fetching the email address of the seller
-  // String get email => user.userProfile;
+  String get email => services.auth.user!.email!;
 
   /// Fetching User ID of the seller
-  UserID get userID => "" as UserID;
+  UserID get userID => user.userProfile!.id;
 
   /// URL of the profile image
   String get imageUrl => "";
+
+  @override
+  Future<void> init() async {
+    isLoading = true;
+    sellerEmail = email;
+    sellerID = services.database.sellers.newID;
+    userIDofSeller = userID;
+    isLoading = false;
+  }
 
   /// Function to build the profile from the input provided by the user
   @override
@@ -75,12 +86,6 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
       userID.toString().isNotEmpty &&
       imageUrl.isNotEmpty &&
       email.isNotEmpty;
-
-  @override
-  Future<void> init() async {
-    // Load the user's email and name here
-    sellerID = services.database.sellers.newID;
-  }
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
