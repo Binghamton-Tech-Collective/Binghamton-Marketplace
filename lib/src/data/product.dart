@@ -84,9 +84,9 @@ class Product {
     sellerID = json["sellerID"],
     title = json["title"], 
     description = json["description"], 
-    price = json["price"], 
+    price = json["price"].toDouble(), 
     quantity = json["quantity"], 
-    imageUrls = json["imageUrls"], 
+    imageUrls = List<String>.from(json["imageUrls"]), 
     categories = {
       for (final categoryJson in json["categories"])
         Category.fromJson(categoryJson),

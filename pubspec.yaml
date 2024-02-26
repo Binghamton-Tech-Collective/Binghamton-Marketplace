@@ -15,13 +15,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_social_button: any
 
-  http: ^1.1.0
-  cloud_firestore: ^4.12.2
-  firebase_core: ^2.21.0
-  firebase_auth: ^4.12.1
-  meta: ^1.10.0
+  http: ^1.2.0
+  cloud_firestore: ^4.15.5
+  firebase_core: ^2.25.0
+  firebase_auth: ^4.17.5
+  meta: ^1.11.0
   go_router: ^13.2.0
+  flutter_rating_bar: ^4.0.1
+  # flutter_social_button: ^1.1.4+1
 
 dev_dependencies:
   flutter_test:
