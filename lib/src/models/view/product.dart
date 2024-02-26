@@ -1,20 +1,56 @@
+import "package:btc_market/data.dart";
+import "package:btc_market/services.dart";
 import "../model.dart";
 
 /// The view model for the product page.
-class ProductViewModel extends ViewModel  {
-  /// Product name
-  late String productName;
+class ProductViewModel extends ViewModel {
+  /// The product being shown on the page.
+  late Product product;
 
-  /// The price
-  late double productPrice;
+  /// The profile of this product's seller.
+  late SellerProfile sellerProfile;
+
+  /// The list of all reviews for this product.
+  late List<Review> reviews;
+
+  /// The list of all reviews for this product's seller.
+  late List<Review> sellerReviews;
+
+  /// The id of this product.
+  ProductID id;
+
+  /// Creates a new view model based on the given product.
+  ProductViewModel(this.id);
+
+  /// The average rating of the product, based on [reviews].
+  int? get averageRating =>
+    reviews.isEmpty ? null : calculateAverageRating(reviews);
+
+  /// The average rating for the seller, based on [sellerReviews].
+  int? get sellerRating => 
+    sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
   @override
   Future<void> init() async {
+    errorText = null;
     isLoading = true;
-    await Future<void>.delayed(const Duration(seconds: 2));
-    productName = "Product Title";
-    productPrice = 49.99;
-    notifyListeners();
+    final tempProduct = await services.database.getProduct(id);
+    if (tempProduct == null) {
+      errorText = "Could not find product! $id";
+      isLoading = false;
+      return;
+    }
+    product = tempProduct;
+    final tempSellerProfile = await services.database.getSellerProfile(product.sellerID);
+    if (tempSellerProfile == null) {
+      errorText = "Could not find sellerID! $product.sellerId";
+      isLoading = false;
+      return;
+    }
+    sellerProfile = tempSellerProfile;
+    reviews = await services.database.getReviewsByProductID(id);
+    sellerReviews = await services.database.getReviewsBySellerID(product.sellerID);
     isLoading = false;
+    notifyListeners();
   }
 }

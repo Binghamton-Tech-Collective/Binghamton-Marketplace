@@ -82,13 +82,17 @@ class Database extends Service {
   /// Saves the user's profile to their user document (in [users]).
   Future<void> saveUserProfile(UserProfile user) => users.doc(user.id).set(user);
 
-  /// Gets all the reviews about the given seller.
+  /// Gets all the reviews of the seller with the given [sellerID]
   Future<List<Review>> getReviewsBySellerID(SellerID sellerID) => 
     reviews.where("sellerID", isEqualTo: sellerID).getAll();
 
     /// Gets a list of products listed by the seller with the given [sellerID]. 
   Future<List<Product>> getProductsBySellerID(SellerID sellerID) => 
     products.where("sellerID", isEqualTo: sellerID).getAll();
+
+  /// Gets all the reviews about the given product with the given [productID]
+  Future<List<Review>> getReviewsByProductID(ProductID productID) => 
+    reviews.where("productID", isEqualTo: productID).getAll();
 
   /// Gets the seller profile owned by the given user ID
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) => sellers.doc(sellerID).getData();
