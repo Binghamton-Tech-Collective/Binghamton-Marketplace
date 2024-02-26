@@ -5,21 +5,21 @@ import "../model.dart";
 /// The view model for the product page.
 class ProductViewModel extends ViewModel {
   /// The product being shown on the page.
-  late final Product product;
-
-  /// The id of this product.
-  final ProductID id;
+  late Product product;
 
   /// The profile of this product's seller.
-  late final SellerProfile sellerProfile;
+  late SellerProfile sellerProfile;
 
   /// The list of all reviews for this product.
-  late final List<Review> reviews;
+  late List<Review> reviews;
 
   /// The list of all reviews for this product's seller.
-  late final List<Review> sellerReviews;
+  late List<Review> sellerReviews;
 
-  /// Constructor to initialize the product
+  /// The id of this product.
+  ProductID id;
+
+  /// Creates a new view model based on the given product.
   ProductViewModel(this.id);
 
   /// The average rating of the product, based on [reviews].
@@ -32,6 +32,7 @@ class ProductViewModel extends ViewModel {
 
   @override
   Future<void> init() async {
+    errorText = null;
     isLoading = true;
     final tempProduct = await services.database.getProduct(id);
     if (tempProduct == null) {
@@ -50,5 +51,6 @@ class ProductViewModel extends ViewModel {
     reviews = await services.database.getReviewsByProductID(id);
     sellerReviews = await services.database.getReviewsBySellerID(product.sellerID);
     isLoading = false;
+    notifyListeners();
   }
 }

@@ -16,6 +16,15 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
   ProductViewModel createModel() => ProductViewModel(id);
 
   @override
+  void didUpdateWidget(ProductPage oldWidget, ProductViewModel model) {
+    if (oldWidget.id != id) {
+      model.id = id;
+      model.init();
+    }
+    super.didUpdateWidget(oldWidget, model);
+  }
+
+  @override
   Widget build(BuildContext context, ProductViewModel model) => Scaffold(
     appBar: AppBar(
       backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
