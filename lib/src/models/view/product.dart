@@ -4,29 +4,35 @@ import "../model.dart";
 
 /// The view model for the product page.
 class ProductViewModel extends ViewModel {
-  /// Product object
+  /// The product being shown on the page.
   late final Product product;
 
-  /// The id of the product
+  /// The id of this product.
   final ProductID id;
 
-  /// Stores the information about the Seller
+  /// The profile of this product's seller.
   late final SellerProfile sellerProfile;
 
-  /// Storing the list of all reviews for this particular seller
+  /// The list of all reviews for this product.
   late final List<Review> reviews;
+
+  /// The list of all reviews for this product's seller.
+  late final List<Review> sellerReviews;
 
   /// Constructor to initialize the product
   ProductViewModel(this.id);
 
-  /// Calculates the average rating of the product
+  /// The average rating of the product, based on [reviews].
   int? get averageRating =>
-      reviews.isEmpty ? null : calculateAverageRating(reviews);
+    reviews.isEmpty ? null : calculateAverageRating(reviews);
+
+  /// The average rating for the seller, based on [sellerReviews].
+  int? get sellerRating => 
+    sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
   @override
   Future<void> init() async {
     isLoading = true;
-    print("Getting product: $id");
     final tempProduct = await services.database.getProduct(id);
     if (tempProduct == null) {
       errorText = "Could not find product! $id";
@@ -42,6 +48,7 @@ class ProductViewModel extends ViewModel {
     }
     sellerProfile = tempSellerProfile;
     reviews = await services.database.getReviewsByProductID(id);
+    sellerReviews = await services.database.getReviewsBySellerID(product.sellerID);
     isLoading = false;
   }
 }

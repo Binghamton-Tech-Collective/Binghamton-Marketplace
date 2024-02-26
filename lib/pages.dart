@@ -29,17 +29,17 @@ final GoRouter router = GoRouter(
       builder: (context, state, shell) => ShellPage(shell),
       branches: [
         StatefulShellBranch(routes: [
-            GoRoute(
-              path: Routes.products,
-              name: Routes.products,
-              builder: (context, state) => NotificationsPage(),
-              routes: [
-                GoRoute(
-                  path: ":id",
-                  builder: (context, state) => ProductPage(state.pathParameters["id"]!),
-                ),
-              ],
-            ),
+          GoRoute(
+            path: Routes.products,
+            name: Routes.products,
+            builder: (context, state) => NotificationsPage(),
+            routes: [
+              GoRoute(
+                path: ":id",
+                builder: (context, state) => ProductPage(state.pathParameters["id"] as ProductID),
+              ),
+            ],
+          ),
         ],),
         StatefulShellBranch(routes: [
           GoRoute(

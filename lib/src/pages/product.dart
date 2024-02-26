@@ -18,129 +18,90 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
   @override
   Widget build(BuildContext context, ProductViewModel model) => Scaffold(
     appBar: AppBar(
+      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
       title: const Text("Item Details",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
       ),
-      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
     ),
-    body: model.isLoading 
-      ? const Center(child: CircularProgressIndicator())
-      : model.errorText != null 
-        ? Center(child: Text(model.errorText!))
-        : ListView(
+    body: Center(child: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 500),
+      child: Column(children: [
+        Expanded(child: ListView(
           children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Wrap(
-                    children: [
-                      for(final image in model.product.imageUrls)
-                        SizedBox(
-                          width: double.infinity,
-                          height: 200,
-                          child: Image.network(image),
-                        )
-                    ],
-                  ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(model.product.title,style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      Spacer(),
-                      Text("Condition: "),
-                      Text("Brand New", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                 Row(
-                  children: [
-                    Text("\$${model.product.price}",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-                    const Spacer(),
-                    if (model.averageRating != null) RatingBarIndicator(
-                      rating: model.averageRating as double, 
-                      itemSize: 20,
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ],
-                 ),
-                  SizedBox(height: 5),
-                  Text("Description:"),
-                  Text(model.product.description, style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8),
-                  Text("Category:"),
-                  Wrap(children: [
-                    for (final category in model.product.categories) ...[
-                      Chip(
-                      label: Text(category.title, style: TextStyle(color: Colors.white)),
-                      backgroundColor: Colors.grey,
-                      shape: StadiumBorder(),
-                    ),  
-                    const SizedBox(width: 5),
-                    ],
-                  ],),
-                ],
-              ),
-            ), 
-            Container(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(model.sellerProfile.imageUrl),
-                  ),
-                  const SizedBox(width: 5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                       Text("${model.sellerProfile.name}"),
-                      Row(
-                        children: [ RatingBarIndicator(
-                          rating: 2.5,
-                          itemSize: 15,
-                          itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  const IconButton(
-                    onPressed: null,
-                    iconSize: 30,
-                    disabledColor: Colors.black,
-                    icon: Icon(Icons.facebook),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    iconSize: 20,
-                    disabledColor: Colors.black,
-                    icon: const Icon(Icons.snapchat_outlined),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child:
-                ElevatedButton(
-                onPressed: () {}, 
-                style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
-                child: const Text("Contact Seller", style: TextStyle(color: Colors.white)),
+            // ---------- Image gallery ----------
+            SizedBox(height: 400, child: GalleryWidget(
+              children: [
+                for (final imageUrl in model.product.imageUrls) Image.network(
+                  imageUrl, 
+                  fit: BoxFit.cover, 
                 ),
+              ],
+            ),),
+            
+            // ---------- Name, price, and condition ----------
+            const SizedBox(height: 24),
+            Text(model.product.title, style: context.textTheme.headlineLarge),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Text("\$${model.product.price}", style: context.textTheme.titleLarge),
+                const Spacer(),
+                Text("Condition: ${model.product.condition.displayName}", style: context.textTheme.titleMedium),
+              ],
+            ),
+            const SizedBox(height: 8),
+            if (model.averageRating != null) Row(children: [
+              Text("User rating: ", style: context.textTheme.bodyLarge), 
+              const SizedBox(width: 8),
+              RatingBarIndicator(
+                rating: model.averageRating! as double, 
+                itemSize: 20,
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+              ),
+            ],),
+            
+            // ---------- Description ----------
+            const SizedBox(height: 8),
+            Text("Description", style: context.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(model.product.description, style: context.textTheme.bodyLarge),
+            
+            // ---------- Categories ----------
+            const SizedBox(height: 12),
+            Text("Categories", style: context.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Wrap(children: [
+              for (final category in model.product.categories) ...[
+                Chip(
+                  label: Text(category.title),
+                  labelStyle: const TextStyle(color: Colors.white),
+                  backgroundColor: Colors.grey,
+                  shape: const StadiumBorder(),
+                ),
+                const SizedBox(width: 8),
+              ],
+            ],),
+
+            // ---------- Seller Profile ----------
+            const SizedBox(height: 12),
+            Text("Sold by", style: context.textTheme.titleLarge),
+            SellerProfileWidget(
+              profile: model.sellerProfile, 
+              averageRating: model.sellerRating as double?,
             ),
           ],
-        ),
-      );
+        ),),
+        const SizedBox(height: 8),
+        SizedBox(width: double.infinity, height: 48, child: ElevatedButton(
+          onPressed: () {}, 
+          style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
+          child: const Text("Contact Seller", style: TextStyle(color: Colors.white)),
+        ),),
+        const SizedBox(height: 8),
+      ],),
+    ),),
+  );
 }
