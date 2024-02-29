@@ -1,11 +1,15 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
-import "src/pages/editors/seller_profile.dart";
+
+import "package:btc_market/data.dart";
 
 import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
+import "src/pages/product.dart";
+
+import "src/pages/editors/seller_profile.dart";
 
 /// All the routes in the app.
 class Routes {
@@ -35,6 +39,12 @@ final GoRouter router = GoRouter(
             path: Routes.products,
             name: Routes.products,
             builder: (context, state) => NotificationsPage(),
+            routes: [
+              GoRoute(
+                path: ":id",
+                builder: (context, state) => ProductPage(state.pathParameters["id"] as ProductID),
+              ),
+            ],
           ),
         ],),
         StatefulShellBranch(routes: [
