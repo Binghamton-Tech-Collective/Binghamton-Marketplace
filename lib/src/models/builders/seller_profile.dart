@@ -49,7 +49,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   UserID get userID => user.userProfile!.id;
 
   /// URL of the profile image
-  String get imageUrl => "";
+  String? imageUrl;
 
   @override
   Future<void> init() async {
@@ -66,7 +66,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
         id: sellerID,
         name: nameController.text,
         userID: userID,
-        imageUrl: imageUrl,
+        imageUrl: imageUrl!,
         bio: bioController.text,
         contact: ContactInfo(
           email: email,
@@ -84,7 +84,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
       bioController.text.isNotEmpty &&
       sellerID.toString().isNotEmpty &&
       userID.toString().isNotEmpty &&
-      imageUrl.isNotEmpty &&
+      imageUrl != null &&
       email.isNotEmpty;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
@@ -95,6 +95,15 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
      * The functions will be in cloud_storage.dart and will be asynchronous
      * Have a look at PlatformFile datatype
      */
+
+    // TODO(harshvaghanii): uncomment the below code once you have the firebase functions ready, https://URL-to-issue.
+
+    // final file = await services.cloud_storage.pickFile();
+    // if (file == null) return;
+    // final bytes = file.bytes!;
+    // imageUrl = await services.cloud_storage
+    //     .uploadFile(bytes, "sellers/$sellerID/avatar");
+    // notifyListeners();
   }
 
   /// Saving the profile to Cloud Firestore
