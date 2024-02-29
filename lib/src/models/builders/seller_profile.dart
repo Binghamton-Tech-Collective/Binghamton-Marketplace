@@ -9,9 +9,6 @@ extension on String {
 
 /// Class to create view model for sign up page for seller
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
-  /// Fetching the User from the model
-  final user = models.user;
-
   /// Name of the seller
   final nameController = TextEditingController();
 
@@ -36,17 +33,11 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Fetching the seller ID.
   late final SellerID sellerID;
 
-  /// Email address of the seller
-  late final String sellerEmail;
-
-  /// userID of seller
-  late final UserID userIDofSeller;
-
   /// Fetching the email address of the seller
   String get email => services.auth.user!.email!;
 
   /// Fetching User ID of the seller
-  UserID get userID => user.userProfile!.id;
+  late final UserID userID;
 
   /// URL of the profile image
   String? imageUrl;
@@ -54,9 +45,8 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   @override
   Future<void> init() async {
     isLoading = true;
-    sellerEmail = email;
     sellerID = services.database.sellers.newID;
-    userIDofSeller = userID;
+    userID = models.user.userProfile!.id;
     isLoading = false;
   }
 
@@ -109,5 +99,10 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
     // Save the result of build() to Cloud Firestore.
+    isLoading = true;
+    final profile = build();
+    await services.database.saveSellerProfile(profile);
+    isLoading = false;
+    notifyListeners();
   }
 }
