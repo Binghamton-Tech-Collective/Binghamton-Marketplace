@@ -1,3 +1,4 @@
+import "package:btc_market/src/pages/create_seller.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -34,7 +35,7 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: Routes.products,
             name: Routes.products,
-            builder: (context, state) => NotificationsPage(),
+            builder: (context, state) => CreateSellerPage(),
           ),
         ],),
         StatefulShellBranch(routes: [
