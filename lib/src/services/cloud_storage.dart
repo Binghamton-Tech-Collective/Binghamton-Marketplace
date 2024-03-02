@@ -3,7 +3,6 @@ import "dart:typed_data";
 import "service.dart";
 import "package:file_picker/file_picker.dart";
 import "package:firebase_storage/firebase_storage.dart";
-import "../models/model.dart";
 
 /// A service to use CRUD operations on Google Cloud Storage for Firebase.
 class CloudStorageService extends Service {
