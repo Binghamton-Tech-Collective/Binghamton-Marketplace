@@ -13,11 +13,14 @@ class CloudStorageService extends Service {
   Future<void> uploadFile({required File file, required String path}) async {}
 }
 
+/// Pick the file that the user uploads and track if the user cancelled the upload or sucessfully uploaded the file.
+
 Future<PlatformFile?> pickFile() async {
   // Call `FilePicker.platform.pickFiles()`.
   // See: https://pub.dev/documentation/file_picker/latest/file_picker/FilePicker/pickFiles.html
-  
 }
+
+/// Upload the file to firebase storage
 
 Future<String> uploadFile(Uint8List data, String path) async {
   // Make a Reference to the file at path
