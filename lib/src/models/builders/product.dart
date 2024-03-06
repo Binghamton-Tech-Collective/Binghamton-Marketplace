@@ -1,94 +1,107 @@
-// import "package:btc_market/models.dart";
-// import "package:btc_market/services.dart";
-// import "package:flutter/material.dart";
-// import "package:btc_market/data.dart";
+import "package:btc_market/models.dart";
+import "package:btc_market/services.dart";
+import "package:flutter/material.dart";
+import "package:btc_market/data.dart";
 
-// extension on String {
-//   String? get nullIfEmpty => isEmpty ? null : this;
-// }
+/// Class to create view model for sign up page for seller
+class ProductBuilder extends BuilderModel<Product> {
+  /// Unique product ID of the product
+  late final ProductID productID;
 
-// /// Class to create view model for sign up page for seller
-// class ProductBuilder extends BuilderModel<Product> {
-//   late final ProductID productID;
-//   late final UserID userID;
-//   final titleController = TextEditingController();
-//   final descriptionController = TextEditingController();
-//   final priceController = TextEditingController();
-//   late final Set<Category> categories;
-//   final quantityController = TextEditingController();
-//   List<String>? imageUrls;
-//   late final ProductCondition condition;
-//   late final DateTime dateListed;
+  /// Title controller of the product
+  final titleController = TextEditingController();
 
-//   /// Fetching the seller ID.
-//   late final SellerID sellerID;
+  /// Description controller of the product
+  final descriptionController = TextEditingController();
 
-//   /// Fetching the email address of the seller
-//   String get email => services.auth.user!.email!;
+  /// Price controller of the product
+  final priceController = TextEditingController();
 
-//   /// URL of the profile image
-//   String? imageUrl;
+  /// Categories that the product belongs to
+  late final Set<Category> categories;
 
-//   @override
-//   Future<void> init() async {
-//     isLoading = true;
-//     sellerID = services.database.sellers.newID;
-//     productID = services.database.products.;
-//     userID = models.user.userProfile!.id;
-//     isLoading = false;
-//   }
+  /// Quantity controller of the product
+  final quantityController = TextEditingController();
 
-//   /// Function to build the profile from the input provided by the user
-//   @override
-//   SellerProfile build() => SellerProfile(
-//         id: sellerID,
-//         name: nameController.text,
-//         userID: userID,
-//         imageUrl: imageUrl!,
-//         bio: bioController.text,
-//         contact: ContactInfo(
-//           email: email,
-//           phoneNumber: phoneNumberController.text.nullIfEmpty,
-//           tikTokUsername: tikTokController.text.nullIfEmpty,
-//           instagramHandle: instagramController.text.nullIfEmpty,
-//           twitterUsername: twitterController.text.nullIfEmpty,
-//           linkedInUsername: linkedinController.text.nullIfEmpty,
-//         ),
-//       );
+  /// List of URL's of the images for the product
+  List<String>? imageUrls;
 
-//   @override
-//   bool get isReady =>
-//       nameController.text.isNotEmpty &&
-//       bioController.text.isNotEmpty &&
-//       sellerID.toString().isNotEmpty &&
-//       userID.toString().isNotEmpty &&
-//       imageUrl != null &&
-//       email.isNotEmpty;
+  /// Condition of the product
+  late final ProductCondition condition;
 
-//   /// Upload the image provided by the user and set the imageURL to the link obtained
-//   Future<void> uploadImage() async {
-//     // Pick a file, upload to Firebase Storage, then set [imageUrl]
-//     /**
-//      * Package: file_picker => This function should be called here
-//      * The functions will be in cloud_storage.dart and will be asynchronous
-//      * Have a look at PlatformFile datatype
-//      */
+  /// Date and time the product was added
+  late final DateTime dateListed;
 
-//     // final file = await services.cloud_storage.pickFile();
-//     // if (file == null) return;
-//     // final bytes = file.bytes!;
-//     // imageUrl = await services.cloud_storage
-//     //     .uploadFile(bytes, "sellers/$sellerID/avatar");
-//     // notifyListeners();
-//   }
+  /// Seller ID of the seller adding products
+  late final SellerID sellerID;
 
-//   /// Saving the profile to Cloud Firestore
-//   Future<void> save() async {
-//     // Save the result of build() to Cloud Firestore.
-//     isLoading = true;
-//     final profile = build();
-//     await services.database.saveSellerProfile(profile);
-//     isLoading = false;
-//     notifyListeners();
-//   }
-// }
+  /// To add the selected category to the set
+
+  void setCategorySelected(
+      {required Category category, required bool selected}) {
+    if (selected) {
+      categories.add(category);
+    } else {
+      categories.remove(category);
+    }
+  }
+
+  /// Setting the condition of the product
+
+  set condition(ProductCondition condition) {
+    this.condition = condition;
+  }
+
+  @override
+  Future<void> init() async {
+    isLoading = true;
+    sellerID = models.user.sellerProfile!.id;
+    productID = services.database.products.newID;
+    isLoading = false;
+  }
+
+  /// Function to build the profile from the input provided by the user
+  @override
+  Product build() => Product(
+        id: productID,
+        sellerID: sellerID,
+        title: titleController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        quantity: int.parse(priceController.text),
+        imageUrls: imageUrls!,
+        categories: categories,
+        condition: condition,
+        dateListed: DateTime.now(),
+      );
+
+  @override
+  bool get isReady =>
+      titleController.text.isNotEmpty &&
+      descriptionController.text.isNotEmpty &&
+      priceController.text.isNotEmpty &&
+      quantityController.text.isNotEmpty &&
+      categories.isNotEmpty &&
+      imageUrls!.isNotEmpty &&
+      condition.toString().isNotEmpty &&
+      sellerID.toString().isNotEmpty;
+
+  /// Upload the image provided by the user and set the imageURL to the link obtained
+  Future<void> uploadImages() async {
+    // Pick a file, upload to Firebase Storage, then set [imageUrl]
+    /**
+     * Package: file_picker => This function should be called here
+     * The functions will be in cloud_storage.dart and will be asynchronous
+     * Have a look at PlatformFile datatype
+     */
+  }
+
+  /// Saving the profile to Cloud Firestore
+  Future<void> save() async {
+    isLoading = true;
+    final product = build();
+    await services.database.saveProduct(product);
+    isLoading = false;
+    notifyListeners();
+  }
+}
