@@ -99,7 +99,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
             child: ElevatedButton(
               // TODO: Check if we can get rid of this using standard themes
               style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
-              onPressed: model.save,
+              onPressed: model.isReady ? model.save : null,
               child: const Text("Submit", style: TextStyle(color: Colors.white)),
             ),                  
           ),
@@ -111,6 +111,8 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
               child: const Text("Cancel", style: TextStyle(color: Colors.black)),
             ),
           ),
+          if (model.errorText != null)
+            Text(model.errorText!, style: const TextStyle(color: Colors.red)),
         ],
       ),
     ),
