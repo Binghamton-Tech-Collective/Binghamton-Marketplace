@@ -70,13 +70,11 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   );
 
   @override
-  bool get isReady =>
-    nameController.text.isNotEmpty &&
-    bioController.text.isNotEmpty &&
-    sellerID.toString().isNotEmpty &&
-    userID.toString().isNotEmpty &&
-    imageUrl != null &&
-    email.isNotEmpty;
+  bool get isReady => nameController.text.isNotEmpty
+    && bioController.text.isNotEmpty
+    && sellerID.toString().isNotEmpty
+    && userID.toString().isNotEmpty
+    && imageUrl != null;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
@@ -98,7 +96,11 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   Future<void> save() async {
     isLoading = true;
     final profile = build();
-    await services.database.saveSellerProfile(profile);
+    try { 
+      await services.database.saveSellerProfile(profile);
+    } catch (error) { 
+      errorText = "Error uploading profile:\n$error";
+    }
     isLoading = false;
     notifyListeners();
   }
