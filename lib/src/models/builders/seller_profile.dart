@@ -1,7 +1,8 @@
+import "package:flutter/material.dart";
+
+import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
-import "package:flutter/material.dart";
-import "package:btc_market/data.dart";
 
 extension on String {
   String? get nullIfEmpty => isEmpty ? null : this;
