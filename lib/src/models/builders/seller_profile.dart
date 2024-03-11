@@ -30,7 +30,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Linkedin username of the seller
   final linkedinController = TextEditingController();
 
-  /// Fetching the seller ID.
+  /// The seller's ID.
   late final SellerID sellerID;
 
   /// Fetching the email address of the seller
@@ -53,52 +53,48 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Function to build the profile from the input provided by the user
   @override
   SellerProfile build() => SellerProfile(
-        id: sellerID,
-        name: nameController.text,
-        userID: userID,
-        imageUrl: imageUrl!,
-        bio: bioController.text,
-        contact: ContactInfo(
-          email: email,
-          phoneNumber: phoneNumberController.text.nullIfEmpty,
-          tikTokUsername: tikTokController.text.nullIfEmpty,
-          instagramHandle: instagramController.text.nullIfEmpty,
-          twitterUsername: twitterController.text.nullIfEmpty,
-          linkedInUsername: linkedinController.text.nullIfEmpty,
-        ),
-      );
+    id: sellerID,
+    name: nameController.text,
+    userID: userID,
+    imageUrl: imageUrl!,
+    bio: bioController.text,
+    contact: ContactInfo(
+      email: email,
+      phoneNumber: phoneNumberController.text.nullIfEmpty,
+      tikTokUsername: tikTokController.text.nullIfEmpty,
+      instagramHandle: instagramController.text.nullIfEmpty,
+      twitterUsername: twitterController.text.nullIfEmpty,
+      linkedInUsername: linkedinController.text.nullIfEmpty,
+    ),
+  );
 
   @override
   bool get isReady =>
-      nameController.text.isNotEmpty &&
-      bioController.text.isNotEmpty &&
-      sellerID.toString().isNotEmpty &&
-      userID.toString().isNotEmpty &&
-      imageUrl != null &&
-      email.isNotEmpty;
+    nameController.text.isNotEmpty &&
+    bioController.text.isNotEmpty &&
+    sellerID.toString().isNotEmpty &&
+    userID.toString().isNotEmpty &&
+    imageUrl != null &&
+    email.isNotEmpty;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
-    // Pick a file, upload to Firebase Storage, then set [imageUrl]
-    /**
-     * Package: file_picker => This function should be called here
-     * The functions will be in cloud_storage.dart and will be asynchronous
-     * Have a look at PlatformFile datatype
-     */
-
-    // TODO(harshvaghanii): uncomment the below code once you have the firebase functions ready, https://URL-to-issue.
-
-    // final file = await services.cloud_storage.pickFile();
-    // if (file == null) return;
-    // final bytes = file.bytes!;
-    // imageUrl = await services.cloud_storage
-    //     .uploadFile(bytes, "sellers/$sellerID/avatar");
-    // notifyListeners();
+    final file = await services.cloudStorage.pickFile();
+    if (file == null) return;
+    final bytes = file.bytes!;
+    final path = services.cloudStorage.getSellerProfilePath(sellerID);
+    final url = await services.cloudStorage.uploadFile(bytes, path);
+    if (url == null) {
+      errorText = "Could not upload image";
+      notifyListeners();
+      return;
+    }
+    imageUrl = url;
+    notifyListeners();
   }
 
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
-    // Save the result of build() to Cloud Firestore.
     isLoading = true;
     final profile = build();
     await services.database.saveSellerProfile(profile);
