@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
 
-/// The notifications page.
+/// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
   @override
   ProductBuilder createModel() => ProductBuilder();
