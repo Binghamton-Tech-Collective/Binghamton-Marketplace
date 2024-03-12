@@ -4,6 +4,7 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 
 import "src/pages/notifications.dart";
+import "package:btc_market/src/pages/editors/product.dart";
 import "src/pages/profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
@@ -12,11 +13,13 @@ import "src/pages/product.dart";
 class Routes {
   /// The products route.
   static const products = "/products";
+
   /// The profile route.
   static const profile = "/profile";
 
   /// The notifications route.
   static const notifications = "/notifications";
+
   /// The messages route.
   static const messages = "/messages";
 }
@@ -28,40 +31,72 @@ final GoRouter router = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => ShellPage(shell),
       branches: [
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.products,
-            name: Routes.products,
-            builder: (context, state) => NotificationsPage(),
-            routes: [
-              GoRoute(
-                path: ":id",
-                builder: (context, state) => ProductPage(state.pathParameters["id"] as ProductID),
-              ),
-            ],
-          ),
-        ],),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.messages,
-            name: Routes.messages,
-            builder: (context, state) => const Placeholder(),
-          ),
-        ],),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.profile,
-            name: Routes.profile,
-            builder: (context, state) => ProfilePage(),
-          ),
-        ],),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.notifications,
-            name: Routes.notifications,
-            builder: (context, state) => const Placeholder(),
-          ),
-        ],),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.products,
+              name: Routes.products,
+              builder: (context, state) => NotificationsPage(),
+              routes: [
+                GoRoute(
+                  path: ":id",
+                  builder: (context, state) =>
+                      ProductPage(state.pathParameters["id"] as ProductID),
+                  // Uncomment this to allow users to edit their profile
+                  // routes: [
+                  //   GoRoute(
+                  //     path: "edit",
+                  //     builder: (context, state) =>
+                  //         ProductEditor(id: state.pathParameters["id"]),
+                  //   ),
+                  // ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.messages,
+              name: Routes.messages,
+              builder: (context, state) => const Placeholder(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.profile,
+              name: Routes.profile,
+              builder: (context, state) => ProfilePage(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.notifications,
+              name: Routes.notifications,
+              builder: (context, state) => const Placeholder(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.products,
+              name: Routes.products,
+              builder: (context, state) => const Placeholder(),
+              routes: [
+                GoRoute(
+                  path: "create",
+                  builder: (context, state) => ProductEditor(),
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     ),
   ],
