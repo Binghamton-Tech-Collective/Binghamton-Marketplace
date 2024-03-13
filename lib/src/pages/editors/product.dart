@@ -2,22 +2,33 @@ import "package:flutter/material.dart";
 
 import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/src/data/product.dart";
 
 /// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
   @override
   ProductBuilder createModel() => ProductBuilder();
-  
+
+  /// Condition of the product
+  String? condition;
+
+  /// String equivalent of ProductCondition to set the condition of the product using the view model
+  List<String> listItems = [
+    "New",
+    "Used like new",
+    "Used Fair",
+    "Used Poor",
+  ];
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-          title: const Text(),
+          title: const Text("List Item"),
         ),
         body: Center(
           child: ListView(
-            children: const [
-              Padding(
+            children: [
+              const Padding(
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
@@ -35,7 +46,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ],
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
@@ -48,6 +59,78 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: "Item Price",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Condition of the Product",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: DropdownButton(
+                        items: listItems
+                            .map(
+                              (valueItem) => DropdownMenuItem(
+                                value: valueItem,
+                                child: Text(valueItem),
+                              ),
+                            )
+                            .toList(),
+                        hint: const Text("Condition"),
+                        dropdownColor: Colors.white,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        iconSize: 36,
+                        isExpanded: true,
+                        underline: const SizedBox(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                        ),
+                        value: condition,
+                        onChanged: (selectedCondition) {
+                          condition = selectedCondition;
+                          if (selectedCondition == "New") {
+                            model.condition = ProductCondition.new_;
+                          } else if (selectedCondition == "Used like new") {
+                            model.condition = ProductCondition.usedLikeNew;
+                          } else if (selectedCondition == "Used Fair") {
+                            model.condition = ProductCondition.usedFair;
+                          } else if (selectedCondition == "Used Poor") {
+                            model.condition = ProductCondition.usedPoor;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Description",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Enter Product Description",
                       ),
                     ),
                   ],
