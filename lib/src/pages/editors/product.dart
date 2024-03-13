@@ -18,17 +18,18 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
         body: Center(
           child: ListView(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(20),
+              Padding(
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    Text(
+                    const Text(
                       "Name of the Item:",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     TextField(
-                      decoration: InputDecoration(
+                      controller: model.titleController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: "Item Name",
                       ),
@@ -36,17 +37,18 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(20),
+              Padding(
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    Text(
+                    const Text(
                       "Price of the Item:",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     TextField(
-                      decoration: InputDecoration(
+                      controller: model.priceController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: "Item Price",
                       ),
@@ -97,18 +99,19 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(20),
+              Padding(
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Description",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     TextField(
-                      decoration: InputDecoration(
+                      controller: model.descriptionController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: "Enter Product Description",
                       ),
@@ -122,7 +125,50 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
       );
 }
 
+/// Reusable InputContainer for input fields
+class InputContainer extends ReactiveWidget<ProductBuilder> {
+  /// Text to be entered in the input
+  final String text;
 
+  /// Hint to be entered for the input
+  final String hint;
+
+  /// Controller available in the model
+  final TextEditingController controller;
+
+  /// Constructor to set the fields
+  const InputContainer({
+    required this.text,
+    required this.hint,
+    required this.controller,
+    super.key,
+  });
+
+  @override
+  ProductBuilder createModel() => ProductBuilder();
+  @override
+  Widget build(BuildContext context, ProductBuilder model) => Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: <Widget>[
+              Text(
+                text,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: hint,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
 // The main function is the starting point for all our Apps
 // The Material app is the parent of all the widgets that we've used in our App
 
@@ -275,4 +321,3 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
 //     );
 //   }
 // }
-
