@@ -48,7 +48,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                         items: [
                           for (final condition in ProductCondition.values)
                             DropdownMenuItem(
-                              value: model.condition,
+                              value: condition,
                               child: Text(condition.displayName),
                             ),
                         ],
