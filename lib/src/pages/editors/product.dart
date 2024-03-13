@@ -9,16 +9,6 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
   @override
   ProductBuilder createModel() => ProductBuilder();
 
-  /// Condition of the product
-  String? condition;
-
-  /// String equivalent of ProductCondition to set the condition of the product using the view model
-  List<String> listItems = [
-    "New",
-    "Used like new",
-    "Used Fair",
-    "Used Poor",
-  ];
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
         appBar: AppBar(
@@ -80,15 +70,14 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: DropdownButton(
-                        items: listItems
-                            .map(
-                              (valueItem) => DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              ),
-                            )
-                            .toList(),
+                      child: DropdownButton<ProductCondition>(
+                        items: [
+                          for (final condition in ProductCondition.values)
+                            DropdownMenuItem(
+                              value: model.condition,
+                              child: Text(condition.displayName),
+                            ),
+                        ],
                         hint: const Text("Condition"),
                         dropdownColor: Colors.white,
                         icon: const Icon(Icons.arrow_drop_down),
@@ -99,18 +88,9 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                           color: Colors.black,
                           fontSize: 22,
                         ),
-                        value: condition,
+                        value: model.condition,
                         onChanged: (selectedCondition) {
-                          condition = selectedCondition;
-                          if (selectedCondition == "New") {
-                            model.condition = ProductCondition.new_;
-                          } else if (selectedCondition == "Used like new") {
-                            model.condition = ProductCondition.usedLikeNew;
-                          } else if (selectedCondition == "Used Fair") {
-                            model.condition = ProductCondition.usedFair;
-                          } else if (selectedCondition == "Used Poor") {
-                            model.condition = ProductCondition.usedPoor;
-                          }
+                          model.condition = selectedCondition!;
                         },
                       ),
                     ),
