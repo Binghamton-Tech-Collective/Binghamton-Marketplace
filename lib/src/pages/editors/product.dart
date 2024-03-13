@@ -18,43 +18,15 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
         body: Center(
           child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    const Text(
-                      "Name of the Item:",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    TextField(
-                      controller: model.titleController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Item Name",
-                      ),
-                    ),
-                  ],
-                ),
+              InputContainer(
+                text: "Name of the Item",
+                hint: "Item Name",
+                controller: model.titleController,
               ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    const Text(
-                      "Price of the Item:",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    TextField(
-                      controller: model.priceController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Item Price",
-                      ),
-                    ),
-                  ],
-                ),
+              InputContainer(
+                text: "Price of the Item",
+                hint: "Item Price",
+                controller: model.priceController,
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -99,25 +71,10 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Description",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    TextField(
-                      controller: model.descriptionController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Enter Product Description",
-                      ),
-                    ),
-                  ],
-                ),
+              InputContainer(
+                text: "Description of the Item",
+                hint: "Item Description",
+                controller: model.descriptionController,
               ),
             ],
           ),
