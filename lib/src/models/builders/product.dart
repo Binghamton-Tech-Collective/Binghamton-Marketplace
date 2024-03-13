@@ -39,17 +39,23 @@ class ProductBuilder extends BuilderModel<Product> {
 
   void setCategorySelected(
       {required Category category, required bool selected}) {
+    isLoading = true;
     if (selected) {
       categories.add(category);
     } else {
       categories.remove(category);
     }
+    isLoading = false;
+    notifyListeners();
   }
 
   /// Setting the condition of the product
 
   set condition(ProductCondition condition) {
+    isLoading = true;
     this.condition = condition;
+    isLoading = false;
+    notifyListeners();
   }
 
   @override
