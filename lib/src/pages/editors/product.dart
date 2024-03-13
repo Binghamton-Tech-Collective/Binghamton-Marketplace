@@ -104,25 +104,26 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
   @override
   ProductBuilder createModel() => ProductBuilder();
   @override
-  Widget build(BuildContext context, ProductBuilder model) => Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              Text(
+  Widget build(BuildContext context, ProductBuilder model) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 text,
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  hintText: hint,
-                ),
+            ),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: hint,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }
