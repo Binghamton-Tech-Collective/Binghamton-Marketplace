@@ -264,12 +264,11 @@ class ImageUploader extends ReactiveWidget<ProductBuilder> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child: model.imageUrls != null &&
-                  index != null &&
+          child:  index != null &&
                   index! >= 0 &&
-                  model.imageUrls!.length > index!
+                  model.imageUrls[index!] != null
               ? Image.network(
-                  model.imageUrls[index!],
+                  model.imageUrls[index!]!,
                   fit: BoxFit.cover,
                 )
               : const Text(
@@ -382,7 +381,7 @@ class ImageUploader extends ReactiveWidget<ProductBuilder> {
             //         onTap: () async {
             //           print("clicked");
                       // Call the uploadImage function from the model
-                    },
+                    // },
 //                     child: Container(
 //                       color: Colors.redAccent,
 //                       height: 250,
