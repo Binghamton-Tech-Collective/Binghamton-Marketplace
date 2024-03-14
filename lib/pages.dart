@@ -44,6 +44,10 @@ final GoRouter router = GoRouter(
               builder: (context, state) => NotificationsPage(),
               routes: [
                 GoRoute(
+                  path: "create",
+                  builder: (context, state) => ProductEditor(),
+                ),
+                GoRoute(
                   path: ":id",
                   builder: (context, state) =>
                       ProductPage(state.pathParameters["id"] as ProductID),
@@ -74,7 +78,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.profile,
               name: Routes.profile,
-              builder: (context, state) => Placeholder(),
+              builder: (context, state) => const Placeholder(),
             ),
           ],
         ),
