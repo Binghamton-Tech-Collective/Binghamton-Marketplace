@@ -31,6 +31,17 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Linkedin username of the seller
   final linkedinController = TextEditingController();
 
+  /// All the text controllers used on the page.
+  List<TextEditingController> get allControllers => [
+    nameController,
+    bioController,
+    phoneNumberController,
+    tikTokController,
+    instagramController,
+    twitterController,
+    linkedinController,
+  ];
+
   /// The seller's ID.
   late final SellerID sellerID;
 
@@ -47,8 +58,20 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   Future<void> init() async {
     isLoading = true;
     sellerID = services.database.sellers.newID;
+    // TODO: Needs sign-in to work
     userID = models.user.userProfile!.id;
+    for (final controller in allControllers) {
+      controller.addListener(notifyListeners);
+    }
     isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    for (final controller in allControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   /// Function to build the profile from the input provided by the user
@@ -57,7 +80,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     id: sellerID,
     name: nameController.text,
     userID: userID,
-    imageUrl: imageUrl!,
+    imageUrl: imageUrl ?? "https://picsum.photos/200",
     bio: bioController.text,
     contact: ContactInfo(
       email: email,
@@ -72,8 +95,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   @override
   bool get isReady => nameController.text.isNotEmpty
     && bioController.text.isNotEmpty
-    && sellerID.toString().isNotEmpty
-    && userID.toString().isNotEmpty
+    // TODO: Needs image uploading in the UI
     && imageUrl != null;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
@@ -95,6 +117,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
     isLoading = true;
+    errorText = null;
     final profile = build();
     try { 
       await services.database.saveSellerProfile(profile);
