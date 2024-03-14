@@ -6,6 +6,7 @@ import "package:btc_market/models.dart";
 /// 
 /// - If you're listening to an existing view model, use [ReusableReactiveWidget].
 /// - If you're listening to a view model created by this widget, use [ReactiveWidget].
+@immutable
 abstract class ReactiveWidgetInterface<T extends ViewModel> extends StatefulWidget {
   /// A const constructor.
   const ReactiveWidgetInterface({super.key});
@@ -25,14 +26,14 @@ abstract class ReactiveWidgetInterface<T extends ViewModel> extends StatefulWidg
   /// Builds the UI according to the state in [model].
 	Widget build(BuildContext context, T model);
 
-  /// Builds the page when [ViewModel.isLoading] is true.
-  Widget buildLoading(BuildContext context, T model) => const Center(
-    child: CircularProgressIndicator(),
-  );
-
   /// Builds the page when [ViewModel.errorText] is not null.
   Widget buildError(BuildContext context, T model) => Center(
     child: Text("An error occurred:\n${model.errorText!}"),
+  );
+
+  /// Builds the page when [ViewModel.isLoading] is true.
+  Widget buildLoading(BuildContext context, T model) => const Center(
+    child: CircularProgressIndicator(),
   );
 
   /// This function gives you an opportunity to update the view model when the widget updates. 

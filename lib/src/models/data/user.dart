@@ -14,6 +14,7 @@ class UserModel extends DataModel {
   @override
   Future<void> init() async {
     // Try to automatically sign-in
+    await signIn();
   }
 
   /// Whether the user is signed in.
