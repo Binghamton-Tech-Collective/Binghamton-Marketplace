@@ -249,6 +249,7 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
 //                 ],
 //               ),
 //             ),
+//             //Enter the image upload widget here
 //             Padding(
 //               padding: EdgeInsets.all(20),
 //               child: Column(
