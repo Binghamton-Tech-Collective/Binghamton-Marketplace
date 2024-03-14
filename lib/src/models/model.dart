@@ -11,15 +11,6 @@ abstract class DataModel with ChangeNotifier {
 	Future<void> init();
 }
 
-/// A model to build a value from the UI.
-abstract class BuilderModel<T> with ChangeNotifier {
-	/// The value being edited.
-	T get value;
-
-	/// Whether the [value] is ready to be accessed.
-	bool get isReady;
-}
-
 /// A model to load and manage state needed by any piece of UI.
 /// 
 /// [init] is called right away but unlike [DataModel]s, it is *not* awaited. Use [isLoading] and 
@@ -47,4 +38,13 @@ abstract class ViewModel with ChangeNotifier {
 
 	/// Override this method to initializes any data needed by the model.
 	Future<void> init() async { }
+}
+
+/// A model to build a value from the UI.
+abstract class BuilderModel<T> extends ViewModel {
+	/// The value being edited.
+	T build();
+
+	/// Whether the value of [build] is ready to be accessed.
+	bool get isReady;
 }

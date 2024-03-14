@@ -16,20 +16,20 @@ class ShellPage extends StatelessWidget {
       onDestinationSelected: shell.goBranch,
       destinations: const [
         NavigationDestination(
-          icon: Icon(Icons.home),
-          label: "Home",
+          icon: Icon(Icons.storefront),
+          label: "Products",
           ),
         NavigationDestination(
           icon: Icon(Icons.message),
           label: "Message",
           ),
         NavigationDestination(
-          icon: Icon(Icons.person),
-          label: "Profile",
-          ),
+          icon: Icon(Icons.groups),
+          label: "Sellers",
+        ),
         NavigationDestination(
-          icon: Icon(Icons.notifications),
-          label: "Notifications",
+          icon: Icon(Icons.person),
+          label: "My Profile",
         ),
       ],
     ),
