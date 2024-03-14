@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 
 import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
-import "package:btc_market/src/data/product.dart";
+import "package:btc_market/data.dart";
 
 /// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
@@ -76,6 +76,40 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 hint: "Item Description",
                 controller: model.descriptionController,
               ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Categories",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Wrap(
+                      spacing: 5,
+                      children: <Widget>[
+                        for (final category in Category.values)
+                          FilterChip(
+                            label: Text(category.title),
+                            selected: model.categories.contains(category),
+                            selectedColor: const Color.fromRGBO(0, 90, 67, 1),
+                            onSelected: (selected) {
+                              model.setCategorySelected(
+                                category: category,
+                                selected: selected,
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -130,7 +164,11 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
 // The main function is the starting point for all our Apps
 // The Material app is the parent of all the widgets that we've used in our App
 
+// import 'package:flutter/material.dart';
+
 // enum Conditions { condition1, condition2, condition3, condition4 }
+
+// enum ExerciseFilter { walking, running, cycling, hiking }
 
 // void main() {
 //   runApp(MyApp());
@@ -163,6 +201,7 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
 //     "condition3",
 //     "condition4"
 //   ];
+//   Set<ExerciseFilter> filters = <ExerciseFilter>{};
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -269,6 +308,43 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
 //                       border: OutlineInputBorder(),
 //                       hintText: "Enter Product Description",
 //                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             Padding(
+//               padding: EdgeInsets.all(20),
+//               child: Column(
+//                 children: [
+//                   Align(
+//                     alignment: Alignment.centerLeft,
+//                     child: Text(
+//                       "Categories",
+//                       style:
+//                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                     ),
+//                   ),
+//                   Wrap(
+//                     spacing: 5.0,
+//                     children: <Widget>[
+//                       for (final exercise in ExerciseFilter.values)
+//                         FilterChip(
+//                           label: Text(exercise.name),
+//                           selected: filters.contains(exercise),
+//                           selectedColor: Color.fromRGBO(0, 90, 67, 1),
+//                           onSelected: (bool selected) {
+//                             setState(
+//                               () {
+//                                 if (selected) {
+//                                   filters.add(exercise);
+//                                 } else {
+//                                   filters.remove(exercise);
+//                                 }
+//                               },
+//                             );
+//                           },
+//                         ),
+//                     ],
 //                   ),
 //                 ],
 //               ),
