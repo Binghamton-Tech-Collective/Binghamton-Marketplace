@@ -24,7 +24,7 @@ class ProductBuilder extends BuilderModel<Product> {
   final quantityController = TextEditingController();
 
   /// List of URL's of the images for the product
-  List<String>? imageUrls;
+  List<String?> imageUrls = [null, null, null, null];
 
   /// Condition of the product
   late final ProductCondition condition;
@@ -87,7 +87,7 @@ class ProductBuilder extends BuilderModel<Product> {
       sellerID.toString().isNotEmpty;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
-  Future<void> uploadImage() async {
+  Future<void> uploadImage(int index) async {
     // Pick a file, upload to Firebase Storage, then set [imageUrl]
     /**
      * Package: file_picker => This function should be called here
