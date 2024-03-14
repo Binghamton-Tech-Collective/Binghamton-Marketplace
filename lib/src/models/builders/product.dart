@@ -23,7 +23,7 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Quantity controller of the product
   final quantityController = TextEditingController();
 
-/// List of URL's of the images for the product
+  /// List of URL's of the images for the product
   List<String?> imageUrls = [null, null, null, null];
 
   /// Condition of the product
