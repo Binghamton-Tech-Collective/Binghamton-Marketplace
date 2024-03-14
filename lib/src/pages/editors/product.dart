@@ -30,10 +30,10 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               ),
               //             Enter the image upload widget here
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       "Upload Photos",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -61,7 +61,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                                   onTap: () {
                                     print("clicked card 1");
                                   },
-                                  child: ImageUploader(
+                                  child: const ImageUploader(
                                     color: Colors.deepPurpleAccent,
                                   ),
                                 ),
@@ -69,7 +69,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                                   onTap: () {
                                     print("clicked card 2");
                                   },
-                                  child: ImageUploader(
+                                  child: const ImageUploader(
                                     color: Colors.yellowAccent,
                                   ),
                                 ),
@@ -82,7 +82,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                                   onTap: () {
                                     print("clicked card 3");
                                   },
-                                  child: ImageUploader(
+                                  child: const ImageUploader(
                                     color: Colors.blueAccent,
                                   ),
                                 ),
@@ -90,7 +90,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                                   onTap: () {
                                     print("clicked card 4");
                                   },
-                                  child: ImageUploader(
+                                  child: const ImageUploader(
                                     color: Colors.greenAccent,
                                   ),
                                 ),
