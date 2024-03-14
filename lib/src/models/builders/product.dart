@@ -87,7 +87,7 @@ class ProductBuilder extends BuilderModel<Product> {
       sellerID.toString().isNotEmpty;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
-  Future<void> uploadImages() async {
+  Future<void> uploadImage() async {
     // Pick a file, upload to Firebase Storage, then set [imageUrl]
     /**
      * Package: file_picker => This function should be called here
