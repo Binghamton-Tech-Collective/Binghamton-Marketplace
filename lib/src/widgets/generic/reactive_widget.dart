@@ -6,6 +6,7 @@ import "package:btc_market/models.dart";
 /// 
 /// - If you're listening to an existing view model, use [ReusableReactiveWidget].
 /// - If you're listening to a view model created by this widget, use [ReactiveWidget].
+@immutable
 abstract class ReactiveWidgetInterface<T extends ViewModel> extends StatefulWidget {
   /// A const constructor.
   const ReactiveWidgetInterface({super.key});
