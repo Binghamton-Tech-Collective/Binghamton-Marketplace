@@ -26,6 +26,11 @@ abstract class ReactiveWidgetInterface<T extends ViewModel> extends StatefulWidg
   /// Builds the UI according to the state in [model].
 	Widget build(BuildContext context, T model);
 
+  /// Builds the page when [ViewModel.errorText] is not null.
+  Widget buildError(BuildContext context, T model) => Center(
+    child: Text("An error occurred:\n${model.errorText!}"),
+  );
+
   /// Builds the page when [ViewModel.isLoading] is true.
   Widget buildLoading(BuildContext context, T model) => const Center(
     child: CircularProgressIndicator(),
@@ -94,6 +99,7 @@ class ReactiveWidgetState<T extends ViewModel> extends State<ReactiveWidgetInter
 	void listener() => setState(() {});
 
 	@override
-	Widget build(BuildContext context) => model.isLoading
-    ? widget.buildLoading(context, model) : widget.build(context, model);
+	Widget build(BuildContext context) => model.errorText != null
+    ? widget.buildError(context, model) : model.isLoading
+      ? widget.buildLoading(context, model) : widget.build(context, model);
 }
