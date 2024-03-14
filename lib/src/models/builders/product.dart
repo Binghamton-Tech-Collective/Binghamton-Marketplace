@@ -24,7 +24,7 @@ class ProductBuilder extends BuilderModel<Product> {
   final quantityController = TextEditingController();
 
   /// List of URL's of the images for the product
-  List<String>? imageUrls;
+  List<String?> imageUrls = [null, null, null, null];
 
   /// Condition of the product
   late final ProductCondition condition;
