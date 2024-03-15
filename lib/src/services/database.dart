@@ -10,13 +10,12 @@ extension CollectionUtils<T> on CollectionReference<T> {
   Collection<R, I> convert<R, I>({
     required R Function(Json) fromJson,
     required Json Function(R) toJson,
-  }) =>
-      Collection<R, I>(
-        withConverter(
-          fromFirestore: (snapshot, options) => fromJson(snapshot.data()!),
-          toFirestore: (item, options) => toJson(item),
-        ),
-      );
+  }) => Collection<R, I>(
+    withConverter(
+      fromFirestore: (snapshot, options) => fromJson(snapshot.data()!),
+      toFirestore: (item, options) => toJson(item),
+    ),
+  );
 }
 
 /// A safe view over [CollectionReference] that only allows the correct ID type.
@@ -43,8 +42,8 @@ extension DocumentUtils<E> on DocumentReference<E> {
 extension QueryUtils<E> on Query<E> {
   /// Gets all the data from a query.
   Future<List<E>> getAll() async => [
-        for (final document in (await get()).docs) document.data(),
-      ];
+    for (final document in (await get()).docs) document.data(),
+  ];
 }
 
 /// A service to interface with our database, Firebase's Cloud Firestore.
@@ -98,6 +97,10 @@ class Database extends Service {
   Future<void> saveSellerProfile(SellerProfile seller) =>
       sellers.doc(seller.id).set(seller);
 
+  /// Saves a product to the database.
+  Future<void> saveProduct(Product product) =>
+      products.doc(product.id).set(product);
+
   /// Gets all the reviews of the seller with the given [sellerID]
   Future<List<Review>> getReviewsBySellerID(SellerID sellerID) =>
       reviews.where("sellerID", isEqualTo: sellerID).getAll();
@@ -113,6 +116,10 @@ class Database extends Service {
   /// Gets the seller profile owned by the given user ID
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
       sellers.doc(sellerID).getData();
+
+  /// Gets all the seller profiles owned by the user ID. 
+  Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) => 
+      sellers.where("userID", isEqualTo: userID).getAll();
 
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>

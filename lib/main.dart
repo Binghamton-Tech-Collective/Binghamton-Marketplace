@@ -4,10 +4,10 @@ import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  services.init();
-  models.init();
+  await services.init();
+  await models.init();
   runApp(BtcMarket());
 }
 
