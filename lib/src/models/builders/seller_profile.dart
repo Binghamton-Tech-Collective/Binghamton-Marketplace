@@ -123,6 +123,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
       await services.database.saveSellerProfile(profile);
     } catch (error) { 
       errorText = "Error uploading profile:\n$error";
+      isLoading = false;
     }
     isLoading = false;
     notifyListeners();

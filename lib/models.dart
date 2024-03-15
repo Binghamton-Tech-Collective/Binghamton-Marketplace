@@ -19,7 +19,9 @@ class Models extends DataModel {
 
   @override
   Future<void> init() async {
+    print("started harsh vaghani");
     await user.init();
+    print("ended init");
   }
 
   @override

@@ -15,178 +15,184 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
           backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
           title: const Text("List Item"),
         ),
-        body: Center(
-          child: ListView(
-            children: [
-              InputContainer(
-                text: "Name of the Item",
-                hint: "Item Name",
-                controller: model.titleController,
-              ),
-              InputContainer(
-                text: "Price of the Item",
-                hint: "Item Price",
-                controller: model.priceController,
-              ),
-              //             Enter the image upload widget here
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
+        body: !model.isSeller
+            ? const Text("Not a seller!")
+            : Center(
+                child: ListView(
                   children: [
-                    const Text(
-                      "Upload Photos",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    InputContainer(
+                      text: "Name of the Item",
+                      hint: "Item Name",
+                      controller: model.titleController,
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        try {
-                          await model.uploadImage(0);
-                        } catch (error) {
-                          //TODO: Check why we're not able to access the errorText variable
-                          // errorText = "Error uploading the images!";
-                        }
-                      },
-                      child: Container(
-                        color: Colors.redAccent,
-                        height: 250,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    print("clicked card 1");
-                                  },
-                                  child: const ImageUploader(
-                                    color: Colors.deepPurpleAccent,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    print("clicked card 2");
-                                  },
-                                  child: const ImageUploader(
-                                    color: Colors.yellowAccent,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    print("clicked card 3");
-                                  },
-                                  child: const ImageUploader(
-                                    color: Colors.blueAccent,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    print("clicked card 4");
-                                  },
-                                  child: const ImageUploader(
-                                    color: Colors.greenAccent,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    InputContainer(
+                      text: "Price of the Item",
+                      hint: "Item Price",
+                      controller: model.priceController,
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Condition of the Product",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: DropdownButton<ProductCondition>(
-                        items: [
-                          for (final condition in ProductCondition.values)
-                            DropdownMenuItem(
-                              value: condition,
-                              child: Text(condition.displayName),
-                            ),
-                        ],
-                        hint: const Text("Condition"),
-                        dropdownColor: Colors.white,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 36,
-                        isExpanded: true,
-                        underline: const SizedBox(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                        ),
-                        value: model.condition,
-                        onChanged: (selectedCondition) {
-                          model.condition = selectedCondition!;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              InputContainer(
-                text: "Description of the Item",
-                hint: "Item Description",
-                controller: model.descriptionController,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Categories",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Wrap(
-                      spacing: 5,
-                      children: <Widget>[
-                        for (final category in Category.values)
-                          FilterChip(
-                            label: Text(category.title),
-                            selected: model.categories.contains(category),
-                            selectedColor: const Color.fromRGBO(0, 90, 67, 1),
-                            onSelected: (selected) {
-                              model.setCategorySelected(
-                                category: category,
-                                selected: selected,
-                              );
-                            },
+                    //             Enter the image upload widget here
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          const Text(
+                            "Upload Photos",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                      ],
+                          GestureDetector(
+                            onTap: () async {
+                              try {
+                                await model.uploadImage(0);
+                              } catch (error) {
+                                //TODO: Check why we're not able to access the errorText variable
+                                // errorText = "Error uploading the images!";
+                              }
+                            },
+                            child: Container(
+                              color: Colors.redAccent,
+                              height: 250,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          print("clicked card 1");
+                                        },
+                                        child: const ImageUploader(
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          print("clicked card 2");
+                                        },
+                                        child: const ImageUploader(
+                                          color: Colors.yellowAccent,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          print("clicked card 3");
+                                        },
+                                        child: const ImageUploader(
+                                          color: Colors.blueAccent,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          print("clicked card 4");
+                                        },
+                                        child: const ImageUploader(
+                                          color: Colors.greenAccent,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Condition of the Product",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: DropdownButton<ProductCondition>(
+                              items: [
+                                for (final condition in ProductCondition.values)
+                                  DropdownMenuItem(
+                                    value: condition,
+                                    child: Text(condition.displayName),
+                                  ),
+                              ],
+                              hint: const Text("Condition"),
+                              dropdownColor: Colors.white,
+                              icon: const Icon(Icons.arrow_drop_down),
+                              iconSize: 36,
+                              isExpanded: true,
+                              underline: const SizedBox(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                              ),
+                              value: model.condition,
+                              onChanged: (selectedCondition) {
+                                model.condition = selectedCondition!;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    InputContainer(
+                      text: "Description of the Item",
+                      hint: "Item Description",
+                      controller: model.descriptionController,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Categories",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Wrap(
+                            spacing: 5,
+                            children: <Widget>[
+                              for (final category in Category.values)
+                                FilterChip(
+                                  label: Text(category.title),
+                                  selected: model.categories.contains(category),
+                                  selectedColor:
+                                      const Color.fromRGBO(0, 90, 67, 1),
+                                  onSelected: (selected) {
+                                    model.setCategorySelected(
+                                      category: category,
+                                      selected: selected,
+                                    );
+                                  },
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
       );
 }
 

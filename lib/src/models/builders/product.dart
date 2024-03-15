@@ -33,7 +33,9 @@ class ProductBuilder extends BuilderModel<Product> {
   late final DateTime dateListed;
 
   /// Seller ID of the seller adding products
-  late final SellerID sellerID;
+  late final SellerID? sellerID;
+
+  bool get isSeller => sellerID != null;
 
   /// To add the selected category to the set
 
@@ -44,7 +46,6 @@ class ProductBuilder extends BuilderModel<Product> {
     } else {
       categories.remove(category);
     }
-    isLoading = false;
     notifyListeners();
   }
 
@@ -57,7 +58,7 @@ class ProductBuilder extends BuilderModel<Product> {
   @override
   Future<void> init() async {
     isLoading = true;
-    sellerID = models.user.sellerProfile!.id;
+    sellerID = models.user.sellerProfile?.id;
     productID = services.database.products.newID;
     isLoading = false;
   }
@@ -66,7 +67,7 @@ class ProductBuilder extends BuilderModel<Product> {
   @override
   Product build() => Product(
         id: productID,
-        sellerID: sellerID,
+        sellerID: sellerID!,
         title: titleController.text,
         description: descriptionController.text,
         price: double.parse(priceController.text),
@@ -86,7 +87,7 @@ class ProductBuilder extends BuilderModel<Product> {
       categories.isNotEmpty &&
       imageUrls.any((url) => url != null) &&
       condition.toString().isNotEmpty &&
-      sellerID.toString().isNotEmpty;
+      sellerID != null;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage(int index) async {
