@@ -34,21 +34,23 @@ final GoRouter router = GoRouter(
       redirect: (context, state) => Routes.products,
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, shell) => ShellPage(shell),
+      builder: (context, state, shell) => ShellPage(shell, state),
       branches: [
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: Routes.products,
-              name: Routes.products,
+              name: "All products",
               builder: (context, state) => NotificationsPage(),
               routes: [
                 GoRoute(
                   path: "create",
+                  name: "List a product",
                   builder: (context, state) => ProductEditor(),
                 ),
                 GoRoute(
                   path: ":id",
+                  name: "View product",
                   builder: (context, state) =>
                       ProductPage(state.pathParameters["id"] as ProductID),
                   // Uncomment this to allow users to edit their profile
@@ -73,27 +75,20 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: Routes.profile,
-              name: Routes.profile,
-              builder: (context, state) => const Placeholder(),
-            ),
-          ],
-        ),
         StatefulShellBranch(routes: [
           GoRoute(
             path: Routes.sellers,
-            name: Routes.sellers,
+            name: "View sellers",
             builder: (context, state) => const Placeholder(),
             routes: [
               GoRoute(
                 path: "create",
+                name: "Create a seller profile",
                 builder: (context, state) => SellerProfileEditor(),
               ),
               GoRoute(
                 path: ":id",
+                name: "View seller",
                 builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
                 // Uncomment this to allow users to edit their profile
                 // routes: [
@@ -106,6 +101,15 @@ final GoRouter router = GoRouter(
             ],
           ),
         ],),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.profile,
+              name: Routes.profile,
+              builder: (context, state) => const Placeholder(),
+            ),
+          ],
+        ),
       ],
     ),
   ],

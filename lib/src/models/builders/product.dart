@@ -95,7 +95,8 @@ class ProductBuilder extends BuilderModel<Product> {
     title: titleController.text,
     description: descriptionController.text,
     price: double.parse(priceController.text),
-    quantity: int.parse(priceController.text),
+    // TODO: Add quantity here
+    quantity: 1,
     imageUrls: [
       for (final url in imageUrls)
         if (url != null)
