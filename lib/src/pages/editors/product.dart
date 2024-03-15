@@ -37,8 +37,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                         children: [
                           const Text(
                             "Upload Photos",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           GestureDetector(
                             onTap: () async {
@@ -109,43 +108,24 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
                         children: [
                           const Text(
                             "Condition of the Product",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: DropdownButton<ProductCondition>(
-                              items: [
-                                for (final condition in ProductCondition.values)
-                                  DropdownMenuItem(
-                                    value: condition,
-                                    child: Text(condition.displayName),
-                                  ),
-                              ],
-                              hint: const Text("Condition"),
-                              dropdownColor: Colors.white,
-                              icon: const Icon(Icons.arrow_drop_down),
-                              iconSize: 36,
-                              isExpanded: true,
-                              underline: const SizedBox(),
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 22,
-                              ),
-                              value: model.condition,
-                              onChanged: (selectedCondition) {
-                                model.condition = selectedCondition!;
-                              },
-                            ),
+                          const Spacer(),
+                          DropdownMenu<ProductCondition>(
+                            dropdownMenuEntries: [
+                              for (final condition in ProductCondition.values)
+                                DropdownMenuEntry(
+                                  value: condition,
+                                  label: condition.displayName,
+                                ),
+                            ],
+                            hintText: "Condition",
+                            onSelected: model.setCondition,
+                            enableSearch: false,
                           ),
                         ],
                       ),
@@ -243,7 +223,6 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
 }
 
 /// Reusable image uploader widget
-
 class ImageUploader extends ReactiveWidget<ProductBuilder> {
   /// Background color of the card
   final Color color;

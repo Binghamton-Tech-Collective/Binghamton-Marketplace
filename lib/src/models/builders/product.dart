@@ -18,7 +18,7 @@ class ProductBuilder extends BuilderModel<Product> {
   final priceController = TextEditingController();
 
   /// Categories that the product belongs to
-  late final Set<Category> categories;
+  final Set<Category> categories = {};
 
   /// Quantity controller of the product
   final quantityController = TextEditingController();
@@ -27,7 +27,7 @@ class ProductBuilder extends BuilderModel<Product> {
   List<String?> imageUrls = [null, null, null, null];
 
   /// Condition of the product
-  late final ProductCondition condition;
+  ProductCondition? condition;
 
   /// Date and time the product was added
   late final DateTime dateListed;
@@ -35,12 +35,11 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Seller ID of the seller adding products
   late final SellerID? sellerID;
 
+  /// True if the user has any seller profiles.
   bool get isSeller => sellerID != null;
 
   /// To add the selected category to the set
-
-  void setCategorySelected(
-      {required Category category, required bool selected}) {
+  void setCategorySelected({required Category category, required bool selected}) {
     if (selected) {
       categories.add(category);
     } else {
@@ -50,15 +49,16 @@ class ProductBuilder extends BuilderModel<Product> {
   }
 
   /// Setting the condition of the product
-  void setCondition(ProductCondition condition) {
-    this.condition = condition;
+  void setCondition(ProductCondition? input) {
+    if (input == null) return;
+    condition = input;
     notifyListeners();
   }
 
   @override
   Future<void> init() async {
     isLoading = true;
-    sellerID = models.user.sellerProfile?.id;
+    sellerID = models.user.sellerProfiles.firstOrNull?.id;
     productID = services.database.products.newID;
     isLoading = false;
   }
@@ -66,28 +66,28 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Function to build the profile from the input provided by the user
   @override
   Product build() => Product(
-        id: productID,
-        sellerID: sellerID!,
-        title: titleController.text,
-        description: descriptionController.text,
-        price: double.parse(priceController.text),
-        quantity: int.parse(priceController.text),
-        imageUrls: List<String>.from(imageUrls),
-        categories: categories,
-        condition: condition,
-        dateListed: DateTime.now(),
-      );
+    id: productID,
+    sellerID: sellerID!,
+    title: titleController.text,
+    description: descriptionController.text,
+    price: double.parse(priceController.text),
+    quantity: int.parse(priceController.text),
+    imageUrls: List<String>.from(imageUrls),
+    categories: categories,
+    condition: condition!,
+    dateListed: DateTime.now(),
+  );
 
   @override
   bool get isReady =>
-      titleController.text.isNotEmpty &&
-      descriptionController.text.isNotEmpty &&
-      priceController.text.isNotEmpty &&
-      quantityController.text.isNotEmpty &&
-      categories.isNotEmpty &&
-      imageUrls.any((url) => url != null) &&
-      condition.toString().isNotEmpty &&
-      sellerID != null;
+    titleController.text.isNotEmpty &&
+    descriptionController.text.isNotEmpty &&
+    priceController.text.isNotEmpty &&
+    quantityController.text.isNotEmpty &&
+    categories.isNotEmpty &&
+    imageUrls.any((url) => url != null) &&
+    condition != null && 
+    sellerID != null;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage(int index) async {

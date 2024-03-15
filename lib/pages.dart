@@ -94,7 +94,7 @@ final GoRouter router = GoRouter(
               ),
               GoRoute(
                 path: ":id",
-                builder: (context, state) => SellerProfilePage(/* id: state.pathParameters["id"]! */),
+                builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
                 // Uncomment this to allow users to edit their profile
                 // routes: [
                 //   GoRoute(
