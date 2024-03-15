@@ -1,7 +1,9 @@
+import "package:flutter/material.dart";
+
+import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
-import "package:flutter/material.dart";
-import "package:btc_market/data.dart";
+import "package:btc_market/pages.dart";
 
 /// Class to create view model for sign up page for seller
 class ProductBuilder extends BuilderModel<Product> {
@@ -38,6 +40,12 @@ class ProductBuilder extends BuilderModel<Product> {
   /// True if the user has any seller profiles.
   bool get isSeller => sellerID != null;
 
+  /// The error when uploading the image, if any.
+  String? imageError;
+
+  /// An error when validating the price, if any.
+  String? priceError;
+
   /// To add the selected category to the set
   void setCategorySelected({required Category category, required bool selected}) {
     if (selected) {
@@ -60,7 +68,22 @@ class ProductBuilder extends BuilderModel<Product> {
     isLoading = true;
     sellerID = models.user.sellerProfiles.firstOrNull?.id;
     productID = services.database.products.newID;
+    priceController.addListener(_validatePrice);
+    titleController.addListener(notifyListeners);
+    descriptionController.addListener(notifyListeners);
     isLoading = false;
+  }
+
+  void _validatePrice() {
+    priceError = null;
+    if (priceController.text.isEmpty) return;
+    final result = double.tryParse(priceController.text);
+    if (result == null) {
+      priceError = "Invalid price";
+    } else if (result > 100000) {
+      priceError = r"No purchases above $100K";
+    }
+    notifyListeners();
   }
 
   /// Function to build the profile from the input provided by the user
@@ -68,41 +91,71 @@ class ProductBuilder extends BuilderModel<Product> {
   Product build() => Product(
     id: productID,
     sellerID: sellerID!,
+    userID: models.user.userProfile!.id,
     title: titleController.text,
     description: descriptionController.text,
     price: double.parse(priceController.text),
     quantity: int.parse(priceController.text),
-    imageUrls: List<String>.from(imageUrls),
+    imageUrls: [
+      for (final url in imageUrls)
+        if (url != null)
+          url,
+    ],
     categories: categories,
     condition: condition!,
     dateListed: DateTime.now(),
   );
 
   @override
-  bool get isReady =>
+  bool get isReady =>  
     titleController.text.isNotEmpty &&
     descriptionController.text.isNotEmpty &&
     priceController.text.isNotEmpty &&
-    quantityController.text.isNotEmpty &&
-    categories.isNotEmpty &&
+    priceError == null &&
+    // TODO: Add quantity
+    // quantityController.text.isNotEmpty &&
     imageUrls.any((url) => url != null) &&
-    condition != null && 
-    sellerID != null;
+    condition != null &&
+    sellerID != null &&
+    !isSaving;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage(int index) async {
-    // Pick a file, upload to Firebase Storage, then set [imageUrl]
-    /**
-     * Will have to use the logic for multi file picker.
-     */
+    imageError = null;
+    final file = await services.cloudStorage.pickImage();
+    if (file == null) return;
+    final filename = services.cloudStorage.getProductImage(productID, index);
+    final url = await services.cloudStorage.uploadFile(file, filename);
+    if (url == null) imageError = "Could not upload image";
+    imageUrls[index] = url;
+    notifyListeners();
   }
 
+  /// Deletes the image at the given index.
+  Future<void> deleteImage(int index) async {
+    imageUrls[index] = null;
+    final filename = services.cloudStorage.getProductImage(productID, index);
+    await services.cloudStorage.deleteFile(filename);
+    notifyListeners();
+  }
+
+  /// Whether we are uploading the product.
+  bool isSaving = false;
+  /// The error while saving the product, if any.
+  String? saveError;
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
-    isLoading = true;
+    isSaving = true;
+    saveError = null;
     final product = build();
-    await services.database.saveProduct(product);
-    isLoading = false;
+    try {
+      await services.database.saveProduct(product);
+      router.go("/products/$productID");
+    } catch (error) {
+      saveError = "There was an error saving your product";
+      rethrow;
+    }
+    isSaving = false;
     notifyListeners();
   }
 }

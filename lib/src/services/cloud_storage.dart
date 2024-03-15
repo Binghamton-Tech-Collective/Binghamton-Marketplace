@@ -16,11 +16,14 @@ class CloudStorageService extends Service {
   Future<void> dispose() async {}
 
   /// Returns a file picked by the user. 
-  Future<PlatformFile?> pickFile() async {
-    final result = await FilePicker.platform.pickFiles();
+  Future<Uint8List?> pickImage() async {
+    final result = await FilePicker.platform.pickFiles(
+      dialogTitle: "Pick an image",
+      type: FileType.image,
+      withData: true,
+    );
     if (result == null) return null;
-    if (result.files.isEmpty) return null;
-    return result.files.first;
+    return result.files.firstOrNull?.bytes;
   }
 
   /// Uploads data to a file in Firebase Storage.
@@ -35,6 +38,12 @@ class CloudStorageService extends Service {
     }
   }
 
+  /// Deletes the file at the given path.
+  Future<void> deleteFile(String path) => _root.child(path).delete();
+
   /// Returns the path of the seller's profile picture.
   String getSellerProfilePath(SellerID id) => "sellers/$id/profile_pic";
+
+  /// Returns the path of the seller's profile picture.
+  String getProductImage(ProductID id, int index) => "products/$id/$index";
 }

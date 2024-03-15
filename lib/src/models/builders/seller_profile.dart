@@ -100,9 +100,8 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
-    final file = await services.cloudStorage.pickFile();
-    if (file == null) return;
-    final bytes = file.bytes!;
+    final bytes = await services.cloudStorage.pickImage();
+    if (bytes == null) return;
     final path = services.cloudStorage.getSellerProfilePath(sellerID);
     final url = await services.cloudStorage.uploadFile(bytes, path);
     if (url == null) {

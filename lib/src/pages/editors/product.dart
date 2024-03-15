@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/data.dart";
+import "package:flutter/services.dart";
 
 /// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
@@ -11,173 +12,163 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
 
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-          title: const Text("List Item"),
-        ),
-        body: !model.isSeller
-            ? const Text("Not a seller!")
-            : Center(
-                child: ListView(
-                  children: [
-                    InputContainer(
-                      text: "Name of the Item",
-                      hint: "Item Name",
-                      controller: model.titleController,
-                    ),
-                    InputContainer(
-                      text: "Price of the Item",
-                      hint: "Item Price",
-                      controller: model.priceController,
-                    ),
-                    //             Enter the image upload widget here
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Upload Photos",
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              try {
-                                await model.uploadImage(0);
-                              } catch (error) {
-                                //TODO: Check why we're not able to access the errorText variable
-                                // errorText = "Error uploading the images!";
-                              }
-                            },
-                            child: Container(
-                              color: Colors.redAccent,
-                              height: 250,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          print("clicked card 1");
-                                        },
-                                        child: const ImageUploader(
-                                          color: Colors.deepPurpleAccent,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print("clicked card 2");
-                                        },
-                                        child: const ImageUploader(
-                                          color: Colors.yellowAccent,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          print("clicked card 3");
-                                        },
-                                        child: const ImageUploader(
-                                          color: Colors.blueAccent,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print("clicked card 4");
-                                        },
-                                        child: const ImageUploader(
-                                          color: Colors.greenAccent,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Condition of the Product",
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const Spacer(),
-                          DropdownMenu<ProductCondition>(
-                            dropdownMenuEntries: [
-                              for (final condition in ProductCondition.values)
-                                DropdownMenuEntry(
-                                  value: condition,
-                                  label: condition.displayName,
-                                ),
-                            ],
-                            hintText: "Condition",
-                            onSelected: model.setCondition,
-                            enableSearch: false,
-                          ),
-                        ],
-                      ),
-                    ),
-                    InputContainer(
-                      text: "Description of the Item",
-                      hint: "Item Description",
-                      controller: model.descriptionController,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Categories",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Wrap(
-                            spacing: 5,
-                            children: <Widget>[
-                              for (final category in Category.values)
-                                FilterChip(
-                                  label: Text(category.title),
-                                  selected: model.categories.contains(category),
-                                  selectedColor:
-                                      const Color.fromRGBO(0, 90, 67, 1),
-                                  onSelected: (selected) {
-                                    model.setCategorySelected(
-                                      category: category,
-                                      selected: selected,
-                                    );
-                                  },
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+    appBar: AppBar(
+      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
+      title: const Text("List Item"),
+    ),
+    body: !model.isSeller
+      ? const Text("Not a seller!")
+      : Center(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              InputContainer(
+                text: "Name of the Item",
+                hint: "Item Name",
+                controller: model.titleController,
+              ),
+              const SizedBox(height: 12),
+              InputContainer(
+                text: "Price of the Item",
+                hint: "Item Price",
+                controller: model.priceController,
+                formatter: FilteringTextInputFormatter.allow(RegExp(r"[\d\.]")),
+                inputType: const TextInputType.numberWithOptions(decimal: true),
+                errorText: model.priceError,
+              ),
+              const SizedBox(height: 12),
+              const Center(
+                child: Text(
+                  "Upload Photos",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-      );
+              const SizedBox(height: 8),
+              if (model.imageError != null) Text(
+                model.imageError!,
+                style: TextStyle(color: context.colorScheme.error),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () => model.uploadImage(0),
+                        child: 
+                        ImageUploader(
+                          imageUrl: model.imageUrls[0],
+                          onDelete: () => model.deleteImage(0),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => model.uploadImage(1),
+                        child: ImageUploader(
+                          imageUrl: model.imageUrls[1],
+                          onDelete: () => model.deleteImage(1),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () => model.uploadImage(2),
+                        child: ImageUploader(
+                          imageUrl: model.imageUrls[2],
+                          onDelete: () => model.deleteImage(2),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => model.uploadImage(3),
+                        child: ImageUploader(
+                          imageUrl: model.imageUrls[3],
+                          onDelete: () => model.deleteImage(3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  const Text(
+                    "Condition",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const Spacer(),
+                  DropdownMenu<ProductCondition>(
+                    dropdownMenuEntries: [
+                      for (final condition in ProductCondition.values)
+                        DropdownMenuEntry(
+                          value: condition,
+                          label: condition.displayName,
+                        ),
+                    ],
+                    hintText: "Condition",
+                    onSelected: model.setCondition,
+                    enableSearch: false,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              InputContainer(
+                text: "Description of the Item",
+                hint: "Item Description",
+                controller: model.descriptionController,
+              ),
+              const SizedBox(height: 12),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Categories",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 5,
+                children: <Widget>[
+                  for (final category in Category.values) FilterChip(
+                    label: Text(category.title),
+                    selected: model.categories.contains(category),
+                    selectedColor: const Color.fromRGBO(0, 90, 67, 1),
+                    onSelected: (selected) => model.setCategorySelected(
+                      category: category,
+                      selected: selected,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              if (model.isSaving) const LinearProgressIndicator(),
+              SizedBox(
+                height: 48,
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: model.isReady ? model.save : null,
+                  child: const Text("Save product"),
+                ),
+              ),
+              if (model.saveError != null) Text(
+                model.saveError!,
+                style: TextStyle(color: context.colorScheme.error),
+              ),
+            ],
+          ),
+        ),
+  );
 }
 
 /// Reusable InputContainer for input fields
-class InputContainer extends ReactiveWidget<ProductBuilder> {
+class InputContainer extends StatelessWidget {
   /// Text to be entered in the input
   final String text;
 
@@ -187,373 +178,93 @@ class InputContainer extends ReactiveWidget<ProductBuilder> {
   /// Controller available in the model
   final TextEditingController controller;
 
+  /// The formatter for this text field, if any.
+  final TextInputFormatter? formatter;
+
+  /// The keyboard type for this input, if not the default.
+  final TextInputType? inputType;
+
+  /// The error with this input, if any.
+  final String? errorText;
+
   /// Constructor to set the fields
   const InputContainer({
     required this.text,
     required this.hint,
     required this.controller,
+    this.formatter,
+    this.inputType,
+    this.errorText,
     super.key,
   });
 
   @override
-  ProductBuilder createModel() => ProductBuilder();
-  @override
-  Widget build(BuildContext context, ProductBuilder model) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                text,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: hint,
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) => Column(
+    children: <Widget>[
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style:
+              const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-      );
+      ),
+      TextField(
+        controller: controller,
+        inputFormatters: [
+          if (formatter != null) formatter!,
+        ],
+        keyboardType: inputType,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          hintText: hint,
+          errorText: errorText,
+        ),
+      ),
+    ],
+  );
 }
 
 /// Reusable image uploader widget
-class ImageUploader extends ReactiveWidget<ProductBuilder> {
-  /// Background color of the card
-  final Color color;
-
-  /// The index of the widget to fetch the image from
-  final int? index;
-
+class ImageUploader extends StatelessWidget {
   /// Link to the image
-  final String? imageURL;
+  final String? imageUrl;
 
+  /// A callback to run when the user presses "clear"
+  final VoidCallback onDelete;
+  
   /// Constructor to initialize the widget
-  const ImageUploader({required this.color, this.imageURL, this.index});
+  const ImageUploader({required this.imageUrl, required this.onDelete});
 
   @override
-  ProductBuilder createModel() => ProductBuilder();
-
-  @override
-  Widget build(BuildContext context, ProductBuilder model) => Container(
+  Widget build(BuildContext context) => Column(
+    children: [
+      Container(
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: color,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Center(
-          child: index != null && index! >= 0 && model.imageUrls[index!] != null
-              ? Image.network(
-                  model.imageUrls[index!]!,
-                  fit: BoxFit.cover,
-                )
-              : const Text(
-                  "Upload an Image!",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+        child: Card(
+          child: Center(
+            child: imageUrl == null
+              ? const Text(
+                "Upload an Image!",
+                textAlign: TextAlign.center,
+              ) : Image.network(
+                imageUrl!,
+                fit: BoxFit.cover,
+              ),
+          ),
         ),
-      );
+      ),
+      if (imageUrl != null) ...[
+        const SizedBox(height: 8),
+        TextButton(
+          onPressed: onDelete,
+          child: const Text("Clear"),
+        ),
+      ],
+    ],
+  );
 }
-
-// The main function is the starting point for all our Apps
-// The Material app is the parent of all the widgets that we've used in our App
-
-// import 'package:flutter/material.dart';
-
-// enum Conditions { condition1, condition2, condition3, condition4 }
-
-// enum ExerciseFilter { walking, running, cycling, hiking }
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'flutter demo',
-//       home: MyHomePage(title: 'flutter dropdown'),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key? key, required this.title}) : super(key: key);
-
-//   final String title;
-
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   String? valueChoose;
-//   List<String> listItems = [
-//     "condition1",
-//     "condition2",
-//     "condition3",
-//     "condition4"
-//   ];
-//   Set<ExerciseFilter> filters = <ExerciseFilter>{};
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-//         title: const Text("List Item"),
-//       ),
-//       body: Center(
-//         child: ListView(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.all(20),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     "Name of Item",
-//                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                   ),
-//                   TextField(
-//                     decoration: const InputDecoration(
-//                       border: OutlineInputBorder(),
-//                       hintText: "Item Name",
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.all(20),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     "Price",
-//                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                   ),
-//                   TextField(
-//                     decoration: InputDecoration(
-//                       border: OutlineInputBorder(),
-//                       hintText: "Enter Price of the Item",
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Enter the image upload widget here
-            // Padding(
-            //     padding: EdgeInsets.all(20),
-            //     child: Column(children: [
-            //       Text(
-            //         "Upload Photos",
-            //         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //       ),
-            //       GestureDetector(
-            //         onTap: () async {
-            //           print("clicked");
-                      // Call the uploadImage function from the model
-                    // },
-//                     child: Container(
-//                       color: Colors.redAccent,
-//                       height: 250,
-//                       child: Column(
-//                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                         children: [
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                             children: [
-//                               GestureDetector(
-//                                 onTap: () {
-//                                   print("clicked card 1");
-//                                 },
-//                                 child: ReusableCard(
-//                                   color: Colors.deepPurpleAccent,
-//                                 ),
-//                               ),
-//                               GestureDetector(
-//                                 onTap: () {
-//                                   print("clicked card 2");
-//                                 },
-//                                 child: ReusableCard(
-//                                   color: Colors.yellowAccent,
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                             children: [
-//                               GestureDetector(
-//                                 onTap: () {
-//                                   print("clicked card 3");
-//                                 },
-//                                 child: ReusableCard(
-//                                   color: Colors.blueAccent,
-//                                 ),
-//                               ),
-//                               GestureDetector(
-//                                 onTap: () {
-//                                   print("clicked card 4");
-//                                 },
-//                                 child: ReusableCard(
-//                                   color: Colors.greenAccent,
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ],),),
-//             Padding(
-//               padding: EdgeInsets.all(20),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     "Condition of the Product",
-//                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                   ),
-//                   Container(
-//                     padding: EdgeInsets.all(6.0),
-//                     decoration: BoxDecoration(
-//                       border: Border.all(color: Colors.grey, width: 1),
-//                       borderRadius: BorderRadius.circular(15),
-//                     ),
-//                     child: DropdownButton(
-//                       items: listItems.map(
-//                         (valueItem) {
-//                           return DropdownMenuItem(
-//                             value: valueItem,
-//                             child: Text(valueItem),
-//                           );
-//                         },
-//                       ).toList(),
-//                       hint: Text("Condition"),
-//                       dropdownColor: Colors.white,
-//                       icon: Icon(Icons.arrow_drop_down),
-//                       iconSize: 36,
-//                       isExpanded: true,
-//                       underline: SizedBox(),
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 22,
-//                       ),
-//                       value: valueChoose,
-//                       onChanged: (newValue) {
-//                         setState(
-//                           () {
-//                             valueChoose = newValue;
-//                           },
-//                         );
-//                       },
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.all(20),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     "Description",
-//                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                   ),
-//                   TextField(
-//                     decoration: InputDecoration(
-//                       border: OutlineInputBorder(),
-//                       hintText: "Enter Product Description",
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: EdgeInsets.all(20),
-//               child: Column(
-//                 children: [
-//                   Align(
-//                     alignment: Alignment.centerLeft,
-//                     child: Text(
-//                       "Categories",
-//                       style:
-//                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//                     ),
-//                   ),
-//                   Wrap(
-//                     spacing: 5.0,
-//                     children: <Widget>[
-//                       for (final exercise in ExerciseFilter.values)
-//                         FilterChip(
-//                           label: Text(exercise.name),
-//                           selected: filters.contains(exercise),
-//                           selectedColor: Color.fromRGBO(0, 90, 67, 1),
-//                           onSelected: (bool selected) {
-//                             setState(
-//                               () {
-//                                 if (selected) {
-//                                   filters.add(exercise);
-//                                 } else {
-//                                   filters.remove(exercise);
-//                                 }
-//                               },
-//                             );
-//                           },
-//                         ),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// @immutable
-// class ReusableCard extends StatelessWidget {
-//   final Color color;
-//   final String? imageURL;
-//   const ReusableCard({this.imageURL, required this.color});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 100.0,
-//       height: 100.0,
-// //       margin: const EdgeInsets.all(15.0),
-//       decoration: BoxDecoration(
-//         color: color,
-//         borderRadius: BorderRadius.circular(10.0),
-//       ),
-//       child: Center(
-//           child: this.imageURL != null
-//               ? Image.network(
-//                   imageURL!,
-//                   fit: BoxFit.cover,
-//                 )
-//               : Text(
-//                   "Upload an Image!",
-//                   style: TextStyle(
-//                     color: Colors.white,
-//                   ),
-//                 ),),
-//     );
-//   }
-// }
