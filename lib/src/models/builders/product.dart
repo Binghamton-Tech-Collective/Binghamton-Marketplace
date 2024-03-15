@@ -37,7 +37,8 @@ class ProductBuilder extends BuilderModel<Product> {
 
   /// To add the selected category to the set
 
-  void setCategorySelected({required Category category, required bool selected}) {
+  void setCategorySelected(
+      {required Category category, required bool selected}) {
     if (selected) {
       categories.add(category);
     } else {
@@ -48,7 +49,7 @@ class ProductBuilder extends BuilderModel<Product> {
   }
 
   /// Setting the condition of the product
-  set condition(ProductCondition condition) {
+  void setCondition(ProductCondition condition) {
     isLoading = true;
     this.condition = condition;
     isLoading = false;
@@ -85,7 +86,7 @@ class ProductBuilder extends BuilderModel<Product> {
       priceController.text.isNotEmpty &&
       quantityController.text.isNotEmpty &&
       categories.isNotEmpty &&
-      imageUrls.any((url) => url != null) && 
+      imageUrls.any((url) => url != null) &&
       condition.toString().isNotEmpty &&
       sellerID.toString().isNotEmpty;
 
