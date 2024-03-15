@@ -43,11 +43,16 @@ class ProductBuilder extends BuilderModel<Product> {
     } else {
       categories.remove(category);
     }
+    isLoading = false;
+    notifyListeners();
   }
 
   /// Setting the condition of the product
   set condition(ProductCondition condition) {
+    isLoading = true;
     this.condition = condition;
+    isLoading = false;
+    notifyListeners();
   }
 
   @override
@@ -88,9 +93,7 @@ class ProductBuilder extends BuilderModel<Product> {
   Future<void> uploadImage(int index) async {
     // Pick a file, upload to Firebase Storage, then set [imageUrl]
     /**
-     * Package: file_picker => This function should be called here
-     * The functions will be in cloud_storage.dart and will be asynchronous
-     * Have a look at PlatformFile datatype
+     * Will have to use the logic for multi file picker.
      */
   }
 
