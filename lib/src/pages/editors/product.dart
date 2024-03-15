@@ -42,8 +42,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                       onTap: () async {
                         try {
                           await model.uploadImage(0);
-                          
-                        }catch(error) {
+                        } catch (error) {
                           //TODO: Check why we're not able to access the errorText variable
                           // errorText = "Error uploading the images!";
                         }
@@ -264,9 +263,7 @@ class ImageUploader extends ReactiveWidget<ProductBuilder> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child:  index != null &&
-                  index! >= 0 &&
-                  model.imageUrls[index!] != null
+          child: index != null && index! >= 0 && model.imageUrls[index!] != null
               ? Image.network(
                   model.imageUrls[index!]!,
                   fit: BoxFit.cover,
