@@ -50,9 +50,7 @@ class ProductBuilder extends BuilderModel<Product> {
 
   /// Setting the condition of the product
   void setCondition(ProductCondition condition) {
-    isLoading = true;
     this.condition = condition;
-    isLoading = false;
     notifyListeners();
   }
 
