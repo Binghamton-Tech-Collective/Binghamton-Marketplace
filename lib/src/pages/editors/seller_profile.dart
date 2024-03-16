@@ -19,6 +19,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
         // TODO: Check if you need a Center here
         body: Center(
           child: ListView(
+            padding: const EdgeInsets.all(20),
             children: [
               const SizedBox(height: 20),
               GestureDetector(
@@ -27,84 +28,83 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
                     imageUrl: model.imageUrl,
                     onDelete: () => model.deleteImage()),
               ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Name",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    TextField(
-                      controller: model.nameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Who are you",
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 12),
+              const Text(
+                "Name",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              TextField(
+                controller: model.nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "First Name and Last Name",
                 ),
               ),
-              // TODO: Do we want major?
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Major",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    TextField(
-                      // controller: model.,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "What are you studying",
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 12),
+              // TODO: Do we want major? If yes, add here
+              const Text("Bio",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              TextField(
+                controller: model.bioController,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Tell us about yourself",
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Bio",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    TextField(
-                      controller: model.bioController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Tell us about yourself",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(height: 12),
+
               // TODO: Move social media editors into their own file for reuse
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Instagram",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    TextField(
-                      controller: model.instagramController,
-                      decoration: const InputDecoration(
-                        prefixText: "@",
-                        //labelText: "@",
-                        border: OutlineInputBorder(),
-                        hintText: "username",
-                      ),
-                    ),
-                  ],
+
+              const Text("Instagram",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              TextField(
+                controller: model.instagramController,
+                decoration: const InputDecoration(
+                  prefixText: "@",
+                  //labelText: "@",
+                  border: OutlineInputBorder(),
+                  hintText: "username",
                 ),
               ),
+              const SizedBox(height: 12),
+              const Text("LinkedIn",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              TextField(
+                controller: model.linkedinController,
+                decoration: const InputDecoration(
+                  prefixText: "@",
+                  //labelText: "@",
+                  border: OutlineInputBorder(),
+                  hintText: "username",
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Text("Tiktok",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              TextField(
+                controller: model.tikTokController,
+                decoration: const InputDecoration(
+                  prefixText: "@",
+                  //labelText: "@",
+                  border: OutlineInputBorder(),
+                  hintText: "username",
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Text("Twitter",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              TextField(
+                controller: model.twitterController,
+                decoration: const InputDecoration(
+                  prefixText: "@",
+                  //labelText: "@",
+                  border: OutlineInputBorder(),
+                  hintText: "username",
+                ),
+              ),
+              const SizedBox(height: 12),
               const SizedBox(height: 24),
               if (model.isSaving) const LinearProgressIndicator(),
               SizedBox(
@@ -170,7 +170,7 @@ class ImageUploader extends StatelessWidget {
               child: Center(
                 child: imageUrl == null
                     ? const Text(
-                        "Upload an Image!",
+                        "Upload a Profile Picture!",
                         textAlign: TextAlign.center,
                       )
                     : Image.network(
