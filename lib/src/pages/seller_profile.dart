@@ -1,12 +1,18 @@
 import "package:flutter/material.dart";
 
-import "package:btc_market/widgets.dart";
+import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/widgets.dart";
 
 /// The profile page.
 class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
+  /// The ID of the seller to view.
+  final SellerID id;
+  /// Creates the Seller Profile page. 
+  const SellerProfilePage(this.id);
+  
   @override
-  SellerProfileViewModel createModel() => SellerProfileViewModel();
+  SellerProfileViewModel createModel() => SellerProfileViewModel(id);
 
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
@@ -75,7 +81,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                         ActionChip(
                           avatar: const Icon(Icons.phone),
                           shape: const StadiumBorder(),
-                          label: const SizedBox(),
+                          label: const Text("Call"),
                           onPressed: () {},
                         ),
                         const VerticalDivider(
@@ -115,24 +121,19 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                     child: SizedBox(
                       height: 125,
                       child: ListView.separated(
-                      itemBuilder: (_,i) => const CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 40,
-                        child: Column(
+                        itemBuilder: (_,i) => const Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 10),
-                              child: Text("Test"),
-                              ),
+                          children:  [
+                             CircleAvatar(backgroundColor: Colors.red, radius: 40),
+                             SizedBox(height: 10),
+                             Text("Test"),
                           ],
                         ),
-                      ), 
-                      separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                        separatorBuilder: (BuildContext context, int index) => const SizedBox(
                           width: 20,
-                      ), 
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
+                        ), 
+                        itemCount: 10,
+                        scrollDirection: Axis.horizontal,
                       ),
                     ), 
                   ), 

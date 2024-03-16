@@ -2,11 +2,16 @@ import "package:btc_market/src/pages/create_seller.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
-import "src/pages/editors/seller_profile.dart";
+
+import "package:btc_market/data.dart";
 
 import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
+import "src/pages/product.dart";
+
+import "src/pages/editors/product.dart";
+import "src/pages/editors/seller_profile.dart";
 
 /// All the routes in the app.
 class Routes {
@@ -14,8 +19,10 @@ class Routes {
   static const products = "/products";
   /// The profile route.
   static const sellers = "/sellers";
+
   /// The messages route.
   static const messages = "/messages";
+
   /// The user's profile route.
   static const profile = "/my-profile";
 }
@@ -29,35 +36,62 @@ final GoRouter router = GoRouter(
       redirect: (context, state) => Routes.products,
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, shell) => ShellPage(shell),
+      builder: (context, state, shell) => ShellPage(shell, state),
       branches: [
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.products,
-            name: Routes.products,
-            builder: (context, state) => CreateSellerPage(),
-          ),
-        ],),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.messages,
-            name: Routes.messages,
-            builder: (context, state) => const Placeholder(),
-          ),
-        ],),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.products,
+              name: "All products",
+              builder: (context, state) => NotificationsPage(),
+              routes: [
+                GoRoute(
+                  path: "create",
+                  name: "List a product",
+                  builder: (context, state) => ProductEditor(),
+                ),
+                GoRoute(
+                  path: ":id",
+                  name: "View product",
+                  builder: (context, state) =>
+                      ProductPage(state.pathParameters["id"] as ProductID),
+                  // Uncomment this to allow users to edit their profile
+                  // routes: [
+                  //   GoRoute(
+                  //     path: "edit",
+                  //     builder: (context, state) =>
+                  //         ProductEditor(id: state.pathParameters["id"]),
+                  //   ),
+                  // ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.messages,
+              name: Routes.messages,
+              builder: (context, state) => const Placeholder(),
+            ),
+          ],
+        ),
         StatefulShellBranch(routes: [
           GoRoute(
             path: Routes.sellers,
-            name: Routes.sellers,
+            name: "View sellers",
             builder: (context, state) => const Placeholder(),
             routes: [
               GoRoute(
                 path: "create",
+                name: "Create a seller profile",
                 builder: (context, state) => SellerProfileEditor(),
               ),
               GoRoute(
                 path: ":id",
-                builder: (context, state) => SellerProfilePage(/* id: state.pathParameters["id"]! */),
+                name: "View seller",
+                builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
                 // Uncomment this to allow users to edit their profile
                 // routes: [
                 //   GoRoute(
@@ -69,13 +103,15 @@ final GoRouter router = GoRouter(
             ],
           ),
         ],),
-        StatefulShellBranch(routes: [
-          GoRoute(
-            path: Routes.profile,
-            name: Routes.profile,
-            builder: (context, state) => const Placeholder(),
-          ),
-        ],),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.profile,
+              name: Routes.profile,
+              builder: (context, state) => const Placeholder(),
+            ),
+          ],
+        ),
       ],
     ),
   ],

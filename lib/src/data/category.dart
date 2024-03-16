@@ -3,7 +3,9 @@ import "types.dart";
 /// A category of product.
 enum Category {
   /// The clothing category.
-  clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png");
+  clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png"),
+  /// The books category.
+  books(id: CategoryID("books"), title: "Books", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png");
   
   /// Stores the unique ID for this category
   final CategoryID id;

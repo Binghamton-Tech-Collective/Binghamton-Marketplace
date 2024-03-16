@@ -30,6 +30,8 @@ class Product {
 
   /// The seller's unique Seller ID.
   final SellerID sellerID;
+  /// The user ID who owns this product and its seller profile.
+  final UserID userID;
   /// The title or a name of the product.
   final String title;
 
@@ -67,6 +69,7 @@ class Product {
   const Product({
     required this.id,
     required this.sellerID,
+    required this.userID,
     required this.title,
     required this.description,
     required this.price,
@@ -82,11 +85,12 @@ class Product {
   Product.fromJson(Json json) : 
     id = json["id"],
     sellerID = json["sellerID"],
+    userID = json["userID"],
     title = json["title"], 
     description = json["description"], 
-    price = json["price"], 
+    price = json["price"].toDouble(), 
     quantity = json["quantity"], 
-    imageUrls = json["imageUrls"], 
+    imageUrls = List<String>.from(json["imageUrls"]), 
     categories = {
       for (final categoryJson in json["categories"])
         Category.fromJson(categoryJson),
@@ -99,6 +103,7 @@ class Product {
   Json toJson() => {
     "id": id,
     "sellerID": sellerID,
+    "userID": userID,
     "title": title, 
     "description": description, 
     "price": price, 
