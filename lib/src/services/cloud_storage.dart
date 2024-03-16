@@ -42,7 +42,7 @@ class CloudStorageService extends Service {
   Future<void> deleteFile(String path) => _root.child(path).delete();
 
   /// Returns the path of the seller's profile picture.
-  String getSellerProfilePath(SellerID id) => "sellers/$id/profile_pic";
+  String getSellerImagePath(SellerID id) => "sellers/$id/profile_pic";
 
   /// Returns the path of the seller's profile picture.
   String getProductImage(ProductID id, int index) => "products/$id/$index";
