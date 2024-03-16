@@ -124,7 +124,12 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     notifyListeners();
   }
 
+  /// Set the flag to true when we are saving the profile
+
   bool isSaving = false;
+
+  /// Save the error, if any
+
   String? saveError;
 
   /// Saving the profile to Cloud Firestore
@@ -147,4 +152,6 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   void cancelProcess() {
     router.go("/");
   }
+
+  //TODO: Add a validate method to check if the profile already exists
 }
