@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
+import "package:btc_market/pages.dart";
 
 extension on String {
   String? get nullIfEmpty => isEmpty ? null : this;
@@ -33,14 +34,14 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// All the text controllers used on the page.
   List<TextEditingController> get allControllers => [
-    nameController,
-    bioController,
-    phoneNumberController,
-    tikTokController,
-    instagramController,
-    twitterController,
-    linkedinController,
-  ];
+        nameController,
+        bioController,
+        phoneNumberController,
+        tikTokController,
+        instagramController,
+        twitterController,
+        linkedinController,
+      ];
 
   /// The seller's ID.
   late final SellerID sellerID;
@@ -77,32 +78,34 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Function to build the profile from the input provided by the user
   @override
   SellerProfile build() => SellerProfile(
-    id: sellerID,
-    name: nameController.text,
-    userID: userID,
-    imageUrl: imageUrl ?? "https://picsum.photos/200",
-    bio: bioController.text,
-    contact: ContactInfo(
-      email: email,
-      phoneNumber: phoneNumberController.text.nullIfEmpty,
-      tikTokUsername: tikTokController.text.nullIfEmpty,
-      instagramHandle: instagramController.text.nullIfEmpty,
-      twitterUsername: twitterController.text.nullIfEmpty,
-      linkedInUsername: linkedinController.text.nullIfEmpty,
-    ),
-  );
+        id: sellerID,
+        name: nameController.text,
+        userID: userID,
+        imageUrl: imageUrl ?? "https://picsum.photos/200",
+        bio: bioController.text,
+        contact: ContactInfo(
+          email: email,
+          phoneNumber: phoneNumberController.text.nullIfEmpty,
+          tikTokUsername: tikTokController.text.nullIfEmpty,
+          instagramHandle: instagramController.text.nullIfEmpty,
+          twitterUsername: twitterController.text.nullIfEmpty,
+          linkedInUsername: linkedinController.text.nullIfEmpty,
+        ),
+      );
 
   @override
-  bool get isReady => nameController.text.isNotEmpty
-    && bioController.text.isNotEmpty
-    // TODO: Needs image uploading in the UI
-    && imageUrl != null;
+  bool get isReady =>
+      nameController.text.isNotEmpty &&
+      bioController.text.isNotEmpty
+      // TODO: Needs image uploading in the UI
+      &&
+      imageUrl != null;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
     final bytes = await services.cloudStorage.pickImage();
     if (bytes == null) return;
-    final path = services.cloudStorage.getSellerProfilePath(sellerID);
+    final path = services.cloudStorage.getSellerImagePath(sellerID);
     final url = await services.cloudStorage.uploadFile(bytes, path);
     if (url == null) {
       errorText = "Could not upload image";
@@ -113,18 +116,35 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     notifyListeners();
   }
 
+  /// Deletes the image at the given index.
+  Future<void> deleteImage() async {
+    imageUrl = null;
+    final filename = services.cloudStorage.getSellerImagePath(sellerID);
+    await services.cloudStorage.deleteFile(filename);
+    notifyListeners();
+  }
+
+  bool isSaving = false;
+  String? saveError;
+
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
-    isLoading = true;
-    errorText = null;
+    isSaving = true;
+    saveError = null;
     final profile = build();
-    try { 
+    try {
       await services.database.saveSellerProfile(profile);
-    } catch (error) { 
-      errorText = "Error uploading profile:\n$error";
-      isLoading = false;
+      router.go("/");
+    } catch (error) {
+      saveError = "Error uploading profile:\n$error";
+      rethrow;
     }
-    isLoading = false;
+    isSaving = false;
     notifyListeners();
+  }
+
+  /// Cancelling the create profile
+  void cancelProcess() {
+    router.go("/");
   }
 }
