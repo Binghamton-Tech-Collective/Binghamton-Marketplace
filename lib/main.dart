@@ -11,7 +11,9 @@ void main() async {
   runApp(BtcMarket());
 }
 
+/// The classic Binghamton green, "Pantone 342"
 const darkGreen = Color(0xFF005A43);
+/// A light grey to accent the dark green.
 const lightGrey = Color(0xFFDEDEDE);
 
 /// Our main app. Remember, everything is a widget!
@@ -22,7 +24,7 @@ class BtcMarket extends StatelessWidget {
     title: "ShopBing",
     theme: ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: darkGreen,
         secondary: lightGrey,
       ),
