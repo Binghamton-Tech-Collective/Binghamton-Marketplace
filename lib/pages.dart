@@ -1,7 +1,5 @@
-import "package:btc_market/src/pages/create_seller.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
-
 
 import "package:btc_market/data.dart";
 
@@ -36,7 +34,11 @@ final GoRouter router = GoRouter(
       redirect: (context, state) => Routes.products,
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, shell) => ShellPage(shell, state),
+      builder: (context, state, shell) => Title(
+        title: state.topRoute?.name ?? "ShopBing",
+        color: Colors.green,
+        child: ShellPage(shell),
+      ),
       branches: [
         StatefulShellBranch(
           routes: [

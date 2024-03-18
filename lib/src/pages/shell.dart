@@ -1,6 +1,3 @@
-import "dart:async";
-
-import "package:btc_market/models.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -9,9 +6,7 @@ class ShellPage extends StatelessWidget {
   /// The body of the page, which also allows us to switch branches.
   final StatefulNavigationShell shell;
   /// A const constructor.
-  ShellPage(this.shell, GoRouterState state) {
-    Timer.run(() => models.app.title = state.topRoute?.name ?? "ShopBing");
-  }
+  const ShellPage(this.shell);
   
   @override
   Widget build(BuildContext context) => Scaffold(
