@@ -5,6 +5,7 @@ import "src/services/service.dart";
 import "src/services/auth.dart";
 import "src/services/firebase.dart";
 import "src/services/database.dart";
+import "src/services/cloud_storage.dart";
 
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
@@ -14,12 +15,15 @@ class Services extends Service {
   final database = Database();
   /// The authentication service.
   final auth = AuthService();
+  /// The cloud_storage service
+  final cloudStorage = CloudStorageService();
   
   @override
   Future<void> init() async {
     await firebase.init();
     await auth.init();
     await database.init();
+    await cloudStorage.init();
   }
 
   @override
@@ -27,6 +31,7 @@ class Services extends Service {
     await database.dispose();
     await auth.dispose();
     await firebase.dispose();
+    await cloudStorage.dispose();
   }
 }
 

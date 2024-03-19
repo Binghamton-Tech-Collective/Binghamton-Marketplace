@@ -31,8 +31,8 @@ class UserProfile {
   UserProfile.fromJson(Json json) : 
     name = json["name"],
     id = json["id"],
-    productsWatchlist = Set<String>.from(json["productsWatchlist"]),
-    sellersWatchlist = Set<String>.from(json["sellersWatchlist"]);
+    productsWatchlist = Set<ProductID>.from(json["productsWatchlist"]),
+    sellersWatchlist = Set<SellerID>.from(json["sellersWatchlist"]);
 
   /// Convert this user to its JSON representation
   Json toJson() => {

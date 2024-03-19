@@ -2,16 +2,22 @@
 typedef Json = Map<String, dynamic>;
 
 /// A unique ID for every user.
-typedef UserID = String;
+extension type const UserID(String id) { }
 
 /// A unique ID for every product.
-typedef ProductID = String;
+extension type const ProductID(String id) { }
 
 /// A unique ID for every Category
-typedef CategoryID = String;
+extension type const CategoryID(String id) { }
 
 /// A unique ID for every seller.
-typedef SellerID = String;
+extension type const SellerID(String id) { }
 
 /// A unique ID for every review.
-typedef ReviewID = String;
+extension type const ReviewID(String id) { }
+
+/// Some helpful methods on List
+extension ListUtils<E> on List<E> {
+  /// Returns the first element, or null if this list is empty.
+  E? get firstOrNull => isEmpty ? null : first;
+}
