@@ -3,6 +3,7 @@ import "package:go_router/go_router.dart";
 
 import "package:btc_market/data.dart";
 
+import "src/pages/conversation.dart";
 import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
@@ -74,8 +75,15 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: Routes.messages,
-              name: Routes.messages,
+              name: "All chats",
               builder: (context, state) => const Placeholder(),
+              routes: [
+                GoRoute(
+                  path: ":id",
+                  name: "Chat with a seller",
+                  builder: (context, state) => ConversationPage(state.pathParameters["id"] as ConversationID),
+                ),
+              ],
             ),
           ],
         ),
