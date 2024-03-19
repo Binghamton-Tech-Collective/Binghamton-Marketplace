@@ -34,7 +34,11 @@ final GoRouter router = GoRouter(
       redirect: (context, state) => Routes.products,
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, shell) => ShellPage(shell, state),
+      builder: (context, state, shell) => Title(
+        title: state.topRoute?.name ?? "ShopBing",
+        color: Colors.green,
+        child: ShellPage(shell),
+      ),
       branches: [
         StatefulShellBranch(
           routes: [

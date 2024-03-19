@@ -54,20 +54,15 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      GestureDetector(
+                      ImageUploader(
                         onTap: () => model.uploadImage(0),
-                        child: 
-                        ImageUploader(
-                          imageUrl: model.imageUrls[0],
-                          onDelete: () => model.deleteImage(0),
-                        ),
+                        imageUrl: model.imageUrls[0],
+                        onDelete: () => model.deleteImage(0),
                       ),
-                      GestureDetector(
+                      ImageUploader(
                         onTap: () => model.uploadImage(1),
-                        child: ImageUploader(
-                          imageUrl: model.imageUrls[1],
-                          onDelete: () => model.deleteImage(1),
-                        ),
+                        imageUrl: model.imageUrls[1],
+                        onDelete: () => model.deleteImage(1),
                       ),
                     ],
                   ),
@@ -75,19 +70,15 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      GestureDetector(
+                      ImageUploader(
                         onTap: () => model.uploadImage(2),
-                        child: ImageUploader(
-                          imageUrl: model.imageUrls[2],
-                          onDelete: () => model.deleteImage(2),
-                        ),
+                        imageUrl: model.imageUrls[2],
+                        onDelete: () => model.deleteImage(2),
                       ),
-                      GestureDetector(
+                      ImageUploader(
                         onTap: () => model.uploadImage(3),
-                        child: ImageUploader(
-                          imageUrl: model.imageUrls[3],
-                          onDelete: () => model.deleteImage(3),
-                        ),
+                        imageUrl: model.imageUrls[3],
+                        onDelete: () => model.deleteImage(3),
                       ),
                     ],
                   ),
@@ -164,107 +155,5 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             ],
           ),
         ),
-  );
-}
-
-/// Reusable InputContainer for input fields
-class InputContainer extends StatelessWidget {
-  /// Text to be entered in the input
-  final String text;
-
-  /// Hint to be entered for the input
-  final String hint;
-
-  /// Controller available in the model
-  final TextEditingController controller;
-
-  /// The formatter for this text field, if any.
-  final TextInputFormatter? formatter;
-
-  /// The keyboard type for this input, if not the default.
-  final TextInputType? inputType;
-
-  /// The error with this input, if any.
-  final String? errorText;
-
-  /// Constructor to set the fields
-  const InputContainer({
-    required this.text,
-    required this.hint,
-    required this.controller,
-    this.formatter,
-    this.inputType,
-    this.errorText,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: <Widget>[
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style:
-              const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
-      TextField(
-        controller: controller,
-        inputFormatters: [
-          if (formatter != null) formatter!,
-        ],
-        keyboardType: inputType,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          hintText: hint,
-          errorText: errorText,
-        ),
-      ),
-    ],
-  );
-}
-
-/// Reusable image uploader widget
-class ImageUploader extends StatelessWidget {
-  /// Link to the image
-  final String? imageUrl;
-
-  /// A callback to run when the user presses "clear"
-  final VoidCallback onDelete;
-  
-  /// Constructor to initialize the widget
-  const ImageUploader({required this.imageUrl, required this.onDelete});
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Card(
-          child: Center(
-            child: imageUrl == null
-              ? const Text(
-                "Upload an Image!",
-                textAlign: TextAlign.center,
-              ) : Image.network(
-                imageUrl!,
-                fit: BoxFit.cover,
-              ),
-          ),
-        ),
-      ),
-      if (imageUrl != null) ...[
-        const SizedBox(height: 8),
-        TextButton(
-          onPressed: onDelete,
-          child: const Text("Clear"),
-        ),
-      ],
-    ],
   );
 }

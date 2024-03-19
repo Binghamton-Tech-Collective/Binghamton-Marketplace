@@ -1,120 +1,92 @@
+import "package:flutter/material.dart";
+
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter/material.dart";
 
 /// The page to create or edit a seller profile.
 class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
   @override
   SellerProfileBuilder createModel() => SellerProfileBuilder();
-  
+
   @override
   Widget build(BuildContext context, SellerProfileBuilder model) => Scaffold(
     appBar: AppBar(
-      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-      title: const Text("Create Seller Profile",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
-      ),
+      backgroundColor: context.colorScheme.primary,
+      foregroundColor: context.colorScheme.onPrimary,
+      title: const Text("Create Seller Profile"),
     ),
-    // TODO: Check if you need a Center here
-    body: Center(
-      child: ListView(
-        children: [
-          const SizedBox(height: 20),
-          const CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.grey,
+    body: ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        // ========== Basic info ==========
+        ImageUploader(
+          onTap: () => model.uploadImage(),
+          imageUrl: model.imageUrl,
+          onDelete: () => model.deleteImage(),
+        ),
+        if (model.imageError != null) Text(
+          model.imageError!,
+          style: TextStyle(color: context.colorScheme.error),
+        ),
+        const SizedBox(height: 12),
+        InputContainer(
+          text: "Name", 
+          hint: "Your name will be visible to others", 
+          controller: model.nameController,
+        ),
+        InputContainer(
+          text: "Bio", 
+          hint: "Tell us about yourself", 
+          controller: model.bioController,
+        ),
+
+        // ========== Social media ==========
+        InputContainer(
+          text: "Instagram", 
+          controller: model.instagramController,
+          prefixText: "@",
+          hint: "username",
+        ),
+        InputContainer(
+          text: "LinkedIn", 
+          controller: model.linkedinController,
+          prefixText: "@",
+          hint: "username",
+        ),
+        InputContainer(
+          text: "TikTok", 
+          controller: model.tikTokController,
+          prefixText: "@",
+          hint: "username",
+        ),
+        InputContainer(
+          text: "Twitter / X", 
+          controller: model.twitterController,
+          prefixText: "@",
+          hint: "username",
+        ),
+
+        // ========== Confirmation and loading indicators ==========
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 48,
+          width: double.infinity,
+          child: FilledButton(
+            onPressed: model.isReady ? model.save : null,
+            child: const Text("Create Profile"),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Name", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                TextField(
-                  controller: model.nameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Who are you",
-                  ),
-                ),
-              ],
-            ),
+        ),
+        if (model.saveError != null)
+          Text(
+            model.saveError!,
+            style: TextStyle(color: context.colorScheme.error),
           ),
-          // TODO: Do we want major? 
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Major", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                TextField(
-                  // controller: model.,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "What are you studying",
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Bio", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                TextField(
-                  controller: model.bioController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Tell us about yourself",
-                  ),
-                ),
-              ],
-            ),
-          ), 
-          // TODO: Move social media editors into their own file for reuse
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Instagram", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                TextField(
-                  controller: model.instagramController,
-                  decoration: const InputDecoration(
-                    prefixText: "@",
-                    //labelText: "@",
-                    border: OutlineInputBorder(),
-                    hintText: "username",
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 20),
-            child: ElevatedButton(
-              // TODO: Check if we can get rid of this using standard themes
-              style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
-              onPressed: model.isReady ? model.save : null,
-              child: const Text("Submit", style: TextStyle(color: Colors.white)),
-            ),                  
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-              onPressed: () => context.pop(),
-              child: const Text("Cancel", style: TextStyle(color: Colors.black)),
-            ),
-          ),
-          if (model.errorText != null)
-            Text(model.errorText!, style: const TextStyle(color: Colors.red)),
-        ],
-      ),
+        if (model.isSaving) const LinearProgressIndicator(),
+        if (model.errorText != null) Text(
+          model.errorText!,
+          style: const TextStyle(color: Colors.red),
+        ),
+      ],
     ),
   );
 }

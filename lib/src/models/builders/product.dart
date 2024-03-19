@@ -95,7 +95,6 @@ class ProductBuilder extends BuilderModel<Product> {
     title: titleController.text,
     description: descriptionController.text,
     price: double.parse(priceController.text),
-    // TODO: Add quantity here
     quantity: 1,
     imageUrls: [
       for (final url in imageUrls)
@@ -113,7 +112,6 @@ class ProductBuilder extends BuilderModel<Product> {
     descriptionController.text.isNotEmpty &&
     priceController.text.isNotEmpty &&
     priceError == null &&
-    // TODO: Add quantity
     // quantityController.text.isNotEmpty &&
     imageUrls.any((url) => url != null) &&
     condition != null &&
