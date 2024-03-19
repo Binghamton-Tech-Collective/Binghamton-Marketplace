@@ -3,6 +3,8 @@ import "message.dart";
 
 /// A conversation between a user and a seller
 class Conversation {
+  /// The unique ID for a conversation
+  final ConversationID id;
   /// The UserID of the buyer involved
   final UserID buyerUID;
   /// The UserID of the seller involved
@@ -16,6 +18,7 @@ class Conversation {
 
   /// A constructor to create a new Conversation.
   const Conversation({
+    required this.id,
     required this.buyerUID,
     required this.sellerUID,
     required this.sellerID,
@@ -25,6 +28,7 @@ class Conversation {
 
   /// Creates a new Conversation object from a JSON object.
   Conversation.fromJson(Json json) : 
+    id = json["id"],
     buyerUID = json["buyerUID"],
     sellerUID = json["sellerUID"],
     sellerID = json["sellerID"],
@@ -36,6 +40,7 @@ class Conversation {
 
   /// Convert this Conversation to its JSON representation
   Json toJson() => {
+    "id": id,
     "buyerUID": buyerUID,
     "sellerUID": sellerUID,
     "sellerID": sellerID,

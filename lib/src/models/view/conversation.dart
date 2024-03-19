@@ -4,12 +4,18 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 
+/// The view model for loading a single conversation
 class ConversationViewModel extends ViewModel {
+  /// ID of the conversation
   final ConversationID id;
+
+  /// Constructor for the View model
   ConversationViewModel(this.id);
 
+  /// Conversation object
   late Conversation conversation;
 
+  /// All messages of this conversation
   List<Message> get messages => conversation.messages;
 
   StreamSubscription<Conversation?>? _subscription;
