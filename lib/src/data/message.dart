@@ -21,8 +21,8 @@ class Message {
     required this.timeSent,
     required this.content,
     required this.author,
-    this.imageURL,
-    this.timeEdited,
+    required this.imageURL,
+    required this.timeEdited,
   });
 
   /// Creates a new Message object from a JSON object.

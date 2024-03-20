@@ -4,7 +4,7 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 import "package:flutter/material.dart";
-\
+
 /// The view model for loading a single conversation
 class ConversationViewModel extends ViewModel {
   /// ID of the conversation
@@ -30,7 +30,7 @@ class ConversationViewModel extends ViewModel {
       return;
     }
     /// Message object to store in the list of messages for this conversation
-    final message = Message(timeSent: DateTime.now(), content: messageController!.text, author: models.user.userProfile!.id);
+    final message = Message(timeSent: DateTime.now(), content: messageController!.text, author: models.user.userProfile!.id, imageURL: null, timeEdited: null,);
     conversation.messages.add(message);
     try {
       await services.database.updateConversation(conversation);
