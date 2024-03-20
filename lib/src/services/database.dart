@@ -1,3 +1,5 @@
+import "dart:js_interop";
+
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:btc_market/data.dart";
 import "package:meta/meta.dart";
@@ -132,6 +134,25 @@ class Database extends Service {
   /// Add the message to database
   Future<void> updateConversation(Conversation conversation) => 
     conversations.doc(conversation.id).set(conversation);
+  
+  /// Find the conversation if it already exists
+  Future<Conversation> getConversation(UserID userID, SellerID sellerID, UserID sellerUID) async { 
+    final querySnapshot =  await conversations.
+    where("userID", isEqualTo: userID)
+    .where("sellerID", isEqualTo: sellerID)
+    .get();
+
+    if(querySnapshot.docs.isNotEmpty) {
+      final conversationJSON = querySnapshot.docs.first.data() as Map<String, dynamic>;
+      return Conversation.fromJson(conversationJSON);
+    } else {
+      final id = conversations.newID;
+      final newConversation = Conversation(id: id, buyerUID: userID, sellerUID: sellerUID, sellerID: sellerID, messages: []);
+      await updateConversation(newConversation);
+      return newConversation;
+    }
+  }
+
 
   /// Listens to the conversation with the given id.
   Stream<Conversation?> listenToConversation(ConversationID id) => 

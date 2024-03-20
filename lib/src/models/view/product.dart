@@ -1,6 +1,8 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/services.dart";
-import "../model.dart";
+import "package:btc_market/models.dart";
+
+import "package:btc_market/pages.dart";
 
 /// The view model for the product page.
 class ProductViewModel extends ViewModel {
@@ -25,7 +27,19 @@ class ProductViewModel extends ViewModel {
   /// The average rating of the product, based on [reviews].
   int? get averageRating =>
     reviews.isEmpty ? null : calculateAverageRating(reviews);
-
+  /// The error while opening the conversation, if any.
+  String? messageError;
+  /// Returning a Conversation
+  Future<void> openConversation() async {
+   try {
+    final conversation = await services.database.getConversation(models.user.userProfile!.id, sellerProfile.id, sellerProfile.userID);
+    final id = conversation.id;
+    router.go("/messages/$id");
+   } catch(error) {
+    messageError = "There was an error loading the conversations!";
+    rethrow;
+   }
+  }
   /// The average rating for the seller, based on [sellerReviews].
   int? get sellerRating => 
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);

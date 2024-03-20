@@ -105,7 +105,9 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
         ),),
         const SizedBox(height: 8),
         SizedBox(width: double.infinity, height: 48, child: ElevatedButton(
-          onPressed: () {}, 
+          onPressed: () async {
+            await model.openConversation();
+          }, 
           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(0, 90, 67, 1)),
           child: const Text("Contact Seller", style: TextStyle(color: Colors.white)),
         ),),
