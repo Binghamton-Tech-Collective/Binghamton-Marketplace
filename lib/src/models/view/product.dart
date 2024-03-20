@@ -31,14 +31,24 @@ class ProductViewModel extends ViewModel {
   String? messageError;
   /// Returning a Conversation
   Future<void> openConversation() async {
-   try {
-    final conversation = await services.database.getConversation(models.user.userProfile!.id, sellerProfile.id, sellerProfile.userID);
-    final id = conversation.id;
-    router.go("/messages/$id");
-   } catch(error) {
-    messageError = "There was an error loading the conversations!";
-    rethrow;
-   }
+    final buyer = models.user.userProfile!;
+    final seller = sellerProfile;
+    try {
+      var conversation = await services.database.getConversation(buyer, sellerProfile);
+      if (conversation == null) {
+        final conversationID = services.database.conversations.newID;
+        conversation = Conversation.start(
+          id: conversationID,
+          buyer: buyer,
+          seller: seller,
+        );
+        await services.database.saveConversation(conversation);
+      }
+      router.go("/messages/${conversation.id}");
+    } catch(error) {
+      messageError = "There was an error loading the conversations!";
+      rethrow;
+    }
   }
   /// The average rating for the seller, based on [sellerReviews].
   int? get sellerRating => 

@@ -33,9 +33,9 @@ class ConversationViewModel extends ViewModel {
     final message = Message(timeSent: DateTime.now(), content: messageController!.text, author: models.user.userProfile!.id, imageURL: null, timeEdited: null,);
     conversation.messages.add(message);
     try {
-      await services.database.updateConversation(conversation);
+      await services.database.saveConversation(conversation);
     } catch (error) {
-      messageError = "Error getting the message:\n$error";
+      messageError = "Could not send your message:\n$error";
     }
   }
 
@@ -45,6 +45,7 @@ class ConversationViewModel extends ViewModel {
   Future<void> init() async {
     isLoading = true;
     _subscription = services.database.listenToConversation(id).listen(_update);
+    isLoading = false;
   }
 
   @override
