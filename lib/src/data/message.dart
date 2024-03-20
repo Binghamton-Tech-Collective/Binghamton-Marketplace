@@ -10,7 +10,7 @@ class Message {
   /// The contents of the message
   final String content;
   /// The ID of the seller the message is from
-  final SellerID author;
+  final UserID author;
   /// The path to the image in the message, if any
   final String? imageURL;
   /// The time the message was edited, if ever
@@ -21,8 +21,8 @@ class Message {
     required this.timeSent,
     required this.content,
     required this.author,
-    required this.imageURL,
-    required this.timeEdited,
+    this.imageURL,
+    this.timeEdited,
   });
 
   /// Creates a new Message object from a JSON object.

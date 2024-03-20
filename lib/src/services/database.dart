@@ -128,6 +128,10 @@ class Database extends Service {
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
+  
+  /// Add the message to database
+  Future<void> updateConversation(Conversation conversation) => 
+    conversations.doc(conversation.id).set(conversation);
 
   /// Listens to the conversation with the given id.
   Stream<Conversation?> listenToConversation(ConversationID id) => 
