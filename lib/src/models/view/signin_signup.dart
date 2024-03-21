@@ -10,6 +10,9 @@ class SignInSignUpViewModel extends ViewModel {
 
   TextEditingController usernameTextController =
       TextEditingController(); //try initial with google user name;
+
+  //TODO: Google auth portion and userTextController default text after that
+
   @override
   Future<void> init() async {
     isLoading = true;
@@ -17,8 +20,10 @@ class SignInSignUpViewModel extends ViewModel {
     isLoading = false;
   }
 
-  ///Sets sign up username to text in usernameTextController
+  ///Sets sign up username to text in usernameTextController if non-empty/whitespace
   void finalizeUsername() {
-    username = usernameTextController.text.toLowerCase();
+    if (usernameTextController.text.trim() != "") {
+      username = usernameTextController.text.toLowerCase();
+    }
   }
 }
