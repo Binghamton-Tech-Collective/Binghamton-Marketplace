@@ -1,8 +1,9 @@
+import "package:btc_market/main.dart";
 import "package:btc_market/src/data/notification.dart";
+import "package:btc_market/src/models/view/products.dart";
 import "package:btc_market/src/pages/notifications.dart";
 import "package:btc_market/src/pages/profile.dart";
 import "package:flutter/material.dart";
-
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
@@ -15,7 +16,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
     appBar: AppBar(
       title: const Text ('Home'),
-      backgroundColor: Color(#005A43),
+      backgroundColor: darkGreen,
     )
       
   );
