@@ -26,11 +26,18 @@ class ConversationViewModel extends ViewModel {
 
   /// Add a message to the Conversation
   Future<void> addMessage() async {
-    if(messageController!.text.isEmpty) {
+    if (messageController!.text.isEmpty) {
       return;
     }
+
     /// Message object to store in the list of messages for this conversation
-    final message = Message(timeSent: DateTime.now(), content: messageController!.text, author: models.user.userProfile!.id, imageURL: null, timeEdited: null,);
+    final message = Message(
+      timeSent: DateTime.now(),
+      content: messageController!.text,
+      author: models.user.userProfile!.id,
+      imageURL: null,
+      timeEdited: null,
+    );
     conversation.messages.add(message);
     try {
       await services.database.saveConversation(conversation);
@@ -40,16 +47,25 @@ class ConversationViewModel extends ViewModel {
   }
 
   /// Delete a message from the conversation
-  Future<void> deleteMessage(Message message) async {
-    for(var index = 0; index < conversation.messages.length; index++) {
-      if(message == conversation.messages[index]) {
-        conversation.messages.removeAt(index);
-        break;
-      }
-    }
-    try{
+  Future<void> deleteMessage(int index) async {
+    try {
+      conversation.messages.removeAt(index);
       await services.database.saveConversation(conversation);
-    }catch(error) {
+    } catch (error) {
+      messageError = "Could not update message:\n$error";
+      rethrow;
+    }
+  }
+
+  /// Edit a message from the conversation
+  Future<void> editMessage(int index) async {
+    try {
+      if (messageController!.text.isEmpty) {
+        return;
+      }
+      conversation.messages[index].content = messageController!.text;
+      await services.database.saveConversation(conversation);
+    } catch (error) {
       messageError = "Could not update message:\n$error";
       rethrow;
     }

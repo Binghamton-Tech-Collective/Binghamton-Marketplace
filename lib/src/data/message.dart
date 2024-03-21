@@ -8,7 +8,7 @@ class Message {
   /// The time the message was sent
   final DateTime timeSent;
   /// The contents of the message
-  final String content;
+  String content;
   /// The ID of the seller the message is from
   final UserID author;
   /// The path to the image in the message, if any
@@ -17,7 +17,7 @@ class Message {
   final DateTime? timeEdited;
 
   /// A constructor to create a new message.
-  const Message({
+  Message({
     required this.timeSent,
     required this.content,
     required this.author,
