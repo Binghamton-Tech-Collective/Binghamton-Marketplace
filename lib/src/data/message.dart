@@ -1,9 +1,7 @@
-import "package:meta/meta.dart";
-
 import "types.dart";
 
 /// A message, sent from a user to a seller or vice versa
-@immutable
+
 class Message {
   /// The time the message was sent
   final DateTime timeSent;
