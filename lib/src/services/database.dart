@@ -46,6 +46,9 @@ extension QueryUtils<E> on Query<E> {
   Future<List<E>> getAll() async => [
     for (final document in (await get()).docs) document.data(),
   ];
+
+  /// Gets the first document that matches the query, if any exists.
+  Future<E?> getFirst() async => (await get()).docs.firstOrNull?.data();
 }
 
 /// A service to interface with our database, Firebase's Cloud Firestore.
@@ -130,27 +133,15 @@ class Database extends Service {
     products.doc(productID).getData();
   
   /// Add the message to database
-  Future<void> updateConversation(Conversation conversation) => 
+  Future<void> saveConversation(Conversation conversation) => 
     conversations.doc(conversation.id).set(conversation);
   
   /// Find the conversation if it already exists
-  Future<Conversation> getConversation(UserID userID, SellerID sellerID, UserID sellerUID) async { 
-    final querySnapshot =  await conversations.
-    where("userID", isEqualTo: userID)
-    .where("sellerID", isEqualTo: sellerID)
-    .get();
-
-    if(querySnapshot.docs.isNotEmpty) {
-      final conversationJSON = querySnapshot.docs.first.data() as Map<String, dynamic>;
-      return Conversation.fromJson(conversationJSON);
-    } else {
-      final id = conversations.newID;
-      final newConversation = Conversation(id: id, buyerUID: userID, sellerUID: sellerUID, sellerID: sellerID, messages: []);
-      await updateConversation(newConversation);
-      return newConversation;
-    }
-  }
-
+  Future<Conversation?> getConversation(UserProfile buyer, SellerProfile seller) => conversations
+    .where("userID", isEqualTo: buyer.id)
+    .where("sellerID", isEqualTo: seller.id)
+    .where("members", arrayContains: buyer.id)
+    .getFirst();
 
   /// Listens to the conversation with the given id.
   Stream<Conversation?> listenToConversation(ConversationID id) => 

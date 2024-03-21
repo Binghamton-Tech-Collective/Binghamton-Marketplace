@@ -1,5 +1,4 @@
-import "types.dart";
-import "message.dart";
+import "package:btc_market/data.dart";
 
 /// A conversation between a user and a seller
 class Conversation {
@@ -22,6 +21,19 @@ class Conversation {
     required this.sellerID,
     required this.messages,
   });
+
+  /// Starts a new conversation between a buyer and a seller.
+  factory Conversation.start({
+    required ConversationID id,
+    required UserProfile buyer,
+    required SellerProfile seller,
+  }) => Conversation(
+    id: id,
+    buyerUID: buyer.id,
+    sellerUID: seller.userID,
+    sellerID: seller.id,
+    messages: [],
+  );
 
   /// Creates a new Conversation object from a JSON object.
   Conversation.fromJson(Json json) : 
