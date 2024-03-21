@@ -1,7 +1,50 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:btc_market/data.dart";
+import "package:meta/meta.dart";
 
 import "service.dart";
+
+/// Helpful functions to call on a [CollectionReference].
+extension CollectionUtils<T> on CollectionReference<T> {
+  /// A wrapper around [withConverter].
+  Collection<R, I> convert<R, I>({
+    required R Function(Json) fromJson,
+    required Json Function(R) toJson,
+  }) => Collection<R, I>(
+    withConverter(
+      fromFirestore: (snapshot, options) => fromJson(snapshot.data()!),
+      toFirestore: (item, options) => toJson(item),
+    ),
+  );
+}
+
+/// A safe view over [CollectionReference] that only allows the correct ID type.
+extension type Collection<T, I>(CollectionReference<T> collection)
+    implements CollectionReference<T> {
+  /// Checks whether a document ID exists in this collection.
+  Future<bool> contains(I id) async => (await doc(id).get()).exists;
+
+  /// Gets the document with the given ID, or a new ID if needed.
+  @redeclare
+  DocumentReference<T> doc([I? path]) => collection.doc(path as String?);
+
+  /// Gets a new ID for this collection.
+  I get newID => doc().id as I;
+}
+
+/// Helpful functions to call on a [DocumentReference].
+extension DocumentUtils<E> on DocumentReference<E> {
+  /// Gets the data out of this document.
+  Future<E?> getData() async => (await get()).data();
+}
+
+/// Helpful functions to call on a [Query].
+extension QueryUtils<E> on Query<E> {
+  /// Gets all the data from a query.
+  Future<List<E>> getAll() async => [
+    for (final document in (await get()).docs) document.data(),
+  ];
+}
 
 /// A service to interface with our database, Firebase's Cloud Firestore.
 class Database extends Service {
@@ -9,71 +52,76 @@ class Database extends Service {
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
   /// A collection of [UserProfile] objects.
-  CollectionReference<UserProfile> get users => firestore.collection("users").withConverter<UserProfile>(
-    fromFirestore: (snapshot, _) => UserProfile.fromJson(snapshot.data()!),
-    toFirestore: (user, _) => user.toJson(),
-  );
+  Collection<UserProfile, UserID> get users =>
+      firestore.collection("users").convert(
+            fromJson: UserProfile.fromJson,
+            toJson: (user) => user.toJson(),
+          );
 
   /// A collection of [SellerProfile] objects.
-  CollectionReference<SellerProfile> get sellers => firestore.collection("sellers").withConverter<SellerProfile>(
-    fromFirestore: (snapshot, _) => SellerProfile.fromJson(snapshot.data()!),
-    toFirestore: (seller, _) => seller.toJson(),
-  );
-  
+  Collection<SellerProfile, SellerID> get sellers =>
+      firestore.collection("sellers").convert(
+            fromJson: SellerProfile.fromJson,
+            toJson: (seller) => seller.toJson(),
+          );
+
   /// A collection of [Review] objects.
-  CollectionReference<Review> get reviews => firestore.collection("reviews").withConverter<Review>(
-    fromFirestore: (snapshot, _) => Review.fromJson(snapshot.data()!),
-    toFirestore: (review, _) => review.toJson(),
-  );
+  Collection<Review, ReviewID> get reviews =>
+      firestore.collection("reviews").convert(
+            fromJson: Review.fromJson,
+            toJson: (review) => review.toJson(),
+          );
 
   /// A collection of [Product] objects.
-  CollectionReference<Product> get products => firestore.collection("products").withConverter<Product>(
-    fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),
-    toFirestore: (product, _) => product.toJson(),
-  );
-  
-  @override
-  Future<void> init() async { 
-    // Initialize the database, if needed
-    await Future<void>.delayed(const Duration(seconds: 2));
-  }
+  Collection<Product, ProductID> get products =>
+      firestore.collection("products").convert(
+            fromJson: Product.fromJson,
+            toJson: (product) => product.toJson(),
+          );
 
   @override
-  Future<void> dispose() async { 
-    // Perform any cleanup, if needed
-  }
+  Future<void> init() async {}
+
+  @override
+  Future<void> dispose() async {}
 
   /// Gets the currently signed-in user's profile.
-  Future<UserProfile?> getUserProfile(UserID userId) async { 
-    final doc = users.doc(userId);
-    final snapshot = await doc.get();
-    return snapshot.data();
-  }
+  Future<UserProfile?> getUserProfile(UserID userId) =>
+      users.doc(userId).getData();
 
   /// Saves the user's profile to their user document (in [users]).
-  Future<void> saveUserProfile(UserProfile user) async {
-    final doc = users.doc(user.id);
-    await doc.set(user);
-  }
+  Future<void> saveUserProfile(UserProfile user) =>
+      users.doc(user.id).set(user);
 
-  /// Gets a list of reviews for the seller with the given [sellerID]. 
-  Future<List<Review>> getReviewsBySellerID(SellerID sellerID) async => [
-    // make a for loop for all the snapshots in the query
-    for (final document in (await reviews.where("sellerID", isEqualTo: sellerID).get()).docs)    
-      // get the data out of the snapshot
-      document .data(),
-  ];
+  /// Saves the seller's profile to their seller document (in [seller]).
+  Future<void> saveSellerProfile(SellerProfile seller) =>
+      sellers.doc(seller.id).set(seller);
 
-    /// Gets a list of products listed by the seller with the given [sellerID]. 
-  Future<List<Product>> getProductsBySellerID(SellerID sellerID) async => [
-    for (final document in (await products.where("sellerID", isEqualTo: sellerID).get()).docs)
-      document.data(),
-  ];
+  /// Saves a product to the database.
+  Future<void> saveProduct(Product product) =>
+      products.doc(product.id).set(product);
+
+  /// Gets all the reviews of the seller with the given [sellerID]
+  Future<List<Review>> getReviewsBySellerID(SellerID sellerID) =>
+      reviews.where("sellerID", isEqualTo: sellerID).getAll();
+
+  /// Gets a list of products listed by the seller with the given [sellerID].
+  Future<List<Product>> getProductsBySellerID(SellerID sellerID) =>
+      products.where("sellerID", isEqualTo: sellerID).getAll();
+
+  /// Gets all the reviews about the given product with the given [productID]
+  Future<List<Review>> getReviewsByProductID(ProductID productID) =>
+      reviews.where("productID", isEqualTo: productID).getAll();
 
   /// Gets the seller profile owned by the given user ID
-  Future<SellerProfile?> getSellerProfile(UserID userID) async {
-    final doc = sellers.doc(userID);
-    final snapshot = await doc.get();
-    return snapshot.data();
-  }
+  Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
+      sellers.doc(sellerID).getData();
+
+  /// Gets all the seller profiles owned by the user ID. 
+  Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) => 
+      sellers.where("userID", isEqualTo: userID).getAll();
+
+  /// Gets the product from the the given product ID
+  Future<Product?> getProduct(ProductID productID) =>
+      products.doc(productID).getData();
 }

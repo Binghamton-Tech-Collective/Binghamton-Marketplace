@@ -1,6 +1,23 @@
 import "category.dart";
 import "types.dart";
 
+/// The condition of a product.
+enum ProductCondition {
+  /// A new product, unopened.
+  new_("New"), 
+  /// A used product that is in new condition.
+  usedLikeNew("Used (like new)"),
+  /// A used product that is in fair condition.
+  usedFair("Used (fair)"),
+  /// A used product that is in poor condition.
+  usedPoor("Used (poor)");
+
+  /// The string to display in the UI.
+  final String displayName;
+  /// A const constructor.
+  const ProductCondition(this.displayName);
+}
+
 /// A product being sold on the Marketplace.
 ///
 /// A product can have multiple physical copies available for sale. When it is sold, it is not
@@ -13,6 +30,8 @@ class Product {
 
   /// The seller's unique Seller ID.
   final SellerID sellerID;
+  /// The user ID who owns this product and its seller profile.
+  final UserID userID;
   /// The title or a name of the product.
   final String title;
 
@@ -40,16 +59,25 @@ class Product {
   /// profile, which is why they might wish to simply delist it instead.
   final bool delisted;
 
+  /// The condition of the product.
+  final ProductCondition condition;
+
+  /// When this product was listed.
+  final DateTime dateListed;
+
   /// A constructor to create a new product.
   const Product({
     required this.id,
     required this.sellerID,
+    required this.userID,
     required this.title,
     required this.description,
     required this.price,
     required this.quantity,
     required this.imageUrls,
     required this.categories,
+    required this.condition,
+    required this.dateListed,
     this.delisted = false,
   });
 
@@ -57,21 +85,25 @@ class Product {
   Product.fromJson(Json json) : 
     id = json["id"],
     sellerID = json["sellerID"],
+    userID = json["userID"],
     title = json["title"], 
     description = json["description"], 
-    price = json["price"], 
+    price = json["price"].toDouble(), 
     quantity = json["quantity"], 
-    imageUrls = json["imageUrls"], 
+    imageUrls = List<String>.from(json["imageUrls"]), 
     categories = {
       for (final categoryJson in json["categories"])
         Category.fromJson(categoryJson),
     },
+    condition = ProductCondition.values.byName(json["condition"]),
+    dateListed = DateTime.parse(json["dateListed"]),
     delisted = json["delisted"];
 
   /// Convert this Product to its JSON representation
   Json toJson() => {
     "id": id,
     "sellerID": sellerID,
+    "userID": userID,
     "title": title, 
     "description": description, 
     "price": price, 
@@ -81,6 +113,8 @@ class Product {
       for (final category in categories)
         category.toJson(),
     ],
+    "condition": condition.name,
+    "dateListed": dateListed.toIso8601String(),
     "delisted": delisted,
   };
 }
