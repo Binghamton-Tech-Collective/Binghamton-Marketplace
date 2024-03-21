@@ -14,7 +14,7 @@
       "name": "Web",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "chrome"],
+      "args": ["-d", "chrome", "--web-renderer", "html"],
     },
   ]
 }

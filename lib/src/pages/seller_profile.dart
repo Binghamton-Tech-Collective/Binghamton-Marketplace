@@ -1,12 +1,18 @@
 import "package:flutter/material.dart";
 
-import "package:btc_market/widgets.dart";
+import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/widgets.dart";
 
 /// The profile page.
-class ProfilePage extends ReactiveWidget<SellerProfileViewModel> {
+class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
+  /// The ID of the seller to view.
+  final SellerID id;
+  /// Creates the Seller Profile page. 
+  const SellerProfilePage(this.id);
+  
   @override
-  SellerProfileViewModel createModel() => SellerProfileViewModel();
+  SellerProfileViewModel createModel() => SellerProfileViewModel(id);
 
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
