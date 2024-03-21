@@ -39,21 +39,4 @@ class Message {
     "imageURL": imageURL,
     "timeEdited": timeEdited?.toIso8601String(),
   };
-   
-  @override
-  bool operator ==(Object other) => other is Message
-    && timeSent == other.timeSent
-    && timeEdited == other.timeEdited
-    && author == other.author
-    && imageURL == other.imageURL
-    && content == other.content;
-
-  @override
-  int get hashCode => Object.hash(
-    timeSent,
-    timeEdited,
-    author,
-    imageURL,
-    content,
-  );
 }
