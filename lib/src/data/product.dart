@@ -100,6 +100,10 @@ class Product {
     "id": id,
     "sellerID": sellerID,
     "title": title, 
+    "_searchKeywords": [
+      for (final word in title.split())
+        word,
+    ]
     "description": description, 
     "price": price, 
     "quantity": quantity, 

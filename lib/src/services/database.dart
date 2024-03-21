@@ -99,4 +99,9 @@ class Database extends Service {
 
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) => products.doc(productID).getData();
+
+  Future<List<Product>> searchDatabase(String query) =>
+    products.where("_searchKeywords", arrayContains: query).getAll();
+
+  Future<
 }
