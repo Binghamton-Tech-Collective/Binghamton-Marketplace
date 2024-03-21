@@ -8,13 +8,13 @@
       "name": "iPhone Simulator",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "Simulator"]
+      "args": ["-d", "test"],
     },
     {
       "name": "Web",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "chrome"]
-    }
+      "args": ["-d", "chrome", "--web-renderer", "html"],
+    },
   ]
 }
