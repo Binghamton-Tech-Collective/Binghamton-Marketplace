@@ -7,6 +7,7 @@ import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
+import "src/pages/signin_signup.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -31,7 +32,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      redirect: (context, state) => Routes.products,
+      builder: (context, state) => SigninSignupPage(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => Title(
