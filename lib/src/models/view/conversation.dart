@@ -39,6 +39,22 @@ class ConversationViewModel extends ViewModel {
     }
   }
 
+  /// Delete a message from the conversation
+  Future<void> deleteMessage(Message message) async {
+    for(var index = 0; index < conversation.messages.length; index++) {
+      if(message == conversation.messages[index]) {
+        conversation.messages.removeAt(index);
+        break;
+      }
+    }
+    try{
+      await services.database.saveConversation(conversation);
+    }catch(error) {
+      messageError = "Could not update message:\n$error";
+      rethrow;
+    }
+  }
+
   /// The error when sending or receiving a message, if any
   String? messageError;
   @override
