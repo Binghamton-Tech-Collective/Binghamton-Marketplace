@@ -11,7 +11,7 @@ class SignInSignUpViewModel extends ViewModel {
 
   TextEditingController usernameTextController = TextEditingController();
 
-  //TODO: Google auth portion and userTextController default text after that; should signout be an option here?; should there be a state to get to username menu?
+  //TODO: Google auth portion and userTextController default text after that; should there be a state to get to username menu?
 
   @override
   Future<void> init() async {
@@ -21,7 +21,7 @@ class SignInSignUpViewModel extends ViewModel {
     isLoading = false;
   }
 
-  ///Sets sign up username to text in usernameTextController if non-empty/whitespace
+  ///Sets sign up username to text in usernameTextController if non-empty/whitespace and adds to database
   void finalizeUsername() {
     if (usernameTextController.text.trim() != "") {
       username = usernameTextController.text.toLowerCase().trim();
@@ -39,7 +39,4 @@ class SignInSignUpViewModel extends ViewModel {
     //once signed up with google:
     settingUsername = true;
   }
-
-  //Potentially not necessary since the page wouldn't be visible if signed in already
-  Future<void> signOut() async {}
 }
