@@ -29,7 +29,7 @@ class Message {
     content = json["content"],
     author = json["author"],
     imageURL = json["imageURL"],
-    timeEdited = DateTime.parse(json["timeEdited"]);
+    timeEdited = json["timeEdited"] != null ? DateTime.parse(json["timeEdited"]) : null;
 
   /// Convert this Message to its JSON representation
   Json toJson() => {

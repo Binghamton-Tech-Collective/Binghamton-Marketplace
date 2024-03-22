@@ -26,6 +26,9 @@ class Routes {
   static const profile = "/my-profile";
 }
 
+/// Hero controller for animations
+final heroController = HeroController();
+
 /// The [GoRouter] that controls the routing logic for the app.
 final GoRouter router = GoRouter(
   initialLocation: Routes.products,
@@ -42,6 +45,7 @@ final GoRouter router = GoRouter(
       ),
       branches: [
         StatefulShellBranch(
+          observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.products,
@@ -72,6 +76,7 @@ final GoRouter router = GoRouter(
           ],
         ),
         StatefulShellBranch(
+          observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.messages,
@@ -87,7 +92,9 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(routes: [
+        StatefulShellBranch(
+          observers: [heroController],
+          routes: [
           GoRoute(
             path: Routes.sellers,
             name: "View sellers",
@@ -114,6 +121,7 @@ final GoRouter router = GoRouter(
           ),
         ],),
         StatefulShellBranch(
+          observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.profile,

@@ -44,7 +44,7 @@ class ProductViewModel extends ViewModel {
         );
         await services.database.saveConversation(conversation);
       }
-      router.go("/messages/${conversation.id}");
+      await router.push("/messages/${conversation.id}");
     } catch(error) {
       messageError = "There was an error loading the conversations!";
       rethrow;

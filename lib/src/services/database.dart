@@ -131,6 +131,10 @@ class Database extends Service {
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
+
+  /// Gets the product from the the given product ID
+  Future<Conversation?> getConversationByID(ConversationID conversationID) =>
+    conversations.doc(conversationID).getData();
   
   /// Add the message to database
   Future<void> saveConversation(Conversation conversation) => 
@@ -138,7 +142,7 @@ class Database extends Service {
   
   /// Find the conversation if it already exists
   Future<Conversation?> getConversation(UserProfile buyer, SellerProfile seller) => conversations
-    .where("userID", isEqualTo: buyer.id)
+    .where("buyerUID", isEqualTo: buyer.id)
     .where("sellerID", isEqualTo: seller.id)
     .where("members", arrayContains: buyer.id)
     .getFirst();

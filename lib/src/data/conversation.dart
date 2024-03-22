@@ -10,6 +10,14 @@ class Conversation {
   final UserID sellerUID;
   /// The Seller of the seller involved
   final SellerID sellerID;
+  /// Name of the seller
+  final String sellerName;
+  /// Name of the buyer
+  final String buyerName;
+  /// Image of the buyer
+  final String buyerImage;
+  /// Image of the seller
+  final String sellerImage;
   /// The message history
   final List<Message> messages;
 
@@ -20,6 +28,10 @@ class Conversation {
     required this.sellerUID,
     required this.sellerID,
     required this.messages,
+    required this.buyerName,
+    required this.sellerName,
+    required this.buyerImage,
+    required this.sellerImage,
   });
 
   /// Starts a new conversation between a buyer and a seller.
@@ -32,6 +44,10 @@ class Conversation {
     buyerUID: buyer.id,
     sellerUID: seller.userID,
     sellerID: seller.id,
+    buyerName: buyer.name,
+    sellerName: seller.name,
+    buyerImage: "https://picsum.photos/500",
+    sellerImage: seller.imageUrl,
     messages: [],
   );
 
@@ -41,6 +57,10 @@ class Conversation {
     buyerUID = json["buyerUID"],
     sellerUID = json["sellerUID"],
     sellerID = json["sellerID"],
+    buyerName = json["buyerName"],
+    sellerName = json["sellerName"],
+    buyerImage = json["buyerImage"],
+    sellerImage = json["sellerImage"],
     messages = [
       for (final messageJson in json["messages"])
         Message.fromJson(messageJson),
@@ -52,6 +72,10 @@ class Conversation {
     "buyerUID": buyerUID,
     "sellerUID": sellerUID,
     "sellerID": sellerID,
+    "buyerName" : buyerName,
+    "sellerName" : sellerName,
+    "sellerImage" : sellerImage,
+    "buyerImage" : buyerImage,
     "members": [buyerUID, sellerUID],
     "messages": [
       for (final message in messages)
