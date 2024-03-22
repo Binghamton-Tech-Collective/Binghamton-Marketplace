@@ -64,6 +64,7 @@ class ConversationViewModel extends ViewModel {
         return;
       }
       conversation.messages[index].content = messageController!.text;
+      conversation.messages[index].timeEdited = DateTime.now();
       await services.database.saveConversation(conversation);
     } catch (error) {
       messageError = "Could not update message:\n$error";

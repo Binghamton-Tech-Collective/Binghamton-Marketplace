@@ -12,7 +12,7 @@ class Message {
   /// The path to the image in the message, if any
   final String? imageURL;
   /// The time the message was edited, if ever
-  final DateTime? timeEdited;
+  DateTime? timeEdited;
 
   /// A constructor to create a new message.
   Message({
