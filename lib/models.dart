@@ -7,6 +7,7 @@ export "src/models/view/profile.dart";
 export "src/models/view/product.dart";
 export "src/models/view/notifications.dart";
 export "src/models/view/seller_profile.dart";
+export "src/models/view/products.dart";
 export "src/models/builders/product.dart";
 
 import "src/models/model.dart";
