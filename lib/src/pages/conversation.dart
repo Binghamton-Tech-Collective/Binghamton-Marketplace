@@ -56,7 +56,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
             child: ListView.builder(
               controller: model.scrollController,
               itemCount: model
-                  .messages.length, // Replace with actual number of messages
+                  .messages.length,
               itemBuilder: (context, index) => Row(
                 children: [
                   if (model.messages[index].isAuthor)
@@ -102,7 +102,6 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            // color: Colors.grey[200],
             child: Row(
               children: [
                 Expanded(
