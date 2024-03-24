@@ -19,13 +19,46 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
 
   @override
   Widget build(BuildContext context, ConversationViewModel model) {
-    // Ensure that scrollToBottom is called only once after the model is initialized
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         model.scrollToBottom();
         model.messageFocusNode.requestFocus();
       },
     );
+
+    void showPopupMenu(BuildContext context, Offset position, int index) {
+      final overlay =
+          Overlay.of(context).context.findRenderObject()! as RenderBox;
+      final popupPosition = RelativeRect.fromRect(
+        Rect.fromPoints(position, position),
+        Offset.zero & overlay.size,
+      );
+
+      showMenu(
+        context: context,
+        position: popupPosition,
+        items: const <PopupMenuEntry<String>>[
+          PopupMenuItem(
+            value: "edit",
+            child: Text("Edit"),
+          ),
+          PopupMenuItem(
+            value: "unsend",
+            child: Text("Unsend"),
+          ),
+        ],
+      ).then<void>((dynamic value) {
+        if (value == null) return;
+        if (value == "edit") {
+          model.isEditing = true;
+          model.editingIndex = index;
+          model.messageController.text =
+              model.conversation.messages[index].content;
+        } else if (value == "unsend") {
+          model.deleteMessage(index);
+        }
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -55,8 +88,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
           Expanded(
             child: ListView.builder(
               controller: model.scrollController,
-              itemCount: model
-                  .messages.length,
+              itemCount: model.messages.length,
               itemBuilder: (context, index) => Row(
                 children: [
                   if (model.messages[index].isAuthor)
@@ -72,7 +104,15 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
                         margin: const EdgeInsets.all(8),
                         padding: const EdgeInsets.all(8),
                         child: GestureDetector(
-                          onLongPress: () {},
+                          onLongPressStart: (details) {
+                            if (model.messages[index].isAuthor) {
+                              showPopupMenu(
+                                context,
+                                details.globalPosition,
+                                index,
+                              );
+                            }
+                          },
                           child: Column(
                             crossAxisAlignment: model.messages[index].isAuthor
                                 ? CrossAxisAlignment.end
@@ -108,7 +148,14 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
                   child: TextField(
                     focusNode: model.messageFocusNode,
                     controller: model.messageController,
-                    onSubmitted: (input) => model.addMessage(),
+                    onSubmitted: (input) {
+                      if (!model.isEditing) {
+                        model.addMessage();
+                      } else {
+                        model.editMessage(model.editingIndex);
+                        model.isEditing = false;
+                      }
+                    },
                     decoration: const InputDecoration(
                       hintText: "Type a message...",
                       border: InputBorder.none,
@@ -118,7 +165,14 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
                 IconButton(
                   icon: const Icon(Icons.send),
                   onPressed: () {
-                    model.addMessage();
+                    if (model.messageController.text.trim().isNotEmpty) {
+                      if (!model.isEditing) {
+                        model.addMessage();
+                      } else {
+                        model.editMessage(model.editingIndex);
+                        model.isEditing = false;
+                      }
+                    }
                   },
                 ),
               ],

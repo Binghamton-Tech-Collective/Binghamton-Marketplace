@@ -28,6 +28,12 @@ class ConversationViewModel extends ViewModel {
   /// ID of the conversation
   final ConversationID id;
 
+  /// Flag to check if the user is editing an existing message or sending a new message
+  bool isEditing = false;
+
+  /// Index of the message being edited
+  int editingIndex = -1;
+
   /// Controller to fetch the message
   final messageController = TextEditingController();
 
@@ -86,13 +92,10 @@ class ConversationViewModel extends ViewModel {
   /// Delete a message from the conversation
   Future<void> deleteMessage(int index) async {
     try {
-      isLoading = true;
       conversation.messages.removeAt(index);
       await services.database.saveConversation(conversation);
-      isLoading = false;
     } catch (error) {
       messageError = "Could not update message:\n$error";
-      isLoading = false;
       rethrow;
     }
   }
@@ -100,18 +103,15 @@ class ConversationViewModel extends ViewModel {
   /// Edit a message from the conversation
   Future<void> editMessage(int index) async {
     try {
-      isLoading = true;
       if (messageController.text.isEmpty) {
-        isLoading = false;
         return;
       }
       conversation.messages[index].content = messageController.text;
       conversation.messages[index].timeEdited = DateTime.now();
+      messageController.clear();
       await services.database.saveConversation(conversation);
-      isLoading = false;
     } catch (error) {
       messageError = "Could not update message:\n$error";
-      isLoading = false;
       rethrow;
     }
   }
