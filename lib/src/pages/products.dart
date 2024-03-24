@@ -13,10 +13,36 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   /// Build
   @override
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
-    appBar: AppBar(
-      title: const Text ("Home"),
-      backgroundColor: darkGreen,
+    body: Center(child: model.isLoading
+      ? const CircularProgressIndicator()
+      : CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            collapsedHeight: 60,
+            pinned: true,
+            backgroundColor: Colors.white,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 150,
+                      color: const Color.fromARGB(255, 0, 65, 44),
+                      alignment: const Alignment(0.75, 1),
+                      child: Text(
+                        "Home",
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        ),
     ),
-
   );
 }
