@@ -1,4 +1,4 @@
-import "package:btc_market/main.dart";
+//import "package:btc_market/main.dart";
 import "package:btc_market/src/models/view/products.dart";
 //import "package:btc_market/src/pages/seller_profile.dart";
 import "package:flutter/material.dart";
