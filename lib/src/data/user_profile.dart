@@ -32,10 +32,10 @@ class UserProfile {
     name = json["name"],
     id = json["id"],
     productsWatchlist = json["productsWatchlist"] == null
-                      ? Set<ProductID>()
+                      ? <ProductID>{}
                       : Set<ProductID>.from(json["productsWatchlist"] as List),
     sellersWatchlist  = json["sellersWatchlist"] == null
-                      ? Set<SellerID>()
+                      ? <SellerID>{}
                       : Set<SellerID>.from(json["sellersWatchlist"] as List);
 
   /// Convert this user to its JSON representation
