@@ -15,3 +15,9 @@ extension type const SellerID(String id) { }
 
 /// A unique ID for every review.
 extension type const ReviewID(String id) { }
+
+/// Some helpful methods on List
+extension ListUtils<E> on List<E> {
+  /// Returns the first element, or null if this list is empty.
+  E? get firstOrNull => isEmpty ? null : first;
+}

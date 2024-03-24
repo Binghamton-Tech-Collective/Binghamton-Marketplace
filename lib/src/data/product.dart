@@ -30,6 +30,8 @@ class Product {
 
   /// The seller's unique Seller ID.
   final SellerID sellerID;
+  /// The user ID who owns this product and its seller profile.
+  final UserID userID;
   /// The title or a name of the product.
   final String title;
 
@@ -63,10 +65,20 @@ class Product {
   /// When this product was listed.
   final DateTime dateListed;
 
+  /// The sum of all ratings for the product
+  final int ratingSum;
+
+  /// The number of ratings for the product
+  final int ratingCount;
+
+  /// The average rating for the product
+  final int? averageRating;
+
   /// A constructor to create a new product.
   const Product({
     required this.id,
     required this.sellerID,
+    required this.userID,
     required this.title,
     required this.description,
     required this.price,
@@ -75,6 +87,9 @@ class Product {
     required this.categories,
     required this.condition,
     required this.dateListed,
+    this.averageRating,
+    this.ratingSum = 0,
+    this.ratingCount = 0,
     this.delisted = false,
   });
 
@@ -82,6 +97,7 @@ class Product {
   Product.fromJson(Json json) : 
     id = json["id"],
     sellerID = json["sellerID"],
+    userID = json["userID"],
     title = json["title"], 
     description = json["description"], 
     price = json["price"].toDouble(), 
@@ -93,17 +109,21 @@ class Product {
     },
     condition = ProductCondition.values.byName(json["condition"]),
     dateListed = DateTime.parse(json["dateListed"]),
-    delisted = json["delisted"];
+    delisted = json["delisted"],
+    ratingSum = json["ratingSum"],
+    ratingCount = json["ratingCount"],
+    averageRating = json["averageRating"];
 
   /// Convert this Product to its JSON representation
   Json toJson() => {
     "id": id,
     "sellerID": sellerID,
+    "userID": userID,
     "title": title, 
     "_searchKeywords": [
-      for (final word in title.split())
+      for (final word in title.split(" "))
         word,
-    ]
+    ],
     "description": description, 
     "price": price, 
     "quantity": quantity, 
@@ -115,5 +135,8 @@ class Product {
     "condition": condition.name,
     "dateListed": dateListed.toIso8601String(),
     "delisted": delisted,
+    "ratingSum": ratingSum,
+    "ratingCount": ratingCount,
+    "averageRating": averageRating,
   };
 }
