@@ -65,6 +65,15 @@ class Product {
   /// When this product was listed.
   final DateTime dateListed;
 
+  /// The sum of all ratings for the product
+  final int ratingSum;
+
+  /// The number of ratings for the product
+  final int ratingCount;
+
+  /// The average rating for the product
+  final int? averageRating;
+
   /// A constructor to create a new product.
   const Product({
     required this.id,
@@ -78,6 +87,9 @@ class Product {
     required this.categories,
     required this.condition,
     required this.dateListed,
+    this.averageRating,
+    this.ratingSum = 0,
+    this.ratingCount = 0,
     this.delisted = false,
   });
 
@@ -97,7 +109,10 @@ class Product {
     },
     condition = ProductCondition.values.byName(json["condition"]),
     dateListed = DateTime.parse(json["dateListed"]),
-    delisted = json["delisted"];
+    delisted = json["delisted"],
+    ratingSum = json["ratingSum"],
+    ratingCount = json["ratingCount"],
+    averageRating = json["averageRating"];
 
   /// Convert this Product to its JSON representation
   Json toJson() => {
@@ -105,6 +120,10 @@ class Product {
     "sellerID": sellerID,
     "userID": userID,
     "title": title, 
+    "_searchKeywords": [
+      for (final word in title.split(" "))
+        word,
+    ],
     "description": description, 
     "price": price, 
     "quantity": quantity, 
@@ -116,5 +135,8 @@ class Product {
     "condition": condition.name,
     "dateListed": dateListed.toIso8601String(),
     "delisted": delisted,
+    "ratingSum": ratingSum,
+    "ratingCount": ratingCount,
+    "averageRating": averageRating,
   };
 }

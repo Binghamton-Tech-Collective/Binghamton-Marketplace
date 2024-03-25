@@ -7,7 +7,7 @@ import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
-
+import "src/pages/products.dart";
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
 
@@ -45,7 +45,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.products,
               name: "All products",
-              builder: (context, state) => NotificationsPage(),
+              builder: (context, state) => ProductsPage(),
               routes: [
                 GoRoute(
                   path: "create",

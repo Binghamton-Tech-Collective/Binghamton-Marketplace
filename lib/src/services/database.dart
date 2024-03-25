@@ -1,7 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:btc_market/data.dart";
 import "package:meta/meta.dart";
-
 import "service.dart";
 
 /// Helpful functions to call on a [CollectionReference].
@@ -123,5 +122,38 @@ class Database extends Service {
 
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>
-      products.doc(productID).getData();
+    products.doc(productID).getData();
+
+  /// Gets productsPerPage products whose search keywords contain a query, from a set of possible categories
+  Future<List<Product>> searchDatabase(String query, Set<Category> categories, int productsPerPage) =>
+    products
+      .where("_searchKeywords", arrayContains: query)
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+
+  /// Gets productsPerPage products whose rating is at least rating
+  Future<List<Product>> queryAtLeastRating(int rating, Set<Category> categories, int productsPerPage) =>
+    products
+      .orderBy("averageRating")
+      .where("averageRating", isGreaterThanOrEqualTo: rating)
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+
+  /// Gets productsPerPage products sorted by date
+  Future<List<Product>> querySortedByDate(Set<Category> categories, int productsPerPage) =>
+    products
+      .orderBy("dateListed")
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+
+  /// Gets productsPerPage products sorted by price
+  Future<List<Product>> querySortedByPrice(Set<Category> categories, int productsPerPage) =>
+    products
+      .orderBy("price")
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
 }
