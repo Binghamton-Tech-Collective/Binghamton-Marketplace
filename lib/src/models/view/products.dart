@@ -18,12 +18,19 @@ class ProductsViewModel extends ViewModel {
   /// Search text bar
   TextEditingController searchController = TextEditingController();
 
+  /// The current search query from [searchController].
   String? get searchQuery => searchController.text.nullIfEmpty;
-  // TODO: Use this in the UI
+  
+  /// Only show products with a [Product.averageRating] at least this high. 
   int minRating = 0;
+
+  /// The sort order to use when displaying products.
   ProductSortOrder sortOrder = ProductSortOrder.byRating;
 
+  /// Whether a search is being performed on the database.
   bool isSearching = false;
+
+  /// Queries the database using [Database.queryProducts].
   Future<void> queryProducts() async {
     isSearching = true;
     productsToShow = await services.database.queryProducts(
