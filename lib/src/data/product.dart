@@ -18,6 +18,14 @@ enum ProductCondition {
   const ProductCondition(this.displayName);
 }
 
+enum ProductSortOrder {
+  byPriceAscending,
+  byPriceDescending,
+  byRating,
+  byNew,
+  byOld,
+}
+
 /// A product being sold on the Marketplace.
 ///
 /// A product can have multiple physical copies available for sale. When it is sold, it is not
@@ -122,7 +130,7 @@ class Product {
     "title": title, 
     "_searchKeywords": [
       for (final word in title.split(" "))
-        word,
+        word.toLowerCase(),
     ],
     "description": description, 
     "price": price, 

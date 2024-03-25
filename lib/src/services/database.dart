@@ -124,36 +124,38 @@ class Database extends Service {
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
 
-  /// Gets productsPerPage products whose search keywords contain a query, from a set of possible categories
-  Future<List<Product>> searchDatabase(String query, Set<Category> categories, int productsPerPage) =>
-    products
-      .where("_searchKeywords", arrayContains: query)
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
-
-  /// Gets productsPerPage products whose rating is at least rating
-  Future<List<Product>> queryAtLeastRating(int rating, Set<Category> categories, int productsPerPage) =>
-    products
-      .orderBy("averageRating")
-      .where("averageRating", isGreaterThanOrEqualTo: rating)
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
-
-  /// Gets productsPerPage products sorted by date
-  Future<List<Product>> querySortedByDate(Set<Category> categories, int productsPerPage) =>
-    products
-      .orderBy("dateListed")
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
-
-  /// Gets productsPerPage products sorted by price
-  Future<List<Product>> querySortedByPrice(Set<Category> categories, int productsPerPage) =>
-    products
-      .orderBy("price")
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
+  /// Queries priducts
+  Future<List<Product>> queryProducts({
+    required int limit,
+    String? searchQuery, 
+    Iterable<Category>? categories,
+    int? minRating,
+    ProductSortOrder? sortOrder,
+  }) async {
+    var query = products.limit(limit);
+    if (searchQuery != null) {
+      final keywords = searchQuery.split(" ").take(20);
+      query = query.where("_searchKeywords", arrayContainsAny: keywords);
+    }
+    if (categories != null) {
+      query = query.where("categories", whereIn: categories);
+    }
+    if (minRating != null) {
+      query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
+    }
+    switch (sortOrder) {
+      case ProductSortOrder.byPriceAscending: 
+        query = query.orderBy("price");
+      case ProductSortOrder.byPriceDescending: 
+        query = query.orderBy("price", descending: true);
+      case ProductSortOrder.byRating: 
+        query = query.orderBy("averageRating", descending: true);
+      case ProductSortOrder.byNew:
+        query = query.orderBy("dateListed", descending: true);
+      case ProductSortOrder.byOld:
+        query = query.orderBy("dateListed");
+      case null: break;
+    }
+    return query.getAll();
+  }
 }

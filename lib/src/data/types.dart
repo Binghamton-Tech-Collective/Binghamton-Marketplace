@@ -21,3 +21,11 @@ extension ListUtils<E> on List<E> {
   /// Returns the first element, or null if this list is empty.
   E? get firstOrNull => isEmpty ? null : first;
 }
+
+extension StringUtils on String {
+  String? get nullIfEmpty => isEmpty ? null : this;
+}
+
+extension IterableUtils<E> on Iterable<E> {
+  Iterable<E>? get nullIfEmpty => isEmpty ? null : this;
+}
