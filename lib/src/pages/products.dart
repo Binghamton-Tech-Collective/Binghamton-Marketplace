@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_expression_function_bodies, public_member_api_docs
+
 import "package:btc_market/main.dart";
 import "package:btc_market/src/data/notification.dart";
 import "package:btc_market/src/pages/notifications.dart";
@@ -26,23 +28,58 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
     },
   
   body: ListView.builder(
-    itemCount: 3,
+    itemCount: 2,
     // ignore: prefer_expression_function_bodies
     itemBuilder: (context, index) {
-      // ignore: prefer_const_constructors
-      return Card(
         // ignore: prefer_const_constructors
-        child: ListTile(
-          title: const Text("Hi"),
-        ),
-      ); 
-    }
-  ),  
+        if (index != null){
+          return buildHorizontalList(index);
+          }
+        return SizedBox();
+      }
+    ),  
   ),
   );
 
+    // Builds a horizontal list based on index
+  // ignore: prefer_expression_function_bodies
+  Widget buildHorizontalList(int index) {
+    Widget buildHorizontalList;
+      if (index == 0) {
+        buildHorizontalList = Container(
+          margin: EdgeInsets.symmetric(vertical: 20.0),
+          height: 200.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              Container(width: 160.0, color: Colors.red,),
+              Container(width: 160.0, color: Colors.orange,),
+              Container(width: 160.0, color: Colors.pink,),
+              Container(width: 160.0, color: Colors.yellow,),
+            ],
+          ),
+        );
+      } 
+      else if (index == 1) {
+        buildHorizontalList = Container(
+          margin: EdgeInsets.symmetric(vertical: 20.0),
+          height: 200.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              Container(width: 160.0, color: Colors.blue,),
+              Container(width: 160.0, color: Colors.green,),
+              Container(width: 160.0, color: Colors.cyan,),
+              Container(width: 160.0, color: Colors.black,),
+            ],
+          ),
+        );
+      } 
+    return buildHorizontalList ?? SizedBox();
+    }
+  }
   
-  
+  // ignore: public_member_api_docs
   SliverAppBar createSliverAppBar1() {
     return SliverAppBar(
       backgroundColor: lightGrey,
@@ -104,6 +141,4 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
       ),
     );
   }
-
-
-}
+  
