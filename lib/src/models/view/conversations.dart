@@ -10,10 +10,10 @@ extension ConversationsUtils on Conversation {
   bool get isSeller => models.user.userProfile!.id == sellerUID;
 
   /// Getting the appropriate image based on the role
-  String get otherImage => isSeller ? buyerImage : sellerImage;
+  String get conversationImage => isSeller ? buyerImage : sellerImage;
 
   /// Getting the appropriate name based on the role
-  String get otherName => isSeller ? buyerName : sellerName;
+  String get conversationName => isSeller ? buyerName : sellerName;
 
   /// Last message from the conversation
   String get lastMessage =>

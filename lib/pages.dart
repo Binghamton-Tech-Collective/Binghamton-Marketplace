@@ -8,6 +8,7 @@ import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
+import "src/pages/conversations.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -81,7 +82,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.messages,
               name: "All chats",
-              builder: (context, state) => const Placeholder(),
+              builder: (context, state) => ConversationsPage(),
               routes: [
                 GoRoute(
                   path: ":id",
