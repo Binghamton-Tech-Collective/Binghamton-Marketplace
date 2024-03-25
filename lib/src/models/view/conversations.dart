@@ -3,8 +3,6 @@ import "dart:async";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
-import "package:flutter/material.dart";
-import "package:meta/meta.dart";
 
 /// Extension type logics for the frontend code
 extension ConversationsUtils on Conversation {
@@ -28,8 +26,22 @@ class ConversationsViewModel extends ViewModel {
   final user = models.user.userProfile;
 
   /// List of all the conversations for the user
-  late final List<Conversation> allConversations;
+  late List<Conversation> allConversations;
+
+  /// The error when fetching any conversations, if any
+  String? conversationsError;
 
   @override
-  Future<void> init() async {}
+  Future<void> init() async {
+    isLoading = true;
+    try {
+      allConversations =
+          await services.database.getConversationsByUserID(user!.id);
+    } catch (error) {
+      conversationsError = "Error loading the conversations: \n$error!";
+      isLoading = false;
+      rethrow;
+    }
+    isLoading = false;
+  }
 }
