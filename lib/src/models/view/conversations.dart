@@ -16,8 +16,8 @@ extension ConversationsUtils on Conversation {
   String get conversationName => isSeller ? buyerName : sellerName;
 
   /// Last message from the conversation
-  String get lastMessage =>
-      messages.isEmpty ? "" : messages[messages.length - 1].content;
+  Message? get lastMessage =>
+      messages.isEmpty ? null : messages[messages.length - 1];
 }
 
 /// The view model for loading list of all conversations for a user
@@ -37,6 +37,10 @@ class ConversationsViewModel extends ViewModel {
     try {
       allConversations =
           await services.database.getConversationsByUserID(user!.id);
+
+      allConversations.sort(
+        (a, b) => b.lastMessage!.timeSent.compareTo(a.lastMessage!.timeSent),
+      );
     } catch (error) {
       conversationsError = "Error loading the conversations: \n$error!";
       isLoading = false;
