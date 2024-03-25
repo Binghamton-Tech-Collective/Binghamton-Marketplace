@@ -45,7 +45,7 @@ final GoRouter router = GoRouter(
       ),
       branches: [
         StatefulShellBranch(
-          observers: [heroController],
+          // observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.products,
@@ -76,7 +76,7 @@ final GoRouter router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          observers: [heroController],
+          // observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.messages,
@@ -93,7 +93,7 @@ final GoRouter router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          observers: [heroController],
+          // observers: [heroController],
           routes: [
           GoRoute(
             path: Routes.sellers,
@@ -121,7 +121,7 @@ final GoRouter router = GoRouter(
           ),
         ],),
         StatefulShellBranch(
-          observers: [heroController],
+          // observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.profile,
