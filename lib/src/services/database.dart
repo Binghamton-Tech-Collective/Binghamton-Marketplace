@@ -124,13 +124,15 @@ class Database extends Service {
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
 
-  /// Queries priducts
+  /// Queries products with the given criteria.
+  /// 
+  /// If a parameter is not passed, it does not affect the query.
   Future<List<Product>> queryProducts({
     required int limit,
+    required ProductSortOrder sortOrder,
     String? searchQuery, 
     Iterable<Category>? categories,
     int? minRating,
-    ProductSortOrder? sortOrder,
   }) async {
     var query = products.limit(limit);
     if (searchQuery != null) {
@@ -154,7 +156,6 @@ class Database extends Service {
         query = query.orderBy("dateListed", descending: true);
       case ProductSortOrder.byOld:
         query = query.orderBy("dateListed");
-      case null: break;
     }
     return query.getAll();
   }

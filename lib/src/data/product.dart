@@ -18,12 +18,22 @@ enum ProductCondition {
   const ProductCondition(this.displayName);
 }
 
+/// A custom sort order based on fields in each [Product].
 enum ProductSortOrder {
-  byPriceAscending,
-  byPriceDescending,
-  byRating,
-  byNew,
-  byOld,
+  /// Sorts by [Product.price], in ascending order (lowest prices first).
+  byPriceAscending("Price (low to high)"),
+  /// Sorts by [Product.price], in descending order (highest prices first).
+  byPriceDescending("Price (high to low)"),
+  /// Sorts by [Product.averageRating], in ascending order.
+  byRating("Average Rating"),
+  /// Sorts by [Product.dateListed], with recent items first.
+  byNew("Newest"),
+  /// Sorts by [Product.dateListed], with older items first.
+  byOld("Oldest");
+
+  /// The UI-friendly name to show for this sort order.
+  final String displayName;
+  const ProductSortOrder(this.displayName);
 }
 
 /// A product being sold on the Marketplace.
@@ -38,8 +48,10 @@ class Product {
 
   /// The seller's unique Seller ID.
   final SellerID sellerID;
+
   /// The user ID who owns this product and its seller profile.
   final UserID userID;
+
   /// The title or a name of the product.
   final String title;
 
