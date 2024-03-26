@@ -29,5 +29,5 @@ extension BuildContextUtils on BuildContext {
 
   /// Formats a date and time based on the user's locale.
   String formatDateAndTime(DateTime dateTime) => 
-    "${formatDate(dateTime)} ${formatTime(dateTime)}";
+    "${formatDate(dateTime)}, ${formatTime(dateTime)}";
 }

@@ -28,6 +28,10 @@ class BtcMarket extends StatelessWidget {
         primary: darkGreen,
         secondary: lightGrey,
       ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: darkGreen,
+        foregroundColor: Colors.white,
+      ),
     ),
   );
 }
