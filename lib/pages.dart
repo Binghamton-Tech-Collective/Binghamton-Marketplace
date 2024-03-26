@@ -3,7 +3,6 @@ import "package:go_router/go_router.dart";
 
 import "package:btc_market/data.dart";
 
-import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
