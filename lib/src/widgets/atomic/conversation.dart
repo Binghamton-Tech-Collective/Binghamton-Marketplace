@@ -17,10 +17,13 @@ class ConversationWidget extends StatelessWidget {
     title: Text(conversation.otherName),
     subtitle: conversation.lastMessage == null ? null
       : Text(conversation.lastMessage!.content),
-    leading: CircleAvatar(
-      backgroundImage: NetworkImage(conversation.otherImage),
+    leading: Hero(
+      tag: "profile-pic-${conversation.id}",
+      child: CircleAvatar(
+        backgroundImage: NetworkImage(conversation.otherImage),
+      ),
     ),
     trailing: Text(context.formatDateAndTime(conversation.lastUpdate)),
-    onTap: () => context.push("/messages/${conversation.id}"),
+    onTap: () => context.go("/messages/${conversation.id}"),
   );
 }

@@ -1,4 +1,6 @@
 export "src/models/model.dart";
+export "src/models/utils.dart";
+
 export "src/models/data/user.dart";
 
 export "src/models/builders/product.dart";

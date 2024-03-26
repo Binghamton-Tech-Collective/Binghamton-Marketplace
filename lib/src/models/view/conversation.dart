@@ -5,60 +5,33 @@ import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 import "package:flutter/material.dart";
 
-/// Extension type logics for the frontend code
-extension ConversationUtils on Conversation {
-  /// To check if the user sending a message is a seller
-  bool get isSeller => models.user.userProfile!.id == sellerUID;
-
-  /// Getting the appropriate image based on the role
-  String get otherImage => isSeller ? buyerImage : sellerImage;
-
-  /// Getting the appropriate name based on the role
-  String get otherName => isSeller ? buyerName : sellerName;
-
-  /// Last message from the conversation, if there is any.
-  Message? get lastMessage => messages.lastOrNull;
-}
-
-/// Extension types on Message
-extension MessageUtils on Message {
-  /// Checking if the person sending the message is the author of the message
-  bool get isAuthor => author == models.user.userProfile!.id;
-}
-
-/// The view model for loading a single conversation
+/// The view model for a single conversation.
+// TODO: Document a bit more here.
 class ConversationViewModel extends ViewModel {
   /// ID of the conversation
   final ConversationID id;
 
-  /// Flag to check if the user is editing an existing message or sending a new message
-  bool isEditing = false;
-
-  /// Index of the message being edited
-  int editingIndex = -1;
+  /// Constructor for the View model
+  ConversationViewModel(this.id);
 
   /// Controller to fetch the message
   final messageController = TextEditingController();
 
-  /// Controller to ensure that the latest chat is shown on a new message
+  /// A scroll controller so we can scroll to the bottom
   late ScrollController scrollController = ScrollController();
 
-  /// Focus Node to focus the cursor on Text Area
-  final messageFocusNode = FocusNode();
-
-  /// Constructor for the View model
-  ConversationViewModel(this.id);
+  /// The error when sending or receiving a message, if any
+  String? messageError;
 
   /// Conversation object
   late Conversation conversation;
 
   /// All messages of this conversation
-  List<Message> get messages => conversation.messages;
+  List<Message> get reversedMessages => conversation.messages.reversed.toList();
 
   StreamSubscription<Conversation?>? _subscription;
 
-  /// Function to scroll the page to bottom
-
+  /// Scrolls to the bottom of the page.
   void scrollToBottom() {
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
@@ -93,7 +66,9 @@ class ConversationViewModel extends ViewModel {
   }
 
   /// Delete a message from the conversation
-  Future<void> deleteMessage(int index) async {
+  Future<void> deleteMessage(int reversedIndex) async {
+    // The messages are displayed in reverse. We need to un-reverse it
+    final index = conversation.messages.length - 1 - reversedIndex;
     try {
       conversation.messages.removeAt(index);
       await services.database.saveConversation(conversation);
@@ -103,24 +78,19 @@ class ConversationViewModel extends ViewModel {
     }
   }
 
-  /// Edit a message from the conversation
-  Future<void> editMessage(int index) async {
+  /// Edits the message at the given index.
+  Future<void> editMessage(int reversedIndex, String content) async {
+    final message = reversedMessages[reversedIndex];
+    message.content = content;
+    message.timeEdited = DateTime.now();
     try {
-      if (messageController.text.isEmpty) {
-        return;
-      }
-      conversation.messages[index].content = messageController.text;
-      conversation.messages[index].timeEdited = DateTime.now();
-      messageController.clear();
       await services.database.saveConversation(conversation);
     } catch (error) {
       messageError = "Could not update message:\n$error";
-      rethrow;
+      notifyListeners();
     }
   }
 
-  /// The error when sending or receiving a message, if any
-  String? messageError;
   @override
   Future<void> init() async {
     isLoading = true;
@@ -138,7 +108,6 @@ class ConversationViewModel extends ViewModel {
   @override
   void dispose() {
     _subscription?.cancel();
-    messageFocusNode.dispose();
     super.dispose();
   }
 
