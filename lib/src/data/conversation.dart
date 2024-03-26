@@ -20,6 +20,8 @@ class Conversation {
   final String sellerImage;
   /// The message history
   final List<Message> messages;
+  /// The time of the last update. Affects sorting order.
+  final DateTime lastUpdate;
 
   /// A constructor to create a new Conversation.
   const Conversation({
@@ -32,6 +34,7 @@ class Conversation {
     required this.sellerName,
     required this.buyerImage,
     required this.sellerImage,
+    required this.lastUpdate,
   });
 
   /// Starts a new conversation between a buyer and a seller.
@@ -49,6 +52,7 @@ class Conversation {
     buyerImage: "https://picsum.photos/500",
     sellerImage: seller.imageUrl,
     messages: [],
+    lastUpdate: DateTime.now(),
   );
 
   /// Creates a new Conversation object from a JSON object.
@@ -64,7 +68,8 @@ class Conversation {
     messages = [
       for (final messageJson in json["messages"])
         Message.fromJson(messageJson),
-    ];
+    ],
+    lastUpdate = DateTime.parse(json["lastUpdate"]);
 
   /// Convert this Conversation to its JSON representation
   Json toJson() => {
@@ -81,5 +86,6 @@ class Conversation {
       for (final message in messages)
         message.toJson(),
     ],
+    "lastUpdate": lastUpdate.toIso8601String(),
   };
 }
