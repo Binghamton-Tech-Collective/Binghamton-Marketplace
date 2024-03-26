@@ -1,10 +1,9 @@
 import "package:btc_market/main.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
-import "package:btc_market/src/widgets/generic/conversation_container.dart";
+import "package:btc_market/src/widgets/generic/conversation_widget.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
-import "package:intl/intl.dart";
 
 /// The page that diplays all conversation for the user
 class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
@@ -30,14 +29,8 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
               final id = model.allConversations[index].id;
               return router.go("/messages/$id");
             },
-            child: ConversationContainer(
-              imageURL: model.allConversations[index].conversationImage,
-              name: model.allConversations[index].conversationName,
-              lastMessage: model.allConversations[index].lastMessage!.content,
-              time: DateFormat("MM/dd/yyyy HH:mm").format(
-                model.allConversations[index].lastMessage!.timeSent,
-              ),
-            ),
+            child:
+                ConversationWidget(conversation: model.allConversations[index]),
           ),
         ),
       );
