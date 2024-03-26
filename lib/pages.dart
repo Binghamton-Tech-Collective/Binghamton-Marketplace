@@ -8,6 +8,7 @@ import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
 import "src/pages/signin_signup.dart";
+import "src/pages/signup.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
