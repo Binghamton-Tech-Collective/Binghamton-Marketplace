@@ -118,53 +118,6 @@ class Product {
   });
 
   /// Creates a new Product object from a JSON object.
-<<<<<<< HEAD
-  Product.fromJson(Json json) : 
-    id = json["id"],
-    sellerID = json["sellerID"],
-    userID = json["userID"],
-    title = json["title"], 
-    description = json["description"], 
-    price = json["price"].toDouble(), 
-    quantity = json["quantity"], 
-    imageUrls = List<String>.from(json["imageUrls"]), 
-    categories = {
-      for (final categoryJson in json["categories"])
-        Category.fromJson(categoryJson),
-    },
-    condition = ProductCondition.values.byName(json["condition"]),
-    dateListed = DateTime.parse(json["dateListed"]),
-    delisted = json["delisted"],
-    ratingSum = json["ratingSum"],
-    ratingCount = json["ratingCount"],
-    averageRating = json["averageRating"];
-
-  /// Convert this Product to its JSON representation
-  Json toJson() => {
-    "id": id,
-    "sellerID": sellerID,
-    "userID": userID,
-    "title": title, 
-    "_searchKeywords": [
-      for (final word in title.split(" "))
-        word.toLowerCase(),
-    ],
-    "description": description, 
-    "price": price, 
-    "quantity": quantity, 
-    "imageUrls": imageUrls, 
-    "categories": [
-      for (final category in categories)
-        category.toJson(),
-    ],
-    "condition": condition.name,
-    "dateListed": dateListed.toIso8601String(),
-    "delisted": delisted,
-    "ratingSum": ratingSum,
-    "ratingCount": ratingCount,
-    "averageRating": averageRating,
-  };
-=======
   Product.fromJson(Json json)
       : id = json["id"],
         sellerID = json["sellerID"],
@@ -208,5 +161,4 @@ class Product {
         "ratingCount": ratingCount,
         "averageRating": averageRating,
       };
->>>>>>> origin/Home_UI
 }
