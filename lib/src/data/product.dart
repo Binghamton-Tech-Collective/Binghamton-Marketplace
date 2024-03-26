@@ -4,16 +4,20 @@ import "types.dart";
 /// The condition of a product.
 enum ProductCondition {
   /// A new product, unopened.
-  new_("New"), 
+  new_("New"),
+
   /// A used product that is in new condition.
   usedLikeNew("Used (like new)"),
+
   /// A used product that is in fair condition.
   usedFair("Used (fair)"),
+
   /// A used product that is in poor condition.
   usedPoor("Used (poor)");
 
   /// The string to display in the UI.
   final String displayName;
+
   /// A const constructor.
   const ProductCondition(this.displayName);
 }
@@ -114,6 +118,7 @@ class Product {
   });
 
   /// Creates a new Product object from a JSON object.
+<<<<<<< HEAD
   Product.fromJson(Json json) : 
     id = json["id"],
     sellerID = json["sellerID"],
@@ -159,4 +164,49 @@ class Product {
     "ratingCount": ratingCount,
     "averageRating": averageRating,
   };
+=======
+  Product.fromJson(Json json)
+      : id = json["id"],
+        sellerID = json["sellerID"],
+        userID = json["userID"],
+        title = json["title"],
+        description = json["description"],
+        price = json["price"].toDouble(),
+        quantity = json["quantity"],
+        imageUrls = List<String>.from(json["imageUrls"]),
+        categories = {
+          for (final categoryJson in json["categories"])
+            Category.fromJson(categoryJson),
+        },
+        condition = ProductCondition.values.byName(json["condition"]),
+        dateListed = DateTime.parse(json["dateListed"]),
+        delisted = json["delisted"] ?? false,
+        ratingSum = json["ratingSum"] ?? 0,
+        ratingCount = json["ratingCount"] ?? 0,
+        averageRating = json["averageRating"] ?? 0;
+
+  /// Convert this Product to its JSON representation
+  Json toJson() => {
+        "id": id,
+        "sellerID": sellerID,
+        "userID": userID,
+        "title": title,
+        "_searchKeywords": [
+          for (final word in title.split(" ")) word,
+        ],
+        "description": description,
+        "price": price,
+        "quantity": quantity,
+        "imageUrls": imageUrls,
+        "categories": [
+          for (final category in categories) category.toJson(),
+        ],
+        "condition": condition.name,
+        "dateListed": dateListed.toIso8601String(),
+        "delisted": delisted,
+        "ratingSum": ratingSum,
+        "ratingCount": ratingCount,
+        "averageRating": averageRating,
+      };
+>>>>>>> origin/Home_UI
 }

@@ -124,6 +124,7 @@ class Database extends Service {
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
 
+<<<<<<< HEAD
   /// Queries products with the given criteria.
   /// 
   /// If a parameter is not passed, it does not affect the query.
@@ -159,4 +160,38 @@ class Database extends Service {
     }
     return query.getAll();
   }
+=======
+  /// Gets productsPerPage products whose search keywords contain a query, from a set of possible categories
+  Future<List<Product>> searchDatabase(String query, Set<Category> categories, int productsPerPage) =>
+    products
+      .where("_searchKeywords", arrayContains: query)
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+
+  /// Gets productsPerPage products whose rating is at least rating
+  Future<List<Product>> queryAtLeastRating(int rating, Set<Category> categories, int productsPerPage) =>
+    products
+      .orderBy("averageRating")
+      .where("averageRating", isGreaterThanOrEqualTo: rating)
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+
+  /// Gets productsPerPage products sorted by date
+  Future<List<Product>> querySortedByDate(Set<Category> categories, int productsPerPage) =>
+    products
+      .orderBy("dateListed")
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+
+  /// Gets productsPerPage products sorted by price
+  Future<List<Product>> querySortedByPrice(Set<Category> categories, int productsPerPage) =>
+    products
+      .orderBy("price")
+      .where("categories", whereIn: categories)
+      .limit(productsPerPage)
+      .getAll();
+>>>>>>> origin/Home_UI
 }
