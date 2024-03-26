@@ -4,7 +4,6 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 
 import "src/pages/conversation.dart";
-import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
@@ -47,7 +46,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.products,
               name: "All products",
-              builder: (context, state) => NotificationsPage(),
+              builder: (context, state) => const Placeholder(),
               routes: [
                 GoRoute(
                   path: "create",
