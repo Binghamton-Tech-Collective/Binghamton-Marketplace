@@ -35,7 +35,7 @@ class ProductWidget extends StatelessWidget {
             child: Text(
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              "\$${product.price} - ${product.title}",
+              "\$${product.price} - ${product.title.substring(0, 10)}...",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
