@@ -46,25 +46,28 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: darkGreen, // Background color of the search bar
+          color: darkGreen,
         ),
         child: TextField(
           style: const TextStyle(color: Colors.white),
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
           decoration: InputDecoration(
-            hintText: "Search here", // Hint text
+            hintText: "Search here",
             hintStyle: const TextStyle(
               color: Colors.white,
             ),
             prefixIcon: GestureDetector(
               onTap: () {},
-              child: const Icon(Icons.search),
-            ), // Search icon
+              child: const Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+            ),
             border: InputBorder.none, // Remove the default border
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 14,
-            ), // Padding inside the TextField
+            ),
           ),
         ),
       );
