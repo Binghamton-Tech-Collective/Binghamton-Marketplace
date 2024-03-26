@@ -150,4 +150,8 @@ class Database extends Service {
   /// Listens to the conversation with the given id.
   Stream<Conversation?> listenToConversation(ConversationID id) => 
     conversations.doc(id).listen();
+
+  /// Gets all conversations that the user is a member of.
+  Future<List<Conversation>> getConversationsByUserID(UserID id) =>
+    conversations.where("members", arrayContains: id).getAll();
 }

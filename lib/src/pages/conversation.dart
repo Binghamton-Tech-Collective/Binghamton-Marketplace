@@ -4,7 +4,6 @@ import "package:btc_market/models.dart";
 import "package:btc_market/src/widgets/generic/chat_bubble.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
-import "package:intl/intl.dart";
 
 /// The Chat Page for Conversations
 class ConversationPage extends ReactiveWidget<ConversationViewModel> {
@@ -122,9 +121,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
                                 message: model.messages[index].content,
                               ),
                               Text(
-                                DateFormat("MM/dd/yyyy HH:mm").format(
-                                  model.conversation.messages[index].timeSent,
-                                ),
+                                context.formatDateAndTime(model.conversation.messages[index].timeSent),
                               ),
                             ],
                           ),

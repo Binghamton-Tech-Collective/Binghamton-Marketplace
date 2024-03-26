@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 
 export "package:go_router/go_router.dart";
 
+export "src/widgets/atomic/conversation.dart";
 export "src/widgets/atomic/product.dart";
 export "src/widgets/atomic/seller_profile.dart";
 
@@ -17,4 +18,16 @@ extension BuildContextUtils on BuildContext {
 
 	/// Gets the color scheme of the app.
 	ColorScheme get colorScheme => Theme.of(this).colorScheme;
+
+  /// Formats a date based on the user's locale.
+  String formatDate(DateTime date) => MaterialLocalizations.of(this).formatCompactDate(date);
+
+  /// Formats a time based on the user's locale.
+  String formatTime(DateTime time) => MaterialLocalizations.of(this).formatTimeOfDay(
+    TimeOfDay.fromDateTime(time),
+  );
+
+  /// Formats a date and time based on the user's locale.
+  String formatDateAndTime(DateTime dateTime) => 
+    "${formatDate(dateTime)}, ${formatTime(dateTime)}";
 }

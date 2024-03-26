@@ -23,4 +23,7 @@ extension type const ConversationID(String id) { }
 extension ListUtils<E> on List<E> {
   /// Returns the first element, or null if this list is empty.
   E? get firstOrNull => isEmpty ? null : first;
+
+  /// Returns the last element, or null if this list is empty.
+  E? get lastOrNull => isEmpty ? null : last;
 }

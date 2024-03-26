@@ -4,10 +4,10 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 
 import "src/pages/conversation.dart";
-import "src/pages/notifications.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
+import "src/pages/conversations.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -26,9 +26,6 @@ class Routes {
   static const profile = "/my-profile";
 }
 
-/// Hero controller for animations
-final heroController = HeroController();
-
 /// The [GoRouter] that controls the routing logic for the app.
 final GoRouter router = GoRouter(
   initialLocation: Routes.products,
@@ -45,12 +42,11 @@ final GoRouter router = GoRouter(
       ),
       branches: [
         StatefulShellBranch(
-          observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.products,
               name: "All products",
-              builder: (context, state) => NotificationsPage(),
+              builder: (context, state) => const Placeholder(),
               routes: [
                 GoRoute(
                   path: "create",
@@ -76,12 +72,11 @@ final GoRouter router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.messages,
               name: "All chats",
-              builder: (context, state) => const Placeholder(),
+              builder: (context, state) => ConversationsPage(),
               routes: [
                 GoRoute(
                   path: ":id",
@@ -93,7 +88,6 @@ final GoRouter router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          observers: [heroController],
           routes: [
           GoRoute(
             path: Routes.sellers,
@@ -121,7 +115,6 @@ final GoRouter router = GoRouter(
           ),
         ],),
         StatefulShellBranch(
-          observers: [heroController],
           routes: [
             GoRoute(
               path: Routes.profile,

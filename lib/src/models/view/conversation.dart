@@ -15,10 +15,13 @@ extension ConversationUtils on Conversation {
 
   /// Getting the appropriate name based on the role
   String get otherName => isSeller ? buyerName : sellerName;
+
+  /// Last message from the conversation, if there is any.
+  Message? get lastMessage => messages.lastOrNull;
 }
 
 /// Extension types on Message
-extension MessageUtiles on Message {
+extension MessageUtils on Message {
   /// Checking if the person sending the message is the author of the message
   bool get isAuthor => author == models.user.userProfile!.id;
 }
