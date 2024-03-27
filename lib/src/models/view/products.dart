@@ -6,7 +6,6 @@ import "package:btc_market/services.dart";
 import "../model.dart";
 
 /// A view model for the products page. 
-/// 
 /// Controls searching, filtering, and sorting the products.
 class ProductsViewModel extends ViewModel {
   /// Currently selected categories
