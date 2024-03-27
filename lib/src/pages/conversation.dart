@@ -4,7 +4,7 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
-/// The Chat Page for Conversations
+/// The Chat Page for Conversations.
 class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   /// Unique ID for the conversation
   final ConversationID id;
@@ -22,21 +22,23 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
     required bool hasBorder,
     String? hint,
     bool autofocus = false,
-  }) => TextField(
-    autofocus: autofocus,
-    controller: controller,
-    onSubmitted: (input) => onSubmit(),
-    maxLines: null,
-    textCapitalization: TextCapitalization.sentences,
-    decoration: InputDecoration(
-      border: hasBorder ? const UnderlineInputBorder() : InputBorder.none,
-      hintText: hint,
-      suffix: IconButton(
-        icon: const Icon(Icons.send),
-        onPressed: onSubmit,
+  }) => Row(children: [
+    Expanded(child: TextField(
+      autofocus: autofocus,
+      controller: controller,
+      onSubmitted: (input) => onSubmit(),
+      maxLines: null,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        border: hasBorder ? const UnderlineInputBorder() : InputBorder.none,
+        hintText: hint,
       ),
+    ),),
+    IconButton(
+      icon: const Icon(Icons.send),
+      onPressed: onSubmit,
     ),
-  );
+  ],);
 
   /// Opens a popup to edit a message.
   Future<void> editMessage(BuildContext context, ConversationViewModel model, int index) async {
@@ -60,6 +62,19 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   @override
   Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
     appBar: AppBar(
+      // If the keyboard is open, it will close and ruin the hero animation. 
+      // This workaround overrides the back button to close the keyboard, wait
+      // a very small delay, *then* go back. 
+      // See: https://github.com/flutter/flutter/issues/86089
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
+          await Future<void>.delayed(const Duration(milliseconds: 100));
+          if (!context.mounted) return;
+          context.pop();
+        },
+      ),
       title: Row(
         children: [
           Hero(
@@ -89,13 +104,20 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: buildTextField(
-            autofocus: true,
-            controller: model.messageController,
-            onSubmit: model.addMessage,
-            hint: "Type a message...",
-            hasBorder: false,
-          ),
+          child: Row(children: [
+            Expanded(child: buildTextField(
+              autofocus: true,
+              controller: model.messageController,
+              onSubmit: model.send,
+              hint: "Type a message...",
+              hasBorder: false,
+            ),),
+            if (!model.isScrolledToBottom) IconButton(
+              icon: const Icon(Icons.arrow_downward),
+              tooltip: "Scroll to bottom",
+              onPressed: model.scrollToBottom,
+            ),
+          ],),
         ),
       ],
     ),

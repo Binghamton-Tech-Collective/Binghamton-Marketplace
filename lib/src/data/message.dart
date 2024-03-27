@@ -1,7 +1,6 @@
-import "types.dart";
+import "package:btc_market/data.dart";
 
 /// A message, sent from a user to a seller or vice versa
-
 class Message {
   /// The time the message was sent
   final DateTime timeSent;
@@ -16,12 +15,25 @@ class Message {
 
   /// A constructor to create a new message.
   Message({
-    required this.timeSent,
-    required this.content,
     required this.author,
+    required this.content,
     required this.imageURL,
     required this.timeEdited,
+    required this.timeSent,
   });
+
+  /// A new message that's being sent.
+  factory Message.send({
+    required UserProfile author,
+    required String content,
+    required String imageURL,
+  }) => Message(
+    author: author.id,
+    content: content,
+    imageURL: imageURL,
+    timeEdited: null,
+    timeSent: DateTime.now(),
+  );
 
   /// Creates a new Message object from a JSON object.
   Message.fromJson(Json json) : 

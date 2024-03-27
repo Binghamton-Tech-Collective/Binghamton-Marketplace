@@ -6,7 +6,8 @@ import "package:btc_market/services.dart";
 import "package:flutter/material.dart";
 
 /// The view model for a single conversation.
-// TODO: Document a bit more here.
+/// 
+/// Loads messages and has functions to send, edit and delete messages.
 class ConversationViewModel extends ViewModel {
   /// ID of the conversation
   final ConversationID id;
@@ -29,36 +30,66 @@ class ConversationViewModel extends ViewModel {
   /// All messages of this conversation
   List<Message> get reversedMessages => conversation.messages.reversed.toList();
 
+  /// Whether the page is scrolled to the bottom.
+  /// 
+  /// When the page first loads, on the frame before [scrollController] is attached to a [ListView],
+  /// this cannot be determined. In that case, we return true so the page doesn't offer any button.
+  bool get isScrolledToBottom => scrollController.hasClients && scrollController.position.pixels == 0;
+
   StreamSubscription<Conversation?>? _subscription;
+  
+  @override
+  Future<void> init() async {
+    isLoading = true;
+    final tempConversation = await services.database.getConversationByID(id);
+    scrollController.addListener(notifyListeners);
+    if (tempConversation == null) {
+      errorText = "Could not find the conversation! $id";
+      isLoading = false;
+      return;
+    }
+    _subscription = services.database.listenToConversation(id).listen(_update);
+  }
+  
+  void _update(Conversation? data) {
+    if (data == null) {
+      errorText = "Could not find a conversation with id: $id";
+      notifyListeners();
+      return;
+    }
+    conversation = data;
+    isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
 
   /// Scrolls to the bottom of the page.
   void scrollToBottom() {
     scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 50),
+      0,
+      duration: const Duration(milliseconds: 250),
       curve: Curves.easeOut,
     );
   }
 
   /// Add a message to the Conversation
-  Future<void> addMessage() async {
-    if (messageController.text.isEmpty) {
-      return;
-    }
-
+  Future<void> send() async {
+    if (messageController.text.isEmpty) return;
     /// Message object to store in the list of messages for this conversation
-    final message = Message(
-      timeSent: DateTime.now(),
+    final message = Message.send(
       content: messageController.text,
-      author: models.user.userProfile!.id,
+      author: models.user.userProfile!,
       imageURL: "",
-      timeEdited: null,
     );
     conversation.messages.add(message);
+    conversation.lastUpdate = DateTime.now();
     try {
-      messageController.clear();
       await services.database.saveConversation(conversation);
-      notifyListeners();
+      messageController.clear();
     } catch (error) {
       messageError = "Could not send your message:\n$error";
       rethrow;
@@ -67,8 +98,7 @@ class ConversationViewModel extends ViewModel {
 
   /// Delete a message from the conversation
   Future<void> deleteMessage(int reversedIndex) async {
-    // The messages are displayed in reverse. We need to un-reverse it
-    final index = conversation.messages.length - 1 - reversedIndex;
+    final index = conversation.messages.length - reversedIndex - 1;
     try {
       conversation.messages.removeAt(index);
       await services.database.saveConversation(conversation);
@@ -89,35 +119,5 @@ class ConversationViewModel extends ViewModel {
       messageError = "Could not update message:\n$error";
       notifyListeners();
     }
-  }
-
-  @override
-  Future<void> init() async {
-    isLoading = true;
-    final tempConversation = await services.database.getConversationByID(id);
-    if (tempConversation == null) {
-      errorText = "Could not find the conversation! $id";
-      isLoading = false;
-      return;
-    }
-    conversation = tempConversation;
-    _subscription = services.database.listenToConversation(id).listen(_update);
-    isLoading = false;
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-
-  void _update(Conversation? data) {
-    if (data == null) {
-      errorText = "Could not find a conversation with id: $id";
-      notifyListeners();
-      return;
-    }
-    conversation = data;
-    notifyListeners();
   }
 }

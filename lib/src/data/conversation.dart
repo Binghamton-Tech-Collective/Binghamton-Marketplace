@@ -21,10 +21,10 @@ class Conversation {
   /// The message history
   final List<Message> messages;
   /// The time of the last update. Affects sorting order.
-  final DateTime lastUpdate;
+  DateTime lastUpdate;
 
   /// A constructor to create a new Conversation.
-  const Conversation({
+  Conversation({
     required this.id,
     required this.buyerUID,
     required this.sellerUID,
