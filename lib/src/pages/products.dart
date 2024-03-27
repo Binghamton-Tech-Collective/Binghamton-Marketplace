@@ -13,16 +13,22 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
 
   @override
   Widget build(BuildContext context, ProductsViewModel model) {
+    /// Dummy Filters to test filters
+    final sortFilters = [
+      "price: low to high",
+      "price: high to low",
+    ];
+
     final productA = Product(
       id: "fsdf" as ProductID,
       sellerID: "asfsaf" as SellerID,
       userID: "asf" as UserID,
-      title: "This is a very long and amazing title! Hopefully you like it!",
+      title: "Macbook",
       description: "a new descriptions!!!",
       price: 165.80,
       quantity: 5,
       imageUrls: [
-        "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
+        "https://www.apple.com/newsroom/images/product/ipad/standard/apple_new-ipad-air_new-design_09152020_big.jpg.large.jpg",
       ],
       categories: {Category.clothes},
       condition: ProductCondition.new_,
@@ -39,6 +45,24 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
       price: 165.80,
       quantity: 5,
       imageUrls: [
+        "https://www.apple.com/newsroom/images/product/ipad/standard/apple_new-ipad-air_new-design_09152020_big.jpg.large.jpg",
+      ],
+      categories: {Category.clothes},
+      condition: ProductCondition.new_,
+      dateListed: DateTime(
+        2024,
+      ),
+    );
+
+    final productC = Product(
+      id: "fsdf" as ProductID,
+      sellerID: "asfsaf" as SellerID,
+      userID: "asf" as UserID,
+      title: "Macbook",
+      description: "a new descriptions!!!",
+      price: 165.80,
+      quantity: 5,
+      imageUrls: [
         "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
       ],
       categories: {Category.clothes},
@@ -47,6 +71,67 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
         2024,
       ),
     );
+    final productD = Product(
+      id: "fsdf" as ProductID,
+      sellerID: "asfsaf" as SellerID,
+      userID: "asf" as UserID,
+      title: "This is a very long and amazing title! Hopefully you like it!",
+      description: "a new descriptions!!!",
+      price: 165.80,
+      quantity: 5,
+      imageUrls: [
+        "https://picsum.photos/900/850",
+      ],
+      categories: {Category.clothes},
+      condition: ProductCondition.new_,
+      dateListed: DateTime(
+        2024,
+      ),
+    );
+
+    final productE = Product(
+      id: "fsdf" as ProductID,
+      sellerID: "asfsaf" as SellerID,
+      userID: "asf" as UserID,
+      title: "Macbook",
+      description: "a new descriptions!!!",
+      price: 165.80,
+      quantity: 5,
+      imageUrls: [
+        "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
+      ],
+      categories: {Category.clothes},
+      condition: ProductCondition.new_,
+      dateListed: DateTime(
+        2024,
+      ),
+    );
+    final productF = Product(
+      id: "fsdf" as ProductID,
+      sellerID: "asfsaf" as SellerID,
+      userID: "asf" as UserID,
+      title: "This is a very long and amazing title! Hopefully you like it!",
+      description: "a new descriptions!!!",
+      price: 165.80,
+      quantity: 5,
+      imageUrls: [
+        "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
+      ],
+      categories: {Category.clothes},
+      condition: ProductCondition.new_,
+      dateListed: DateTime(
+        2024,
+      ),
+    );
+
+    final productList = [
+      productA,
+      productB,
+      productC,
+      productD,
+      productE,
+      productF,
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: darkGreen,
@@ -71,97 +156,265 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                margin: const EdgeInsets.only(
-                  left: 16,
-                ),
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Shop By Categories",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 16,
+                      ),
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Shop By Categories",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 16,
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: darkGreen,
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) => Container(
+                              height: 600,
+                              color: Colors.grey[300],
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        const Text(
+                                          "Filters",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Close Filters"),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.all(
+                                        16,
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          const Expanded(
+                                            child: Text(
+                                              "Price",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Wrap(
+                                              alignment: WrapAlignment.center,
+                                              spacing: 8,
+                                              runSpacing: 8,
+                                              children: List<Widget>.from(
+                                                sortFilters.map(
+                                                  (filter) => FilterChip(
+                                                    label: Text(filter),
+                                                    onSelected: (value) {},
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "More filters",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Container(
+                height: 100,
                 margin: const EdgeInsets.only(
                   left: 16,
                   top: 8,
                 ),
-                child: Row(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    CircularIconContainer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: const BoxDecoration(),
+                        child: CategoryWidget(),
+                      ),
+                    ),
                     const SizedBox(
                       width: 25,
                     ),
-                    CircularIconContainer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
                     const SizedBox(
                       width: 25,
                     ),
-                    CircularIconContainer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
                     const SizedBox(
                       width: 25,
                     ),
-                    CircularIconContainer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
                     const SizedBox(
                       width: 25,
                     ),
-                    CircularIconContainer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 25,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 25,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 25,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 25,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                        ),
+                        child: CategoryWidget(),
+                      ),
+                    ),
                     const SizedBox(
                       width: 25,
                     ),
                   ],
                 ),
               ),
-              Column(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 16,
-                      right: 8,
-                      bottom: 8,
-                      top: 8,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        const Text(
-                          "Free Items",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          "See All",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.red[200],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 7,
-                      right: 8,
-                      bottom: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(child: ProductWidget(product: productA)),
-                        Expanded(child: ProductWidget(product: productB)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ],
+          ),
+          Container(
+            margin: const EdgeInsets.only(
+              top: 8,
+              left: 16,
+              bottom: 16,
+            ),
+            child: const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "View Products",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GridView.count(
+              padding: const EdgeInsets.all(16),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: List.generate(
+                model.productsToShow.length,
+                (index) => ProductWidget(
+                  product: model.productsToShow[index],
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -185,7 +438,7 @@ class SearchBar extends StatelessWidget {
             hintStyle: const TextStyle(
               color: Colors.white,
             ),
-            prefixIcon: GestureDetector(
+            prefixIcon: InkWell(
               onTap: () {},
               child: const Icon(
                 Icons.search,
@@ -203,7 +456,7 @@ class SearchBar extends StatelessWidget {
 }
 
 /// Resusable circular widget for showing categories
-class CircularIconContainer extends StatelessWidget {
+class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Column(
         children: <Widget>[
@@ -222,3 +475,8 @@ class CircularIconContainer extends StatelessWidget {
         ],
       );
 }
+
+// ElevatedButton(
+//                                       child: const Text("Close BottomSheet"),
+//                                       onPressed: () => Navigator.pop(context),
+//                                     ),

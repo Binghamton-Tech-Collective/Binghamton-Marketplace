@@ -14,30 +14,30 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Card(
-            clipBehavior: Clip.none,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
-                GoRouter.of(context).push("/products/${product.id}");
-              },
-              child: SizedBox(
-                width: 170,
-                height: 130,
-                child: Image(
-                  image: NetworkImage(product.imageUrls[0]),
+          Expanded(
+            child: Align(
+              child: Card(
+                clipBehavior: Clip.none,
+                child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    GoRouter.of(context).push("/products/${product.id}");
+                  },
+                  child: Image(
+                    image: NetworkImage(product.imageUrls[0]),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(6),
-            child: Text(
+          ListTile(
+            title: Text(
+              product.title,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              "\$${product.price} - ${product.title.substring(0, 10)}...",
-              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
+            subtitle: Text("\$${product.price}"),
           ),
         ],
       );
