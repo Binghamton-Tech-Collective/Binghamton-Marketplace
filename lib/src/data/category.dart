@@ -5,7 +5,9 @@ enum Category {
   /// The clothing category.
   clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png"),
   /// The books category.
-  books(id: CategoryID("books"), title: "Books", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png");
+  books(id: CategoryID("books"), title: "Books", description: "Books you can read!", imagePath: "assets/categories/clothes.png"),
+  /// The other category.
+  other(id: CategoryID("other"), title: "Other", description: "...", imagePath: "assets/categories/clothes.png");
   
   /// Stores the unique ID for this category
   final CategoryID id;

@@ -19,8 +19,17 @@ extension type const ReviewID(String id) { }
 /// A unique ID for every conversation.
 extension type const ConversationID(String id) { }
 
-/// Some helpful methods on List
-extension ListUtils<E> on List<E> {
+/// Helpful methods on strings.
+extension StringUtils on String {
+  /// Returns this string, or null if it's empty.
+  String? get nullIfEmpty => isEmpty ? null : this;
+}
+
+/// Helpful methods on iterables.
+extension IterableUtils<E> on Iterable<E> {
+  /// Returns this iterable, or null if this is empty.
+  Iterable<E>? get nullIfEmpty => isEmpty ? null : this;
+
   /// Returns the first element, or null if this list is empty.
   E? get firstOrNull => isEmpty ? null : first;
 
