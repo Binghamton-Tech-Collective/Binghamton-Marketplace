@@ -1,6 +1,7 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:btc_market/data.dart";
 import "package:meta/meta.dart";
+
 import "service.dart";
 
 /// Helpful functions to call on a [CollectionReference].
@@ -9,12 +10,13 @@ extension CollectionUtils<T> on CollectionReference<T> {
   Collection<R, I> convert<R, I>({
     required R Function(Json) fromJson,
     required Json Function(R) toJson,
-  }) => Collection<R, I>(
-    withConverter(
-      fromFirestore: (snapshot, options) => fromJson(snapshot.data()!),
-      toFirestore: (item, options) => toJson(item),
-    ),
-  );
+  }) =>
+      Collection<R, I>(
+        withConverter(
+          fromFirestore: (snapshot, options) => fromJson(snapshot.data()!),
+          toFirestore: (item, options) => toJson(item),
+        ),
+      );
 }
 
 /// A safe view over [CollectionReference] that only allows the correct ID type.
@@ -35,14 +37,20 @@ extension type Collection<T, I>(CollectionReference<T> collection)
 extension DocumentUtils<E> on DocumentReference<E> {
   /// Gets the data out of this document.
   Future<E?> getData() async => (await get()).data();
+
+  /// Listens for updates to a document.
+  Stream<E?> listen() => snapshots().map((snapshot) => snapshot.data());
 }
 
 /// Helpful functions to call on a [Query].
 extension QueryUtils<E> on Query<E> {
   /// Gets all the data from a query.
   Future<List<E>> getAll() async => [
-    for (final document in (await get()).docs) document.data(),
-  ];
+        for (final document in (await get()).docs) document.data(),
+      ];
+
+  /// Gets the first document that matches the query, if any exists.
+  Future<E?> getFirst() async => (await get()).docs.firstOrNull?.data();
 }
 
 /// A service to interface with our database, Firebase's Cloud Firestore.
@@ -76,6 +84,13 @@ class Database extends Service {
       firestore.collection("products").convert(
             fromJson: Product.fromJson,
             toJson: (product) => product.toJson(),
+          );
+
+  /// A collection of [Product] objects.
+  Collection<Conversation, ConversationID> get conversations =>
+      firestore.collection("conversations").convert(
+            fromJson: Conversation.fromJson,
+            toJson: (conversation) => conversation.toJson(),
           );
 
   @override
@@ -116,22 +131,47 @@ class Database extends Service {
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
       sellers.doc(sellerID).getData();
 
-  /// Gets all the seller profiles owned by the user ID. 
-  Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) => 
+  /// Gets all the seller profiles owned by the user ID.
+  Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) =>
       sellers.where("userID", isEqualTo: userID).getAll();
 
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>
-    products.doc(productID).getData();
+      products.doc(productID).getData();
 
-<<<<<<< HEAD
+  /// Gets the product from the the given product ID
+  Future<Conversation?> getConversationByID(ConversationID conversationID) =>
+      conversations.doc(conversationID).getData();
+
+  /// Add the message to database
+  Future<void> saveConversation(Conversation conversation) =>
+      conversations.doc(conversation.id).set(conversation);
+
+  /// Find the conversation if it already exists
+  Future<Conversation?> getConversation(
+    UserProfile buyer,
+    SellerProfile seller,
+  ) =>
+      conversations
+          .where("buyerUID", isEqualTo: buyer.id)
+          .where("sellerID", isEqualTo: seller.id)
+          .where("members", arrayContains: buyer.id)
+          .getFirst();
+
+  /// Listens to the conversation with the given id.
+  Stream<Conversation?> listenToConversation(ConversationID id) =>
+      conversations.doc(id).listen();
+
+  /// Gets all conversations that the user is a member of.
+  Future<List<Conversation>> getConversationsByUserID(UserID id) =>
+      conversations.where("members", arrayContains: id).getAll();
+
   /// Queries products with the given criteria.
-  /// 
   /// If a parameter is not passed, it does not affect the query.
   Future<List<Product>> queryProducts({
     required int limit,
     required ProductSortOrder sortOrder,
-    String? searchQuery, 
+    String? searchQuery,
     Iterable<Category>? categories,
     int? minRating,
   }) async {
@@ -147,11 +187,11 @@ class Database extends Service {
       query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
     }
     switch (sortOrder) {
-      case ProductSortOrder.byPriceAscending: 
+      case ProductSortOrder.byPriceAscending:
         query = query.orderBy("price");
-      case ProductSortOrder.byPriceDescending: 
+      case ProductSortOrder.byPriceDescending:
         query = query.orderBy("price", descending: true);
-      case ProductSortOrder.byRating: 
+      case ProductSortOrder.byRating:
         query = query.orderBy("averageRating", descending: true);
       case ProductSortOrder.byNew:
         query = query.orderBy("dateListed", descending: true);
@@ -160,38 +200,4 @@ class Database extends Service {
     }
     return query.getAll();
   }
-=======
-  /// Gets productsPerPage products whose search keywords contain a query, from a set of possible categories
-  Future<List<Product>> searchDatabase(String query, Set<Category> categories, int productsPerPage) =>
-    products
-      .where("_searchKeywords", arrayContains: query)
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
-
-  /// Gets productsPerPage products whose rating is at least rating
-  Future<List<Product>> queryAtLeastRating(int rating, Set<Category> categories, int productsPerPage) =>
-    products
-      .orderBy("averageRating")
-      .where("averageRating", isGreaterThanOrEqualTo: rating)
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
-
-  /// Gets productsPerPage products sorted by date
-  Future<List<Product>> querySortedByDate(Set<Category> categories, int productsPerPage) =>
-    products
-      .orderBy("dateListed")
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
-
-  /// Gets productsPerPage products sorted by price
-  Future<List<Product>> querySortedByPrice(Set<Category> categories, int productsPerPage) =>
-    products
-      .orderBy("price")
-      .where("categories", whereIn: categories)
-      .limit(productsPerPage)
-      .getAll();
->>>>>>> origin/Home_UI
 }

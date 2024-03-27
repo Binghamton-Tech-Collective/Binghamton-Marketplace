@@ -23,10 +23,17 @@ class BtcMarket extends StatelessWidget {
     routerConfig: router,
     title: "ShopBing",
     theme: ThemeData(
+      brightness: Brightness.light,
       useMaterial3: true,
-      colorScheme: const ColorScheme.light(
+      colorScheme: ColorScheme.light(
         primary: darkGreen,
+        primaryContainer: Colors.blueGrey.shade200,
+        onPrimaryContainer: Colors.black,
         secondary: lightGrey,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: darkGreen,
+        foregroundColor: Colors.white,
       ),
     ),
   );

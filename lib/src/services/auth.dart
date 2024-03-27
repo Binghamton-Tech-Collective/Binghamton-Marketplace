@@ -1,3 +1,5 @@
+import "package:flutter/foundation.dart";
+
 import "package:firebase_auth/firebase_auth.dart";
 
 import "service.dart";
@@ -17,8 +19,11 @@ class AuthService extends Service {
   /// 
   /// Returns null if the user dismisses the popup.
   Future<String?> signIn() async {
+    if (user != null) return user!.uid;
     final google = GoogleAuthProvider();
-    final credential = await firebase.signInWithPopup(google);
+    final credential = kIsWeb 
+      ? await firebase.signInWithPopup(google)
+      : await firebase.signInWithProvider(google);
     return credential.user?.uid;
   }
 
