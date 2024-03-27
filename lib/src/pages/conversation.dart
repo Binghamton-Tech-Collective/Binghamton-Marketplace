@@ -104,6 +104,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
+          color: context.colorScheme.surface,
           child: Row(children: [
             Expanded(child: buildTextField(
               autofocus: true,
