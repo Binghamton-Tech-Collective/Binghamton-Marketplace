@@ -49,11 +49,17 @@ class ChatBubble extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: context.colorScheme.secondary,
+                color: message.isAuthor 
+                  ? context.colorScheme.primaryContainer
+                  : context.colorScheme.secondary,
               ),
               child: Text(
                 message.content,
-                style: context.textTheme.bodyLarge,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: message.isAuthor 
+                    ? context.colorScheme.onPrimaryContainer
+                    : context.colorScheme.onSecondary,
+                ),
               ),
             ),
           ),
