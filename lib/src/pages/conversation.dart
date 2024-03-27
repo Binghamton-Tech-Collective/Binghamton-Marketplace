@@ -3,30 +3,43 @@ import "package:flutter/material.dart";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
+import "package:flutter/services.dart";
 
 /// The Chat Page for Conversations.
 class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   /// Unique ID for the conversation
   final ConversationID id;
 
+  /// The already loaded conversation, if any.
+  /// 
+  /// This will be null if this page is loaded through a URL.
+  final Conversation? initialConversation;
+
   /// Constructor
-  const ConversationPage(this.id);
+  const ConversationPage(this.id, this.initialConversation);
 
   @override
-  ConversationViewModel createModel() => ConversationViewModel(id);
+  ConversationViewModel createModel() => ConversationViewModel(id, initialConversation);
 
   /// Builds a text field with some shared attributes.
   Widget buildTextField({
     required TextEditingController controller,
     required VoidCallback onSubmit,
     required bool hasBorder,
+    FocusNode? focusNode,
     String? hint,
     bool autofocus = false,
   }) => Row(children: [
     Expanded(child: TextField(
       autofocus: autofocus,
       controller: controller,
-      onSubmitted: (input) => onSubmit(),
+      focusNode: focusNode,
+      // onEditingComplete: () => onSubmit(),
+      onEditingComplete: () {
+        if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
+      },
+      // keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.done,
       maxLines: null,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
@@ -84,7 +97,10 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
             ),
           ),
           const SizedBox(width: 12),
-          Text(model.conversation.otherName),
+          Hero(
+            tag: "name-${model.conversation.id}",
+            child: Text(model.conversation.otherName),
+          ),
         ],
       ),
     ),
@@ -108,6 +124,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
           child: Row(children: [
             Expanded(child: buildTextField(
               autofocus: true,
+              focusNode: model.focusNode,
               controller: model.messageController,
               onSubmit: model.send,
               hint: "Type a message...",

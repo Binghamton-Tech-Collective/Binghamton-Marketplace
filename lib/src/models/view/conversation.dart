@@ -12,8 +12,11 @@ class ConversationViewModel extends ViewModel {
   /// ID of the conversation
   final ConversationID id;
 
+  /// The initially loaded conversation, if any.
+  final Conversation? initialConversation;
+
   /// Constructor for the View model
-  ConversationViewModel(this.id);
+  ConversationViewModel(this.id, this.initialConversation);
 
   /// Controller to fetch the message
   final messageController = TextEditingController();
@@ -37,10 +40,19 @@ class ConversationViewModel extends ViewModel {
   bool get isScrolledToBottom => scrollController.hasClients && scrollController.position.pixels == 0;
 
   StreamSubscription<Conversation?>? _subscription;
+
+  /// The focus node for the text field.
+  /// 
+  /// This lets us re-request focus when a message is sent.
+  final focusNode = FocusNode();
   
   @override
   Future<void> init() async {
-    isLoading = true;
+    if (initialConversation != null) {
+      conversation = initialConversation!;
+    } else {
+      isLoading = true;
+    }
     final tempConversation = await services.database.getConversationByID(id);
     scrollController.addListener(notifyListeners);
     if (tempConversation == null) {
@@ -81,13 +93,14 @@ class ConversationViewModel extends ViewModel {
     if (messageController.text.isEmpty) return;
     /// Message object to store in the list of messages for this conversation
     final message = Message.send(
-      content: messageController.text,
+      content: messageController.text.trim(),
       author: models.user.userProfile!,
       imageURL: "",
     );
     conversation.messages.add(message);
     conversation.lastUpdate = DateTime.now();
     try {
+      messageController.clear();
       await services.database.saveConversation(conversation);
       messageController.clear();
     } catch (error) {

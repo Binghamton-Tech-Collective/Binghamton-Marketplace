@@ -14,7 +14,10 @@ class ConversationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-    title: Text(conversation.otherName),
+    title: Hero(
+      tag: "name-${conversation.id}",
+      child: Text(conversation.otherName),
+    ),
     subtitle: conversation.lastMessage == null ? null
       : Text(conversation.lastMessage!.content),
     leading: Hero(
@@ -24,6 +27,6 @@ class ConversationWidget extends StatelessWidget {
       ),
     ),
     trailing: Text(context.formatDateAndTime(conversation.lastUpdate)),
-    onTap: () => context.go("/messages/${conversation.id}"),
+    onTap: () => context.go("/messages/${conversation.id}", extra: conversation),
   );
 }
