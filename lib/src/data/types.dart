@@ -36,3 +36,12 @@ extension IterableUtils<E> on Iterable<E> {
   /// Returns the last element, or null if this list is empty.
   E? get lastOrNull => isEmpty ? null : last;
 }
+
+/// Some helpful methods on Strings.
+extension StringUtils on String {
+  /// Returns this string, or null if it's empty.
+  String? get nullIfEmpty => isEmpty ? null : this;
+
+  /// Only the first line of this string.
+  String get firstLine => split("\n").first;
+}

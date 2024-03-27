@@ -18,8 +18,10 @@ class ConversationWidget extends StatelessWidget {
       tag: "name-${conversation.id}",
       child: Text(conversation.otherName),
     ),
-    subtitle: conversation.lastMessage == null ? null
-      : Text(conversation.lastMessage!.content),
+    subtitle: conversation.lastMessage == null ? null : Text(
+      conversation.lastMessage!.content.firstLine,
+      overflow: TextOverflow.ellipsis,
+    ),
     leading: Hero(
       tag: "profile-pic-${conversation.id}",
       child: CircleAvatar(
