@@ -34,14 +34,13 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       autofocus: autofocus,
       controller: controller,
       focusNode: focusNode,
-      // onEditingComplete: () => onSubmit(),
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.none,
+      maxLines: null,
+      textCapitalization: TextCapitalization.sentences,
       onEditingComplete: () {
         if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
       },
-      // keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.done,
-      maxLines: null,
-      textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         border: hasBorder ? const UnderlineInputBorder() : InputBorder.none,
         hintText: hint,

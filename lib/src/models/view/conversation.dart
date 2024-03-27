@@ -3,7 +3,9 @@ import "dart:async";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 /// The view model for a single conversation.
 /// 
@@ -53,6 +55,7 @@ class ConversationViewModel extends ViewModel {
     } else {
       isLoading = true;
     }
+    if (kIsWeb) await BrowserContextMenu.disableContextMenu();
     final tempConversation = await services.database.getConversationByID(id);
     scrollController.addListener(notifyListeners);
     if (tempConversation == null) {
@@ -75,6 +78,7 @@ class ConversationViewModel extends ViewModel {
 
   @override
   void dispose() {
+    if (kIsWeb) BrowserContextMenu.enableContextMenu();
     _subscription?.cancel();
     super.dispose();
   }

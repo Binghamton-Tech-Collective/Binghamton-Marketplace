@@ -45,6 +45,7 @@ class ChatBubble extends StatelessWidget {
           builder: (context, controller, child) => InkWell(
             borderRadius: BorderRadius.circular(8),
             onLongPress: message.isAuthor ? controller.open : null,
+            onSecondaryTap: message.isAuthor ? controller.open : null,
             child: Ink(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -54,7 +55,7 @@ class ChatBubble extends StatelessWidget {
                   : context.colorScheme.secondary,
               ),
               child: Text(
-                message.content,
+                message.content,                
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: message.isAuthor 
                     ? context.colorScheme.onPrimaryContainer
