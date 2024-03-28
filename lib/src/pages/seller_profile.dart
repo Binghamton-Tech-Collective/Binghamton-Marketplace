@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter/widgets.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 
@@ -70,10 +69,10 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                         iconSize: 20,
                         icon: const Icon(Icons.snapchat),
                       ),
-                      IconButton(
-                        onPressed: () { },
-                        iconSize: 20,
+                      OutlinedButton.icon(
+                        onPressed: model.openConversation,
                         icon: const Icon(Icons.message),
+                        label: const Text("Message"),
                       ),
                     ],
                   ),
@@ -106,7 +105,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                 children:  [
                   const Padding(
                     padding: EdgeInsets.only(left: 10, right: 10),
-                    child: CircleAvatar(backgroundColor: Colors.red , radius: 40)),
+                    child: CircleAvatar(backgroundColor: Colors.red , radius: 40),),
                   Text(category.title),
                 ],
               ),
@@ -142,6 +141,6 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
         ),
       ),
       ],
-    )
+    ),
   );
 }

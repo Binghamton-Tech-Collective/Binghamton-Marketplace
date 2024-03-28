@@ -20,9 +20,7 @@ import "src/models/data/user.dart";
 class Models extends DataModel {
   /// The user data model.
   final user = UserModel();
-
-  get product => null;
-
+  
   @override
   Future<void> init() async {
     await user.init();
