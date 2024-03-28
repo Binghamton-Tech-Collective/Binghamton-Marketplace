@@ -5,6 +5,8 @@ import "package:btc_market/src/widgets/atomic/product.dart";
 import "package:btc_market/src/widgets/generic/reactive_widget.dart";
 import "package:flutter/material.dart";
 
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
+
 /// The home page that lists all the products
 
 class ProductsPage extends ReactiveWidget<ProductsViewModel> {
@@ -207,7 +209,6 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                             builder: (BuildContext context) => ListView(
                               children: <Widget>[
                                 Container(
-                                  height: 600,
                                   color: Colors.grey[300],
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
@@ -240,56 +241,20 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               const Text("Sort By"),
-                                              DropdownMenu<String>(
+                                              DropdownMenu<ProductSortOrder>(
                                                 dropdownMenuEntries: [
-                                                  for (final filter
-                                                      in sortFilters)
+                                                  for (final sortOrder
+                                                      in ProductSortOrder
+                                                          .values)
                                                     DropdownMenuEntry(
-                                                      value: filter,
-                                                      label: filter,
+                                                      value: sortOrder,
+                                                      label:
+                                                          sortOrder.displayName,
                                                     ),
                                                 ],
-                                                hintText: "Condition",
+                                                hintText: "Select",
                                                 onSelected: (value) {},
                                                 enableSearch: false,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(
-                                            16,
-                                          ),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              const Expanded(
-                                                child: Text(
-                                                  "Price",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 3,
-                                                child: Wrap(
-                                                  alignment:
-                                                      WrapAlignment.center,
-                                                  spacing: 8,
-                                                  runSpacing: 8,
-                                                  children: List<Widget>.from(
-                                                    sortFilters.map(
-                                                      (filter) => FilterChip(
-                                                        label: Text(filter),
-                                                        onSelected: (value) {},
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
                                               ),
                                             ],
                                           ),
@@ -344,28 +309,51 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                             children: <Widget>[
                                               const Expanded(
                                                 child: Text(
-                                                  "Price",
+                                                  "Ratings",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(
-                                                flex: 3,
-                                                child: Wrap(
-                                                  alignment:
-                                                      WrapAlignment.center,
-                                                  spacing: 8,
-                                                  runSpacing: 8,
-                                                  children: List<Widget>.from(
-                                                    ratingFilters.map(
-                                                      (filter) => FilterChip(
-                                                        label: Text(filter),
-                                                        onSelected: (value) {},
-                                                      ),
-                                                    ),
+                                              // Expanded(
+                                              //   flex: 3,
+                                              //   child: Wrap(
+                                              //     alignment:
+                                              //         WrapAlignment.center,
+                                              //     spacing: 8,
+                                              //     runSpacing: 8,
+                                              //     children: List<Widget>.from(
+                                              //       ratingFilters.map(
+                                              //         (filter) => FilterChip(
+                                              //           label: Text(filter),
+                                              //           onSelected: (value) {},
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              RatingBar(
+                                                initialRating: 3,
+                                                allowHalfRating: true,
+                                                // itemCount: 5,
+                                                ratingWidget: RatingWidget(
+                                                  // full: _image('assets/heart.png'),
+                                                  // half: _image('assets/heart_half.png'),
+                                                  // empty: _image('assets/heart_border.png'),
+                                                  full: const Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  half: const Icon(
+                                                    Icons.star_half,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  empty: const Icon(
+                                                    Icons.star_border,
+                                                    color: Colors.amber,
                                                   ),
                                                 ),
+                                                onRatingUpdate: (value) {},
                                               ),
                                             ],
                                           ),
