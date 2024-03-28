@@ -1,5 +1,6 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
 
 /// This view model includes the logic required for the SellerProfile view
@@ -50,4 +51,22 @@ class SellerProfileViewModel extends ViewModel {
 
   /// The method will return the description that can be used as a bio for the seller.
   String get sellerDescription => profile.bio;
+
+  /// Open or creates conversation
+  Future<void> openConversation() async {
+    final buyer = models.user.userProfile!;
+    final seller = profile;
+
+    var conversation = await services.database.getConversation(buyer, profile);
+    if (conversation == null) {
+      final conversationID = services.database.conversations.newID;
+      conversation = Conversation.start(
+        id: conversationID,
+        buyer: buyer,
+        seller: seller,
+      );
+      await services.database.saveConversation(conversation);
+    }
+    await router.push("/messages/${conversation.id}");
+  }
 }
