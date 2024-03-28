@@ -15,8 +15,25 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   Widget build(BuildContext context, ProductsViewModel model) {
     /// Dummy Filters to test filters
     final sortFilters = [
+      "none",
       "price: low to high",
       "price: high to low",
+    ];
+
+    /// Dummy Filters to test filters
+    final ratingFilters = [
+      "Greater than 4",
+      "between 3 to 5",
+      "between 2 to 3",
+    ];
+
+    /// Dummy Filters to test filters
+    final priceFilters = [
+      r"$1 to $10",
+      r"$1 to $10",
+      r"$1 to $10",
+      r"$1 to $10",
+      r"$1 to $10",
     ];
 
     final productA = Product(
@@ -187,71 +204,177 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                         onPressed: () {
                           showModalBottomSheet<void>(
                             context: context,
-                            builder: (BuildContext context) => Container(
-                              height: 600,
-                              color: Colors.grey[300],
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                            builder: (BuildContext context) => ListView(
+                              children: <Widget>[
+                                Container(
+                                  height: 600,
+                                  color: Colors.grey[300],
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
                                       children: <Widget>[
-                                        const Text(
-                                          "Filters",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("Close Filters"),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.all(
-                                        16,
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          const Expanded(
-                                            child: Text(
-                                              "Price",
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            const Text(
+                                              "Filters",
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                "Close Filters",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.all(16),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              const Text("Sort By"),
+                                              DropdownMenu<String>(
+                                                dropdownMenuEntries: [
+                                                  for (final filter
+                                                      in sortFilters)
+                                                    DropdownMenuEntry(
+                                                      value: filter,
+                                                      label: filter,
+                                                    ),
+                                                ],
+                                                hintText: "Condition",
+                                                onSelected: (value) {},
+                                                enableSearch: false,
+                                              ),
+                                            ],
                                           ),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Wrap(
-                                              alignment: WrapAlignment.center,
-                                              spacing: 8,
-                                              runSpacing: 8,
-                                              children: List<Widget>.from(
-                                                sortFilters.map(
-                                                  (filter) => FilterChip(
-                                                    label: Text(filter),
-                                                    onSelected: (value) {},
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.all(
+                                            16,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              const Expanded(
+                                                child: Text(
+                                                  "Price",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                flex: 3,
+                                                child: Wrap(
+                                                  alignment:
+                                                      WrapAlignment.center,
+                                                  spacing: 8,
+                                                  runSpacing: 8,
+                                                  children: List<Widget>.from(
+                                                    sortFilters.map(
+                                                      (filter) => FilterChip(
+                                                        label: Text(filter),
+                                                        onSelected: (value) {},
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.all(
+                                            16,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              const Expanded(
+                                                child: Text(
+                                                  "Price",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 3,
+                                                child: Wrap(
+                                                  alignment:
+                                                      WrapAlignment.center,
+                                                  spacing: 8,
+                                                  runSpacing: 8,
+                                                  children: List<Widget>.from(
+                                                    priceFilters.map(
+                                                      (filter) => FilterChip(
+                                                        label: Text(filter),
+                                                        onSelected: (value) {},
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.all(
+                                            16,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              const Expanded(
+                                                child: Text(
+                                                  "Price",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 3,
+                                                child: Wrap(
+                                                  alignment:
+                                                      WrapAlignment.center,
+                                                  spacing: 8,
+                                                  runSpacing: 8,
+                                                  children: List<Widget>.from(
+                                                    ratingFilters.map(
+                                                      (filter) => FilterChip(
+                                                        label: Text(filter),
+                                                        onSelected: (value) {},
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           );
                         },
@@ -409,9 +532,9 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
               shrinkWrap: true,
               crossAxisCount: 2,
               children: List.generate(
-                model.productsToShow.length,
+                productList.length,
                 (index) => ProductWidget(
-                  product: model.productsToShow[index],
+                  product: productList[index],
                 ),
               ),
             ),
