@@ -163,7 +163,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                   child: ListView.separated(
                     itemBuilder: (_,i) => const SizedBox(
                       width: 170,
-                      child: ProductWidget(),
+                      //child: ProductWidget(),
                     ), 
                     separatorBuilder: (BuildContext context, int i) => const SizedBox(
                       width: 20,
