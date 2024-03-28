@@ -19,8 +19,7 @@ extension CollectionUtils<T> on CollectionReference<T> {
 }
 
 /// A safe view over [CollectionReference] that only allows the correct ID type.
-extension type Collection<T, I>(CollectionReference<T> collection)
-    implements CollectionReference<T> {
+extension type Collection<T, I>(CollectionReference<T> collection) implements CollectionReference<T> {
   /// Checks whether a document ID exists in this collection.
   Future<bool> contains(I id) async => (await doc(id).get()).exists;
 
@@ -36,6 +35,9 @@ extension type Collection<T, I>(CollectionReference<T> collection)
 extension DocumentUtils<E> on DocumentReference<E> {
   /// Gets the data out of this document.
   Future<E?> getData() async => (await get()).data();
+
+  /// Listens for updates to a document.
+  Stream<E?> listen() => snapshots().map((snapshot) => snapshot.data());
 }
 
 /// Helpful functions to call on a [Query].
@@ -44,6 +46,9 @@ extension QueryUtils<E> on Query<E> {
   Future<List<E>> getAll() async => [
     for (final document in (await get()).docs) document.data(),
   ];
+
+  /// Gets the first document that matches the query, if any exists.
+  Future<E?> getFirst() async => (await get()).docs.firstOrNull?.data();
 }
 
 /// A service to interface with our database, Firebase's Cloud Firestore.
@@ -52,32 +57,34 @@ class Database extends Service {
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
   /// A collection of [UserProfile] objects.
-  Collection<UserProfile, UserID> get users =>
-      firestore.collection("users").convert(
-            fromJson: UserProfile.fromJson,
-            toJson: (user) => user.toJson(),
-          );
+  Collection<UserProfile, UserID> get users => firestore.collection("users").convert(
+    fromJson: UserProfile.fromJson,
+    toJson: (user) => user.toJson(),
+  );
 
   /// A collection of [SellerProfile] objects.
-  Collection<SellerProfile, SellerID> get sellers =>
-      firestore.collection("sellers").convert(
-            fromJson: SellerProfile.fromJson,
-            toJson: (seller) => seller.toJson(),
-          );
+  Collection<SellerProfile, SellerID> get sellers => firestore.collection("sellers").convert(
+    fromJson: SellerProfile.fromJson,
+    toJson: (seller) => seller.toJson(),
+  );
 
   /// A collection of [Review] objects.
-  Collection<Review, ReviewID> get reviews =>
-      firestore.collection("reviews").convert(
-            fromJson: Review.fromJson,
-            toJson: (review) => review.toJson(),
-          );
+  Collection<Review, ReviewID> get reviews => firestore.collection("reviews").convert(
+    fromJson: Review.fromJson,
+    toJson: (review) => review.toJson(),
+  );
 
   /// A collection of [Product] objects.
-  Collection<Product, ProductID> get products =>
-      firestore.collection("products").convert(
-            fromJson: Product.fromJson,
-            toJson: (product) => product.toJson(),
-          );
+  Collection<Product, ProductID> get products => firestore.collection("products").convert(
+    fromJson: Product.fromJson,
+    toJson: (product) => product.toJson(),
+  );
+
+  /// A collection of [Product] objects.
+  Collection<Conversation, ConversationID> get conversations => firestore.collection("conversations").convert(
+    fromJson: Conversation.fromJson,
+    toJson: (conversation) => conversation.toJson(),
+  );
 
   @override
   Future<void> init() async {}
@@ -87,41 +94,64 @@ class Database extends Service {
 
   /// Gets the currently signed-in user's profile.
   Future<UserProfile?> getUserProfile(UserID userId) =>
-      users.doc(userId).getData();
+    users.doc(userId).getData();
 
   /// Saves the user's profile to their user document (in [users]).
   Future<void> saveUserProfile(UserProfile user) =>
-      users.doc(user.id).set(user);
+    users.doc(user.id).set(user);
 
   /// Saves the seller's profile to their seller document (in [seller]).
   Future<void> saveSellerProfile(SellerProfile seller) =>
-      sellers.doc(seller.id).set(seller);
+    sellers.doc(seller.id).set(seller);
 
   /// Saves a product to the database.
   Future<void> saveProduct(Product product) =>
-      products.doc(product.id).set(product);
+    products.doc(product.id).set(product);
 
   /// Gets all the reviews of the seller with the given [sellerID]
   Future<List<Review>> getReviewsBySellerID(SellerID sellerID) =>
-      reviews.where("sellerID", isEqualTo: sellerID).getAll();
+    reviews.where("sellerID", isEqualTo: sellerID).getAll();
 
   /// Gets a list of products listed by the seller with the given [sellerID].
   Future<List<Product>> getProductsBySellerID(SellerID sellerID) =>
-      products.where("sellerID", isEqualTo: sellerID).getAll();
+    products.where("sellerID", isEqualTo: sellerID).getAll();
 
   /// Gets all the reviews about the given product with the given [productID]
   Future<List<Review>> getReviewsByProductID(ProductID productID) =>
-      reviews.where("productID", isEqualTo: productID).getAll();
+    reviews.where("productID", isEqualTo: productID).getAll();
 
   /// Gets the seller profile owned by the given user ID
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
-      sellers.doc(sellerID).getData();
+    sellers.doc(sellerID).getData();
 
   /// Gets all the seller profiles owned by the user ID. 
   Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) => 
-      sellers.where("userID", isEqualTo: userID).getAll();
+    sellers.where("userID", isEqualTo: userID).getAll();
 
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>
-      products.doc(productID).getData();
+    products.doc(productID).getData();
+
+  /// Gets the product from the the given product ID
+  Future<Conversation?> getConversationByID(ConversationID conversationID) =>
+    conversations.doc(conversationID).getData();
+  
+  /// Add the message to database
+  Future<void> saveConversation(Conversation conversation) => 
+    conversations.doc(conversation.id).set(conversation);
+  
+  /// Find the conversation if it already exists
+  Future<Conversation?> getConversation(UserProfile buyer, SellerProfile seller) => conversations
+    .where("buyerUID", isEqualTo: buyer.id)
+    .where("sellerID", isEqualTo: seller.id)
+    .where("members", arrayContains: buyer.id)
+    .getFirst();
+
+  /// Listens to the conversation with the given id.
+  Stream<Conversation?> listenToConversation(ConversationID id) => 
+    conversations.doc(id).listen();
+
+  /// Gets all conversations that the user is a member of.
+  Future<List<Conversation>> getConversationsByUserID(UserID id) =>
+    conversations.where("members", arrayContains: id).getAll();
 }

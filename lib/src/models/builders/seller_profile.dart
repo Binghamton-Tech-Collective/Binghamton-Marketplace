@@ -5,10 +5,6 @@ import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 import "package:btc_market/pages.dart";
 
-extension on String {
-  String? get nullIfEmpty => isEmpty ? null : this;
-}
-
 /// Class to create view model for sign up page for seller
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Name of the seller

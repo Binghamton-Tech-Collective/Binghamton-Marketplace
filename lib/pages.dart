@@ -3,10 +3,11 @@ import "package:go_router/go_router.dart";
 
 import "package:btc_market/data.dart";
 
-import "src/pages/notifications.dart";
+import "src/pages/conversation.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
+import "src/pages/conversations.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -45,7 +46,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.products,
               name: "All products",
-              builder: (context, state) => NotificationsPage(),
+              builder: (context, state) => const Placeholder(),
               routes: [
                 GoRoute(
                   path: "create",
@@ -74,12 +75,20 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: Routes.messages,
-              name: Routes.messages,
-              builder: (context, state) => const Placeholder(),
+              name: "All chats",
+              builder: (context, state) => ConversationsPage(),
+              routes: [
+                GoRoute(
+                  path: ":id",
+                  name: "Chat with a seller",
+                  builder: (context, state) => ConversationPage(state.pathParameters["id"] as ConversationID, state.extra as Conversation?),
+                ),
+              ],
             ),
           ],
         ),
-        StatefulShellBranch(routes: [
+        StatefulShellBranch(
+          routes: [
           GoRoute(
             path: Routes.sellers,
             name: "View sellers",
