@@ -16,20 +16,6 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   @override
   Widget build(BuildContext context, ProductsViewModel model) {
     /// Dummy Filters to test filters
-    final sortFilters = [
-      "none",
-      "price: low to high",
-      "price: high to low",
-    ];
-
-    /// Dummy Filters to test filters
-    final ratingFilters = [
-      "Greater than 4",
-      "between 3 to 5",
-      "between 2 to 3",
-    ];
-
-    /// Dummy Filters to test filters
     final priceFilters = [
       r"$1 to $10",
       r"$1 to $10",
@@ -333,13 +319,8 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                               //   ),
                                               // ),
                                               RatingBar(
-                                                initialRating: 3,
-                                                allowHalfRating: true,
-                                                // itemCount: 5,
+                                                initialRating: 5,
                                                 ratingWidget: RatingWidget(
-                                                  // full: _image('assets/heart.png'),
-                                                  // half: _image('assets/heart_half.png'),
-                                                  // empty: _image('assets/heart_border.png'),
                                                   full: const Icon(
                                                     Icons.star,
                                                     color: Colors.amber,
