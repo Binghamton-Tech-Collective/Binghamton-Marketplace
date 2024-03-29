@@ -86,7 +86,7 @@ final GoRouter router = GoRouter(
                   name: "Chat with a seller",
                   builder: (context, state) => ConversationPage(
                       state.pathParameters["id"] as ConversationID,
-                      state.extra as Conversation?),
+                      state.extra as Conversation?,),
                 ),
               ],
             ),
