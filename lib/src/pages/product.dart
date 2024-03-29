@@ -49,7 +49,16 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             
             // ---------- Name, price, and condition ----------
             const SizedBox(height: 24),
-            Text(model.product.title, style: context.textTheme.headlineLarge),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge),
+                ),
+                if (model.product.userID == models.user.userProfile!.id) IconButton(onPressed: () {}, 
+                icon: const Icon(Icons.edit),
+                ), 
+              ],
+            ),
             const SizedBox(height: 12),
             Row(
               children: [
@@ -79,7 +88,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             Text(model.product.description, style: context.textTheme.bodyLarge),
             
             // ---------- Categories ----------
-            const SizedBox(height: 12),
+            const SizedBox(height: 12), 
             Text("Categories", style: context.textTheme.titleLarge),
             const SizedBox(height: 8),
             Wrap(children: [
