@@ -54,7 +54,9 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
               children: <Widget>[
                 Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge),
                 ),
-                if (model.product.userID == models.user.userProfile!.id) IconButton(onPressed: () {}, 
+                if (model.product.userID == models.user.userProfile!.id) IconButton(onPressed: () {
+                  model.editProduct(model.id);
+                }, 
                 icon: const Icon(Icons.edit),
                 ), 
               ],

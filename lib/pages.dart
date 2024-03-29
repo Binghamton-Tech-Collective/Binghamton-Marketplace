@@ -16,6 +16,7 @@ import "src/pages/editors/seller_profile.dart";
 class Routes {
   /// The products route.
   static const products = "/products";
+
   /// The profile route.
   static const sellers = "/sellers";
 
@@ -51,21 +52,23 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: "create",
                   name: "List a product",
-                  builder: (context, state) => ProductEditor(),
+                  builder: (context, state) => const ProductEditor(),
                 ),
                 GoRoute(
                   path: ":id",
                   name: "View product",
                   builder: (context, state) =>
                       ProductPage(state.pathParameters["id"] as ProductID),
-                  // Uncomment this to allow users to edit their profile
-                  // routes: [
-                  //   GoRoute(
-                  //     path: "edit",
-                  //     builder: (context, state) =>
-                  //         ProductEditor(id: state.pathParameters["id"]),
-                  //   ),
-                  // ],
+                  // Uncomment this to allow users to edit their products
+                  routes: [
+                    GoRoute(
+                      path: "edit",
+                      name: "Edit a Product",
+                      builder: (context, state) => ProductEditor(
+                          id: state.pathParameters["id"] as ProductID,
+                        ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -81,7 +84,9 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "Chat with a seller",
-                  builder: (context, state) => ConversationPage(state.pathParameters["id"] as ConversationID, state.extra as Conversation?),
+                  builder: (context, state) => ConversationPage(
+                      state.pathParameters["id"] as ConversationID,
+                      state.extra as Conversation?),
                 ),
               ],
             ),
@@ -89,31 +94,33 @@ final GoRouter router = GoRouter(
         ),
         StatefulShellBranch(
           routes: [
-          GoRoute(
-            path: Routes.sellers,
-            name: "View sellers",
-            builder: (context, state) => const Placeholder(),
-            routes: [
-              GoRoute(
-                path: "create",
-                name: "Create a seller profile",
-                builder: (context, state) => SellerProfileEditor(),
-              ),
-              GoRoute(
-                path: ":id",
-                name: "View seller",
-                builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
-                // Uncomment this to allow users to edit their profile
-                // routes: [
-                //   GoRoute(
-                //     path: "edit",
-                //     builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"]),
-                //   ),
-                // ]
-              ),
-            ],
-          ),
-        ],),
+            GoRoute(
+              path: Routes.sellers,
+              name: "View sellers",
+              builder: (context, state) => const Placeholder(),
+              routes: [
+                GoRoute(
+                  path: "create",
+                  name: "Create a seller profile",
+                  builder: (context, state) => SellerProfileEditor(),
+                ),
+                GoRoute(
+                  path: ":id",
+                  name: "View seller",
+                  builder: (context, state) =>
+                      SellerProfilePage(state.pathParameters["id"] as SellerID),
+                  // Uncomment this to allow users to edit their profile
+                  // routes: [
+                  //   GoRoute(
+                  //     path: "edit",
+                  //     builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"]),
+                  //   ),
+                  // ]
+                ),
+              ],
+            ),
+          ],
+        ),
         StatefulShellBranch(
           routes: [
             GoRoute(

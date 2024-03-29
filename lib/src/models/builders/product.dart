@@ -7,6 +7,12 @@ import "package:btc_market/pages.dart";
 
 /// Class to create view model for sign up page for seller
 class ProductBuilder extends BuilderModel<Product> {
+  /// Id of the product if we're editing it
+  final ProductID? initialID;
+
+  /// Constructor to initialise the initialID
+  ProductBuilder({this.initialID});
+
   /// Unique product ID of the product
   late final ProductID productID;
 
@@ -47,7 +53,8 @@ class ProductBuilder extends BuilderModel<Product> {
   String? priceError;
 
   /// To add the selected category to the set
-  void setCategorySelected({required Category category, required bool selected}) {
+  void setCategorySelected(
+      {required Category category, required bool selected}) {
     if (selected) {
       categories.add(category);
     } else {
@@ -66,8 +73,32 @@ class ProductBuilder extends BuilderModel<Product> {
   @override
   Future<void> init() async {
     isLoading = true;
-    sellerID = models.user.sellerProfiles.firstOrNull?.id;
-    productID = services.database.products.newID;
+    try {
+      if (initialID == null) {
+        sellerID = models.user.sellerProfiles.firstOrNull?.id;
+        productID = services.database.products.newID;
+      } else {
+        final product = await services.database.getProduct(initialID!);
+        productID = product!.id;
+        sellerID = product.sellerID;
+        titleController.text = product.title;
+        descriptionController.text = product.description;
+        priceController.text = product.price.toString();
+        quantityController.text = product.quantity.toString();
+        categories.addAll(product.categories);
+        condition = product.condition;
+        dateListed = product.dateListed;
+        for (var index = 0; index < imageUrls.length; index++) {
+          if (index >= product.imageUrls.length) {
+            imageUrls[index] = null;
+          } else {
+            imageUrls[index] = product.imageUrls[index];
+          }
+        }
+      }
+    } catch (error) {
+      errorText = "Error occured while fetching the product! $error";
+    }
     priceController.addListener(_validatePrice);
     titleController.addListener(notifyListeners);
     descriptionController.addListener(notifyListeners);
@@ -89,34 +120,33 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Function to build the profile from the input provided by the user
   @override
   Product build() => Product(
-    id: productID,
-    sellerID: sellerID!,
-    userID: models.user.userProfile!.id,
-    title: titleController.text,
-    description: descriptionController.text,
-    price: double.parse(priceController.text),
-    quantity: 1,
-    imageUrls: [
-      for (final url in imageUrls)
-        if (url != null)
-          url,
-    ],
-    categories: categories,
-    condition: condition!,
-    dateListed: DateTime.now(),
-  );
+        id: productID,
+        sellerID: sellerID!,
+        userID: models.user.userProfile!.id,
+        title: titleController.text,
+        description: descriptionController.text,
+        price: double.parse(priceController.text),
+        quantity: 1,
+        imageUrls: [
+          for (final url in imageUrls)
+            if (url != null) url,
+        ],
+        categories: categories,
+        condition: condition!,
+        dateListed: DateTime.now(),
+      );
 
   @override
-  bool get isReady =>  
-    titleController.text.isNotEmpty &&
-    descriptionController.text.isNotEmpty &&
-    priceController.text.isNotEmpty &&
-    priceError == null &&
-    // quantityController.text.isNotEmpty &&
-    imageUrls.any((url) => url != null) &&
-    condition != null &&
-    sellerID != null &&
-    !isSaving;
+  bool get isReady =>
+      titleController.text.isNotEmpty &&
+      descriptionController.text.isNotEmpty &&
+      priceController.text.isNotEmpty &&
+      priceError == null &&
+      // quantityController.text.isNotEmpty &&
+      imageUrls.any((url) => url != null) &&
+      condition != null &&
+      sellerID != null &&
+      !isSaving;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage(int index) async {
@@ -132,16 +162,17 @@ class ProductBuilder extends BuilderModel<Product> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage(int index) async {
+    await services.cloudStorage.deleteFile(imageUrls[index]!);
     imageUrls[index] = null;
-    final filename = services.cloudStorage.getProductImage(productID, index);
-    await services.cloudStorage.deleteFile(filename);
     notifyListeners();
   }
 
   /// Whether we are uploading the product.
   bool isSaving = false;
+
   /// The error while saving the product, if any.
   String? saveError;
+
   /// Saving the profile to Cloud Firestore
   Future<void> save() async {
     isSaving = true;
