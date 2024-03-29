@@ -17,10 +17,8 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
 
   @override
   void didUpdateWidget(ProductPage oldWidget, ProductViewModel model) {
-    if (oldWidget.id != id) {
-      model.id = id;
-      model.init();
-    }
+    model.id = id;
+    model.init();
     super.didUpdateWidget(oldWidget, model);
   }
 

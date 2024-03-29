@@ -107,6 +107,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                         ),
                         const Spacer(),
                         DropdownMenu<ProductCondition>(
+                          initialSelection: model.condition,
                           dropdownMenuEntries: [
                             for (final condition in ProductCondition.values)
                               DropdownMenuEntry(

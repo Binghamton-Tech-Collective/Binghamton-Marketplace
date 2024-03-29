@@ -39,7 +39,16 @@ class CloudStorageService extends Service {
   }
 
   /// Deletes the file at the given path.
-  Future<void> deleteFile(String path) => _root.child(path).delete();
+  Future<void> deleteFile(String path) async {
+    try{
+      await _root.child(path).delete();
+    } on FirebaseException catch(error) {
+      if(error.code != "object-not-found") {
+        rethrow;
+      }
+    }
+  }
+  
 
   /// Returns the path of the seller's profile picture.
   String getSellerImagePath(SellerID id) => "sellers/$id/profile_pic";
