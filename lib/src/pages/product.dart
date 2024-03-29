@@ -26,8 +26,17 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
   Widget build(BuildContext context, ProductViewModel model) => Scaffold(
     appBar: AppBar(
       backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-      title: const Text("Item Details",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text("Item Details",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          if (model.product.isSeller) IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => model.editProduct(model.id),
+            ),
+        ],
       ),
     ),
     body: Center(child: ConstrainedBox(
@@ -47,16 +56,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             
             // ---------- Name, price, and condition ----------
             const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge)),
-                if (model.product.isSeller) IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => model.editProduct(model.id),
-                ),
-              ],
-            ),
+            Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge)),
             const SizedBox(height: 12),
             Row(
               children: [
