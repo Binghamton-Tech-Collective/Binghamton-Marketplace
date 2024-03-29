@@ -59,7 +59,6 @@ final GoRouter router = GoRouter(
                   name: "View product",
                   builder: (context, state) =>
                       ProductPage(state.pathParameters["id"] as ProductID),
-                  // Uncomment this to allow users to edit their products
                   routes: [
                     GoRoute(
                       path: "edit",
@@ -102,20 +101,19 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: "create",
                   name: "Create a seller profile",
-                  builder: (context, state) => SellerProfileEditor(),
+                  builder: (context, state) => const SellerProfileEditor(),
                 ),
                 GoRoute(
                   path: ":id",
                   name: "View seller",
                   builder: (context, state) =>
                       SellerProfilePage(state.pathParameters["id"] as SellerID),
-                  // Uncomment this to allow users to edit their profile
-                  // routes: [
-                  //   GoRoute(
-                  //     path: "edit",
-                  //     builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"]),
-                  //   ),
-                  // ]
+                  routes: [
+                    GoRoute(
+                      path: "edit",
+                      builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"] as SellerID),
+                    ),
+                  ],
                 ),
               ],
             ),

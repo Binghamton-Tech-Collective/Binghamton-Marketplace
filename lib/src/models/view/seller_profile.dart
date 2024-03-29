@@ -69,4 +69,11 @@ class SellerProfileViewModel extends ViewModel {
     }
     await router.push("/messages/${conversation.id}");
   }
+
+  /// Function to edit the sellerProfile
+  void editProfile(SellerID id) {
+    isLoading = true;
+    router.go("/sellers/$id/edit");
+    isLoading = false;
+  }
 }

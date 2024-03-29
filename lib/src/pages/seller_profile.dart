@@ -18,8 +18,15 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
     appBar: AppBar(
-      title: const Text("Profile",
-        style: TextStyle(color: Colors.white),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text("Profile",
+            style: TextStyle(color: Colors.white),
+          ),
+          if(model.profile.userID == models.user.userProfile!.id) IconButton(icon: const Icon(Icons.edit),
+            onPressed: () => model.editProfile(id),),
+        ],
       ),
       backgroundColor: const Color.fromARGB(255, 0, 65, 44),
     ),

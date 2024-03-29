@@ -7,6 +7,12 @@ import "package:btc_market/pages.dart";
 
 /// Class to create view model for sign up page for seller
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
+  /// Id of the seller to be edited
+  final SellerID? initialID;
+  
+  /// Constructor to initialise the SellerID
+  SellerProfileBuilder({this.initialID});
+
   /// Name of the seller
   final nameController = TextEditingController();
 
@@ -54,7 +60,20 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   @override
   Future<void> init() async {
     isLoading = true;
-    sellerID = services.database.sellers.newID;
+    if(initialID == null) { 
+      sellerID = services.database.sellers.newID;
+    } else {
+      final seller = await services.database.getSellerProfile(initialID!);
+      nameController.text = seller!.name;
+      bioController.text = seller.name;
+      phoneNumberController.text = seller.name;
+      tikTokController.text = seller.name;
+      instagramController.text = seller.name;
+      twitterController.text = seller.name;
+      linkedinController.text = seller.name;
+      sellerID = seller.id;
+      imageUrl = seller.imageUrl;
+    }
     userID = models.user.userProfile!.id;
     for (final controller in allControllers) {
       controller.addListener(notifyListeners);
