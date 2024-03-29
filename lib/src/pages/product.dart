@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 /// The products page.
 class ProductPage extends ReactiveWidget<ProductViewModel>{
@@ -52,13 +52,11 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge),
+                Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge)),
+                if (model.product.isSeller) IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () => model.editProduct(model.id),
                 ),
-                if (model.product.userID == models.user.userProfile!.id) IconButton(onPressed: () {
-                  model.editProduct(model.id);
-                }, 
-                icon: const Icon(Icons.edit),
-                ), 
               ],
             ),
             const SizedBox(height: 12),
