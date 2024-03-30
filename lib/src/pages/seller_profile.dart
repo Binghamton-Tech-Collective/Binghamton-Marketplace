@@ -103,10 +103,20 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
               for (final category in model.categories) Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children:  [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: CircleAvatar(backgroundColor: Colors.red , radius: 40),),
-                  Text(category.title),
+                 Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.transparent, // Set background color to transparent
+                    child: ClipOval(
+                      child: Image(
+                        image: AssetImage(category.imagePath),
+                        fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
+                      ),
+                    ),
+                  ),
+                ),
+                Text(category.title),
                 ],
               ),
             ],
