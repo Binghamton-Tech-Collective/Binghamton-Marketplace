@@ -175,10 +175,9 @@ class Database extends Service {
     String? searchQuery,
     Iterable<Category>? categories,
     int? minRating,
-    //int? minPrice,
-    //int? maxPrice,
+    int? minPrice,
+    int? maxPrice,
   }) async {
-    print("$limit, $sortOrder, $searchQuery, $categories, $minRating");
     var query = products.limit(limit);
     if (searchQuery != null) {
       final keywords = searchQuery.split(" ").take(20);

@@ -17,12 +17,6 @@ class ProductsViewModel extends ViewModel {
   /// Current page number
   //int pageNumber;
 
-  /// Search text bar
-  TextEditingController searchController = TextEditingController();
-
-  /// The current search query from [searchController].
-  String? get searchQuery => searchController.text.nullIfEmpty;
-  
   /// Only show products with a [Product.averageRating] at least this high. 
   int minRating = 0;
 
@@ -33,20 +27,20 @@ class ProductsViewModel extends ViewModel {
   bool isSearching = false;
 
   /// Range values for the price filter
-  RangeValues currentRangeValues = const RangeValues(0, 100);
+  RangeValues priceRange = RangeValues(0, 100);
 
   /// Current min price
-  int get minPrice => currentRangeValues.start.round();
+  int get minPrice => priceRange.start.round();
 
   /// Current max price
-  int get maxPrice => currentRangeValues.end.round();
+  int get maxPrice => priceRange.end.round();
 
   /// Queries the database using [Database.queryProducts].
-  Future<void> queryProducts() async {
+  Future<void> queryProducts({String searchQuery = ""}) async {
     isSearching = true;
     productsToShow = await services.database.queryProducts(
       limit: productsPerPage,
-      searchQuery: searchQuery,
+      searchQuery: searchQuery.nullIfEmpty,
       categories: categories.nullIfEmpty,
       minRating: minRating == 0 ? null : minRating,
       sortOrder: sortOrder,
@@ -62,14 +56,12 @@ class ProductsViewModel extends ViewModel {
     await super.init();
     //pageNumber = 0;
     await queryProducts();
-    print(productsToShow);
-    searchController.addListener(notifyListeners);
   }
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
+  void changePriceRange(RangeValues values) {
+    priceRange = values;
+    notifyListeners();
+    print(priceRange);
   }
 
   /// Filters products with a lower rating than this.

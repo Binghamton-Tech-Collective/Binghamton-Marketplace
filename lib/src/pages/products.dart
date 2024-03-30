@@ -16,12 +16,12 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   @override
   Widget build(BuildContext context, ProductsViewModel model) {
     /// Dummy filters to test filters
-    final priceFilters = [
-      r"$0 to $5",
-      r"$5 to $10",
-      r"$10 to $50",
-      r"$50+",
-    ];
+    //final priceFilters = [
+    //  r"$0 to $5",
+    //  r"$5 to $10",
+    //  r"$10 to $50",
+    //  r"$50+",
+    //];
 
     return Scaffold(
       appBar: AppBar(
@@ -42,8 +42,10 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
           Container(
             margin: const EdgeInsets.all(16),
             child: SearchBar(
-              backgroundColor: darkGreen,
-              onSubmitted: model.queryProducts,
+              backgroundColor: MaterialStateProperty.all<Color>(darkGreen),
+              onSubmitted: (String searchQuery) => model.queryProducts(
+                searchQuery: searchQuery,
+              ),
             ),
           ),
           Column(
@@ -81,160 +83,147 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                         onPressed: () {
                           showModalBottomSheet<void>(
                             context: context,
-                            builder: (BuildContext context) => ListView(
-                              children: <Widget>[
-                                Container(
-                                  color: Colors.grey[300],
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            const Text(
-                                              "Filters",
+                            builder: (BuildContext context) =>
+                                SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ListView(
+                                    padding: const EdgeInsets.all(16),
+                                    shrinkWrap: true,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          const Text(
+                                            "Filters",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text(
+                                              "Close Filters",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          const Text("Sort By"),
+                                          DropdownMenu<ProductSortOrder>(
+                                            dropdownMenuEntries: [
+                                              for (final sortOrder
+                                                  in ProductSortOrder.values)
+                                                DropdownMenuEntry(
+                                                  value: sortOrder,
+                                                  label: sortOrder.displayName,
+                                                ),
+                                            ],
+                                            hintText: "Select",
+                                            onSelected: (value) {},
+                                            enableSearch: false,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          const Expanded(
+                                            child: Text(
+                                              "Price",
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
+                                          ),
+                                          Expanded(
+                                            child: RangeSlider(
+                                              values: model.priceRange,
+                                              min: 0,
+                                              max: 100,
+                                              divisions: 25,
+                                              labels: RangeLabels(
+                                                model.minPrice.toString(),
+                                                model.maxPrice.toString(),
+                                              ),
+                                              onChanged: (RangeValues values) {
+                                                model.changePriceRange(values);
                                               },
-                                              child: const Text(
-                                                "Close Filters",
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          const Expanded(
+                                            child: Text(
+                                              "Ratings",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(16),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                                child: Text(
-                                                  "Sort By",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              DropdownMenu<ProductSortOrder>(
-                                                dropdownMenuEntries: [
-                                                  for (final sortOrder
-                                                      in ProductSortOrder
-                                                          .values)
-                                                    DropdownMenuEntry(
-                                                      value: sortOrder,
-                                                      label:
-                                                          sortOrder.displayName,
-                                                    ),
-                                                ],
-                                                hintText: "Select",
-                                                onSelected: (value) model.updateSortOrder(value),
-                                                enableSearch: true,
+                                          ),
+                                          RatingBar(
+                                            initialRating: 5,
+                                            ratingWidget: RatingWidget(
+                                              full: const Icon(
+                                                Icons.star,
+                                                color: darkGreen,
                                               ),
-                                            ],
+                                              half: const Icon(
+                                                Icons.star_half,
+                                                color: darkGreen,
+                                              ),
+                                              empty: const Icon(
+                                                Icons.star_border,
+                                                color: darkGreen,
+                                              ),
+                                            ),
+                                            onRatingUpdate: (value) {},
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          child: const Text(
+                                            "Reset Filters",
                                           ),
                                         ),
-                                        Container(
-                                          margin: const EdgeInsets.all(
-                                            16,
-                                          ),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              const Expanded(
-                                                child: Text(
-                                                  "Price",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 3,
-                                                child: RangeSlider(
-                                                  values: model.currentRangeValues,
-                                                  max: 100,
-                                                  divisions: 100,
-                                                  labels: RangeLabels(
-                                                    model.minPrice.toString(),
-                                                    model.maxPrice.toString(),
-                                                  onChanged: (RangeValue values) {
-                                                    model.currentRangeValues = values;
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(
-                                            16,
-                                          ),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              const Expanded(
-                                                child: Text(
-                                                  "Ratings",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              // Expanded(
-                                              //   flex: 3,
-                                              //   child: Wrap(
-                                              //     alignment:
-                                              //         WrapAlignment.center,
-                                              //     spacing: 8,
-                                              //     runSpacing: 8,
-                                              //     children: List<Widget>.from(
-                                              //       ratingFilters.map(
-                                              //         (filter) => FilterChip(
-                                              //           label: Text(filter),
-                                              //           onSelected: (value) {},
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // ),
-                                              RatingBar(
-                                                initialRating: 5,
-                                                ratingWidget: RatingWidget(
-                                                  full: const Icon(
-                                                    Icons.star,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  half: const Icon(
-                                                    Icons.star_half,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  empty: const Icon(
-                                                    Icons.star_border,
-                                                    color: Colors.amber,
-                                                  ),
-                                                ),
-                                                onRatingUpdate: (value) {},
-                                              ),
-                                            ],
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          child: const Text(
+                                            "Apply",
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -258,11 +247,16 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    priceFilters.map(
-                      (filter) => FilterChip(
-                        label: Text(filter),
-                        onSelected: (value) {},
+                    for (final category in Category.categories)
+                      FilterChip(
+                        avatar: CircleAvatar(
+                          backgroundImage: AssetImage(category.imagePath),
+                        ),
+                        label: Text(category.title),
+                        onSelected: (_) => model.toggleCategory(category),
                       ),
+                    const SizedBox(
+                      width: 25,
                     ),
                   ],
                 ),
@@ -307,62 +301,3 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
     );
   }
 }
-
-/// SearchBar widget
-//class SearchBar extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) => Container(
-//    decoration: BoxDecoration(
-//      borderRadius: BorderRadius.circular(20),
-//      color: darkGreen,
-//    ),
-//    child: TextField(
-//      style: const TextStyle(color: Colors.white),
-//      textAlign: TextAlign.left,
-//      decoration: InputDecoration(
-//        hintText: "Search",
-//        hintStyle: const TextStyle(
-//          color: Colors.white,
-//        ),
-//        prefixIcon: InkWell(
-//          onTap: () {},
-//          child: const Icon(
-//            Icons.search,
-//            color: Colors.white,
-//          ),
-//        ),
-//        border: InputBorder.none, // Remove the default border
-//        contentPadding: const EdgeInsets.symmetric(
-//          horizontal: 16,
-//          vertical: 14,
-//        ),
-//      ),
-//    ),
-//  );
-//}
-
-/// Resusable circular widget for showing categories
-//class CategoryWidget extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) => const Column(
-//    children: <Widget>[
-//      CircleAvatar(
-//        radius: 30,
-//        backgroundImage: NetworkImage(
-//          "https://media.licdn.com/dms/image/D4E03AQH1m-DsPxkXkQ/profile-displayphoto-shrink_800_800/0/1663694541598?e=2147483647&v=beta&t=jbiXqn5fY7dJUCgtYZ9a_KZrYWRmCHzg0YkJBdGoURg",
-//        ),
-//      ),
-//      Text(
-//        "Textbooks",
-//        style: TextStyle(
-//          fontSize: 14,
-//        ),
-//      ),
-//    ],
-//  );
-//}
-
-// ElevatedButton(
-//                                       child: const Text("Close BottomSheet"),
-//                                       onPressed: () => Navigator.pop(context),
-//                                     ),
