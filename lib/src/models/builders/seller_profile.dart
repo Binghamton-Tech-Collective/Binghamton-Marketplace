@@ -57,6 +57,9 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// URL of the profile image
   String? imageUrl;
 
+  /// Seller Profile of the seller
+  late SellerProfile profile;
+
   @override
   Future<void> init() async {
     isLoading = true;
@@ -65,14 +68,15 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     } else {
       final seller = await services.database.getSellerProfile(initialID!);
       nameController.text = seller!.name;
-      bioController.text = seller.name;
-      phoneNumberController.text = seller.name;
-      tikTokController.text = seller.name;
-      instagramController.text = seller.name;
-      twitterController.text = seller.name;
-      linkedinController.text = seller.name;
+      bioController.text = seller.bio;
+      phoneNumberController.text = seller.contact.phoneNumber != null ? seller.contact.phoneNumber! : "";
+      tikTokController.text = seller.contact.tikTokUsername != null ? seller.contact.tikTokUsername! : "";
+      instagramController.text = seller.contact.instagramHandle != null ? seller.contact.instagramHandle! : "";
+      twitterController.text = seller.contact.twitterUsername != null ? seller.contact.twitterUsername! : "";
+      linkedinController.text = seller.contact.linkedInUsername != null ? seller.contact.linkedInUsername! : "";
       sellerID = seller.id;
       imageUrl = seller.imageUrl;
+      profile = seller;
     }
     userID = models.user.userProfile!.id;
     for (final controller in allControllers) {
@@ -132,9 +136,10 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage() async {
+    final filename = imageUrl;
     imageUrl = null;
-    final filename = services.cloudStorage.getSellerImagePath(sellerID);
-    await services.cloudStorage.deleteFile(filename);
+    // [filename] cannot be null because imageUrl is required for sellerprofile, and we're copying it before nullifying it.
+    await services.cloudStorage.deleteFile(filename!);
     notifyListeners();
   }
 
@@ -148,12 +153,12 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   Future<void> save() async {
     isSaving = true;
     saveError = null;
-    final profile = build();
     try {
+      if(initialID == null) profile = build();
       await services.database.saveSellerProfile(profile);
       router.go("/sellers/${profile.id}");
     } catch (error) {
-      saveError = "Error uploading profile:\n$error";
+      saveError = "Error creating profile:\n$error";
       rethrow;
     }
     isSaving = false;

@@ -14,7 +14,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
   const SellerProfileEditor({this.id});
 
   @override
-  SellerProfileBuilder createModel() => SellerProfileBuilder();
+  SellerProfileBuilder createModel() => SellerProfileBuilder(initialID: id);
 
   @override
   Widget build(BuildContext context, SellerProfileBuilder model) => Scaffold(
