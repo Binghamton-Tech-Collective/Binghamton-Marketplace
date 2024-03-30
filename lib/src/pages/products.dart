@@ -15,128 +15,14 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
 
   @override
   Widget build(BuildContext context, ProductsViewModel model) {
-    /// Dummy Filters to test filters
+    /// Dummy filters to test filters
     final priceFilters = [
-      r"$1 to $10",
-      r"$1 to $10",
-      r"$1 to $10",
-      r"$1 to $10",
-      r"$1 to $10",
+      r"$0 to $5",
+      r"$5 to $10",
+      r"$10 to $50",
+      r"$50+",
     ];
 
-    final productA = Product(
-      id: "fsdf" as ProductID,
-      sellerID: "asfsaf" as SellerID,
-      userID: "asf" as UserID,
-      title: "Macbook",
-      description: "a new descriptions!!!",
-      price: 165.80,
-      quantity: 5,
-      imageUrls: [
-        "https://www.apple.com/newsroom/images/product/ipad/standard/apple_new-ipad-air_new-design_09152020_big.jpg.large.jpg",
-      ],
-      categories: {Category.clothes},
-      condition: ProductCondition.new_,
-      dateListed: DateTime(
-        2024,
-      ),
-    );
-    final productB = Product(
-      id: "fsdf" as ProductID,
-      sellerID: "asfsaf" as SellerID,
-      userID: "asf" as UserID,
-      title: "This is a very long and amazing title! Hopefully you like it!",
-      description: "a new descriptions!!!",
-      price: 165.80,
-      quantity: 5,
-      imageUrls: [
-        "https://www.apple.com/newsroom/images/product/ipad/standard/apple_new-ipad-air_new-design_09152020_big.jpg.large.jpg",
-      ],
-      categories: {Category.clothes},
-      condition: ProductCondition.new_,
-      dateListed: DateTime(
-        2024,
-      ),
-    );
-
-    final productC = Product(
-      id: "fsdf" as ProductID,
-      sellerID: "asfsaf" as SellerID,
-      userID: "asf" as UserID,
-      title: "Macbook",
-      description: "a new descriptions!!!",
-      price: 165.80,
-      quantity: 5,
-      imageUrls: [
-        "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
-      ],
-      categories: {Category.clothes},
-      condition: ProductCondition.new_,
-      dateListed: DateTime(
-        2024,
-      ),
-    );
-    final productD = Product(
-      id: "fsdf" as ProductID,
-      sellerID: "asfsaf" as SellerID,
-      userID: "asf" as UserID,
-      title: "This is a very long and amazing title! Hopefully you like it!",
-      description: "a new descriptions!!!",
-      price: 165.80,
-      quantity: 5,
-      imageUrls: [
-        "https://picsum.photos/900/850",
-      ],
-      categories: {Category.clothes},
-      condition: ProductCondition.new_,
-      dateListed: DateTime(
-        2024,
-      ),
-    );
-
-    final productE = Product(
-      id: "fsdf" as ProductID,
-      sellerID: "asfsaf" as SellerID,
-      userID: "asf" as UserID,
-      title: "Macbook",
-      description: "a new descriptions!!!",
-      price: 165.80,
-      quantity: 5,
-      imageUrls: [
-        "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
-      ],
-      categories: {Category.clothes},
-      condition: ProductCondition.new_,
-      dateListed: DateTime(
-        2024,
-      ),
-    );
-    final productF = Product(
-      id: "fsdf" as ProductID,
-      sellerID: "asfsaf" as SellerID,
-      userID: "asf" as UserID,
-      title: "This is a very long and amazing title! Hopefully you like it!",
-      description: "a new descriptions!!!",
-      price: 165.80,
-      quantity: 5,
-      imageUrls: [
-        "https://helios-i.mashable.com/imagery/reviews/03y8gbj1mqCuexgXxFJ5vyX/hero-image.fill.size_1248x702.v1623391330.jpg",
-      ],
-      categories: {Category.clothes},
-      condition: ProductCondition.new_,
-      dateListed: DateTime(
-        2024,
-      ),
-    );
-
-    final productList = [
-      productA,
-      productB,
-      productC,
-      productD,
-      productE,
-      productF,
-    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: darkGreen,
@@ -155,7 +41,10 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
         children: <Widget>[
           Container(
             margin: const EdgeInsets.all(16),
-            child: SearchBar(),
+            child: SearchBar(
+              backgroundColor: darkGreen,
+              onSubmitted: model.queryProducts,
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,7 +115,12 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
-                                              const Text("Sort By"),
+                                                child: Text(
+                                                  "Sort By",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                               DropdownMenu<ProductSortOrder>(
                                                 dropdownMenuEntries: [
                                                   for (final sortOrder
@@ -239,8 +133,8 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                                     ),
                                                 ],
                                                 hintText: "Select",
-                                                onSelected: (value) {},
-                                                enableSearch: false,
+                                                onSelected: (value) model.updateSortOrder(value),
+                                                enableSearch: true,
                                               ),
                                             ],
                                           ),
@@ -265,19 +159,16 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                               ),
                                               Expanded(
                                                 flex: 3,
-                                                child: Wrap(
-                                                  alignment:
-                                                      WrapAlignment.center,
-                                                  spacing: 8,
-                                                  runSpacing: 8,
-                                                  children: List<Widget>.from(
-                                                    priceFilters.map(
-                                                      (filter) => FilterChip(
-                                                        label: Text(filter),
-                                                        onSelected: (value) {},
-                                                      ),
-                                                    ),
-                                                  ),
+                                                child: RangeSlider(
+                                                  values: model.currentRangeValues,
+                                                  max: 100,
+                                                  divisions: 100,
+                                                  labels: RangeLabels(
+                                                    model.minPrice.toString(),
+                                                    model.maxPrice.toString(),
+                                                  onChanged: (RangeValue values) {
+                                                    model.currentRangeValues = values;
+                                                  },
                                                 ),
                                               ),
                                             ],
@@ -367,111 +258,11 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: const BoxDecoration(),
-                        child: CategoryWidget(),
+                    priceFilters.map(
+                      (filter) => FilterChip(
+                        label: Text(filter),
+                        onSelected: (value) {},
                       ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                        ),
-                        child: CategoryWidget(),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
                     ),
                   ],
                 ),
@@ -501,9 +292,12 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
               shrinkWrap: true,
               crossAxisCount: 2,
               children: List.generate(
-                productList.length,
+                model.productsToShow.length > model.productsPerPage
+                  ? model.productsPerPage
+                  : model.productsToShow.length,
                 (index) => ProductWidget(
-                  product: productList[index],
+                  //product: model.productsToShow[index + model.pageNumber * model.productsPerPage],
+                  product: model.productsToShow[index],
                 ),
               ),
             ),
@@ -515,58 +309,58 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
 }
 
 /// SearchBar widget
-class SearchBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: darkGreen,
-        ),
-        child: TextField(
-          style: const TextStyle(color: Colors.white),
-          textAlign: TextAlign.left,
-          decoration: InputDecoration(
-            hintText: "Search here",
-            hintStyle: const TextStyle(
-              color: Colors.white,
-            ),
-            prefixIcon: InkWell(
-              onTap: () {},
-              child: const Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-            ),
-            border: InputBorder.none, // Remove the default border
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
-          ),
-        ),
-      );
-}
+//class SearchBar extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) => Container(
+//    decoration: BoxDecoration(
+//      borderRadius: BorderRadius.circular(20),
+//      color: darkGreen,
+//    ),
+//    child: TextField(
+//      style: const TextStyle(color: Colors.white),
+//      textAlign: TextAlign.left,
+//      decoration: InputDecoration(
+//        hintText: "Search",
+//        hintStyle: const TextStyle(
+//          color: Colors.white,
+//        ),
+//        prefixIcon: InkWell(
+//          onTap: () {},
+//          child: const Icon(
+//            Icons.search,
+//            color: Colors.white,
+//          ),
+//        ),
+//        border: InputBorder.none, // Remove the default border
+//        contentPadding: const EdgeInsets.symmetric(
+//          horizontal: 16,
+//          vertical: 14,
+//        ),
+//      ),
+//    ),
+//  );
+//}
 
 /// Resusable circular widget for showing categories
-class CategoryWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => const Column(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage(
-              "https://media.licdn.com/dms/image/D4E03AQH1m-DsPxkXkQ/profile-displayphoto-shrink_800_800/0/1663694541598?e=2147483647&v=beta&t=jbiXqn5fY7dJUCgtYZ9a_KZrYWRmCHzg0YkJBdGoURg",
-            ),
-          ),
-          Text(
-            "Textbooks",
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ],
-      );
-}
+//class CategoryWidget extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) => const Column(
+//    children: <Widget>[
+//      CircleAvatar(
+//        radius: 30,
+//        backgroundImage: NetworkImage(
+//          "https://media.licdn.com/dms/image/D4E03AQH1m-DsPxkXkQ/profile-displayphoto-shrink_800_800/0/1663694541598?e=2147483647&v=beta&t=jbiXqn5fY7dJUCgtYZ9a_KZrYWRmCHzg0YkJBdGoURg",
+//        ),
+//      ),
+//      Text(
+//        "Textbooks",
+//        style: TextStyle(
+//          fontSize: 14,
+//        ),
+//      ),
+//    ],
+//  );
+//}
 
 // ElevatedButton(
 //                                       child: const Text("Close BottomSheet"),

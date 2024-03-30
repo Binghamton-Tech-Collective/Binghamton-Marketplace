@@ -13,7 +13,10 @@ class ProductsViewModel extends ViewModel {
   /// Currently visible products
   List<Product> productsToShow = [];
   /// Number of products to show per page
-  final int productsPerPage = 20;
+  final int productsPerPage = 200;
+  /// Current page number
+  //int pageNumber;
+
   /// Search text bar
   TextEditingController searchController = TextEditingController();
 
@@ -24,10 +27,19 @@ class ProductsViewModel extends ViewModel {
   int minRating = 0;
 
   /// The sort order to use when displaying products.
-  ProductSortOrder sortOrder = ProductSortOrder.byRating;
+  ProductSortOrder sortOrder = ProductSortOrder.byNew;
 
   /// Whether a search is being performed on the database.
   bool isSearching = false;
+
+  /// Range values for the price filter
+  RangeValues currentRangeValues = const RangeValues(0, 100);
+
+  /// Current min price
+  int get minPrice => currentRangeValues.start.round();
+
+  /// Current max price
+  int get maxPrice => currentRangeValues.end.round();
 
   /// Queries the database using [Database.queryProducts].
   Future<void> queryProducts() async {
@@ -36,8 +48,10 @@ class ProductsViewModel extends ViewModel {
       limit: productsPerPage,
       searchQuery: searchQuery,
       categories: categories.nullIfEmpty,
-      minRating: minRating,
+      minRating: minRating == 0 ? null : minRating,
       sortOrder: sortOrder,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
     );
     isSearching = false;
     notifyListeners();
@@ -46,6 +60,9 @@ class ProductsViewModel extends ViewModel {
   @override
   Future<void> init() async {
     await super.init();
+    //pageNumber = 0;
+    await queryProducts();
+    print(productsToShow);
     searchController.addListener(notifyListeners);
   }
 

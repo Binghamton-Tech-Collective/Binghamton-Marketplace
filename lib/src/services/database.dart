@@ -175,7 +175,10 @@ class Database extends Service {
     String? searchQuery,
     Iterable<Category>? categories,
     int? minRating,
+    //int? minPrice,
+    //int? maxPrice,
   }) async {
+    print("$limit, $sortOrder, $searchQuery, $categories, $minRating");
     var query = products.limit(limit);
     if (searchQuery != null) {
       final keywords = searchQuery.split(" ").take(20);
@@ -186,6 +189,12 @@ class Database extends Service {
     }
     if (minRating != null) {
       query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
+    }
+    if (minPrice != null) {
+      query = query.where("price", isGreaterThanOrEqualTo: minPrice);
+    }
+    if (maxPrice != null) {
+      query = query.where("price", isLessThanOrEqualTo: maxPrice);
     }
     switch (sortOrder) {
       case ProductSortOrder.byPriceAscending:
