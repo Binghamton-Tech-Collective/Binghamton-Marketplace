@@ -76,7 +76,6 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
       linkedinController.text = seller.contact.linkedInUsername != null ? seller.contact.linkedInUsername! : "";
       sellerID = seller.id;
       imageUrl = seller.imageUrl;
-      profile = seller;
     }
     userID = models.user.userProfile!.id;
     for (final controller in allControllers) {
@@ -136,10 +135,9 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage() async {
-    final filename = imageUrl;
-    imageUrl = null;
     // [filename] cannot be null because imageUrl is required for sellerprofile, and we're copying it before nullifying it.
-    await services.cloudStorage.deleteFile(filename!);
+    await services.cloudStorage.deleteFile(imageUrl!);
+    imageUrl = null;
     notifyListeners();
   }
 
@@ -154,7 +152,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     isSaving = true;
     saveError = null;
     try {
-      if(initialID == null) profile = build();
+      profile = build();
       await services.database.saveSellerProfile(profile);
       router.go("/sellers/${profile.id}");
     } catch (error) {

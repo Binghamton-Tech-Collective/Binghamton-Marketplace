@@ -15,12 +15,12 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   @override
   SellerProfileViewModel createModel() => SellerProfileViewModel(id);
 
-  // @override
-  // void didUpdateWidget(SellerProfilePage oldWidget, SellerProfileViewModel model) {
-  //   model.id = id;
-  //   model.init();
-  //   super.didUpdateWidget(oldWidget, model);
-  // }
+  @override
+  void didUpdateWidget(SellerProfilePage oldWidget, SellerProfileViewModel model) {
+    model.id = id;
+    model.init();
+    super.didUpdateWidget(oldWidget, model);
+  }
 
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
