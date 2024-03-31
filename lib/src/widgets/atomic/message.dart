@@ -65,7 +65,8 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
         ),
-        Text(context.formatDateAndTime(message.timeSent)),
+        // The timeEdited will not be null since it will run only after the null check
+        Text(message.timeEdited != null ? "${context.formatDateAndTime(message.timeEdited!)} edited" : context.formatDateAndTime(message.timeSent)),
       ],),
   );
 }
