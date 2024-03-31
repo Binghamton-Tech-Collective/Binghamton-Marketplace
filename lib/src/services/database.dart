@@ -179,7 +179,6 @@ class Database extends Service {
     int? maxPrice,
   }) async {
     var query = products.limit(limit);
-    return query.getAll();
     if (searchQuery != null) {
       final keywords = searchQuery.split(" ").take(20);
       query = query.where("_searchKeywords", arrayContainsAny: keywords);
@@ -188,7 +187,7 @@ class Database extends Service {
       query = query.where("categories", arrayContainsAny: [
         for (final category in categories)
           category.id,
-        ]
+        ],
       );
     }
 

@@ -71,7 +71,7 @@ class ProductsViewModel extends ViewModel {
 
   /// Applies the default filter values
   void applyDefaultFilters() {
-    priceRange = RangeValues(0, 100);
+    priceRange = const RangeValues(0, 100);
     sortOrder = ProductSortOrder.byNew;
     categories.clear();
   }

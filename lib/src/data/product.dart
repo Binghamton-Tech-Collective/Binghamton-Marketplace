@@ -111,7 +111,7 @@ class Product {
     required this.categories,
     required this.condition,
     required this.dateListed,
-    this.averageRating,
+    this.averageRating = 0,
     this.ratingSum = 0,
     this.ratingCount = 0,
     this.delisted = false,

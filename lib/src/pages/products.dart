@@ -14,16 +14,8 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   ProductsViewModel createModel() => ProductsViewModel();
 
   @override
-  Widget build(BuildContext context, ProductsViewModel model) {
-    /// Dummy filters to test filters
-    //final priceFilters = [
-    //  r"$0 to $5",
-    //  r"$5 to $10",
-    //  r"$10 to $50",
-    //  r"$50+",
-    //];
-
-    return Scaffold(
+  Widget build(BuildContext context, ProductsViewModel model) =>
+    Scaffold(
       appBar: AppBar(
         backgroundColor: darkGreen,
         title: const Center(
@@ -154,10 +146,9 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                           ),
                                           ValueListenableBuilder<RangeValues>(
                                             valueListenable: model.priceRangeNotifier,
-                                            builder: (context, range, child) {
-                                              return RangeSlider(
+                                            builder: (context, range, child) =>
+                                              RangeSlider(
                                                 values: range,
-                                                min: 0,
                                                 max: 100,
                                                 divisions: 25,
                                                 labels: RangeLabels(
@@ -167,8 +158,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                                 onChanged: (values) {
                                                   model.changePriceRange(values);
                                                 },
-                                              );
-                                            },
+                                              ),
                                           ),
                                         ],
                                       ),
@@ -261,7 +251,6 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                           backgroundImage: AssetImage(category.imagePath),
                         ),
                         label: Text(category.title),
-                        selectedColor: darkGreen,
                         onSelected: (_) => model.toggleCategory(category),
                       ),
                   ],
@@ -305,5 +294,4 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
         ],
       ),
     );
-  }
 }
