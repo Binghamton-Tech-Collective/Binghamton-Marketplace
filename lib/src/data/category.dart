@@ -29,17 +29,6 @@ enum Category {
   /// Stores the link of the thumbnail for this category
   final String imagePath;
 
-  /// All of the available categories
-  static const categories = <Category>{
-    books,
-    furniture,
-    clothes,
-    crafts,
-    food,
-    plants,
-    other,
-  };
-
   /// Constructor to initialize the instances of Category class
   const Category({
     required this.id,

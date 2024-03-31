@@ -116,7 +116,12 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
-                                          const Text("Sort By"),
+                                          const Text(
+                                            "Sort By",
+                                            style: TextStyle(
+                                             fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                           DropdownMenu<ProductSortOrder>(
                                             dropdownMenuEntries: [
                                               for (final sortOrder
@@ -127,7 +132,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                                 ),
                                             ],
                                             hintText: "Select",
-                                            onSelected: (value) {},
+                                            onSelected: (value) => model.sortOrder = value ?? ProductSortOrder.byNew,
                                             enableSearch: false,
                                           ),
                                         ],
@@ -147,20 +152,23 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                               ),
                                             ),
                                           ),
-                                          Expanded(
-                                            child: RangeSlider(
-                                              values: model.priceRange,
-                                              min: 0,
-                                              max: 100,
-                                              divisions: 25,
-                                              labels: RangeLabels(
-                                                model.minPrice.toString(),
-                                                model.maxPrice.toString(),
-                                              ),
-                                              onChanged: (RangeValues values) {
-                                                model.changePriceRange(values);
-                                              },
-                                            ),
+                                          ValueListenableBuilder<RangeValues>(
+                                            valueListenable: model.priceRangeNotifier,
+                                            builder: (context, range, child) {
+                                              return RangeSlider(
+                                                values: range,
+                                                min: 0,
+                                                max: 100,
+                                                divisions: 25,
+                                                labels: RangeLabels(
+                                                  range.start.round().toString(),
+                                                  range.end.round().toString(),
+                                                ),
+                                                onChanged: (values) {
+                                                  model.changePriceRange(values);
+                                                },
+                                              );
+                                            },
                                           ),
                                         ],
                                       ),
@@ -180,7 +188,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                             ),
                                           ),
                                           RatingBar(
-                                            initialRating: 5,
+                                            initialRating: model.minRating as double,
                                             ratingWidget: RatingWidget(
                                               full: const Icon(
                                                 Icons.star,
@@ -208,13 +216,13 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () => model.applyDefaultFilters(),
                                           child: const Text(
                                             "Reset Filters",
                                           ),
                                         ),
                                         ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () => model.queryProducts(),
                                           child: const Text(
                                             "Apply",
                                           ),
@@ -247,17 +255,15 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    for (final category in Category.categories)
+                    for (final category in Category.values)
                       FilterChip(
                         avatar: CircleAvatar(
                           backgroundImage: AssetImage(category.imagePath),
                         ),
                         label: Text(category.title),
+                        selectedColor: darkGreen,
                         onSelected: (_) => model.toggleCategory(category),
                       ),
-                    const SizedBox(
-                      width: 25,
-                    ),
                   ],
                 ),
               ),

@@ -179,21 +179,27 @@ class Database extends Service {
     int? maxPrice,
   }) async {
     var query = products.limit(limit);
+    return query.getAll();
     if (searchQuery != null) {
       final keywords = searchQuery.split(" ").take(20);
       query = query.where("_searchKeywords", arrayContainsAny: keywords);
     }
     if (categories != null) {
-      query = query.where("categories", whereIn: categories);
+      query = query.where("categories", arrayContainsAny: [
+        for (final category in categories)
+          category.id,
+        ]
+      );
     }
-    if (minRating != null) {
-      query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-    }
-    if (minPrice != null) {
-      query = query.where("price", isGreaterThanOrEqualTo: minPrice);
-    }
-    if (maxPrice != null) {
-      query = query.where("price", isLessThanOrEqualTo: maxPrice);
+
+    if (sortOrder == ProductSortOrder.byPriceAscending ||
+        sortOrder == ProductSortOrder.byPriceDescending) {
+      if (minPrice != null) {
+        query = query.where("price", isGreaterThanOrEqualTo: minPrice);
+      }
+      if (maxPrice != null) {
+        query = query.where("price", isLessThanOrEqualTo: maxPrice);
+      }
     }
     switch (sortOrder) {
       case ProductSortOrder.byPriceAscending:
@@ -202,11 +208,15 @@ class Database extends Service {
         query = query.orderBy("price", descending: true);
       case ProductSortOrder.byRating:
         query = query.orderBy("averageRating", descending: true);
+        if (minRating != null) {
+          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
+        }
       case ProductSortOrder.byNew:
         query = query.orderBy("dateListed", descending: true);
       case ProductSortOrder.byOld:
         query = query.orderBy("dateListed");
     }
+
     return query.getAll();
   }
 }
