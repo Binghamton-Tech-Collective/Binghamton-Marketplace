@@ -167,26 +167,56 @@ class Database extends Service {
       conversations.where("members", arrayContains: id).getAll();
 
   /// Queries products with the given criteria.
-  ///
-  /// If a parameter is not passed, it does not affect the query.
+  /// 
+  /// Firestore has two fundamental limitations that affect how this function works: 
+  /// 
+  /// 1. There may only be one field on which we use `arrayContainsAny`. This function uses
+  /// it for both [searchQuery] and [ProductFilters.categories]. This means that if the search
+  /// query is present, this function will choose that over any selected categories. Hopefully,
+  /// this will be useful, as a product searched directly should appear no matter what.
+  /// 
+  /// 2. Only the sort field (ie, we call `orderBy` on it) may have inequality checks. For example,
+  /// if you sort products chronologically, then you can't filter for products greater than a certain
+  /// price.
+  /// 
+  /// By combining [sortOrder] and [filters], this function chooses a query that is compatible with
+  /// Cloud Firestore's limitations. If a filter is null, it won't affect the query.
   Future<List<Product>> queryProducts({
     required int limit,
     required ProductSortOrder sortOrder,
-    String? searchQuery,
-    Iterable<Category>? categories,
-    int? minRating,
+    required ProductFilters filters,
+    required String searchQuery,
   }) async {
     var query = products.limit(limit);
-    if (searchQuery != null) {
+
+    // Firestore only lets us use one `arrayContainsAny` at a time.
+    // Here, we choose between the [searchQuery] and [ProductFilters.categories].
+    if (searchQuery.isNotEmpty) {
       final keywords = searchQuery.split(" ").take(20);
       query = query.where("_searchKeywords", arrayContainsAny: keywords);
+    } else if (filters.categories.isNotEmpty) {
+      query = query.where("categories", arrayContainsAny: [
+        for (final category in filters.categories)
+          category.id,
+        ],
+      );
     }
-    if (categories != null) {
-      query = query.where("categories", whereIn: categories);
+
+    switch (filters) {
+      case FilterByPrice(:final minPrice, :final maxPrice):
+        if (minPrice != null) {
+          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
+        }
+        if (maxPrice != null) {
+          query = query.where("price", isLessThanOrEqualTo: maxPrice);
+        }
+      case FilterByRating(:final minRating):
+        if (minRating != null) {
+          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
+        }
+      case NormalFilter(): break;
     }
-    if (minRating != null) {
-      query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-    }
+    
     switch (sortOrder) {
       case ProductSortOrder.byPriceAscending:
         query = query.orderBy("price");
@@ -199,6 +229,7 @@ class Database extends Service {
       case ProductSortOrder.byOld:
         query = query.orderBy("dateListed");
     }
+
     return query.getAll();
   }
 }
