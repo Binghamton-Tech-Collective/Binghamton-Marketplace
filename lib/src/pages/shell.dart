@@ -18,7 +18,7 @@ class ShellPage extends StatelessWidget {
             if(models.user.sellerProfiles.isNotEmpty) {
               router.go("/products/create");
             } else {
-              
+              router.go("/sellers/no-profile");
             }
           },
           tooltip: "Add Product",
