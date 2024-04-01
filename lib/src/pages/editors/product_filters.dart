@@ -5,9 +5,13 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
+/// A name and widget in a row, on opposite sides of each other,
 class FilterOption extends StatelessWidget {
+  /// The name of the option.
   final String name;
+  /// The option to show.
   final Widget child;
+  /// Creates a filter option widget.
   const FilterOption({
     required this.name,
     required this.child,
@@ -35,7 +39,9 @@ class FilterOption extends StatelessWidget {
   );
 }
 
+/// A widget to customize [ProductFilters] based on [ProductFiltersBuilder].
 class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder> {
+  /// Builds a widget to customize [ProductFilters] and [ProductSortOrder].
   const ProductFiltersEditor(super.model);
 
   @override
@@ -94,6 +100,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
     ],
   );
 
+  /// Builds the available filter options based on [ProductFiltersBuilder.sortOrder].
   List<Widget> buildBody(BuildContext context, ProductFiltersBuilder model) => switch (model.sortOrder) {
     ProductSortOrder.byNew || ProductSortOrder.byOld => [],
     ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => [

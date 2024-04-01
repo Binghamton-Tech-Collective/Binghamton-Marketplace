@@ -16,8 +16,11 @@ class ProductsViewModel extends ViewModel {
   /// Current page number
   //int pageNumber;
 
+  /// The text controller for the search box.
   final searchController = TextEditingController();
+  /// The current search query.
   String get searchQuery => searchController.text;
+  /// Clears the search box and queries all products again.
   void clearSearch() {
     searchController.clear();
     queryProducts();
@@ -26,6 +29,7 @@ class ProductsViewModel extends ViewModel {
   /// Whether a search is being performed on the database.
   bool isSearching = false;
   
+  /// The builder model for the user's selected filters.
   late final ProductFiltersBuilder filterBuilder;
 
   /// Queries the database using [Database.queryProducts].

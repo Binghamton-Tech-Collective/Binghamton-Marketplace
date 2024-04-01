@@ -17,6 +17,7 @@ enum ProductSortOrder {
   final String displayName;
   const ProductSortOrder(this.displayName);
 
+  /// Whether this sort order is based on price.
   bool get isByPrice => this == ProductSortOrder.byPriceAscending
     || this == ProductSortOrder.byPriceDescending;
 }
