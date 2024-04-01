@@ -50,7 +50,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             
             // ---------- Name, price, and condition ----------
             const SizedBox(height: 24),
-            Expanded(child: Text(model.product.title, style: context.textTheme.headlineLarge)),
+            Text(model.product.title, style: context.textTheme.headlineLarge),
             const SizedBox(height: 12),
             Row(
               children: [

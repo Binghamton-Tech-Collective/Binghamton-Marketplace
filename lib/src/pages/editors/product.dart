@@ -36,6 +36,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               InputContainer(
                 text: "Price of the Item",
                 hint: "Item Price",
+                prefixText: r"$",
                 controller: model.priceController,
                 formatter: FilteringTextInputFormatter.allow(RegExp(r"[\d\.]")),
                 inputType: const TextInputType.numberWithOptions(decimal: true),
