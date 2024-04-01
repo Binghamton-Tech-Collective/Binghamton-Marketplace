@@ -128,6 +128,7 @@ class ConversationViewModel extends ViewModel {
   /// Edits the message at the given index.
   Future<void> editMessage(int reversedIndex, String content) async {
     final message = reversedMessages[reversedIndex];
+    if(message.content == content || content.trim().isEmpty) return;
     message.content = content;
     message.timeEdited = DateTime.now();
     try {
