@@ -167,8 +167,20 @@ class Database extends Service {
       conversations.where("members", arrayContains: id).getAll();
 
   /// Queries products with the given criteria.
-  ///
-  /// If a parameter is not passed, it does not affect the query.
+  /// 
+  /// Firestore has two fundamental limitations that affect how this function works: 
+  /// 
+  /// 1. There may only be one field on which we use `arrayContainsAny`. This function uses
+  /// it for both [searchQuery] and [ProductFilters.categories]. This means that if the search
+  /// query is present, this function will choose that over any selected categories. Hopefully,
+  /// this will be useful, as a product searched directly should appear no matter what.
+  /// 
+  /// 2. Only the sort field (ie, we call `orderBy` on it) may have inequality checks. For example,
+  /// if you sort products chronologically, then you can't filter for products greater than a certain
+  /// price.
+  /// 
+  /// By combining [sortOrder] and [filters], this function chooses a query that is compatible with
+  /// Cloud Firestore's limitations. If a filter is null, it won't affect the query.
   Future<List<Product>> queryProducts({
     required int limit,
     required ProductSortOrder sortOrder,

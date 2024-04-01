@@ -11,14 +11,17 @@ class ProductsViewModel extends ViewModel {
   List<Product> productsToShow = [];
 
   /// Number of products to show per page
-  final int productsPerPage = 200;
+  final int productsPerPage = 20;
 
   /// Current page number
   //int pageNumber;
 
   final searchController = TextEditingController();
   String get searchQuery => searchController.text;
-  void clearSearch() => searchController.clear();
+  void clearSearch() {
+    searchController.clear();
+    queryProducts();
+  }
 
   /// Whether a search is being performed on the database.
   bool isSearching = false;
@@ -28,6 +31,7 @@ class ProductsViewModel extends ViewModel {
   /// Queries the database using [Database.queryProducts].
   Future<void> queryProducts() async {
     isSearching = true;
+    notifyListeners();
     productsToShow = await services.database.queryProducts(
       limit: productsPerPage,
       filters: filterBuilder.build(),

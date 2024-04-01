@@ -13,12 +13,13 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
 
   @override
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
-      appBar: AppBar(title: const Text("Home")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+    appBar: AppBar(title: const Text("Home")),
+    body: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          if (model.isSearching) const LinearProgressIndicator(),
           SearchBar(
             leading: const Icon(Icons.search),
             controller: model.searchController,

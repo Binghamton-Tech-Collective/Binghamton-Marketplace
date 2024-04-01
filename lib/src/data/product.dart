@@ -127,7 +127,8 @@ class Product {
         "userID": userID,
         "title": title,
         "_searchKeywords": [
-          for (final word in title.split(" ")) word,
+          for (final word in title.split(" ")) 
+            word.toLowerCase(),
         ],
         "description": description,
         "price": price,
