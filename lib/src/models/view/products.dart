@@ -20,6 +20,10 @@ class ProductsViewModel extends ViewModel {
   /// Only show products with a [Product.averageRating] at least this high. 
   int minRating = 0;
 
+  final searchController = TextEditingController();
+  String get searchQuery => searchController.text;
+  void clearSearch() => searchController.clear();
+
   /// The sort order notifier
   final ValueNotifier<ProductSortOrder> sortOrderNotifier = ValueNotifier(ProductSortOrder.byNew);
   /// The sort order to use when displaying products.
@@ -63,8 +67,15 @@ class ProductsViewModel extends ViewModel {
   @override
   Future<void> init() async {
     await super.init();
+    searchController.addListener(notifyListeners);
     //pageNumber = 0;
     await queryProducts();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   /// Changes the range of acceptable prices.

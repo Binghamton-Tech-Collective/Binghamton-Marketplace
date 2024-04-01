@@ -1,9 +1,9 @@
+import "package:flutter/material.dart";
+
 import "package:btc_market/data.dart";
 import "package:btc_market/main.dart";
 import "package:btc_market/models.dart";
-import "package:btc_market/src/widgets/atomic/product.dart";
-import "package:btc_market/src/widgets/generic/reactive_widget.dart";
-import "package:flutter/material.dart";
+import "package:btc_market/widgets.dart";
 
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
@@ -15,25 +15,20 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   @override
   Widget build(BuildContext context, ProductsViewModel model) =>
     Scaffold(
-      appBar: AppBar(
-        backgroundColor: darkGreen,
-        title: const Center(
-          child: Text(
-            "Home",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-        ),
-      ),
+      appBar: AppBar(title: const Text("Home")),
       body: Column(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.all(16),
             child: SearchBar(
-              backgroundColor: MaterialStateProperty.all<Color>(darkGreen),
+              controller: model.searchController,
+              leading: const Icon(Icons.search),
+              trailing: [
+                if (model.searchQuery.isNotEmpty) IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: model.clearSearch,
+                ),
+              ],
               onSubmitted: (String searchQuery) => model.queryProducts(
                 searchQuery: searchQuery,
               ),
@@ -252,25 +247,16 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                   ],
                 ),
               ),
-              Container(
-                height: 100,
-                margin: const EdgeInsets.only(
-                  left: 16,
-                  top: 8,
-                ),
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    for (final category in Category.values)
-                      FilterChip(
-                        avatar: CircleAvatar(
-                          backgroundImage: AssetImage(category.imagePath),
-                        ),
-                        label: Text(category.title),
-                        onSelected: (_) => model.toggleCategory(category),
-                      ),
-                  ],
-                ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: <Widget>[
+                  for (final category in Category.values) CategoryFilterChip(
+                    category: category,
+                    isSelected: model.categories.contains(category),
+                    onSelected: (_) => model.toggleCategory(category),
+                  ),
+                ],
               ),
             ],
           ),
