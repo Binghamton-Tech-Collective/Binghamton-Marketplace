@@ -3,7 +3,7 @@ import "package:flutter/services.dart";
 
 /// Reusable InputContainer for input fields
 class InputContainer extends StatelessWidget {
-  /// Text to be entered in the input
+  /// The title of this input container.
   final String text;
 
   /// Hint to be entered for the input
@@ -38,7 +38,7 @@ class InputContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-    children: <Widget>[
+    children: [
       Align(
         alignment: Alignment.centerLeft,
         child: Text(
