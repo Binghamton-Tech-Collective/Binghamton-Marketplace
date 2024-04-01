@@ -1,5 +1,6 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
 
 /// This view model includes the logic required for the SellerProfile view
@@ -11,11 +12,11 @@ class SellerProfileViewModel extends ViewModel {
 
   // The profile variable will hold the object of Seller Profile
   /// The profile will get the seller profile info from model of seller profile.
-  late final SellerProfile profile;
+  late SellerProfile profile;
 
   /// This set stores the categories in which the user has their products listed.
   /// It is calculated on the basis of the product listings that the user has.
-  late final Set<Category> categories;
+  late Set<Category> categories;
 
   /// This list stores the list of products that the user currently has.
   /// The data for this list will be fetched from the database which will have the details of the products that the user is selling.
@@ -23,7 +24,7 @@ class SellerProfileViewModel extends ViewModel {
   late List<Product> productList;
 
   /// The seller ID to view.
-  final SellerID id;
+  SellerID id;
 
   /// Creates the seller view model.
   SellerProfileViewModel(this.id);
@@ -50,4 +51,22 @@ class SellerProfileViewModel extends ViewModel {
 
   /// The method will return the description that can be used as a bio for the seller.
   String get sellerDescription => profile.bio;
+
+  /// Open or creates conversation
+  Future<void> openConversation() async {
+    final buyer = models.user.userProfile!;
+    final seller = profile;
+
+    var conversation = await services.database.getConversation(buyer, profile);
+    if (conversation == null) {
+      final conversationID = services.database.conversations.newID;
+      conversation = Conversation.start(
+        id: conversationID,
+        buyer: buyer,
+        seller: seller,
+      );
+      await services.database.saveConversation(conversation);
+    }
+    router.push("/messages/${conversation.id}").ignore();
+  }
 }
