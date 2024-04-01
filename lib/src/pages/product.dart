@@ -84,12 +84,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             const SizedBox(height: 8),
             Wrap(children: [
               for (final category in model.product.categories) ...[
-                Chip(
-                  label: Text(category.title),
-                  labelStyle: const TextStyle(color: Colors.white),
-                  backgroundColor: Colors.grey,
-                  shape: const StadiumBorder(),
-                ),
+                CategoryChip(category),
                 const SizedBox(width: 8),
               ],
             ],),
