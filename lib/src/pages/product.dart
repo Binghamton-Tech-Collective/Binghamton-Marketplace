@@ -82,12 +82,14 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             const SizedBox(height: 12),
             Text("Categories", style: context.textTheme.titleLarge),
             const SizedBox(height: 8),
-            Wrap(children: [
-              for (final category in model.product.categories) ...[
-                CategoryChip(category),
-                const SizedBox(width: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final category in model.product.categories)
+                  CategoryChip(category),
               ],
-            ],),
+            ),
 
             // ---------- Seller Profile ----------
             const SizedBox(height: 12),
