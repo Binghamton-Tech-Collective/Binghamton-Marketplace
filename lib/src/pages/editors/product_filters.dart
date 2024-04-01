@@ -64,6 +64,8 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
           ],
         ),
       ),
+      const SizedBox(height: 12),
+      const Text("Change the sort order for more options"),
       ...buildBody(context, model),
       const Spacer(),
       Row(
