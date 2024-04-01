@@ -125,16 +125,13 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               ),
               const SizedBox(height: 8),
               Wrap(
-                spacing: 5,
+                spacing: 8,
+                runSpacing: 8,
                 children: <Widget>[
-                  for (final category in Category.values) FilterChip(
-                    label: Text(category.title),
-                    selected: model.categories.contains(category),
-                    selectedColor: const Color.fromRGBO(0, 90, 67, 1),
-                    onSelected: (selected) => model.setCategorySelected(
-                      category: category,
-                      selected: selected,
-                    ),
+                  for (final category in Category.values) CategoryFilterChip(
+                    category: category,
+                    isSelected: model.categories.contains(category),
+                    onSelected: (selected) => model.setCategorySelected(category: category, selected: selected),
                   ),
                 ],
               ),

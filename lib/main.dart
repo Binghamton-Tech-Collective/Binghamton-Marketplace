@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:flutter_web_plugins/url_strategy.dart";
+import "package:go_router/go_router.dart";
 
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
@@ -6,6 +8,8 @@ import "package:btc_market/services.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
+  usePathUrlStrategy();
   await services.init();
   await models.init();
   runApp(BtcMarket());

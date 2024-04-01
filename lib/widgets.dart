@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 
 export "package:go_router/go_router.dart";
 
+export "src/widgets/atomic/category.dart";
 export "src/widgets/atomic/conversation.dart";
 export "src/widgets/atomic/message.dart";
 export "src/widgets/atomic/product.dart";
