@@ -20,8 +20,12 @@ class ProductsViewModel extends ViewModel {
   /// Only show products with a [Product.averageRating] at least this high. 
   int minRating = 0;
 
+  /// The sort order notifier
+  final ValueNotifier<ProductSortOrder> sortOrderNotifier = ValueNotifier(ProductSortOrder.byNew);
   /// The sort order to use when displaying products.
-  ProductSortOrder sortOrder = ProductSortOrder.byNew;
+  ProductSortOrder get sortOrder => sortOrderNotifier.value;
+  /// The sort order to use when displaying products.
+  set sortOrder(ProductSortOrder value) => sortOrderNotifier.value = value;
 
   /// Whether a search is being performed on the database.
   bool isSearching = false;
@@ -74,15 +78,15 @@ class ProductsViewModel extends ViewModel {
     priceRange = const RangeValues(0, 100);
     sortOrder = ProductSortOrder.byNew;
     categories.clear();
+    notifyListeners();
   }
-
 
   /// Filters products with a lower rating than this.
   Future<void> filterByRating(int numStars) async {
     minRating = numStars;
     await queryProducts();
   }
-  
+
   /// Changes the sort order for the products.
   Future<void> updateSortOrder(ProductSortOrder input) async {
     sortOrder = input;

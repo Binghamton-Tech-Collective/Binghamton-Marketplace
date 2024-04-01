@@ -106,12 +106,12 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                       const SizedBox(height: 16),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           const Text(
                                             "Sort By",
                                             style: TextStyle(
-                                             fontWeight: FontWeight.bold,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                           DropdownMenu<ProductSortOrder>(
@@ -124,78 +124,92 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                                 ),
                                             ],
                                             hintText: "Select",
-                                            onSelected: (value) => model.sortOrder = value ?? ProductSortOrder.byNew,
+                                            onSelected: (value) => model.updateSortOrder(value ?? ProductSortOrder.byNew),
                                             enableSearch: false,
                                           ),
                                         ],
                                       ),
                                       const SizedBox(height: 16),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          const Expanded(
-                                            child: Text(
-                                              "Price",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                      ValueListenableBuilder<ProductSortOrder>(
+                                        valueListenable: model.sortOrderNotifier,
+                                        builder: (context, range, child) =>
+                                          Visibility(
+                                            visible: model.sortOrder == ProductSortOrder.byPriceAscending || model.sortOrder == ProductSortOrder.byPriceDescending,
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                const Expanded(
+                                                  child: Text(
+                                                    "Price",
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                ValueListenableBuilder<RangeValues>(
+                                                  valueListenable: model.priceRangeNotifier,
+                                                  builder: (context, range, child) =>
+                                                    RangeSlider(
+                                                      values: range,
+                                                      max: 100,
+                                                      divisions: 25,
+                                                      labels: RangeLabels(
+                                                        range.start.round().toString(),
+                                                        range.end.round().toString(),
+                                                      ),
+                                                      onChanged: (values) {
+                                                        model.changePriceRange(values);
+                                                      },
+                                                    ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          ValueListenableBuilder<RangeValues>(
-                                            valueListenable: model.priceRangeNotifier,
-                                            builder: (context, range, child) =>
-                                              RangeSlider(
-                                                values: range,
-                                                max: 100,
-                                                divisions: 25,
-                                                labels: RangeLabels(
-                                                  range.start.round().toString(),
-                                                  range.end.round().toString(),
-                                                ),
-                                                onChanged: (values) {
-                                                  model.changePriceRange(values);
-                                                },
-                                              ),
-                                          ),
-                                        ],
                                       ),
                                       const SizedBox(height: 16),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          const Expanded(
-                                            child: Text(
-                                              "Ratings",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                      ValueListenableBuilder<ProductSortOrder>(
+                                        valueListenable: model.sortOrderNotifier,
+                                        builder: (context, range, child) =>
+                                          Visibility(
+                                            visible: model.sortOrder == ProductSortOrder.byRating,
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                const Expanded(
+                                                  child: Text(
+                                                    "Ratings",
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                RatingBar(
+                                                  initialRating: model.minRating as double,
+                                                  ratingWidget: RatingWidget(
+                                                    full: const Icon(
+                                                      Icons.star,
+                                                      color: darkGreen,
+                                                    ),
+                                                    half: const Icon(
+                                                      Icons.star_half,
+                                                      color: darkGreen,
+                                                    ),
+                                                    empty: const Icon(
+                                                      Icons.star_border,
+                                                      color: darkGreen,
+                                                    ),
+                                                  ),
+                                                  onRatingUpdate: (value) {},
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          RatingBar(
-                                            initialRating: model.minRating as double,
-                                            ratingWidget: RatingWidget(
-                                              full: const Icon(
-                                                Icons.star,
-                                                color: darkGreen,
-                                              ),
-                                              half: const Icon(
-                                                Icons.star_half,
-                                                color: darkGreen,
-                                              ),
-                                              empty: const Icon(
-                                                Icons.star_border,
-                                                color: darkGreen,
-                                              ),
-                                            ),
-                                            onRatingUpdate: (value) {},
-                                          ),
-                                        ],
                                       ),
                                     ],
                                   ),
