@@ -172,34 +172,39 @@ class Database extends Service {
   Future<List<Product>> queryProducts({
     required int limit,
     required ProductSortOrder sortOrder,
-    String? searchQuery,
-    Iterable<Category>? categories,
-    int? minRating,
-    int? minPrice,
-    int? maxPrice,
+    required ProductFilters filters,
+    required String searchQuery,
   }) async {
     var query = products.limit(limit);
-    if (searchQuery != null) {
+
+    // Firestore only lets us use one `arrayContainsAny` at a time.
+    // Here, we choose between the [searchQuery] and [ProductFilters.categories].
+    if (searchQuery.isNotEmpty) {
       final keywords = searchQuery.split(" ").take(20);
       query = query.where("_searchKeywords", arrayContainsAny: keywords);
-    }
-    if (categories != null) {
+    } else if (filters.categories.isNotEmpty) {
       query = query.where("categories", arrayContainsAny: [
-        for (final category in categories)
+        for (final category in filters.categories)
           category.id,
         ],
       );
     }
 
-    if (sortOrder == ProductSortOrder.byPriceAscending ||
-        sortOrder == ProductSortOrder.byPriceDescending) {
-      if (minPrice != null) {
-        query = query.where("price", isGreaterThanOrEqualTo: minPrice);
-      }
-      if (maxPrice != null) {
-        query = query.where("price", isLessThanOrEqualTo: maxPrice);
-      }
+    switch (filters) {
+      case FilterByPrice(:final minPrice, :final maxPrice):
+        if (minPrice != null) {
+          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
+        }
+        if (maxPrice != null) {
+          query = query.where("price", isLessThanOrEqualTo: maxPrice);
+        }
+      case FilterByRating(:final minRating):
+        if (minRating != null) {
+          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
+        }
+      case NormalFilter(): break;
     }
+    
     switch (sortOrder) {
       case ProductSortOrder.byPriceAscending:
         query = query.orderBy("price");
@@ -207,9 +212,6 @@ class Database extends Service {
         query = query.orderBy("price", descending: true);
       case ProductSortOrder.byRating:
         query = query.orderBy("averageRating", descending: true);
-        if (minRating != null) {
-          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-        }
       case ProductSortOrder.byNew:
         query = query.orderBy("dateListed", descending: true);
       case ProductSortOrder.byOld:

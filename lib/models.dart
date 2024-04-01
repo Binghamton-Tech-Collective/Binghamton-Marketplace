@@ -4,6 +4,7 @@ export "src/models/utils.dart";
 export "src/models/data/user.dart";
 
 export "src/models/builders/product.dart";
+export "src/models/builders/product_filters.dart";
 export "src/models/builders/seller_profile.dart";
 
 export "src/models/view/conversation.dart";
