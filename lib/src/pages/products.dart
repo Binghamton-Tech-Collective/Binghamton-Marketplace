@@ -8,7 +8,6 @@ import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 /// The home page that lists all the products
-
 class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   @override
   ProductsViewModel createModel() => ProductsViewModel();
@@ -226,7 +225,10 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
                                           ),
                                         ),
                                         ElevatedButton(
-                                          onPressed: () => model.queryProducts(),
+                                          onPressed: () {
+                                            model.queryProducts();
+                                            Navigator.of(context).pop();
+                                          },
                                           child: const Text(
                                             "Apply",
                                           ),
