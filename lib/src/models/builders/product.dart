@@ -10,7 +10,7 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Id of the product if we're editing it
   final ProductID? initialID;
 
-  /// Constructor to initialise the initialID
+  /// Constructor to initialize the initialID
   ProductBuilder({this.initialID});
 
   /// Unique product ID of the product
@@ -53,8 +53,7 @@ class ProductBuilder extends BuilderModel<Product> {
   String? priceError;
 
   /// To add the selected category to the set
-  void setCategorySelected(
-      {required Category category, required bool selected,}) {
+  void setCategorySelected({required Category category, required bool selected}) {
     if (selected) {
       categories.add(category);
     } else {
@@ -97,7 +96,7 @@ class ProductBuilder extends BuilderModel<Product> {
         }
       }
     } catch (error) {
-      errorText = "Error occured while fetching the product! $error";
+      errorText = "Error occurred while fetching the product! $error";
     }
     priceController.addListener(_validatePrice);
     titleController.addListener(notifyListeners);
@@ -120,33 +119,33 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Function to build the profile from the input provided by the user
   @override
   Product build() => Product(
-        id: productID,
-        sellerID: sellerID!,
-        userID: models.user.userProfile!.id,
-        title: titleController.text,
-        description: descriptionController.text,
-        price: double.parse(priceController.text),
-        quantity: 1,
-        imageUrls: [
-          for (final url in imageUrls)
-            if (url != null) url,
-        ],
-        categories: categories,
-        condition: condition!,
-        dateListed: DateTime.now(),
-      );
+    id: productID,
+    sellerID: sellerID!,
+    userID: models.user.userProfile!.id,
+    title: titleController.text,
+    description: descriptionController.text,
+    price: double.parse(priceController.text),
+    quantity: 1,
+    imageUrls: [
+      for (final url in imageUrls)
+        if (url != null) url,
+    ],
+    categories: categories,
+    condition: condition!,
+    dateListed: DateTime.now(),
+  );
 
   @override
   bool get isReady =>
-      titleController.text.isNotEmpty &&
-      descriptionController.text.isNotEmpty &&
-      priceController.text.isNotEmpty &&
-      priceError == null &&
-      // quantityController.text.isNotEmpty &&
-      imageUrls.any((url) => url != null) &&
-      condition != null &&
-      sellerID != null &&
-      !isSaving;
+    titleController.text.isNotEmpty &&
+    descriptionController.text.isNotEmpty &&
+    priceController.text.isNotEmpty &&
+    priceError == null &&
+    // quantityController.text.isNotEmpty &&
+    imageUrls.any((url) => url != null) &&
+    condition != null &&
+    sellerID != null &&
+    !isSaving;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage(int index) async {

@@ -58,15 +58,12 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "View product",
-                  builder: (context, state) =>
-                      ProductPage(state.pathParameters["id"] as ProductID),
+                  builder: (context, state) => ProductPage(state.pathParameters["id"] as ProductID),
                   routes: [
                     GoRoute(
                       path: "edit",
                       name: "Edit a Product",
-                      builder: (context, state) => ProductEditor(
-                          id: state.pathParameters["id"] as ProductID,
-                        ),
+                      builder: (context, state) => ProductEditor(id: state.pathParameters["id"] as ProductID),
                     ),
                   ],
                 ),
@@ -85,8 +82,9 @@ final GoRouter router = GoRouter(
                   path: ":id",
                   name: "Chat with a seller",
                   builder: (context, state) => ConversationPage(
-                      state.pathParameters["id"] as ConversationID,
-                      state.extra as Conversation?,),
+                    state.pathParameters["id"] as ConversationID,
+                    state.extra as Conversation?,
+                  ),
                 ),
               ],
             ),
@@ -107,8 +105,7 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "View seller",
-                  builder: (context, state) =>
-                      SellerProfilePage(state.pathParameters["id"] as SellerID),
+                  builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
                   routes: [
                     GoRoute(
                       path: "edit",

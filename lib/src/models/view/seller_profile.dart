@@ -71,9 +71,5 @@ class SellerProfileViewModel extends ViewModel {
   }
 
   /// Function to edit the sellerProfile
-  void editProfile(SellerID id) {
-    isLoading = true;
-    router.go("/sellers/$id/edit");
-    isLoading = false;
-  }
+  void editProfile() => router.go("/sellers/$id/edit");
 }

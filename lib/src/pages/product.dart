@@ -25,19 +25,13 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
   @override
   Widget build(BuildContext context, ProductViewModel model) => Scaffold(
     appBar: AppBar(
-      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text("Item Details",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-          if (model.product.isSeller) IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => model.editProduct(model.id),
-            ),
-        ],
-      ),
+      title: const Text("Item Details"),
+      actions: [
+        if (model.product.isSeller) IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: () => model.editProduct(model.id),
+        ),
+      ],
     ),
     body: Center(child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
