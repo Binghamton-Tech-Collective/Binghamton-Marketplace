@@ -15,7 +15,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_social_button: any
+  flutter_web_plugins:
+    sdk: flutter 
 
   http: ^1.2.0
   cloud_firestore: ^4.15.5
@@ -27,6 +28,7 @@ dependencies:
   file_picker: ^6.1.1
   firebase_storage: ^11.6.7
   social_media_flutter: ^0.0.2
+  flutter_social_button: ^1.1.4+1
 
 dev_dependencies:
   flutter_test:
@@ -39,8 +41,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
   # 
   # To add custom fonts to your application, add a fonts section here,

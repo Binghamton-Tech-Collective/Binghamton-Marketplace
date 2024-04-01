@@ -25,53 +25,51 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
     appBar: AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text("Profile",
-            style: TextStyle(color: Colors.white),
-          ),
-          if(model.profile.userID == models.user.userProfile!.id) IconButton(icon: const Icon(Icons.edit),
-            onPressed: () => model.editProfile(id),),
-        ],
-      ),
-      backgroundColor: const Color.fromARGB(255, 0, 65, 44),
+      title: const Text("Profile"),
+      actions: [
+        if (model.profile.userID == models.user.userProfile!.id) IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: model.editProfile,
+        ),
+      ],
     ),
     body: ListView(
+      padding: const EdgeInsets.all(16),
       children: [
         Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: CircleAvatar(
+            const SizedBox(width: 16),
+            CircleAvatar(
               backgroundImage: NetworkImage(model.profile.imageUrl),
               radius: 50,
-              ),
             ),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(model.profile.name,
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  Text(
+                    model.profile.name,
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   Row(
-                      children: [RatingBarIndicator(
-                        rating: 5, 
+                    children: [
+                      RatingBarIndicator(
+                        rating: 5,
                         itemSize: 20,
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.amber,
                         ),
                       ),
-                      const Text(" | 10 Sales "),
+                      Text(" | ${model.productList.length} Products"),
                     ],
                   ),
                   Text(model.profile.bio,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                   ),
-                   Row(
+                  Row(
                     children: [
                       IconButton(
                         onPressed: () { },
@@ -95,65 +93,61 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
             ),
           ],
         ),
-      const Divider(
-        indent: 20,
-        endIndent: 20,
-        color: Colors.grey,
-        thickness: 3,
-      ),
-      const Padding(
-        padding: EdgeInsets.only(left: 15),
-        child: Text("Seller Categories",
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        const Divider(
+          color: Colors.grey,
+          thickness: 3,
         ),
-      ),
-      Container(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: SizedBox(
-          height: 110,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              for (final category in model.categories) Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children:  [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: CircleAvatar(backgroundColor: Colors.red , radius: 40),),
-                  Text(category.title),
-                ],
-              ),
-            ],
-          ),
+        Text(
+          "Product Categories",
+          style: context.textTheme.headlineMedium,
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: SizedBox(
+            height: 110,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                for (final category in model.categories) Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children:  [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.transparent, // Set background color to transparent
+                        child: ClipOval(
+                          child: Image(
+                            image: AssetImage(category.imagePath),
+                            fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(category.title),
+                  ],
+                ),
+              ],
+            ),
+          ), 
         ), 
-      ), 
-      const Divider(
-        indent: 20,
-        endIndent: 20,
-        thickness: 3,
-        color: Colors.grey,
-      ),
-    const Padding(
-      padding: EdgeInsets.only(left: 15),
-      child: Text(
-        "Listings",
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-      ),
-    ),
-    Container(
-      padding: const EdgeInsets.all(15),
-      height: 200,
-      child: ListView(
-          scrollDirection: Axis.horizontal,
+        const Divider(
+          thickness: 3,
+          color: Colors.grey,
+        ),
+        Text(
+          "Listings",
+          style: context.textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 12),
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 3,
           children: [
-            for(final product in model.productList)
-              SizedBox(
-                width: 200,
-                child:  ProductWidget(product: product),
-            ), 
+            for (final product in model.productList) 
+              ProductWidget(product: product),
           ],
         ),
-      ),
       ],
     ),
   );

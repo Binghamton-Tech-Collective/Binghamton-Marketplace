@@ -87,10 +87,10 @@ class Database extends Service {
   );
 
   @override
-  Future<void> init() async {}
+  Future<void> init() async { }
 
   @override
-  Future<void> dispose() async {}
+  Future<void> dispose() async { }
 
   /// Gets the currently signed-in user's profile.
   Future<UserProfile?> getUserProfile(UserID userId) =>
@@ -124,8 +124,8 @@ class Database extends Service {
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
     sellers.doc(sellerID).getData();
 
-  /// Gets all the seller profiles owned by the user ID. 
-  Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) => 
+  /// Gets all the seller profiles owned by the user ID.
+  Future<List<SellerProfile>> getSellerProfilesForUser(UserID userID) =>
     sellers.where("userID", isEqualTo: userID).getAll();
 
   /// Gets the product from the the given product ID
@@ -135,11 +135,11 @@ class Database extends Service {
   /// Gets the product from the the given product ID
   Future<Conversation?> getConversationByID(ConversationID conversationID) =>
     conversations.doc(conversationID).getData();
-  
+
   /// Add the message to database
-  Future<void> saveConversation(Conversation conversation) => 
+  Future<void> saveConversation(Conversation conversation) =>
     conversations.doc(conversation.id).set(conversation);
-  
+
   /// Find the conversation if it already exists
   Future<Conversation?> getConversation(UserProfile buyer, SellerProfile seller) => conversations
     .where("buyerUID", isEqualTo: buyer.id)
@@ -148,10 +148,75 @@ class Database extends Service {
     .getFirst();
 
   /// Listens to the conversation with the given id.
-  Stream<Conversation?> listenToConversation(ConversationID id) => 
+  Stream<Conversation?> listenToConversation(ConversationID id) =>
     conversations.doc(id).listen();
 
   /// Gets all conversations that the user is a member of.
   Future<List<Conversation>> getConversationsByUserID(UserID id) =>
     conversations.where("members", arrayContains: id).getAll();
+
+  /// Queries products with the given criteria.
+  /// 
+  /// Firestore has two fundamental limitations that affect how this function works: 
+  /// 
+  /// 1. There may only be one field on which we use `arrayContainsAny`. This function uses
+  /// it for both [searchQuery] and [ProductFilters.categories]. This means that if the search
+  /// query is present, this function will choose that over any selected categories. Hopefully,
+  /// this will be useful, as a product searched directly should appear no matter what.
+  /// 
+  /// 2. Only the sort field (ie, we call `orderBy` on it) may have inequality checks. For example,
+  /// if you sort products chronologically, then you can't filter for products greater than a certain
+  /// price.
+  /// 
+  /// By combining [sortOrder] and [filters], this function chooses a query that is compatible with
+  /// Cloud Firestore's limitations. If a filter is null, it won't affect the query.
+  Future<List<Product>> queryProducts({
+    required int limit,
+    required ProductSortOrder sortOrder,
+    required ProductFilters filters,
+    required String searchQuery,
+  }) async {
+    var query = products.limit(limit);
+    // Filter by category of search query.
+    if (searchQuery.isNotEmpty) {
+      final keywords = searchQuery.split(" ").take(20);
+      query = query.where("_searchKeywords", arrayContainsAny: keywords);
+    } else if (filters.categories.isNotEmpty) {
+      query = query.where("categories", arrayContainsAny: [
+        for (final category in filters.categories)
+          category.id,
+        ],
+      );
+    }
+    // Filter by [ProductFilters] options.
+    switch (filters) {
+      case FilterByPrice(:final minPrice, :final maxPrice):
+        if (minPrice != null) {
+          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
+        }
+        if (maxPrice != null) {
+          query = query.where("price", isLessThanOrEqualTo: maxPrice);
+        }
+      case FilterByRating(:final minRating):
+        if (minRating != null) {
+          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
+        }
+      case NormalFilter(): break;
+    }
+    // Sort by [ProductSortOrder] option.
+    switch (sortOrder) {
+      case ProductSortOrder.byPriceAscending:
+        query = query.orderBy("price");
+      case ProductSortOrder.byPriceDescending:
+        query = query.orderBy("price", descending: true);
+      case ProductSortOrder.byRating:
+        query = query.orderBy("averageRating", descending: true);
+      case ProductSortOrder.byNew:
+        query = query.orderBy("dateListed", descending: true);
+      case ProductSortOrder.byOld:
+        query = query.orderBy("dateListed");
+    }
+    // Execute the query.
+    return query.getAll();
+  }
 }

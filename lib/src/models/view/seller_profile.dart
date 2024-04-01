@@ -67,7 +67,7 @@ class SellerProfileViewModel extends ViewModel {
       );
       await services.database.saveConversation(conversation);
     }
-    await router.push("/messages/${conversation.id}");
+    router.push("/messages/${conversation.id}").ignore();
   }
 
   /// Function to edit the sellerProfile

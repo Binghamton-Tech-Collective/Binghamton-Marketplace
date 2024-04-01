@@ -1,3 +1,4 @@
+import "package:btc_market/src/pages/products.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -47,7 +48,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.products,
               name: "All products",
-              builder: (context, state) => const Placeholder(),
+              builder: (context, state) => ProductsPage(),
               routes: [
                 GoRoute(
                   path: "create",
