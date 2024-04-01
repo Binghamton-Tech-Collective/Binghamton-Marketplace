@@ -22,6 +22,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
           if (model.isSearching) const LinearProgressIndicator(),
           SearchBar(
             leading: const Icon(Icons.search),
+            hintText: "Search Products",
             controller: model.searchController,
             onSubmitted: (searchQuery) => model.queryProducts(),
             trailing: [
@@ -53,16 +54,18 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
             ],
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: <Widget>[
-              for (final category in Category.values) CategoryFilterChip(
-                category: category,
-                isSelected: model.filterBuilder.categories.contains(category),
-                onSelected: (_) => model.filterBuilder.toggleCategory(category),
-              ),
-            ],
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              itemCount: Category.values.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => CategoryFilterChip(
+                  category: Category.values[index],
+                  isSelected: model.filterBuilder.categories.contains(Category.values[index]),
+                  onSelected: (_) => model.filterBuilder.toggleCategory(Category.values[index]),
+                ),
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
