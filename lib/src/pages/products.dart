@@ -5,6 +5,7 @@ import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
 import "editors/product_filters.dart";
+import "package:url_launcher/url_launcher.dart";
 
 /// The home page that lists all the products
 class ProductsPage extends ReactiveWidget<ProductsViewModel> {
@@ -13,7 +14,22 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
 
   @override
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
-    appBar: AppBar(title: const Text("Home")),
+    appBar: AppBar(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          const Text("Home"),
+          IconButton(onPressed: () async {
+            final url = Uri.parse("https://forms.gle/fqDYHYx5EHtpbT129");
+            if (!await launchUrl(url)) {
+              throw Exception("Could not launch $url");
+            }
+          }, 
+          icon: const Icon(Icons.feedback),
+          tooltip: "Submit a feedback",),
+        ],
+      ),
+    ),
     body: Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
