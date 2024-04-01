@@ -18,7 +18,7 @@ class SellerProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-    leading: CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl)),
+    leading: Hero(tag: "profile-pic", child: CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl),),),
     title: Text(profile.name),
     onTap: () => context.push("/sellers/${profile.id}"),
     subtitle: averageRating == null ? null : RatingBarIndicator(

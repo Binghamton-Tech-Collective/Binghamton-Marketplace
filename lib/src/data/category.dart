@@ -2,10 +2,28 @@ import "types.dart";
 
 /// A category of product.
 enum Category {
-  /// The clothing category.
-  clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png"),
+  /// The college essentials category.
+  collegeEssentials(id: CategoryID("collegeEssentials"), title: "College Essentials", description: "Essential Items for college", imagePath: "categories/collegeEssentials.png"),
   /// The books category.
-  books(id: CategoryID("books"), title: "Books", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png");
+  books(id: CategoryID("books"), title: "Books", description: "Books", imagePath: "categories/books.png"),
+  /// The clothing category.
+  clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "categories/clothes.png"),
+  /// The food category.
+  food(id: CategoryID("food"), title: "Food Items", description: "Food Items", imagePath: "categories/food.png"),
+  /// The furniture category.
+  furniture(id: CategoryID("furniture"), title: "Furniture", description: "Furniture", imagePath: "categories/furniture.png"),
+  /// The electronics category.
+  electronics(id: CategoryID("electronics"), title: "Electronics", description: "Electronics", imagePath: "categories/electronics.png"),
+  /// The clothing category.
+  crafts(id: CategoryID("crafts"), title: "Crafts", description: "Creative Crafts", imagePath: "categories/craft.png"),
+  /// The books category.
+  jewelry(id: CategoryID("jewelry"), title: "Jewelry", description: "Jewelry you can feel good in!", imagePath: "categories/jewelry.png"),
+  /// The clothing category.
+  accessories(id: CategoryID("accessories"), title: "Accessories", description: "Accessories", imagePath: "categories/accessories.png"),
+  /// The books category.
+  sports(id: CategoryID("sports"), title: "Sports", description: "Sport Items!", imagePath: "categories/sports.png"),
+  /// The books category.
+  other(id: CategoryID("other"), title: "Other", description: "Any special category", imagePath: "categories/other.png");
   
   /// Stores the unique ID for this category
   final CategoryID id;
