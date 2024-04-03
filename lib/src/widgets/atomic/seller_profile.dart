@@ -3,8 +3,6 @@ import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/widgets.dart";
-import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import "package:url_launcher/url_launcher.dart";
 
 /// A widget to show off a [SellerProfile].
 class SellerProfileWidget extends StatelessWidget {
@@ -36,34 +34,8 @@ class SellerProfileWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (profile.contact.instagramHandle != null) IconButton(
-            onPressed: () async {
-              await launchUrl(Uri.parse("https://instagram.com/${profile.contact.instagramHandle}"));
-            },
-            iconSize: 20,
-            icon: const FaIcon(FontAwesomeIcons.instagram),
-          ),
-          if (profile.contact.tikTokUsername != null) IconButton(
-            onPressed: () async { 
-              await launchUrl(Uri.parse("https://www.tiktok.com/@${profile.contact.tikTokUsername}"));
-            },
-            iconSize: 20,
-            icon: const FaIcon(FontAwesomeIcons.tiktok),
-          ),
-          if (profile.contact.linkedInUsername != null) IconButton(
-            onPressed: () async{ 
-              await launchUrl(Uri.parse(profile.contact.linkedInUsername!));
-            },
-            iconSize: 20,
-            icon: const FaIcon(FontAwesomeIcons.linkedin),
-          ),
-          if (profile.contact.twitterUsername != null) IconButton(
-            onPressed: () async{ 
-              await launchUrl(Uri.parse("https://twitter.com/${profile.contact.twitterUsername}"));
-            },
-            iconSize: 20,
-            icon: const FaIcon(FontAwesomeIcons.x),
-          ),
+          for (final (platform, username) in profile.contact.socials)
+            SocialMediaButton(platform: platform, username: username),
         ],
       ),
     ),
