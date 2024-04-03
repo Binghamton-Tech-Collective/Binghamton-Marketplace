@@ -25,6 +25,7 @@ const lightGrey = Color(0xFFDEDEDE);
 class BtcMarket extends StatelessWidget {  
   @override
   Widget build(BuildContext context) => MaterialApp.router(
+    debugShowCheckedModeBanner: false,
     routerConfig: router,
     title: "ShopBing",
     scrollBehavior: const MaterialScrollBehavior().copyWith(

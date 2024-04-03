@@ -2,11 +2,19 @@ import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
+import "package:btc_market/data.dart";
 
 /// The page to create or edit a seller profile.
 class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
+
+  /// Id to edit the Seller Profile
+  final SellerID? id;
+
+  /// Constructor to initialise the seller id
+  const SellerProfileEditor({this.id});
+
   @override
-  SellerProfileBuilder createModel() => SellerProfileBuilder();
+  SellerProfileBuilder createModel() => SellerProfileBuilder(initialID: id);
 
   @override
   Widget build(BuildContext context, SellerProfileBuilder model) => Scaffold(

@@ -24,7 +24,15 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
 
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
-    appBar: AppBar(title: const Text("Profile")),
+    appBar: AppBar(
+      title: const Text("Profile"),
+      actions: [
+        if (model.profile.userID == models.user.userProfile!.id) TextButton(
+          onPressed: model.editProfile,
+          child: Text("Edit profile", style: TextStyle(color: context.colorScheme.onPrimary)),
+        ),
+      ],
+    ),
     body: ListView(
       padding: const EdgeInsets.all(16),
       children: [

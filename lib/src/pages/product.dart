@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 /// The products page.
 class ProductPage extends ReactiveWidget<ProductViewModel>{
@@ -17,25 +17,27 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
 
   @override
   void didUpdateWidget(ProductPage oldWidget, ProductViewModel model) {
-    if (oldWidget.id != id) {
-      model.id = id;
-      model.init();
-    }
+    model.id = id;
+    model.init();
     super.didUpdateWidget(oldWidget, model);
   }
 
   @override
   Widget build(BuildContext context, ProductViewModel model) => Scaffold(
     appBar: AppBar(
-      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
-      title: const Text("Item Details",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
-      ),
+      title: const Text("Item Details"),
+      actions: [
+        if (model.product.isSeller) TextButton(
+          child: Text("Edit listing", style: TextStyle(color: context.colorScheme.onPrimary)),
+          onPressed: () => model.editProduct(model.id),
+        ),
+      ],
     ),
     body: Center(child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 500),
       child: Column(children: [
         Expanded(child: ListView(
+          padding: const EdgeInsets.all(16),
           children: [
             // ---------- Image gallery ----------
             SizedBox(height: 400, child: GalleryWidget(
@@ -79,7 +81,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             Text(model.product.description, style: context.textTheme.bodyLarge),
             
             // ---------- Categories ----------
-            const SizedBox(height: 12),
+            const SizedBox(height: 12), 
             Text("Categories", style: context.textTheme.titleLarge),
             const SizedBox(height: 8),
             Wrap(

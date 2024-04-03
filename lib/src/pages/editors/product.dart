@@ -7,8 +7,13 @@ import "package:flutter/services.dart";
 
 /// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
+  /// Id of the product to be edited
+  final ProductID? id;
+
+  /// Constructor to initialize the id fo the product
+  const ProductEditor({this.id});
   @override
-  ProductBuilder createModel() => ProductBuilder();
+  ProductBuilder createModel() => ProductBuilder(initialID: id);
 
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
@@ -31,6 +36,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               InputContainer(
                 text: "Price of the Item",
                 hint: "Item Price",
+                prefixText: r"$",
                 controller: model.priceController,
                 formatter: FilteringTextInputFormatter.allow(RegExp(r"[\d\.]")),
                 inputType: const TextInputType.numberWithOptions(decimal: true),
@@ -93,6 +99,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ),
                   const Spacer(),
                   DropdownMenu<ProductCondition>(
+                    initialSelection: model.condition,
                     dropdownMenuEntries: [
                       for (final condition in ProductCondition.values)
                         DropdownMenuEntry(

@@ -50,6 +50,10 @@ class ProductViewModel extends ViewModel {
       rethrow;
     }
   }
+
+  /// Function to edit the product
+  void editProduct(ProductID id) => router.go("/products/$id/edit");
+
   /// The average rating for the seller, based on [sellerReviews].
   int? get sellerRating => 
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);

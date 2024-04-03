@@ -69,4 +69,7 @@ class SellerProfileViewModel extends ViewModel {
     }
     router.push("/messages/${conversation.id}").ignore();
   }
+
+  /// Function to edit the sellerProfile
+  void editProfile() => router.go("/sellers/$id/edit");
 }
