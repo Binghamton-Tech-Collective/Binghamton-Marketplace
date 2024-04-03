@@ -14,16 +14,12 @@ class ShellPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     body: shell,
     floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if(models.user.sellerProfiles.isNotEmpty) {
-              router.go("/products/create");
-            } else {
-              router.go("/sellers/no-profile");
-            }
-          },
-          tooltip: "Add Product",
-          backgroundColor: Colors.grey[200],
-          child: const Icon(Icons.add),
+      onPressed: () => models.user.sellerProfiles.isNotEmpty
+        ? router.go("/products/create")
+        : router.go("/sellers/no-profile"),
+      tooltip: "Add Product",
+      backgroundColor: Colors.grey[200],
+      child: const Icon(Icons.add),
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     bottomNavigationBar: BottomAppBar(
