@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import "package:go_router/go_router.dart";
 
 import "package:btc_market/data.dart";
+import "package:btc_market/widgets.dart";
 
 /// A widget to show off a product.
 class ProductWidget extends StatelessWidget {
@@ -12,32 +12,31 @@ class ProductWidget extends StatelessWidget {
   const ProductWidget({required this.product});
 
   @override
-  Widget build(BuildContext context) => InkWell(
-    splashColor: Colors.blue.withAlpha(30),
-    onTap: () => context.push("/products/${product.id}"),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Align(
-            child: Card(
-              clipBehavior: Clip.none,
-              child: Image(
+  Widget build(BuildContext context) => Card(
+    child: InkWell(
+      splashColor: context.colorScheme.primary.withOpacity(0.2),
+      onTap: () => context.push("/products/${product.id}"),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Align(
+              child: Ink.image(
                 image: NetworkImage(product.imageUrls[0]),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
           ),
-        ),
-        ListTile(
-          title: Text(
-            product.title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
+          ListTile(
+            subtitle: Text("\$${product.price}"),
+            title: Text(
+              product.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
-          subtitle: Text("\$${product.price}"),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

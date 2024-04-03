@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
+import "package:url_launcher/url_launcher_string.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
 import "editors/product_filters.dart";
-import "package:url_launcher/url_launcher.dart";
 
 /// The home page that lists all the products
 class ProductsPage extends ReactiveWidget<ProductsViewModel> {
@@ -19,12 +19,11 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           const Text("Home"),
-          IconButton(onPressed: () async {
-            final url = Uri.parse("https://forms.gle/fqDYHYx5EHtpbT129");
-            await launchUrl(url);
-          }, 
-          icon: const Icon(Icons.feedback),
-          tooltip: "Submit a feedback",),
+          IconButton(
+            onPressed: () => launchUrlString("https://forms.gle/fqDYHYx5EHtpbT129"),
+            icon: const Icon(Icons.feedback),
+            tooltip: "Submit feedback",
+          ),
         ],
       ),
     ),
@@ -73,12 +72,12 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
             child: ListView.separated(
               itemCount: Category.values.length,
               scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
               itemBuilder: (context, index) => CategoryFilterChip(
-                  category: Category.values[index],
-                  isSelected: model.filterBuilder.categories.contains(Category.values[index]),
-                  onSelected: (_) => model.filterBuilder.toggleCategory(Category.values[index]),
-                ),
-                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                category: Category.values[index],
+                isSelected: model.filterBuilder.categories.contains(Category.values[index]),
+                onSelected: (_) => model.filterBuilder.toggleCategory(Category.values[index]),
+              ),
             ),
           ),
           const SizedBox(height: 16),
