@@ -18,18 +18,20 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter 
 
-  http: ^1.2.0
-  cloud_firestore: ^4.15.5
+  # Firebase packages
   firebase_core: ^2.25.0
   firebase_auth: ^4.17.5
-  meta: ^1.11.0
+  firebase_storage: ^11.6.7
+  cloud_firestore: ^4.15.5
+
+  # UI packages
   go_router: ^13.2.0
   flutter_rating_bar: ^4.0.1
-  file_picker: ^6.1.1
-  firebase_storage: ^11.6.7
-  social_media_flutter: ^0.0.2
-  flutter_social_button: ^1.1.4+1
   font_awesome_flutter: ^10.7.0
+
+  # Misc packages
+  meta: ^1.11.0
+  file_picker: ^8.0.0+1
   url_launcher: ^6.2.5
 
 dev_dependencies:
