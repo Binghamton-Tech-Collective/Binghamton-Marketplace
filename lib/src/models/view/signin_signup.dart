@@ -9,26 +9,26 @@ import "package:flutter/material.dart";
 class SignInSignUpViewModel extends BuilderModel<UserProfile> {
   bool showSignUp = false;
   late final UserID userID;
-  String get username => usernameTextController.text;
+  String get username => usernameTextController.text.trim();
 
   TextEditingController usernameTextController = TextEditingController();
 
-  //TODO: Google auth portion and userTextController default text after that; should signout be an option here?; should there be a state to get to username menu?
+  //TODO: Google auth portion and userTextController default text after that; should there be a state to get to username menu?
 
   @override
-  Future<void> init() async {
-  }
+  Future<void> init() async {}
 
   @override
   bool get isReady => username.isNotEmpty;
 
+  @override
   UserProfile build() => UserProfile.newProfile(
-    name: username.toLowerCase().trim(),
-    id: userID,
-  );
+        name: username.toLowerCase().trim(),
+        id: userID,
+      );
 
   ///After google sign in; check if they exit within our database
-  Future<bool> doesUserExist() async {
+  Future<bool> userExists() async {
     final user = await services.database.getUserProfile(userID);
     return user != null;
   }
@@ -39,6 +39,15 @@ class SignInSignUpViewModel extends BuilderModel<UserProfile> {
     // 2. Check if we have an account using doesUserExist()
     // 3. If we do, call router.go("/products")
     // 4. If not, set showSignUp = true
+    final uid = await services.auth.signIn();
+    if (uid == null) return;
+
+    userID = uid as UserID;
+    if (await userExists()) {
+      router.go("/products");
+    } else {
+      showSignUp = true;
+    }
     notifyListeners();
   }
 
