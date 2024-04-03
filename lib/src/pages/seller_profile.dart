@@ -72,7 +72,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                       ),
                       if (model.profile.contact.tikTokUsername != null) IconButton(
                         onPressed: () async{ 
-                          await launchUrl(Uri.parse("https://instagram.com/${model.profile.contact.tikTokUsername}"));
+                          await launchUrl(Uri.parse("https://www.tiktok.com/@${model.profile.contact.tikTokUsername}"));
                         },
                         iconSize: 20,
                         icon: const FaIcon(FontAwesomeIcons.tiktok),
