@@ -15,17 +15,14 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   @override
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
     appBar: AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const Text("Home"),
-          IconButton(
-            onPressed: () => launchUrlString("https://forms.gle/fqDYHYx5EHtpbT129"),
-            icon: const Icon(Icons.feedback),
-            tooltip: "Submit feedback",
-          ),
-        ],
-      ),
+      title: const Text("Home"),
+      actions: [
+        IconButton(
+          onPressed: () => launchUrlString("https://forms.gle/fqDYHYx5EHtpbT129"),
+          icon: const Icon(Icons.feedback),
+          tooltip: "Submit feedback",
+        ),
+      ],
     ),
     body: Padding(
       padding: const EdgeInsets.all(16),
