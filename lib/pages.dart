@@ -1,5 +1,3 @@
-import "package:btc_market/src/pages/products.dart";
-import "package:btc_market/src/pages/seller_profile_cta.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -7,8 +5,10 @@ import "package:btc_market/data.dart";
 
 import "src/pages/conversation.dart";
 import "src/pages/seller_profile.dart";
+import "src/pages/seller_profile_cta.dart";
 import "src/pages/shell.dart";
 import "src/pages/product.dart";
+import "src/pages/products.dart";
 import "src/pages/conversations.dart";
 
 import "src/pages/editors/product.dart";
@@ -128,7 +128,7 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: Routes.profile,
-              name: Routes.profile,
+              name: "My profile",
               builder: (context, state) => const Placeholder(),
             ),
           ],
