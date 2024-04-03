@@ -3,7 +3,7 @@ import "package:btc_market/src/widgets/atomic/sellers.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 
-/// The page that displays all conversation for the user
+/// The page that displays all sellers on the App
 class SellersPage extends ReactiveWidget<SellersViewModel> {
   @override
   SellersViewModel createModel() => SellersViewModel();

@@ -2,12 +2,12 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 
-/// The view model for loading list of all conversations for a user
+/// The view model for loading list of all the sellers on the App
 class SellersViewModel extends ViewModel {
   /// The user profile of the user signed in
   final user = models.user.userProfile!;
 
-  /// List of all the conversations for the user
+  /// List of all the Sellers
   late List<SellerProfile> allSellers;
 
   @override
