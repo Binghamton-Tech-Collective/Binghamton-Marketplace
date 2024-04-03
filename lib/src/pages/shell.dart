@@ -15,7 +15,11 @@ class ShellPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     body: shell,
     bottomNavigationBar: NavigationBar(
-      selectedIndex: shell.currentIndex,
+      selectedIndex: switch (shell.currentIndex) {
+        0 || 1 => shell.currentIndex,
+        2 || 3 => shell.currentIndex + 1,
+        _ => shell.currentIndex,
+      },
       onDestinationSelected: (index) => switch (index) {
         0 || 1 => shell.goBranch(index),
         2 => models.user.sellerProfiles.isNotEmpty

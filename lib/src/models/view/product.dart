@@ -52,7 +52,7 @@ class ProductViewModel extends ViewModel {
   }
 
   /// Function to edit the product
-  void editProduct(ProductID id) => router.go("/products/$id/edit");
+  void editProduct(ProductID id) => router.push("/products/$id/edit");
 
   /// The average rating for the seller, based on [sellerReviews].
   int? get sellerRating => 
