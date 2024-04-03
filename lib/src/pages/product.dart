@@ -27,8 +27,8 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
     appBar: AppBar(
       title: const Text("Item Details"),
       actions: [
-        if (model.product.isSeller) IconButton(
-          icon: const Icon(Icons.edit),
+        if (model.product.isSeller) TextButton(
+          child: Text("Edit listing", style: TextStyle(color: context.colorScheme.onPrimary)),
           onPressed: () => model.editProduct(model.id),
         ),
       ],
@@ -37,6 +37,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
       constraints: const BoxConstraints(maxWidth: 500),
       child: Column(children: [
         Expanded(child: ListView(
+          padding: const EdgeInsets.all(16),
           children: [
             // ---------- Image gallery ----------
             SizedBox(height: 400, child: GalleryWidget(
