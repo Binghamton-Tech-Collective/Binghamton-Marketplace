@@ -1,3 +1,4 @@
+import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_web_plugins/url_strategy.dart";
 import "package:go_router/go_router.dart";
@@ -26,6 +27,13 @@ class BtcMarket extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp.router(
     routerConfig: router,
     title: "ShopBing",
+    scrollBehavior: const MaterialScrollBehavior().copyWith(
+      dragDevices: {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.trackpad,
+      },
+    ),
     theme: ThemeData(
       brightness: Brightness.light,
       useMaterial3: true,
