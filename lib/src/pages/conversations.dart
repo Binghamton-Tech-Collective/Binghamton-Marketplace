@@ -11,11 +11,21 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
   Widget build(BuildContext context, ConversationsViewModel model) => Scaffold(
     appBar: AppBar(
       title: const Text("Chats"),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: model.init,
+          tooltip: "Refresh",
+        ),
+      ],
     ),
-    body: ListView.builder(
-      itemCount: model.allConversations.length,
-      itemBuilder: (context, index) => ConversationWidget(
-        conversation: model.allConversations[index],
+    body: RefreshIndicator.adaptive(
+      onRefresh: model.init,
+      child: ListView.builder(
+        itemCount: model.allConversations.length,
+        itemBuilder: (context, index) => ConversationWidget(
+          conversation: model.allConversations[index],
+        ),
       ),
     ),
   );

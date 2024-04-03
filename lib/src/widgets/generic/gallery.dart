@@ -22,6 +22,18 @@ class GalleryViewModel extends ViewModel {
   /// The current page.
   int page = 0;
 
+  /// Updates the page index.
+  void updatePage(int index) {
+    page = index;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   /// Animates to the next page.
   void next() {
     page++;
@@ -55,22 +67,25 @@ class GalleryWidget extends ReactiveWidget<GalleryViewModel> {
     children: [
       Positioned.fill(
         child: PageView(
+          onPageChanged: model.updatePage,
           controller: model.controller,
           children: children,
         ),
       ),
       Positioned(
         left: 12,
-        child: IconButton(
+        child: IconButton.filled(
           icon: const Icon(Icons.arrow_circle_left, size: 36),
           onPressed: model.page == 0 ? null : model.prev,
+          style: IconButton.styleFrom(backgroundColor: context.colorScheme.primary, disabledBackgroundColor: context.colorScheme.primary),
         ),
       ),
       Positioned(
         right: 12,
-        child: IconButton(
+        child: IconButton.filled(
           icon: const Icon(Icons.arrow_circle_right, size: 36),
           onPressed: model.page == (model.numPages - 1) ? null : model.next,
+          style: IconButton.styleFrom(backgroundColor: context.colorScheme.primary, disabledBackgroundColor: context.colorScheme.primary),
         ),
       ),
     ],

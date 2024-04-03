@@ -27,12 +27,19 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     appBar: AppBar(
       title: const Text("Profile"),
       actions: [
-        if (model.profile.userID == models.user.userProfile!.id) TextButton(
+        if (model.profile.userID == models.user.userProfile!.id) TextButton.icon(
           onPressed: model.editProfile,
-          child: Text("Edit profile", style: TextStyle(color: context.colorScheme.onPrimary)),
+          label: Text("Edit profile", style: TextStyle(color: context.colorScheme.onPrimary)),
+          icon: const Icon(Icons.edit),
         ),
       ],
     ),
+    floatingActionButton: FloatingActionButton.extended(
+      icon: const Icon(Icons.message),
+      onPressed: model.openConversation, 
+      label: const Text("Contact Seller"),
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     body: ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -65,7 +72,8 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                       Text(" | ${model.productList.length} Products"),
                     ],
                   ),
-                  Text(model.profile.bio,
+                  Text(
+                    model.profile.bio,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                   ),
@@ -73,11 +81,6 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                     children: [
                       for (final (platform, username) in model.profile.contact.socials)
                         SocialMediaButton(platform: platform, username: username),
-                      OutlinedButton.icon(
-                        onPressed: model.openConversation,
-                        icon: const Icon(Icons.message),
-                        label: const Text("Message"),
-                      ),
                     ],
                   ),
                 ],

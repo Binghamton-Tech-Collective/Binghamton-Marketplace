@@ -8,7 +8,7 @@ class ConversationsViewModel extends ViewModel {
   final user = models.user.userProfile!;
 
   /// List of all the conversations for the user
-  late final List<Conversation> allConversations;
+  late List<Conversation> allConversations;
 
   @override
   Future<void> init() async {
