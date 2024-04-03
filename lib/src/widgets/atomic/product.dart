@@ -12,16 +12,16 @@ class ProductWidget extends StatelessWidget {
   const ProductWidget({required this.product});
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Align(
-          child: Card(
-            clipBehavior: Clip.none,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () => context.push("/products/${product.id}"),
+  Widget build(BuildContext context) => InkWell(
+    splashColor: Colors.blue.withAlpha(30),
+    onTap: () => context.push("/products/${product.id}"),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Align(
+            child: Card(
+              clipBehavior: Clip.none,
               child: Image(
                 image: NetworkImage(product.imageUrls[0]),
                 fit: BoxFit.cover,
@@ -29,15 +29,15 @@ class ProductWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      ListTile(
-        title: Text(
-          product.title,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+        ListTile(
+          title: Text(
+            product.title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          subtitle: Text("\$${product.price}"),
         ),
-        subtitle: Text("\$${product.price}"),
-      ),
-    ],
+      ],
+    ),
   );
 }
