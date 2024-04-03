@@ -1,3 +1,4 @@
+import "package:btc_market/src/pages/sellers.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -96,7 +97,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.sellers,
               name: "View sellers",
-              builder: (context, state) => const Placeholder(),
+              builder: (context, state) => SellersPage(),
               routes: [
                 GoRoute(
                   path: "create",

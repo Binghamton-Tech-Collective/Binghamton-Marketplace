@@ -109,6 +109,10 @@ class Database extends Service {
   Future<List<Conversation>> getConversationsByUserID(UserID id) =>
     conversations.where("members", arrayContains: id).getAll();
 
+  /// Gets the list of all sellers
+  Future<List<SellerProfile>> getAllSellers(UserID id) =>
+    sellers.where("userID", isNotEqualTo: id).getAll();
+
   /// Queries products with the given criteria.
   /// 
   /// Firestore has two fundamental limitations that affect how this function works: 
