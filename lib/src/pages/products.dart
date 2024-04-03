@@ -21,9 +21,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
           const Text("Home"),
           IconButton(onPressed: () async {
             final url = Uri.parse("https://forms.gle/fqDYHYx5EHtpbT129");
-            if (!await launchUrl(url)) {
-              throw Exception("Could not launch $url");
-            }
+            await launchUrl(url);
           }, 
           icon: const Icon(Icons.feedback),
           tooltip: "Submit a feedback",),
