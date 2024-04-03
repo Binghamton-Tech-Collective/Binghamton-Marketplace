@@ -34,16 +34,8 @@ class SellerProfileWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(
-            onPressed: () { },
-            iconSize: 36,
-            icon: const Icon(Icons.facebook),
-          ),
-          IconButton(
-            onPressed: () {},
-            iconSize: 36,
-            icon: const Icon(Icons.tiktok),
-          ),
+          for (final (platform, username) in profile.contact.socials)
+            SocialMediaButton(platform: platform, username: username),
         ],
       ),
     ),
