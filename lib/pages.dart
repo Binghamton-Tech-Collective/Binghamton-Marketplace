@@ -1,4 +1,5 @@
 import "package:btc_market/src/pages/products.dart";
+import "package:btc_market/src/pages/seller_profile_cta.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -102,6 +103,11 @@ final GoRouter router = GoRouter(
                   name: "Create a seller profile",
                   builder: (context, state) => const SellerProfileEditor(),
                 ),
+              GoRoute(
+                path: "no-profile",
+                name: "No Seller Profile",
+                builder: (context, state) => const SellerProfileCallToAction(),
+              ),
                 GoRoute(
                   path: ":id",
                   name: "View seller",
@@ -109,6 +115,7 @@ final GoRouter router = GoRouter(
                   routes: [
                     GoRoute(
                       path: "edit",
+                      name: "Edit profile",
                       builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"] as SellerID),
                     ),
                   ],
