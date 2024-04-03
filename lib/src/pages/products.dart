@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:url_launcher/url_launcher_string.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
@@ -13,7 +14,16 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
 
   @override
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
-    appBar: AppBar(title: const Text("Home")),
+    appBar: AppBar(
+      title: const Text("Home"),
+      actions: [
+        IconButton(
+          onPressed: () => launchUrlString("https://forms.gle/fqDYHYx5EHtpbT129"),
+          icon: const Icon(Icons.feedback),
+          tooltip: "Submit feedback",
+        ),
+      ],
+    ),
     body: Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -22,6 +32,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
           if (model.isSearching) const LinearProgressIndicator(),
           SearchBar(
             leading: const Icon(Icons.search),
+            hintText: "Search Products",
             controller: model.searchController,
             onSubmitted: (searchQuery) => model.queryProducts(),
             trailing: [
@@ -53,16 +64,18 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
             ],
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: <Widget>[
-              for (final category in Category.values) CategoryFilterChip(
-                category: category,
-                isSelected: model.filterBuilder.categories.contains(category),
-                onSelected: (_) => model.filterBuilder.toggleCategory(category),
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              itemCount: Category.values.length,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
+              itemBuilder: (context, index) => CategoryFilterChip(
+                category: Category.values[index],
+                isSelected: model.filterBuilder.categories.contains(Category.values[index]),
+                onSelected: (_) => model.filterBuilder.toggleCategory(Category.values[index]),
               ),
-            ],
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
