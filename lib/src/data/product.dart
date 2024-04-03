@@ -4,16 +4,20 @@ import "types.dart";
 /// The condition of a product.
 enum ProductCondition {
   /// A new product, unopened.
-  new_("New"), 
+  new_("New"),
+
   /// A used product that is in new condition.
   usedLikeNew("Used (like new)"),
+
   /// A used product that is in fair condition.
   usedFair("Used (fair)"),
+
   /// A used product that is in poor condition.
   usedPoor("Used (poor)");
 
   /// The string to display in the UI.
   final String displayName;
+
   /// A const constructor.
   const ProductCondition(this.displayName);
 }
@@ -30,8 +34,10 @@ class Product {
 
   /// The seller's unique Seller ID.
   final SellerID sellerID;
+
   /// The user ID who owns this product and its seller profile.
   final UserID userID;
+
   /// The title or a name of the product.
   final String title;
 
@@ -65,6 +71,15 @@ class Product {
   /// When this product was listed.
   final DateTime dateListed;
 
+  /// The sum of all ratings for the product
+  final int ratingSum;
+
+  /// The number of ratings for the product
+  final int ratingCount;
+
+  /// The average rating for the product
+  final int? averageRating;
+
   /// A constructor to create a new product.
   const Product({
     required this.id,
@@ -78,43 +93,55 @@ class Product {
     required this.categories,
     required this.condition,
     required this.dateListed,
+    this.averageRating = 0,
+    this.ratingSum = 0,
+    this.ratingCount = 0,
     this.delisted = false,
   });
 
   /// Creates a new Product object from a JSON object.
-  Product.fromJson(Json json) : 
-    id = json["id"],
-    sellerID = json["sellerID"],
-    userID = json["userID"],
-    title = json["title"], 
-    description = json["description"], 
-    price = json["price"].toDouble(), 
-    quantity = json["quantity"], 
-    imageUrls = List<String>.from(json["imageUrls"]), 
-    categories = {
-      for (final categoryJson in json["categories"])
-        Category.fromJson(categoryJson),
-    },
-    condition = ProductCondition.values.byName(json["condition"]),
-    dateListed = DateTime.parse(json["dateListed"]),
-    delisted = json["delisted"];
+  Product.fromJson(Json json)
+      : id = json["id"],
+        sellerID = json["sellerID"],
+        userID = json["userID"],
+        title = json["title"],
+        description = json["description"],
+        price = json["price"].toDouble(),
+        quantity = json["quantity"],
+        imageUrls = List<String>.from(json["imageUrls"]),
+        categories = {
+          for (final categoryJson in json["categories"])
+            Category.fromJson(categoryJson),
+        },
+        condition = ProductCondition.values.byName(json["condition"]),
+        dateListed = DateTime.parse(json["dateListed"]),
+        delisted = json["delisted"] ?? false,
+        ratingSum = json["ratingSum"] ?? 0,
+        ratingCount = json["ratingCount"] ?? 0,
+        averageRating = json["averageRating"] ?? 0;
 
   /// Convert this Product to its JSON representation
   Json toJson() => {
-    "id": id,
-    "sellerID": sellerID,
-    "userID": userID,
-    "title": title, 
-    "description": description, 
-    "price": price, 
-    "quantity": quantity, 
-    "imageUrls": imageUrls, 
-    "categories": [
-      for (final category in categories)
-        category.toJson(),
-    ],
-    "condition": condition.name,
-    "dateListed": dateListed.toIso8601String(),
-    "delisted": delisted,
-  };
+        "id": id,
+        "sellerID": sellerID,
+        "userID": userID,
+        "title": title,
+        "_searchKeywords": [
+          for (final word in title.split(" ")) 
+            word.toLowerCase(),
+        ],
+        "description": description,
+        "price": price,
+        "quantity": quantity,
+        "imageUrls": imageUrls,
+        "categories": [
+          for (final category in categories) category.toJson(),
+        ],
+        "condition": condition.name,
+        "dateListed": dateListed.toIso8601String(),
+        "delisted": delisted,
+        "ratingSum": ratingSum,
+        "ratingCount": ratingCount,
+        "averageRating": averageRating,
+      };
 }
