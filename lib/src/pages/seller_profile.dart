@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
+
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
-import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import "package:url_launcher/url_launcher.dart";
+
 /// The profile page.
 class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   /// The ID of the seller to view.
@@ -63,34 +63,8 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                   ),
                   Row(
                     children: [
-                      if (model.profile.contact.instagramHandle != null) IconButton(
-                        onPressed: () async{ 
-                          await launchUrl(Uri.parse("https://instagram.com/${model.profile.contact.instagramHandle}"));
-                        },
-                        iconSize: 20,
-                        icon: const FaIcon(FontAwesomeIcons.instagram),
-                      ),
-                      if (model.profile.contact.tikTokUsername != null) IconButton(
-                        onPressed: () async{ 
-                          await launchUrl(Uri.parse("https://www.tiktok.com/@${model.profile.contact.tikTokUsername}"));
-                        },
-                        iconSize: 20,
-                        icon: const FaIcon(FontAwesomeIcons.tiktok),
-                      ),
-                      if (model.profile.contact.linkedInUsername != null) IconButton(
-                        onPressed: () async{ 
-                          await launchUrl(Uri.parse(model.profile.contact.linkedInUsername!));
-                        },
-                        iconSize: 20,
-                        icon: const FaIcon(FontAwesomeIcons.linkedin),
-                      ),
-                      if (model.profile.contact.twitterUsername != null) IconButton(
-                        onPressed: () async{ 
-                          await launchUrl(Uri.parse("https://twitter.com/${model.profile.contact.twitterUsername}"));
-                        },
-                        iconSize: 20,
-                        icon: const FaIcon(FontAwesomeIcons.x),
-                      ),
+                      for (final (platform, username) in model.profile.contact.socials)
+                        SocialMediaButton(platform: platform, username: username),
                       OutlinedButton.icon(
                         onPressed: model.openConversation,
                         icon: const Icon(Icons.message),
