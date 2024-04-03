@@ -58,8 +58,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
         InputContainer(
           text: "LinkedIn", 
           controller: model.linkedinController,
-          prefixText: "@",
-          hint: "username",
+          hint: "profile url",
         ),
         InputContainer(
           text: "TikTok", 

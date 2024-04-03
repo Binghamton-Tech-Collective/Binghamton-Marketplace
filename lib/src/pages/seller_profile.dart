@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
+
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter_rating_bar/flutter_rating_bar.dart";
-
 
 /// The profile page.
 class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
@@ -71,16 +71,8 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                   ),
                   Row(
                     children: [
-                      IconButton(
-                        onPressed: () { },
-                        iconSize: 20,
-                        icon: const Icon(Icons.facebook),
-                      ),
-                      IconButton(
-                        onPressed: () { },
-                        iconSize: 20,
-                        icon: const Icon(Icons.snapchat),
-                      ),
+                      for (final (platform, username) in model.profile.contact.socials)
+                        SocialMediaButton(platform: platform, username: username),
                       OutlinedButton.icon(
                         onPressed: model.openConversation,
                         icon: const Icon(Icons.message),

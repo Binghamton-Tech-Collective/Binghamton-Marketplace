@@ -8,3 +8,4 @@ export "src/data/product.dart";
 export "src/data/product_sort.dart";
 export "src/data/product_filters.dart";
 export "src/data/review.dart";
+export "src/data/socials.dart";
