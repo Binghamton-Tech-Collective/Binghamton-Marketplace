@@ -17,8 +17,10 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
 
   @override
   void didUpdateWidget(ProductPage oldWidget, ProductViewModel model) {
-    model.id = id;
-    model.init();
+    if (oldWidget.id != id) {
+      model.id = id;
+      model.init();
+    }
     super.didUpdateWidget(oldWidget, model);
   }
 
@@ -29,7 +31,11 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
       actions: [
         if (model.product.isSeller) TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-          onPressed: () => model.editProduct(model.id),
+          onPressed: () async {
+            await model.editProduct(model.id);
+            if (!context.mounted) return;
+            await model.init();
+          },
           child: const Text("Edit product"),
         ),
       ],

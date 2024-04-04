@@ -112,7 +112,7 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "View seller",
-                  builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
+                  builder: (context, state) => SellerProfilePage(id: state.pathParameters["id"] as SellerID, profile: state.extra as SellerProfile?),
                   routes: [
                     GoRoute(
                       path: "edit",

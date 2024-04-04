@@ -1,5 +1,4 @@
 import "package:btc_market/src/models/view/sellers.dart";
-import "package:btc_market/src/widgets/atomic/sellers.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 
@@ -24,8 +23,9 @@ class SellersPage extends ReactiveWidget<SellersViewModel> {
       onRefresh: model.init,
       child: ListView.builder(
         itemCount: model.allSellers.length,
-        itemBuilder: (context, index) => SellerWidget(
-          seller: model.allSellers[index],
+        itemBuilder: (context, index) => SellerProfileWidget(
+          profile: model.allSellers[index],
+          averageRating: null,
         ),
       ),
     ),

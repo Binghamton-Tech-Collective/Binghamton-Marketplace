@@ -80,7 +80,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
           width: double.infinity,
           child: FilledButton(
             onPressed: model.isReady ? model.save : null,
-            child: const Text("Create Profile"),
+            child: const Text("Save Profile"),
           ),
         ),
         if (model.saveError != null)

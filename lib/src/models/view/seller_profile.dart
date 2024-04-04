@@ -10,6 +10,12 @@ class SellerProfileViewModel extends ViewModel {
     for (final product in products) ...product.categories,
   };
 
+  final SellerProfile? initialProfile;
+
+  bool isLoadingProfile = false;
+  bool isLoadingCategories = true;
+  bool isLoadingProducts = true;
+
   // The profile variable will hold the object of Seller Profile
   /// The profile will get the seller profile info from model of seller profile.
   late SellerProfile profile;
@@ -27,20 +33,33 @@ class SellerProfileViewModel extends ViewModel {
   SellerID id;
 
   /// Creates the seller view model.
-  SellerProfileViewModel(this.id);
+  SellerProfileViewModel({
+    required this.id,
+    required this.initialProfile,
+  });
 
   @override
   Future<void> init() async {
-    isLoading = true;
-    final tempProfile = await services.database.getSellerProfile(id);
-    if (tempProfile == null) {
-      errorText = "Sorry, the profile $id doesn't exist";
-      return;
+    if (initialProfile != null) {
+      profile = initialProfile!;
+    } else {
+      isLoadingProfile = true;
+      notifyListeners();
+      final tempProfile = await services.database.getSellerProfile(id);
+      if (tempProfile == null) {
+        errorText = "Sorry, the profile $id doesn't exist";
+        return;
+      }
+      profile = tempProfile;
+      isLoadingProfile = false;
+      notifyListeners();
     }
-    profile = tempProfile;
     productList = await services.database.getProductsBySellerID(profile.id);
+    isLoadingProducts = false;
+    notifyListeners();
     categories = getCategories(productList);
-    isLoading = false;
+    isLoadingCategories = false;
+    notifyListeners();
   }
 
   /// Returns the link to the profile picture of the user.
