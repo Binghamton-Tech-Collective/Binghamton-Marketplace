@@ -26,8 +26,7 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
       child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const Image(image: AssetImage("assets\categories\baxterInGreenhouse.jpg",),
-        ),
+        Image.asset("categories/baxterInGreenhouse.jpg", width: 250, height: 200, fit: BoxFit.fill),
         const SizedBox(height: 16,),
         Container(
           padding: const EdgeInsets.all(16),
