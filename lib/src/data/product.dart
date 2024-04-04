@@ -118,7 +118,7 @@ class Product {
         delisted = json["delisted"] ?? false,
         ratingSum = json["ratingSum"] ?? 0,
         ratingCount = json["ratingCount"] ?? 0,
-        averageRating = json["averageRating"] ?? 0;
+        averageRating = json["averageRating"];
 
   /// Convert this Product to its JSON representation
   Json toJson() => {
@@ -142,6 +142,6 @@ class Product {
         "delisted": delisted,
         "ratingSum": ratingSum,
         "ratingCount": ratingCount,
-        "averageRating": averageRating,
+        "averageRating": ratingSum / ratingCount == 0 ? 1 : ratingCount,
       };
 }

@@ -64,9 +64,11 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
 
   @override
   ProductFilters build() => switch (sortOrder) {
-    ProductSortOrder.byRating => FilterByRating(
-      minRating: minRating,
+    ProductSortOrder.byRating => NormalFilter(
       categories: categories,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      minRating: minRating,
     ),
     ProductSortOrder.byNew || ProductSortOrder.byOld => NormalFilter(
       categories: categories,
@@ -74,10 +76,11 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
       maxPrice: maxPrice,
       minRating: minRating,
     ),
-    ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => FilterByPrice(
+    ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => NormalFilter(
+      categories: categories,
       minPrice: minPrice, 
       maxPrice: maxPrice,
-      categories: categories,
+      minRating: minRating,
     ),
   };
 
