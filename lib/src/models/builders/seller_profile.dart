@@ -10,7 +10,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Id of the seller to be edited
   final SellerID? initialID;
   
-  /// Constructor to initialise the SellerID
+  /// Constructor to initialize the SellerID
   SellerProfileBuilder({this.initialID});
 
   /// Name of the seller
@@ -135,7 +135,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage() async {
-    // [filename] cannot be null because imageUrl is required for sellerprofile, and we're copying it before nullifying it.
+    // [filename] cannot be null because imageUrl is required for seller profile, and we're copying it before nullifying it.
     await services.cloudStorage.deleteFile(imageUrl!);
     imageUrl = null;
     notifyListeners();

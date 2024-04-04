@@ -48,7 +48,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     body: ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        if (model.isLoadingProfile) SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
+        if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
         else Row(
           children: [
             const SizedBox(width: 16),
@@ -113,32 +113,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           padding: const EdgeInsets.only(left: 15, right: 15),
           child: SizedBox(
             height: 110,
-            child: model.isLoadingCategories 
-              ? const Center(child: CircularProgressIndicator())
-              : ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  for (final category in model.categories) Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children:  [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.transparent, // Set background color to transparent
-                          child: ClipOval(
-                            child: Image(
-                              image: AssetImage(category.imagePath),
-                              fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(category.title),
-                    ],
-                  ),
-              ],
-            ),
+            child: buildCategories(context, model),
           ), 
         ), 
         const Divider(
@@ -150,17 +125,57 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           style: context.textTheme.headlineMedium,
         ),
         const SizedBox(height: 12),
-        if (model.isLoadingProducts) 
-          SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
-        else GridView.count(
+        buildProducts(context, model),
+      ],
+    ),
+  );
+
+  /// A loading spinner, an empty message, or the seller's categories.
+  Widget buildCategories(BuildContext context, SellerProfileViewModel model) =>
+    model.isLoadingCategories ? const Center(child: CircularProgressIndicator())
+      : model.categories.isEmpty
+        ? const Center(child: Text("This seller hasn't used any categories"))
+        : ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (final category in model.categories) Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children:  [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.transparent, // Set background color to transparent
+                    child: ClipOval(
+                      child: Image(
+                        image: AssetImage(category.imagePath),
+                        fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
+                      ),
+                    ),
+                  ),
+                ),
+                Text(category.title),
+              ],
+            ),
+        ],
+      );
+
+  /// A loading spinner, an empty message, or the seller's products.
+  Widget buildProducts(BuildContext context, SellerProfileViewModel model) => 
+    model.isLoadingProducts 
+      ? const SizedBox(
+        height: 200, 
+        child: Center(child: CircularProgressIndicator()),
+      )
+      : model.productList.isEmpty
+        ? const SizedBox(height: 200, child: Center(child: Text("This seller has no products")))
+        : GridView.count(
           shrinkWrap: true,
           crossAxisCount: 3,
           children: [
             for (final product in model.productList) 
               ProductWidget(product: product),
           ],
-        ),
-      ],
-    ),
-  );
+        );
+
 }

@@ -10,7 +10,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
   /// Id to edit the Seller Profile
   final SellerID? id;
 
-  /// Constructor to initialise the seller id
+  /// Constructor to initialize the seller id
   const SellerProfileEditor({this.id});
 
   @override

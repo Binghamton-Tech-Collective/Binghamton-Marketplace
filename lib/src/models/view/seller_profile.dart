@@ -10,10 +10,14 @@ class SellerProfileViewModel extends ViewModel {
     for (final product in products) ...product.categories,
   };
 
+  /// The initially loaded profile, if any. This saves us from loading it again.
   final SellerProfile? initialProfile;
 
+  /// Whether the [profile] is still loading.
   bool isLoadingProfile = false;
+  /// Whether the [categories] is still loading.
   bool isLoadingCategories = true;
+  /// Whether the [productList] is still loading.
   bool isLoadingProducts = true;
 
   // The profile variable will hold the object of Seller Profile
