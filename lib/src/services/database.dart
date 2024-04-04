@@ -111,7 +111,7 @@ class Database extends Service {
 
   /// Gets the list of all sellers
   Future<List<SellerProfile>> getAllSellers(UserID id) =>
-    sellers.where("userID", isNotEqualTo: id).getAll();
+    sellers.getAll();
 
   /// Queries products with the given criteria.
   /// 
