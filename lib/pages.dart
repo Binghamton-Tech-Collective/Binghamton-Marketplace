@@ -4,12 +4,14 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 
 import "src/pages/conversation.dart";
-import "src/pages/conversations.dart";
+import "src/pages/sellers.dart";
+import "src/pages/seller_profile.dart";
+import "src/pages/seller_profile_cta.dart";
+import "src/pages/shell.dart";
 import "src/pages/product.dart";
 import "src/pages/products.dart";
-import "src/pages/seller_profile.dart";
-import "src/pages/shell.dart";
-import "src/pages/signin_signup.dart";
+import "src/pages/conversations.dart";
+import "src/pages/login.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -18,6 +20,7 @@ import "src/pages/editors/seller_profile.dart";
 class Routes {
   /// The products route.
   static const products = "/products";
+
   /// The profile route.
   static const sellers = "/sellers";
 
@@ -34,7 +37,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      builder: (context, state) => SigninSignupPage(),
+      builder: (context, state) => LoginPage(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => Title(
@@ -53,23 +56,72 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: "create",
                   name: "List a product",
-                  builder: (context, state) => ProductEditor(),
+                  builder: (context, state) => const ProductEditor(),
                 ),
                 GoRoute(
                   path: ":id",
                   name: "View product",
-                  builder: (context, state) =>
-                      ProductPage(state.pathParameters["id"] as ProductID),
-                  // Uncomment this to allow users to edit their profile
-                  // routes: [
-                  //   GoRoute(
-                  //     path: "edit",
-                  //     builder: (context, state) =>
-                  //         ProductEditor(id: state.pathParameters["id"]),
-                  //   ),
-                  // ],
+                  builder: (context, state) => ProductPage(
+                    id: state.pathParameters["id"] as ProductID,
+                    product: state.extra as Product?,
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: "edit",
+                      name: "Edit a Product",
+                      builder: (context, state) => ProductEditor(
+                        id: state.pathParameters["id"] as ProductID,
+                        initialProduct: state.extra as Product?,
+                      ),
+                    ),
+                  ],
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.sellers,
+              name: "View sellers",
+              builder: (context, state) => SellersPage(),
+              routes: [
+                GoRoute(
+                  path: "create",
+                  name: "Create a seller profile",
+                  builder: (context, state) => const SellerProfileEditor(),
+                ),
+              GoRoute(
+                path: "no-profile",
+                name: "No Seller Profile",
+                builder: (context, state) => const SellerProfileCallToAction(),
+              ),
+                GoRoute(
+                  path: ":id",
+                  name: "View seller",
+                  builder: (context, state) => SellerProfilePage(id: state.pathParameters["id"] as SellerID, profile: state.extra as SellerProfile?),
+                  routes: [
+                    GoRoute(
+                      path: "edit",
+                      name: "Edit profile",
+                      builder: (context, state) => SellerProfileEditor(
+                        id: state.pathParameters["id"] as SellerID,
+                        profile: state.extra as SellerProfile?,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: "/sell",
+              name: "Sell a product",
+              builder:(context, state) => const ProductEditor(),
             ),
           ],
         ),
@@ -83,7 +135,10 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "Chat with a seller",
-                  builder: (context, state) => ConversationPage(state.pathParameters["id"] as ConversationID, state.extra as Conversation?),
+                  builder: (context, state) => ConversationPage(
+                    state.pathParameters["id"] as ConversationID,
+                    state.extra as Conversation?,
+                  ),
                 ),
               ],
             ),
@@ -91,37 +146,10 @@ final GoRouter router = GoRouter(
         ),
         StatefulShellBranch(
           routes: [
-          GoRoute(
-            path: Routes.sellers,
-            name: "View sellers",
-            builder: (context, state) => const Placeholder(),
-            routes: [
-              GoRoute(
-                path: "create",
-                name: "Create a seller profile",
-                builder: (context, state) => SellerProfileEditor(),
-              ),
-              GoRoute(
-                path: ":id",
-                name: "View seller",
-                builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
-                // Uncomment this to allow users to edit their profile
-                // routes: [
-                //   GoRoute(
-                //     path: "edit",
-                //     builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"]),
-                //   ),
-                // ]
-              ),
-            ],
-          ),
-        ],),
-        StatefulShellBranch(
-          routes: [
             GoRoute(
               path: Routes.profile,
-              name: Routes.profile,
-              builder: (context, state) => const Placeholder(),
+              name: "My profile",
+              builder: (context, state) => const ComingSoonPage(),
             ),
           ],
         ),

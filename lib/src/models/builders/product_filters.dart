@@ -68,7 +68,12 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
       minRating: minRating,
       categories: categories,
     ),
-    ProductSortOrder.byNew || ProductSortOrder.byOld => NormalFilter(categories: categories),
+    ProductSortOrder.byNew || ProductSortOrder.byOld => NormalFilter(
+      categories: categories,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      minRating: minRating,
+    ),
     ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => FilterByPrice(
       minPrice: minPrice, 
       maxPrice: maxPrice,
@@ -84,9 +89,9 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
     final input = minPriceController.text;
     if (input.isEmpty) return;
     final result = int.tryParse(input);
-    if (result == null) minPriceError = "Invalid price";
+    if (result == null || result < 0) minPriceError = "Invalid price";
     minPrice = result;
-    if (maxPrice != null && minPrice! >= maxPrice!) minPriceError = "Min price must be less than max price";
+    if (maxPrice != null && minPrice != null && minPrice! >= maxPrice!) minPriceError = "Min price must be less than max price";
     notifyListeners();
   }
 
@@ -98,9 +103,9 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
     final input = maxPriceController.text;
     if (input.isEmpty) return;
     final result = int.tryParse(input);
-    if (result == null) maxPriceError = "Invalid price";
+    if (result == null || result < 0) maxPriceError = "Invalid price";
     maxPrice = result;
-    if (minPrice != null && minPrice! >= maxPrice!) maxPriceError = "Max price must be greater than min price";
+    if (minPrice != null && maxPrice != null && minPrice! >= maxPrice!) maxPriceError = "Max price must be greater than min price";
     notifyListeners();
   }
 

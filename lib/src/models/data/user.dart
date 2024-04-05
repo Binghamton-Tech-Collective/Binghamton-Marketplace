@@ -9,7 +9,7 @@ class UserModel extends DataModel {
   UserProfile? userProfile;
 
   /// The seller profile owned by this user, if any.
-  late final List<SellerProfile> sellerProfiles;
+  List<SellerProfile> sellerProfiles = [];
 
   @override
   Future<void> init() async {
@@ -19,6 +19,9 @@ class UserModel extends DataModel {
 
   /// Whether the user is signed in.
   bool get isSignedIn => userProfile != null;
+
+  /// Whether this user is a seller.
+  bool get isSeller => sellerProfiles.isNotEmpty;
 
   /// Signs the user in and downloads their profile.
   Future<void> signIn() async {
@@ -33,7 +36,12 @@ class UserModel extends DataModel {
       );
       await services.database.saveUserProfile(userProfile!);
     }
-    // [!] By this point we definitely have a userProfile because of the above null check
+    await loadSellerProfiles();
+  }
+
+  /// Loads the user's seller profiles.
+  Future<void> loadSellerProfiles() async {
+    if (userProfile == null) return;
     sellerProfiles = await services.database.getSellerProfilesForUser(userProfile!.id);
     notifyListeners();
   }

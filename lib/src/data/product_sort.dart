@@ -19,5 +19,7 @@ enum ProductSortOrder {
 
   /// Whether this sort order is based on price.
   bool get isByPrice => this == ProductSortOrder.byPriceAscending
-    || this == ProductSortOrder.byPriceDescending;
+    || this == ProductSortOrder.byPriceDescending
+    || this == ProductSortOrder.byNew
+    || this == ProductSortOrder.byOld;
 }

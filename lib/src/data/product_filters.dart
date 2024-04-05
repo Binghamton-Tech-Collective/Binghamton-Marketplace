@@ -11,10 +11,22 @@ sealed class ProductFilters {
   ProductFilters({required this.categories});
 }
 
-/// A normal filter, with no additional options.
+/// A normal filter, with no additional restrictions.
 class NormalFilter extends ProductFilters {
-  /// Creates a normal filter with no additional options.
-  NormalFilter({required super.categories});
+  /// The minimum price to search for. If null, this is ignored.
+  final int? minPrice;
+  /// The maximum price to search for. If null, this is ignored.
+  final int? maxPrice;
+  /// The minimum rating to search for. If null, this is ignored.
+  final int? minRating;
+  
+  /// Creates a normal filter with no additional restrictions.
+  NormalFilter({
+    required super.categories,
+    required this.minPrice,
+    required this.maxPrice,
+    required this.minRating,
+  });  
 }
 
 /// Filters for [ProductSortOrder.byPriceAscending] and [ProductSortOrder.byPriceDescending].
