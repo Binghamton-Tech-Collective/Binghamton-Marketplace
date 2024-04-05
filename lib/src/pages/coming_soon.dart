@@ -16,7 +16,7 @@ class ComingSoonPage extends StatelessWidget {
     body: Center(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const Image(image: AssetImage("assets/bearcat/baxter.jpg",
+        const Image(image: AssetImage("assets/bearcat/waiting.png",
         ),),
         const SizedBox(height: 16,),
         Container(
