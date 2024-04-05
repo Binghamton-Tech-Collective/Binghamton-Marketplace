@@ -82,34 +82,6 @@ final GoRouter router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: Routes.messages,
-              name: "All chats",
-              builder: (context, state) => ConversationsPage(),
-              routes: [
-                GoRoute(
-                  path: ":id",
-                  name: "Chat with a seller",
-                  builder: (context, state) => ConversationPage(
-                    state.pathParameters["id"] as ConversationID,
-                    state.extra as Conversation?,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: "/sell",
-              name: "Sell a product",
-              builder:(context, state) => const ProductEditor(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
               path: Routes.sellers,
               name: "View sellers",
               builder: (context, state) => SellersPage(),
@@ -138,6 +110,34 @@ final GoRouter router = GoRouter(
                       ),
                     ),
                   ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: "/sell",
+              name: "Sell a product",
+              builder:(context, state) => const ProductEditor(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.messages,
+              name: "All chats",
+              builder: (context, state) => ConversationsPage(),
+              routes: [
+                GoRoute(
+                  path: ":id",
+                  name: "Chat with a seller",
+                  builder: (context, state) => ConversationPage(
+                    state.pathParameters["id"] as ConversationID,
+                    state.extra as Conversation?,
+                  ),
                 ),
               ],
             ),

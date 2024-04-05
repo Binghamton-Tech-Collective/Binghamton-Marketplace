@@ -19,18 +19,18 @@ class ShellPage extends StatelessWidget {
         NavigationDestination(
           icon: Icon(Icons.storefront),
           label: "Products",
-          ),
-        NavigationDestination(
-          icon: Icon(Icons.message),
-          label: "Messages",
-          ),
-        NavigationDestination(
-          icon: Icon(Icons.sell),
-          label: "Sell",
-          ),
+        ),
         NavigationDestination(
           icon: Icon(Icons.groups),
           label: "Sellers",
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.sell),
+          label: "Sell",
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.message),
+          label: "Messages",
         ),
         NavigationDestination(
           icon: Icon(Icons.person),
