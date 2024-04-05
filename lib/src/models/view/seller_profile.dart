@@ -94,5 +94,5 @@ class SellerProfileViewModel extends ViewModel {
   }
 
   /// Function to edit the sellerProfile
-  void editProfile() => router.push("/sellers/$id/edit");
+  Future<void> editProfile() => router.push("/sellers/$id/edit", extra: profile);
 }

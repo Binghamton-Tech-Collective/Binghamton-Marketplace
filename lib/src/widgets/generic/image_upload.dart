@@ -20,8 +20,9 @@ class ImageUploader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
     children: [
-      Container(
+      Flexible(child: Container(
         width: 200,
         height: 200,
         decoration: BoxDecoration(
@@ -42,7 +43,7 @@ class ImageUploader extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      ),),
       if (imageUrl != null) ...[
         const SizedBox(height: 8),
         TextButton(
@@ -51,5 +52,17 @@ class ImageUploader extends StatelessWidget {
         ),
       ],
     ],
+  );
+}
+
+class PlaceholderImageUploader extends StatelessWidget {
+  const PlaceholderImageUploader();
+  @override
+  Widget build(BuildContext context) => const Center(
+    child: SizedBox(
+      height: 200,
+      width: 200,
+      child: Card(),
+    ),
   );
 }

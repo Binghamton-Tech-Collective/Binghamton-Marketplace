@@ -48,8 +48,18 @@ class CloudStorageService extends Service {
       }
     }
   }
-  
 
+  /// Deletes all data associated with a seller profile.
+  Future<void> deleteSellerProfile(SellerID id) async {
+    final ref = _root.child("sellers/$id");
+    try {
+      await ref.delete();
+    } on FirebaseException catch (error) {
+      if (error.code == "object-not-found") return;
+      rethrow;
+    }
+  }
+  
   /// Returns the path of the seller's profile picture.
   String getSellerImagePath(SellerID id) => "sellers/$id/profile_pic";
 

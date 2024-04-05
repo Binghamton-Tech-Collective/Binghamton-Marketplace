@@ -22,8 +22,10 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
 
   @override
   void didUpdateWidget(SellerProfilePage oldWidget, SellerProfileViewModel model) {
-    model.id = id;
-    model.init();
+    if (id != model.id) {
+      model.id = id;
+      model.init();
+    }
     super.didUpdateWidget(oldWidget, model);
   }
 

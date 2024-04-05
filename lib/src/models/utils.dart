@@ -27,3 +27,9 @@ extension ProductUtils on Product {
   /// Whether the currently signed-in user is the seller of this product.
   bool get isSeller => models.user.userProfile!.id == userID;
 }
+
+/// Extension methods for sellers.
+extension SellerUtils on SellerProfile {
+  /// Whether the currently signed-in user is the owner of this profile.
+  bool get isUser => models.user.userProfile!.id == userID;
+}

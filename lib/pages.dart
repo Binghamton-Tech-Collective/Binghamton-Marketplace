@@ -65,7 +65,9 @@ final GoRouter router = GoRouter(
                     GoRoute(
                       path: "edit",
                       name: "Edit a Product",
-                      builder: (context, state) => ProductEditor(id: state.pathParameters["id"] as ProductID),
+                      builder: (context, state) => ProductEditor(
+                        id: state.pathParameters["id"] as ProductID,
+                      ),
                     ),
                   ],
                 ),
@@ -117,7 +119,10 @@ final GoRouter router = GoRouter(
                     GoRoute(
                       path: "edit",
                       name: "Edit profile",
-                      builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"] as SellerID),
+                      builder: (context, state) => SellerProfileEditor(
+                        id: state.pathParameters["id"] as SellerID,
+                        profile: state.extra as SellerProfile?,
+                      ),
                     ),
                   ],
                 ),

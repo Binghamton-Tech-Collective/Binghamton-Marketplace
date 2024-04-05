@@ -29,5 +29,11 @@ class SellersPage extends ReactiveWidget<SellersViewModel> {
         ),
       ),
     ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    floatingActionButton: FloatingActionButton.extended(
+      icon: const Icon(Icons.add),
+      label: const Text("Create a profile"),
+      onPressed: () => context.push("/sellers/create"),
+    ),
   );
 }

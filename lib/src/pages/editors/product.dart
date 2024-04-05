@@ -12,6 +12,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
 
   /// Constructor to initialize the id fo the product
   const ProductEditor({this.id});
+
   @override
   ProductBuilder createModel() => ProductBuilder(initialID: id);
 
