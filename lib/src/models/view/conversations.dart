@@ -8,9 +8,7 @@ class ConversationsViewModel extends ViewModel {
   final user = models.user.userProfile!;
 
   /// List of all the conversations for the user
-  // late List<Conversation> allConversations;
-
-  List<Conversation> get allConversations => [];
+  late List<Conversation> allConversations;
 
   /// All the user's archived conversations.
   Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
@@ -46,9 +44,9 @@ class ConversationsViewModel extends ViewModel {
   Future<void> init() async {
     isLoading = true;
     try {
-      // allConversations = await services.database.getConversationsByUserID(user.id)..sort(
-      //   (a, b) => b.lastUpdate.compareTo(a.lastUpdate),
-      // );
+      allConversations = await services.database.getConversationsByUserID(user.id)..sort(
+        (a, b) => b.lastUpdate.compareTo(a.lastUpdate),
+      );
     } catch (error) {
       errorText = "Error loading your conversations: \n$error";
       isLoading = false;
