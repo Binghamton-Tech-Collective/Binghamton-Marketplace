@@ -15,24 +15,30 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) => Card(
     child: InkWell(
       splashColor: context.colorScheme.primary.withOpacity(0.2),
-      onTap: () => context.push("/products/${product.id}"),
+      onTap: () => context.push("/products/${product.id}", extra: product),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Align(
-              child: Ink.image(
-                image: NetworkImage(product.imageUrls[0]),
-                fit: BoxFit.contain,
+              child: Hero(
+                tag: "${product.id}-image",
+                child: Ink.image(
+                  image: NetworkImage(product.imageUrls[0]),
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
           ListTile(
             subtitle: Text("\$${product.price}"),
-            title: Text(
-              product.title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+            title: Hero(
+              tag: "${product.id}-name",
+              child: Text(
+                product.title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
           ),
         ],
