@@ -216,4 +216,9 @@ class ProductBuilder extends BuilderModel<Product> {
     isSaving = false;
     notifyListeners();
   }
+
+  Future<void> deleteProduct() async {
+    await services.database.deleteProduct(initialID!);
+    router.go("/products", extra: true);
+  }
 }

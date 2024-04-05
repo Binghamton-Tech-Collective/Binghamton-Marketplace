@@ -134,15 +134,26 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
           if (model.isSaving) const LinearProgressIndicator(),
-          SizedBox(
-            height: 48,
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: model.isReady ? model.save : null,
-              child: const Text("Save product"),
-            ),
+          Row(
+            children: [
+              if (model.isEditing) Expanded(
+                child: FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: Colors.red, padding: const EdgeInsets.symmetric(vertical: 16)),
+                  onPressed: () => delete(context, model),
+                  child: const Text("Delete product")
+                ),
+              ),
+              if (model.isEditing) const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton(
+                  style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
+                  onPressed: model.isReady ? model.save : null,
+                  child: const Text("Save product"),
+                ),
+              ),
+            ],
           ),
           if (model.saveError != null) Text(
             model.saveError!,
@@ -150,6 +161,29 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
           ),
         ],
       ),
+    ),
+  );
+
+  Future<void> delete(BuildContext context, ProductBuilder model) => showDialog<void>(
+    context: context,
+    builder:(context) => AlertDialog(
+      title: const Text("Confirm delete"),
+      content: const Text("Are you sure you want to delete this product?"),
+      actions: [
+        TextButton(
+          child: const Text("Cancel"),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () async {
+            await model.deleteProduct();
+            if (!context.mounted) return;
+            Navigator.of(context).pop();
+          }, 
+          child: const Text("Delete"),
+        ),
+      ]
     ),
   );
 }
