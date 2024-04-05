@@ -59,7 +59,8 @@ class ProductViewModel extends ViewModel {
   }
 
   /// Function to edit the product
-  Future<void> editProduct(ProductID id) => router.push("/products/$id/edit");
+  Future<void> editProduct(ProductID id) => 
+    router.push("/products/$id/edit", extra: product);
 
   /// The average rating for the seller, based on [sellerReviews].
   int? get sellerRating => 

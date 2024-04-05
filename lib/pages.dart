@@ -70,6 +70,7 @@ final GoRouter router = GoRouter(
                       name: "Edit a Product",
                       builder: (context, state) => ProductEditor(
                         id: state.pathParameters["id"] as ProductID,
+                        initialProduct: state.extra as Product?,
                       ),
                     ),
                   ],

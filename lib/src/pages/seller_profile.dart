@@ -34,10 +34,10 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     appBar: AppBar(
       title: const Text("Profile"),
       actions: [
-        if (!model.isLoadingProfile && model.profile.userID == models.user.userProfile!.id) TextButton.icon(
+        if (!model.isLoadingProfile && model.profile.userID == models.user.userProfile!.id) TextButton(
+          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           onPressed: model.editProfile,
-          label: Text("Edit profile", style: TextStyle(color: context.colorScheme.onPrimary)),
-          icon: const Icon(Icons.edit),
+          child: const Text("Edit profile"),
         ),
       ],
     ),

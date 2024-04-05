@@ -10,8 +10,15 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Id of the product if we're editing it
   final ProductID? initialID;
 
+  final Product? initialProduct;
+
   /// Constructor to initialize the initialID
-  ProductBuilder({this.initialID});
+  ProductBuilder({
+    required this.initialID, 
+    required this.initialProduct,
+  });
+
+  bool get isEditing => initialID != null;
 
   /// Unique product ID of the product
   late final ProductID productID;
@@ -75,38 +82,42 @@ class ProductBuilder extends BuilderModel<Product> {
 
   @override
   Future<void> init() async {
+    priceController.addListener(_validatePrice);
+    titleController.addListener(notifyListeners);
+    descriptionController.addListener(notifyListeners);
     if (initialID == null) {
       productID = services.database.products.newID;
       return;
     } else {
       await prefill();
     }
-    priceController.addListener(_validatePrice);
-    titleController.addListener(notifyListeners);
-    descriptionController.addListener(notifyListeners);
+    notifyListeners();
+  }
+
+  Future<Product?> getProduct() async {
+    if (initialProduct != null) return initialProduct!;
+    try {
+      isLoading = true;
+      final result = await services.database.getProduct(initialID!);
+      isLoading = false;
+      return result;
+    } catch (error) {
+      errorText = "Error loading product $initialID\n$error";
+      return null;
+    }
   }
 
   /// Prefills all the fields on this page with the [initialID].
   Future<void> prefill() async {
     // Load the product
-    final Product? product;
-    try {
-      isLoading = true;
-      product = await services.database.getProduct(initialID!);
-      isLoading = false;
-    } catch (error) {
-      errorText = "Could not load a product with ID: $initialID";
-      return;
-    }
-    // Check if the product exists
+    final product = await getProduct();
     if (product == null) {
       errorText = "No product exists with ID: $initialID";
       return;
     }
     // Prefill all the fields
     productID = product.id;
-    final sellerID = product.sellerID;
-    profile = await services.database.getSellerProfile(sellerID);
+    profile = otherProfiles.firstWhere((other) => other.id == product.sellerID);
     titleController.text = product.title;
     descriptionController.text = product.description;
     priceController.text = product.price.toString();

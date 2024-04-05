@@ -62,14 +62,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
         padding: const EdgeInsets.all(16),
         children: [
           // ---------- Image gallery ----------
-          SizedBox(height: 400, child: GalleryWidget(
-            children: [
-              for (final imageUrl in model.product.imageUrls) Image.network(
-                imageUrl, 
-                fit: BoxFit.cover, 
-              ),
-            ],
-          ),),
+          SizedBox(height: 400, child: GalleryWidget(product: model.product)),
           
           // ---------- Name, price, and condition ----------
           const SizedBox(height: 24),

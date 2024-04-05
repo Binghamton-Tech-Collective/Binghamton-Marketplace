@@ -12,11 +12,19 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
   /// Id of the product to be edited
   final ProductID? id;
 
+  final Product? initialProduct;
+
   /// Constructor to initialize the id fo the product
-  const ProductEditor({this.id});
+  const ProductEditor({
+    this.id, 
+    this.initialProduct,
+  });
 
   @override
-  ProductBuilder createModel() => ProductBuilder(initialID: id);
+  ProductBuilder createModel() => ProductBuilder(
+    initialID: id,
+    initialProduct: initialProduct,
+  );
 
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
@@ -71,10 +79,13 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             shrinkWrap: true,
             crossAxisCount: 2,
             children: [
-              for (final index in range(4)) ImageUploader(
-                imageUrl: model.imageUrls[index],
-                onTap: () => model.uploadImage(index),
-                onDelete: () => model.deleteImage(index),
+              for (final index in range(4)) Hero(
+                tag: "${model.initialProduct?.id}-image-$index",
+                child: ImageUploader(
+                  imageUrl: model.imageUrls[index],
+                  onTap: () => model.uploadImage(index),
+                  onDelete: () => model.deleteImage(index),
+                ),
               ),
             ],
           ),
