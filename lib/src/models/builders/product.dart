@@ -10,6 +10,7 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Id of the product if we're editing it
   final ProductID? initialID;
 
+  /// The already loaded product, if any.
   final Product? initialProduct;
 
   /// Constructor to initialize the initialID
@@ -18,6 +19,7 @@ class ProductBuilder extends BuilderModel<Product> {
     required this.initialProduct,
   });
 
+  /// Whether the user is editing a product, as opposed to creating one.
   bool get isEditing => initialID != null;
 
   /// Unique product ID of the product
@@ -94,6 +96,9 @@ class ProductBuilder extends BuilderModel<Product> {
     notifyListeners();
   }
 
+  /// Gets the product to edit. 
+  /// 
+  /// Returns null if creating, the product could not be found, or an error occurred.
   Future<Product?> getProduct() async {
     if (initialProduct != null) return initialProduct!;
     try {
@@ -217,6 +222,7 @@ class ProductBuilder extends BuilderModel<Product> {
     notifyListeners();
   }
 
+  /// Deletes the product from the database.
   Future<void> deleteProduct() async {
     await services.database.deleteProduct(initialID!);
     router.go("/products", extra: true);

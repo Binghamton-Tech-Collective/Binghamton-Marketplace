@@ -20,6 +20,7 @@ class UserModel extends DataModel {
   /// Whether the user is signed in.
   bool get isSignedIn => userProfile != null;
 
+  /// Whether this user is a seller.
   bool get isSeller => sellerProfiles.isNotEmpty;
 
   /// Signs the user in and downloads their profile.

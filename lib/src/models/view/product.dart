@@ -66,6 +66,9 @@ class ProductViewModel extends ViewModel {
   int? get sellerRating => 
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
+  /// Whether the view model is still loading more details about the product.
+  /// 
+  /// Even when this is true, [product] is still available.
   bool loadingDetails = true;
 
   @override

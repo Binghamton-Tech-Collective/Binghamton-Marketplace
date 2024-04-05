@@ -6,7 +6,7 @@ import "package:flutter/material.dart";
 class SellersPage extends ReactiveWidget<SellersViewModel> {
   @override
   SellersViewModel createModel() => SellersViewModel();
-
+  
   @override
   Widget build(BuildContext context, SellersViewModel model) => Scaffold(
     appBar: AppBar(

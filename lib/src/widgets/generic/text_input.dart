@@ -24,6 +24,7 @@ class InputContainer extends StatelessWidget {
   /// A prefix string to show in front of the user's input.
   final String? prefixText;
 
+  /// How to capitalize new words.
   final TextCapitalization capitalization;
 
   /// Constructor to set the fields

@@ -7,11 +7,13 @@ import "package:flutter/services.dart";
 
 /// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
+  /// The [TextStyle] to use for labels throughout the page.
   static const labelStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
   
   /// Id of the product to be edited
   final ProductID? id;
 
+  /// The already-loaded product, if any.
   final Product? initialProduct;
 
   /// Constructor to initialize the id fo the product
@@ -48,7 +50,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   leadingIcon: CircleAvatar(backgroundImage: NetworkImage(otherProfile.imageUrl)),
                 ),
               ],
-            )
+            ),
           ),
           InputContainer(
             text: "Name of the Item",
@@ -142,7 +144,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 child: FilledButton(
                   style: FilledButton.styleFrom(backgroundColor: Colors.red, padding: const EdgeInsets.symmetric(vertical: 16)),
                   onPressed: () => delete(context, model),
-                  child: const Text("Delete product")
+                  child: const Text("Delete product"),
                 ),
               ),
               if (model.isEditing) const SizedBox(width: 12),
@@ -164,11 +166,12 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
     ),
   );
 
+  /// Opens a dialog to confirm deleting the product.
   Future<void> delete(BuildContext context, ProductBuilder model) => showDialog<void>(
     context: context,
     builder:(context) => AlertDialog(
       title: const Text("Confirm delete"),
-      content: const Text("Are you sure you want to delete this product?"),
+      content: const Text("Are you sure you want to delete this product? This will also delete any associated reviews.\n\nThis action is permanent and cannot be undone."),
       actions: [
         TextButton(
           child: const Text("Cancel"),
@@ -183,7 +186,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
           }, 
           child: const Text("Delete"),
         ),
-      ]
+      ],
     ),
   );
 }
