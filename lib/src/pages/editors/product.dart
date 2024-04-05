@@ -41,6 +41,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
           SpacedRow(
             const Text("Profile", style: labelStyle),
             DropdownMenu(
+              enabled: !model.isEditing,
               onSelected: model.setProfile,
               initialSelection: model.profile,
               dropdownMenuEntries: [
