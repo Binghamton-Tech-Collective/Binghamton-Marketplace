@@ -20,12 +20,12 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
         ),
       ],
     ),
-    body: model.conversations.isEmpty
+    body: model.allConversations.isEmpty
       ? Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/bearcat/confused.jpg", width: 200, height: 200),
+            Image.asset("assets/bearcat/confused.png", width: 200, height: 200),
             const SizedBox(height: 16),
             const Text(
               "You don't have any conversations.\nStart one by clicking on a seller or a product!",
