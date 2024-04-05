@@ -14,29 +14,46 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
   Widget build(BuildContext context, ConversationsViewModel model) => Scaffold(
     appBar: AppBar(
       title: const Text("Chats"),
-    ),
-    body: model.allConversations.isNotEmpty
-    ? ListView.builder(
-      itemCount: model.allConversations.length,
-      itemBuilder: (context, index) => ConversationWidget(
-        conversation: model.allConversations[index],
-      ),
-    )
-    : Center(
-      child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset("categories/baxterInGreenhouse.jpg", width: 250, height: 200, fit: BoxFit.fill),
-        const SizedBox(height: 16,),
-        Container(
-          padding: const EdgeInsets.all(16),
-          child: const Text("Start of your conversation history!",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-          ),          
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.refresh),
+          onPressed: model.init,
+          tooltip: "Refresh",
         ),
       ],
     ),
+    body: model.allConversations.isEmpty
+      ? Center(
+        child: Column(
+          children: [
+            Image.asset("assets/bearcat/waiting.png", width: 200, height: 200),
+            const SizedBox(height: 16),
+            Text(
+              "You don't have any conversations.\nStart one by clicking on a seller or a product!",
+              style: context.textTheme.titleLarge,
+            ),
+          ],
+        ),
+      )
+     : RefreshIndicator.adaptive(
+      onRefresh: model.init,
+      child: ListView(
+        children: [
+          SwitchListTile.adaptive(
+            title: const Text("Show archived"),
+            subtitle: model.showArchived
+              ? const Text("Long press to archive")
+              : const Text("Long press to unarchive"),
+            secondary: const Icon(Icons.archive),
+            value: model.showArchived, 
+            onChanged: model.updateShowArchive,
+          ),
+          for (final conversation in model.conversations) ConversationWidget(
+            conversation: conversation,
+            onArchive: () => model.toggleArchive(conversation.id),
+          ),
+        ],
+      ),
     ),
-    );
+  );
 }

@@ -18,9 +18,17 @@ class SellerProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-    leading: Hero(tag: "profile-pic", child: CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl),),),
-    title: Text(profile.name),
-    onTap: () => context.push("/sellers/${profile.id}"),
+    leading: Hero(
+      tag: "${profile.id}-image", 
+      child: CircleAvatar(
+        backgroundImage: NetworkImage(profile.imageUrl),
+      ),
+    ),
+    title: Hero(
+      tag: "${profile.id}-name", 
+      child: Text(profile.name),
+    ),
+    onTap: () => context.push("/sellers/${profile.id}", extra: profile),
     subtitle: averageRating == null ? null : RatingBarIndicator(
       rating: averageRating!,
       itemSize: 15,
@@ -34,16 +42,8 @@ class SellerProfileWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(
-            onPressed: () { },
-            iconSize: 36,
-            icon: const Icon(Icons.facebook),
-          ),
-          IconButton(
-            onPressed: () {},
-            iconSize: 36,
-            icon: const Icon(Icons.tiktok),
-          ),
+          for (final (platform, username) in profile.contact.socials)
+            SocialMediaButton(platform: platform, username: username),
         ],
       ),
     ),

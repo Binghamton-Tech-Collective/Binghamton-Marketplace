@@ -1,26 +1,47 @@
+import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 
 /// A view model to support [GalleryWidget].
 class GalleryViewModel extends ViewModel {
+  /// The product being shown off.
+  final Product product;
+  
   /// THe number of pages being displayed.
-  final int numPages;
+  int get numPages => product.imageUrls.length;
+
   /// The duration for the page transition animation.
   final Duration duration;
+
   /// The curve for the page transition animation.
   final Curve curve;
+  
   /// The Flutter [PageView] controller. 
   final controller = PageController();
+  
   /// Creates a view model to show a [GalleryWidget].
   GalleryViewModel({
-    required this.numPages,
+    required this.product,
+    // required this.numPages,
     this.duration = const Duration(milliseconds: 250), 
     this.curve = Curves.easeInOut,
   });
 
   /// The current page.
   int page = 0;
+
+  /// Updates the page index.
+  void updatePage(int index) {
+    page = index;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   /// Animates to the next page.
   void next() {
@@ -41,13 +62,13 @@ class GalleryViewModel extends ViewModel {
 
 /// A widget that allows swiping through images in a gallery.
 class GalleryWidget extends ReactiveWidget<GalleryViewModel> {
-  /// The widgets to show in the gallery.
-  final List<Widget> children;
+  /// The product being shown off.
+  final Product product;
   /// Creates a gallery widget.
-  const GalleryWidget({required this.children, super.key});
+  const GalleryWidget({required this.product, super.key});
 
   @override
-  GalleryViewModel createModel() => GalleryViewModel(numPages: children.length);
+  GalleryViewModel createModel() => GalleryViewModel(product: product);
 
   @override
   Widget build(BuildContext context, GalleryViewModel model) => Stack(
@@ -55,22 +76,30 @@ class GalleryWidget extends ReactiveWidget<GalleryViewModel> {
     children: [
       Positioned.fill(
         child: PageView(
+          onPageChanged: model.updatePage,
           controller: model.controller,
-          children: children,
+          children: [
+            for (final (index, imageUrl) in model.product.imageUrls.enumerate) Hero(
+              tag: "${product.id}-image-$index",
+              child: Image.network(imageUrl, fit: BoxFit.cover),
+            ),
+          ],
         ),
       ),
       Positioned(
         left: 12,
-        child: IconButton(
+        child: IconButton.filled(
           icon: const Icon(Icons.arrow_circle_left, size: 36),
           onPressed: model.page == 0 ? null : model.prev,
+          style: IconButton.styleFrom(backgroundColor: context.colorScheme.primary, disabledBackgroundColor: context.colorScheme.primary),
         ),
       ),
       Positioned(
         right: 12,
-        child: IconButton(
+        child: IconButton.filled(
           icon: const Icon(Icons.arrow_circle_right, size: 36),
           onPressed: model.page == (model.numPages - 1) ? null : model.next,
+          style: IconButton.styleFrom(backgroundColor: context.colorScheme.primary, disabledBackgroundColor: context.colorScheme.primary),
         ),
       ),
     ],

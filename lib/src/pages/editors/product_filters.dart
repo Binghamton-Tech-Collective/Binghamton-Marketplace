@@ -100,53 +100,71 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
     ],
   );
 
+  /// A widget to pick the minimum price in a filter.
+  Widget minPrice(BuildContext context, ProductFiltersBuilder model) => FilterOption(
+    name: "Minimum price",
+    child: TextField(
+      controller: model.minPriceController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        prefixText: r"$",
+        border: const OutlineInputBorder(),
+        hintText: "Min price",
+        errorText: model.minPriceError,
+        focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+      ),
+    ),
+  );
+
+  /// A widget to pick the maximum price in a filter.
+  Widget maxPrice(BuildContext context, ProductFiltersBuilder model) => FilterOption(
+    name: "Maximum price",
+    child: TextField(
+      controller: model.maxPriceController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        prefixText: r"$",
+        border: const OutlineInputBorder(),
+        hintText: "Max price",
+        errorText: model.maxPriceError,
+        focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+      ),
+    ),
+  );
+
+  /// A widget to pick the minimum rating in a filter.
+  Widget minRating(BuildContext context, ProductFiltersBuilder model) => FilterOption(
+    name: "Minimum Rating", 
+    child: RatingBar(
+      initialRating: model.minRating?.toDouble() ?? 0,
+      onRatingUpdate: model.updateMinRating,
+      ratingWidget: RatingWidget(
+        full: const Icon(Icons.star),
+        half: const Icon(Icons.star_half),
+        empty: const Icon(Icons.star_border),
+      ),
+    ),
+  );
+
   /// Builds the available filter options based on [ProductFiltersBuilder.sortOrder].
   List<Widget> buildBody(BuildContext context, ProductFiltersBuilder model) => switch (model.sortOrder) {
-    ProductSortOrder.byNew || ProductSortOrder.byOld => [],
+    ProductSortOrder.byNew || ProductSortOrder.byOld => [
+      const SizedBox(height: 12),
+      minPrice(context, model),
+      const SizedBox(height: 12),
+      maxPrice(context, model),
+      const SizedBox(height: 12),
+      minRating(context, model),
+    ],
     ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => [
       const SizedBox(height: 12),
-      FilterOption(
-        name: "Minimum price",
-        child: TextField(
-          controller: model.minPriceController,
-          decoration: InputDecoration(
-            prefixText: r"$",
-            border: const OutlineInputBorder(),
-            hintText: "Min price",
-            errorText: model.minPriceError,
-            focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-          ),
-        ),
-      ),
+      minPrice(context, model),
       const SizedBox(height: 12),
-      FilterOption(
-        name: "Maximum price",
-        child: TextField(
-          controller: model.maxPriceController,
-          decoration: InputDecoration(
-            prefixText: r"$",
-            border: const OutlineInputBorder(),
-            hintText: "Max price",
-            errorText: model.maxPriceError,
-            focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-          ),
-        ),
-      ),
+      maxPrice(context, model),
     ],
     ProductSortOrder.byRating => [
       const SizedBox(height: 12),
-      FilterOption(
-        name: "Minimum Rating", 
-        child: RatingBar(
-          initialRating: (model.minRating as double?) ?? 0,
-          onRatingUpdate: model.updateMinRating,
-          ratingWidget: RatingWidget(
-            full: const Icon(Icons.star),
-            half: const Icon(Icons.star_half),
-            empty: const Icon(Icons.star_border),
-          ),
-        ),
-      ),
+      minRating(context, model),
     ],
   };
 }

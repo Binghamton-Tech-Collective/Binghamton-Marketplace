@@ -3,27 +3,27 @@ import "types.dart";
 /// A category of product.
 enum Category {
   /// The college essentials category.
-  collegeEssentials(id: CategoryID("collegeEssentials"), title: "College Essentials", description: "Essential Items for college", imagePath: "categories/collegeEssentials.png"),
+  collegeEssentials(id: CategoryID("collegeEssentials"), title: "College Essentials", description: "Essential Items for college", imagePath: "assets/categories/collegeEssentials.png"),
   /// The books category.
-  books(id: CategoryID("books"), title: "Books", description: "Books", imagePath: "categories/books.png"),
+  books(id: CategoryID("books"), title: "Books", description: "Books", imagePath: "assets/categories/books.png"),
   /// The clothing category.
-  clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "categories/clothes.png"),
+  clothes(id: CategoryID("clothes"), title: "Clothes", description: "Clothes you can feel good in!", imagePath: "assets/categories/clothes.png"),
   /// The food category.
-  food(id: CategoryID("food"), title: "Food Items", description: "Food Items", imagePath: "categories/food.png"),
+  food(id: CategoryID("food"), title: "Food Items", description: "Food Items", imagePath: "assets/categories/food.png"),
   /// The furniture category.
-  furniture(id: CategoryID("furniture"), title: "Furniture", description: "Furniture", imagePath: "categories/furniture.png"),
+  furniture(id: CategoryID("furniture"), title: "Furniture", description: "Furniture", imagePath: "assets/categories/furniture.png"),
   /// The electronics category.
-  electronics(id: CategoryID("electronics"), title: "Electronics", description: "Electronics", imagePath: "categories/electronics.png"),
+  electronics(id: CategoryID("electronics"), title: "Electronics", description: "Electronics", imagePath: "assets/categories/electronics.png"),
   /// The clothing category.
-  crafts(id: CategoryID("crafts"), title: "Crafts", description: "Creative Crafts", imagePath: "categories/craft.png"),
+  crafts(id: CategoryID("crafts"), title: "Crafts", description: "Creative Crafts", imagePath: "assets/categories/craft.png"),
   /// The books category.
-  jewelry(id: CategoryID("jewelry"), title: "Jewelry", description: "Jewelry you can feel good in!", imagePath: "categories/jewelry.png"),
+  jewelry(id: CategoryID("jewelry"), title: "Jewelry", description: "Jewelry you can feel good in!", imagePath: "assets/categories/jewelry.png"),
   /// The clothing category.
-  accessories(id: CategoryID("accessories"), title: "Accessories", description: "Accessories", imagePath: "categories/accessories.png"),
+  accessories(id: CategoryID("accessories"), title: "Accessories", description: "Accessories", imagePath: "assets/categories/accessories.png"),
   /// The books category.
-  sports(id: CategoryID("sports"), title: "Sports", description: "Sport Items!", imagePath: "categories/sports.png"),
+  sports(id: CategoryID("sports"), title: "Sports", description: "Sport Items!", imagePath: "assets/categories/sports.png"),
   /// The books category.
-  other(id: CategoryID("other"), title: "Other", description: "Any special category", imagePath: "categories/other.png");
+  other(id: CategoryID("other"), title: "Other", description: "Any special category", imagePath: "assets/categories/other.png");
   
   /// Stores the unique ID for this category
   final CategoryID id;

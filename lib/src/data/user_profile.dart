@@ -10,6 +10,8 @@ class UserProfile {
   final Set<ProductID> productsWatchlist;
   /// The sellers on the user's watchlist
   final Set<SellerID> sellersWatchlist;
+  /// The user's archived conversations.
+  final Set<ConversationID> archivedConversations;
 
   /// Creates a new User object.
   UserProfile({
@@ -17,6 +19,7 @@ class UserProfile {
     required this.id,
     required this.productsWatchlist,
     required this.sellersWatchlist,
+    required this.archivedConversations,
   });
 
   /// Creates a new profile, with all the default fields.
@@ -25,18 +28,16 @@ class UserProfile {
     required this.id,
   }) : 
     productsWatchlist = {},
-    sellersWatchlist = {};
+    sellersWatchlist = {},
+    archivedConversations = {};
 
   /// Creates a new User object from a JSON object.
   UserProfile.fromJson(Json json) : 
     name = json["name"],
     id = json["id"],
-    productsWatchlist = json["productsWatchlist"] == null
-                      ? <ProductID>{}
-                      : Set<ProductID>.from(json["productsWatchlist"] as List),
-    sellersWatchlist  = json["sellersWatchlist"] == null
-                      ? <SellerID>{}
-                      : Set<SellerID>.from(json["sellersWatchlist"] as List);
+    productsWatchlist = Set<ProductID>.from(json["productsWatchlist"] ?? []),
+    sellersWatchlist  = Set<SellerID>.from(json["sellersWatchlist"] ?? []),
+    archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []);
 
   /// Convert this user to its JSON representation
   Json toJson() => {
@@ -44,6 +45,7 @@ class UserProfile {
     "id": id,
     "productsWatchlist": List<String>.from(productsWatchlist),
     "sellersWatchlist": List<String>.from(sellersWatchlist),
+    "archivedConversations": List<String>.from(archivedConversations),
   };
 
   /// Add a Product to the User's watchlist, by ProductID

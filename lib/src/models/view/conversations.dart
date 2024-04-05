@@ -8,7 +8,37 @@ class ConversationsViewModel extends ViewModel {
   final user = models.user.userProfile!;
 
   /// List of all the conversations for the user
-  late final List<Conversation> allConversations;
+  late List<Conversation> allConversations;
+
+  /// All the user's archived conversations.
+  Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
+
+  /// Whether to show archived conversations.
+  bool showArchived = false;
+
+  /// All non-archived conversations.
+  List<Conversation> get unarchived => [
+    for (final conversation in allConversations)
+      if (!archivedIDs.contains(conversation.id))
+        conversation,
+  ];
+
+  /// All archived conversations.
+  List<Conversation> get archived => [
+    for (final conversation in allConversations)
+      if (archivedIDs.contains(conversation.id))
+        conversation,
+  ];
+
+  /// Shows conversations depending on [showArchived].
+  List<Conversation> get conversations => showArchived ? archived : unarchived;
+
+  /// Toggles whether the UI should show or hide archived conversations.
+  // ignore: avoid_positional_boolean_parameters
+  void updateShowArchive(bool input) {
+    showArchived = input;
+    notifyListeners();
+  }
 
   @override
   Future<void> init() async {
@@ -23,5 +53,16 @@ class ConversationsViewModel extends ViewModel {
       rethrow;
     }
     isLoading = false;
+  }
+
+  /// Toggles whether a specific conversation is archived.
+  Future<void> toggleArchive(ConversationID id) async {
+    if (archivedIDs.contains(id)) {
+      archivedIDs.remove(id);
+    } else {
+      archivedIDs.add(id);
+    }
+    await services.database.saveUserProfile(user);
+    notifyListeners();
   }
 }

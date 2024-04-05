@@ -7,6 +7,12 @@ import "package:btc_market/pages.dart";
 
 /// Class to create view model for sign up page for seller
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
+  /// Id of the seller to be edited
+  final SellerID? initialID;
+  
+  /// Constructor to initialize the SellerID
+  SellerProfileBuilder({this.initialID, this.profile});
+
   /// Name of the seller
   final nameController = TextEditingController();
 
@@ -41,6 +47,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// The seller's ID.
   late final SellerID sellerID;
+  // SellerID get sellerID => SellerID("123");
 
   /// Fetching the email address of the seller
   String get email => services.auth.user!.email!;
@@ -51,10 +58,34 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// URL of the profile image
   String? imageUrl;
 
+  /// Seller Profile of the seller
+  SellerProfile? profile;
+
+  /// Whether this page is editing a profile that already exists.
+  bool get isEditing => initialID != null;
+
   @override
   Future<void> init() async {
-    isLoading = true;
-    sellerID = services.database.sellers.newID;
+    if (initialID == null) { 
+      sellerID = services.database.sellers.newID;
+    } else {
+      if (profile == null) {
+        isLoading = true;
+        profile = await services.database.getSellerProfile(initialID!);
+        isLoading = false;
+      }
+      final seller = profile!;
+      profile = seller;
+      sellerID = seller.id;
+      imageUrl = seller.imageUrl;
+      nameController.text = seller.name;
+      bioController.text = seller.bio;
+      phoneNumberController.text = seller.contact.phoneNumber != null ? seller.contact.phoneNumber! : "";
+      tikTokController.text = seller.contact.tikTokUsername != null ? seller.contact.tikTokUsername! : "";
+      instagramController.text = seller.contact.instagramHandle != null ? seller.contact.instagramHandle! : "";
+      twitterController.text = seller.contact.twitterUsername != null ? seller.contact.twitterUsername! : "";
+      linkedinController.text = seller.contact.linkedInUsername != null ? seller.contact.linkedInUsername! : "";
+    }
     userID = models.user.userProfile!.id;
     for (final controller in allControllers) {
       controller.addListener(notifyListeners);
@@ -113,9 +144,9 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage() async {
+    // [filename] cannot be null because imageUrl is required for seller profile, and we're copying it before nullifying it.
+    await services.cloudStorage.deleteFile(imageUrl!);
     imageUrl = null;
-    final filename = services.cloudStorage.getSellerImagePath(sellerID);
-    await services.cloudStorage.deleteFile(filename);
     notifyListeners();
   }
 
@@ -129,12 +160,17 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   Future<void> save() async {
     isSaving = true;
     saveError = null;
-    final profile = build();
     try {
-      await services.database.saveSellerProfile(profile);
-      router.go("/sellers/${profile.id}");
+      final result = build();
+      await services.database.saveSellerProfile(result);
+      await models.user.loadSellerProfiles();
+      if (isEditing) {
+        router.pop(result);
+      } else {
+        router.pushReplacement("/sellers/${result.id}").ignore();
+      }
     } catch (error) {
-      saveError = "Error uploading profile:\n$error";
+      saveError = "Error creating profile:\n$error";
       rethrow;
     }
     isSaving = false;
