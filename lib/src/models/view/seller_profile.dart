@@ -94,5 +94,10 @@ class SellerProfileViewModel extends ViewModel {
   }
 
   /// Function to edit the sellerProfile
-  Future<void> editProfile() => router.push("/sellers/$id/edit", extra: profile);
+  Future<void> editProfile() async {
+    final result = await router.push("/sellers/$id/edit", extra: profile) as SellerProfile?;
+    if (result == null) return;
+    profile = result;
+    notifyListeners();
+  }
 }
