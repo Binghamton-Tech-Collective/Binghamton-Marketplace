@@ -213,7 +213,11 @@ class ProductBuilder extends BuilderModel<Product> {
     final product = build();
     try {
       await services.database.saveProduct(product);
-      router.go("/products/$productID");
+      if (isEditing) {
+        router.pop(product);
+      } else {
+        router.go("/products/$productID", extra: product);
+      }
     } catch (error) {
       saveError = "There was an error saving your product";
       rethrow;

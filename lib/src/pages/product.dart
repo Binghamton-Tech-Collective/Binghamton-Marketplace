@@ -41,11 +41,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
       actions: [
         if (model.product.isSeller) TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-          onPressed: () async {
-            await model.editProduct(model.id);
-            if (!context.mounted) return;
-            await model.init();
-          },
+          onPressed: () => model.editProduct(model.id),
           child: const Text("Edit product"),
         ),
       ],
