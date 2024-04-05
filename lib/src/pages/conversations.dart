@@ -29,7 +29,6 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
             const SizedBox(height: 16),
             const Text(
               "You don't have any conversations.\nStart one by clicking on a seller or a product!",
-              // style: context.textTheme.titleLarge,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
             ),
