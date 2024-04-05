@@ -36,7 +36,12 @@ class Services extends Service {
     await cloudStorage.dispose();
   }
 
+  /// Deletes a [SellerProfile] and all of their associated data.
   Future<void> deleteSellerProfile(SellerID id) async {
+    final reviews = await database.getReviewsBySellerID(id);
+    for (final review in reviews) {
+      await deleteReview(review.id);
+    }
     final products = await database.getProductsBySellerID(id);
     for (final product in products) {
       await deleteProduct(product.id);
@@ -45,9 +50,19 @@ class Services extends Service {
     await cloudStorage.deleteSellerProfile(id);
   }
 
+  /// Deletes a product and all data associated with it.
   Future<void> deleteProduct(ProductID id) async {
+    final reviews = await database.getReviewsByProductID(id);
+    for (final review in reviews) {
+      await deleteReview(review.id);
+    }
     await database.deleteProduct(id);
     await cloudStorage.deleteProduct(id);
+  }
+
+  /// Deletes a review and all data associated with it.
+  Future<void> deleteReview(ReviewID id) async {
+    await database.deleteReview(id);
   }
 }
 

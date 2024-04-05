@@ -39,6 +39,7 @@ class UserModel extends DataModel {
     await loadSellerProfiles();
   }
 
+  /// Loads the user's seller profiles.
   Future<void> loadSellerProfiles() async {
     if (userProfile == null) return;
     sellerProfiles = await services.database.getSellerProfilesForUser(userProfile!.id);
