@@ -63,25 +63,30 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
         InputContainer(
           text: "Instagram", 
           controller: model.instagramController,
-          prefixText: "@",
+          prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
+          capitalization: TextCapitalization.none,
         ),
         InputContainer(
           text: "LinkedIn", 
           controller: model.linkedinController,
           hint: "profile url",
+          prefixIcon: const Icon(Icons.http),
+          capitalization: TextCapitalization.none,
         ),
         InputContainer(
           text: "TikTok", 
           controller: model.tikTokController,
-          prefixText: "@",
+          prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
+          capitalization: TextCapitalization.none,
         ),
         InputContainer(
           text: "Twitter / X", 
           controller: model.twitterController,
-          prefixText: "@",
+          prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
+          capitalization: TextCapitalization.none,
         ),
 
         // ========== Confirmation and loading indicators ==========
