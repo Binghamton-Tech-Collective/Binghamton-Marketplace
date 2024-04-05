@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
 
-
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter/services.dart";
 
 /// The page that displays all conversation for the user
 class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
@@ -22,38 +20,41 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
         ),
       ],
     ),
-    body: model.allConversations.isEmpty
+    body: model.conversations.isEmpty
       ? Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/bearcat/waiting.png", width: 200, height: 200),
+            Image.asset("assets/bearcat/confused.jpg", width: 200, height: 200),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               "You don't have any conversations.\nStart one by clicking on a seller or a product!",
-              style: context.textTheme.titleLarge,
+              // style: context.textTheme.titleLarge,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       )
-     : RefreshIndicator.adaptive(
-      onRefresh: model.init,
-      child: ListView(
-        children: [
-          SwitchListTile.adaptive(
-            title: const Text("Show archived"),
-            subtitle: model.showArchived
-              ? const Text("Long press to archive")
-              : const Text("Long press to unarchive"),
-            secondary: const Icon(Icons.archive),
-            value: model.showArchived, 
-            onChanged: model.updateShowArchive,
-          ),
-          for (final conversation in model.conversations) ConversationWidget(
-            conversation: conversation,
-            onArchive: () => model.toggleArchive(conversation.id),
-          ),
-        ],
+      : RefreshIndicator.adaptive(
+        onRefresh: model.init,
+        child: ListView(
+          children: [
+            SwitchListTile.adaptive(
+              title: const Text("Show archived"),
+              subtitle: model.showArchived
+                ? const Text("Long press to archive")
+                : const Text("Long press to unarchive"),
+              secondary: const Icon(Icons.archive),
+              value: model.showArchived, 
+              onChanged: model.updateShowArchive,
+            ),
+            for (final conversation in model.conversations) ConversationWidget(
+              conversation: conversation,
+              onArchive: () => model.toggleArchive(conversation.id),
+            ),
+          ],
+        ),
       ),
-    ),
   );
 }
