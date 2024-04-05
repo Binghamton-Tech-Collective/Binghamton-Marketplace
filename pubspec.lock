@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      sha256: "55d7b444feb71301ef6b8838dbc1ae02e63dd48c8773f3810ff53bb1e2945b32"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.4+1"
   fake_async:
     dependency: transitive
     description:
@@ -93,10 +101,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: caa6bc229eab3e32eb2f37b53a5f9d22a6981474afd210c512a7546c1e1a04f6
+      sha256: d1d0ac3966b36dc3e66eeefb40280c17feb87fa2099c6e22e6a1fc959327bd03
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "8.0.0+1"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -190,14 +198,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.1"
-  flutter_social_button:
-    dependency: "direct main"
-    description:
-      name: flutter_social_button
-      sha256: e10dbd78e8370b8c260148eb8d2904a77001073daeb263b5cdcf6c4dd652eed3
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.4+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -209,7 +209,7 @@ packages:
     source: sdk
     version: "0.0.0"
   font_awesome_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: font_awesome_flutter
       sha256: "275ff26905134bcb59417cf60ad979136f1f8257f2f449914b2c3e05bbb4cd6f"
@@ -225,7 +225,7 @@ packages:
     source: hosted
     version: "13.2.0"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
       sha256: "761a297c042deedc1ffbb156d6e2af13886bb305c2a343a4d972504cd67dd938"
@@ -325,14 +325,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  social_media_flutter:
-    dependency: "direct main"
-    description:
-      name: social_media_flutter
-      sha256: d38f22a56066a6b993a0aced1a4e475b13a9a6ae6dfecb9348b3cd16de992fd7
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
   source_span:
     dependency: transitive
     description:
@@ -390,7 +382,7 @@ packages:
     source: hosted
     version: "1.3.2"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
       sha256: "0ecc004c62fd3ed36a2ffcbe0dd9700aee63bd7532d0b642a488b1ec310f492e"

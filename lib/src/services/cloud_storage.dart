@@ -50,19 +50,23 @@ class CloudStorageService extends Service {
   }
 
   /// Deletes all data associated with a seller profile.
-  Future<void> deleteSellerProfile(SellerID id) async {
-    final ref = _root.child("sellers/$id");
-    try {
-      await ref.delete();
-    } on FirebaseException catch (error) {
-      if (error.code == "object-not-found") return;
-      rethrow;
-    }
-  }
+  Future<void> deleteSellerProfile(SellerID id) => _root.child("sellers/$id/").deleteFolder();
   
+  /// Deletes all data associated with a product.
+  Future<void> deleteProduct(ProductID id) => _root.child("products/$id/").deleteFolder();
+
   /// Returns the path of the seller's profile picture.
   String getSellerImagePath(SellerID id) => "sellers/$id/profile_pic";
 
   /// Returns the path of the seller's profile picture.
   String getProductImage(ProductID id, int index) => "products/$id/$index";
+}
+
+extension on Reference {
+  Future<void> deleteFolder() async {
+    final result = await listAll(); 
+    for (final file in result.items) {
+      await file.delete();
+    }
+  }
 }

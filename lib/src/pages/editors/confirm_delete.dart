@@ -37,9 +37,13 @@ class ConfirmDeleteModel extends ViewModel {
   Future<void> deleteProfile() async {
     isDeleting = true;
     notifyListeners();
-    await services.database.deleteSellerProfile(profile.id);
-    await services.cloudStorage.deleteSellerProfile(profile.id);
-    router.go("/");
+    await services.deleteSellerProfile(profile.id);
+    await models.user.loadSellerProfiles();
+    isDeleting = false;
+    notifyListeners();
+    router.pop();  // out of editor
+    router.pop();  // out of seller page
+    router.go("/sellers");  // back to safety
   }
 }
 
@@ -56,13 +60,34 @@ class ConfirmDeleteDialog extends ReactiveWidget<ConfirmDeleteModel> {
   @override
   Widget build(BuildContext context, ConfirmDeleteModel model) => AlertDialog(
     title: const Text("Confirm"),
-    content: const Text("Are you sure you want to delete your profile? This is permanent and cannot be undone. This will also delete any products you have sold, and any ratings for those products."),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Are you sure you want to delete your profile? This will also delete:\n- Any products you have sold\n- Any ratings for those products."),
+        const SizedBox(height: 8),
+        Text(
+          "This is a permanent action and cannot be undone. To confirm, enter your profile name below (${model.profile.name})",
+          style: context.textTheme.labelLarge,
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: model.controller,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            hintText: model.profile.name,
+          ),
+        ),
+      ],
+    ),
     actions: [
+      if (model.isDeleting) const CircularProgressIndicator(),
       TextButton(
         onPressed: () => Navigator.of(context).pop(),
         child: const Text("Cancel"),
       ),
       FilledButton(
+        style: FilledButton.styleFrom(backgroundColor: Colors.red),
         onPressed: !model.isReady ? null : () async {
           await model.deleteProfile();
           if (!context.mounted) return;

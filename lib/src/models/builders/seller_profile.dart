@@ -163,6 +163,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     try {
       final result = build();
       await services.database.saveSellerProfile(result);
+      await models.user.loadSellerProfiles();
       router.pushReplacement("/sellers/${result.id}").ignore();
     } catch (error) {
       saveError = "Error creating profile:\n$error";

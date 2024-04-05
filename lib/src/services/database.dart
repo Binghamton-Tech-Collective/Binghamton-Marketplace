@@ -125,11 +125,6 @@ class Database extends Service {
     for (final review in reviews) {
       await deleteReview(review.id);
     }
-    // Delete all products this seller sells
-    final products = await getProductsBySellerID(id);
-    for (final product in products) {
-      await deleteProduct(product.id);
-    }
     // Delete the seller profile.
     await sellers.doc(id).delete();
   }
