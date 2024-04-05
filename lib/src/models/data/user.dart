@@ -20,6 +20,8 @@ class UserModel extends DataModel {
   /// Whether the user is signed in.
   bool get isSignedIn => userProfile != null;
 
+  bool get isSeller => sellerProfiles.isNotEmpty;
+
   /// Signs the user in and downloads their profile.
   Future<void> signIn() async {
     final uid = await services.auth.signIn();

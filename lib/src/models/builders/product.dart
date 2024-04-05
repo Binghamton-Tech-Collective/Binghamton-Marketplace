@@ -37,20 +37,24 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Condition of the product
   ProductCondition? condition;
 
-  /// Date and time the product was added
-  late final DateTime dateListed;
-
-  /// Seller ID of the seller adding products
-  late final SellerID? sellerID;
-
-  /// True if the user has any seller profiles.
-  bool get isSeller => sellerID != null;
+  /// The seller profile that will own the account.
+  SellerProfile? profile;
 
   /// The error when uploading the image, if any.
   String? imageError;
 
   /// An error when validating the price, if any.
   String? priceError;
+
+  /// All the seller profiles this user owns.
+  List<SellerProfile> get otherProfiles => models.user.sellerProfiles;
+
+  /// Sets the profile this product will be owned by.
+  void setProfile(SellerProfile? input) {
+    if (input == null) return;
+    profile = input;
+    notifyListeners();
+  }
 
   /// To add the selected category to the set
   void setCategorySelected({required Category category, required bool selected}) {
@@ -71,37 +75,51 @@ class ProductBuilder extends BuilderModel<Product> {
 
   @override
   Future<void> init() async {
-    isLoading = true;
-    try {
-      if (initialID == null) {
-        sellerID = models.user.sellerProfiles.firstOrNull?.id;
-        productID = services.database.products.newID;
-      } else {
-        final product = await services.database.getProduct(initialID!);
-        productID = product!.id;
-        sellerID = product.sellerID;
-        titleController.text = product.title;
-        descriptionController.text = product.description;
-        priceController.text = product.price.toString();
-        quantityController.text = product.quantity.toString();
-        categories.addAll(product.categories);
-        condition = product.condition;
-        dateListed = product.dateListed;
-        for (var index = 0; index < imageUrls.length; index++) {
-          if (index >= product.imageUrls.length) {
-            imageUrls[index] = null;
-          } else {
-            imageUrls[index] = product.imageUrls[index];
-          }
-        }
-      }
-    } catch (error) {
-      errorText = "Error occurred while fetching the product! $error";
+    if (initialID == null) {
+      productID = services.database.products.newID;
+      return;
+    } else {
+      await prefill();
     }
     priceController.addListener(_validatePrice);
     titleController.addListener(notifyListeners);
     descriptionController.addListener(notifyListeners);
-    isLoading = false;
+  }
+
+  /// Prefills all the fields on this page with the [initialID].
+  Future<void> prefill() async {
+    // Load the product
+    final Product? product;
+    try {
+      isLoading = true;
+      product = await services.database.getProduct(initialID!);
+      isLoading = false;
+    } catch (error) {
+      errorText = "Could not load a product with ID: $initialID";
+      return;
+    }
+    // Check if the product exists
+    if (product == null) {
+      errorText = "No product exists with ID: $initialID";
+      return;
+    }
+    // Prefill all the fields
+    productID = product.id;
+    final sellerID = product.sellerID;
+    profile = await services.database.getSellerProfile(sellerID);
+    titleController.text = product.title;
+    descriptionController.text = product.description;
+    priceController.text = product.price.toString();
+    quantityController.text = product.quantity.toString();
+    categories.addAll(product.categories);
+    condition = product.condition;
+    for (var index = 0; index < imageUrls.length; index++) {
+      if (index >= product.imageUrls.length) {
+        imageUrls[index] = null;
+      } else {
+        imageUrls[index] = product.imageUrls[index];
+      }
+    }
   }
 
   void _validatePrice() {
@@ -120,7 +138,7 @@ class ProductBuilder extends BuilderModel<Product> {
   @override
   Product build() => Product(
     id: productID,
-    sellerID: sellerID!,
+    sellerID: profile!.id,
     userID: models.user.userProfile!.id,
     title: titleController.text,
     description: descriptionController.text,
@@ -144,7 +162,7 @@ class ProductBuilder extends BuilderModel<Product> {
     // quantityController.text.isNotEmpty &&
     imageUrls.any((url) => url != null) &&
     condition != null &&
-    sellerID != null &&
+    profile != null &&
     !isSaving;
 
   /// Upload the image provided by the user and set the imageURL to the link obtained

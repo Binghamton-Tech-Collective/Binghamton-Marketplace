@@ -24,11 +24,14 @@ class InputContainer extends StatelessWidget {
   /// A prefix string to show in front of the user's input.
   final String? prefixText;
 
+  final TextCapitalization capitalization;
+
   /// Constructor to set the fields
   const InputContainer({
     required this.text,
     required this.hint,
     required this.controller,
+    this.capitalization = TextCapitalization.sentences,
     this.formatter,
     this.inputType,
     this.errorText,
@@ -48,6 +51,7 @@ class InputContainer extends StatelessWidget {
       ),
       TextField(
         controller: controller,
+        textCapitalization: capitalization,
         inputFormatters: [
           if (formatter != null) formatter!,
         ],

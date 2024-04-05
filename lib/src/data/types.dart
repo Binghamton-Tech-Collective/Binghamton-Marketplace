@@ -39,3 +39,10 @@ extension IterableUtils<E> on Iterable<E> {
   /// Returns the last element, or null if this list is empty.
   E? get lastOrNull => isEmpty ? null : last;
 }
+
+/// Like Python's range function.
+Iterable<int> range(int end) sync* {
+  for (var i = 0; i < end; i++) {
+    yield i;
+  }
+}
