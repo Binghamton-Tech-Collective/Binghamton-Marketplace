@@ -9,16 +9,23 @@ import "package:btc_market/widgets.dart";
 class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   /// The ID of the seller to view.
   final SellerID id;
+  /// The already-loaded seller profile
+  final SellerProfile? profile;
   /// Creates the Seller Profile page. 
-  const SellerProfilePage(this.id);
+  const SellerProfilePage({
+    required this.id,
+    required this.profile,
+  });
   
   @override
-  SellerProfileViewModel createModel() => SellerProfileViewModel(id);
+  SellerProfileViewModel createModel() => SellerProfileViewModel(id: id, initialProfile: profile);
 
   @override
   void didUpdateWidget(SellerProfilePage oldWidget, SellerProfileViewModel model) {
-    model.id = id;
-    model.init();
+    if (id != model.id) {
+      model.id = id;
+      model.init();
+    }
     super.didUpdateWidget(oldWidget, model);
   }
 
@@ -27,10 +34,10 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     appBar: AppBar(
       title: const Text("Profile"),
       actions: [
-        if (model.profile.userID == models.user.userProfile!.id) TextButton.icon(
+        if (!model.isLoadingProfile && model.profile.userID == models.user.userProfile!.id) TextButton(
+          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           onPressed: model.editProfile,
-          label: Text("Edit profile", style: TextStyle(color: context.colorScheme.onPrimary)),
-          icon: const Icon(Icons.edit),
+          child: const Text("Edit profile"),
         ),
       ],
     ),
@@ -43,21 +50,28 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     body: ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Row(
+        if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
+        else Row(
           children: [
             const SizedBox(width: 16),
-            CircleAvatar(
-              backgroundImage: NetworkImage(model.profile.imageUrl),
-              radius: 50,
+            Hero(
+              tag: "${model.profile.id}-image",
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(model.profile.imageUrl),
+                radius: 50,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    model.profile.name,
-                    style: Theme.of(context).textTheme.headlineLarge,
+                  Hero(
+                    tag: "${model.profile.id}-name",
+                    child: Text(
+                      model.profile.name,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
                   ),
                   Row(
                     children: [
@@ -69,7 +83,8 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
                           color: Colors.amber,
                         ),
                       ),
-                      Text(" | ${model.productList.length} Products"),
+                      if (!model.isLoadingProducts)
+                        Text(" | ${model.productList.length} Products"),
                     ],
                   ),
                   Text(
@@ -100,30 +115,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           padding: const EdgeInsets.only(left: 15, right: 15),
           child: SizedBox(
             height: 110,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                for (final category in model.categories) Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children:  [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.transparent, // Set background color to transparent
-                        child: ClipOval(
-                          child: Image(
-                            image: AssetImage(category.imagePath),
-                            fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
-                          ),
-                        ),
-                      ),
-                    ),
-                    Text(category.title),
-                  ],
-                ),
-              ],
-            ),
+            child: buildCategories(context, model),
           ), 
         ), 
         const Divider(
@@ -135,15 +127,57 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           style: context.textTheme.headlineMedium,
         ),
         const SizedBox(height: 12),
-        GridView.count(
+        buildProducts(context, model),
+      ],
+    ),
+  );
+
+  /// A loading spinner, an empty message, or the seller's categories.
+  Widget buildCategories(BuildContext context, SellerProfileViewModel model) =>
+    model.isLoadingCategories ? const Center(child: CircularProgressIndicator())
+      : model.categories.isEmpty
+        ? const Center(child: Text("This seller hasn't used any categories"))
+        : ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (final category in model.categories) Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children:  [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.transparent, // Set background color to transparent
+                    child: ClipOval(
+                      child: Image(
+                        image: AssetImage(category.imagePath),
+                        fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
+                      ),
+                    ),
+                  ),
+                ),
+                Text(category.title),
+              ],
+            ),
+        ],
+      );
+
+  /// A loading spinner, an empty message, or the seller's products.
+  Widget buildProducts(BuildContext context, SellerProfileViewModel model) => 
+    model.isLoadingProducts 
+      ? const SizedBox(
+        height: 200, 
+        child: Center(child: CircularProgressIndicator()),
+      )
+      : model.productList.isEmpty
+        ? const SizedBox(height: 200, child: Center(child: Text("This seller has no products")))
+        : GridView.count(
           shrinkWrap: true,
           crossAxisCount: 3,
           children: [
             for (final product in model.productList) 
               ProductWidget(product: product),
           ],
-        ),
-      ],
-    ),
-  );
+        );
+
 }

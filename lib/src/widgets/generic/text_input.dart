@@ -7,7 +7,7 @@ class InputContainer extends StatelessWidget {
   final String text;
 
   /// Hint to be entered for the input
-  final String hint;
+  final String? hint;
 
   /// Controller available in the model
   final TextEditingController controller;
@@ -21,18 +21,22 @@ class InputContainer extends StatelessWidget {
   /// The error with this input, if any.
   final String? errorText;
 
-  /// A prefix string to show in front of the user's input.
-  final String? prefixText;
+  /// A prefix widget to show in front of the user's input.
+  final Widget? prefixIcon;
+
+  /// How to capitalize new words.
+  final TextCapitalization capitalization;
 
   /// Constructor to set the fields
   const InputContainer({
     required this.text,
-    required this.hint,
     required this.controller,
+    this.capitalization = TextCapitalization.sentences,
+    this.hint,
     this.formatter,
     this.inputType,
     this.errorText,
-    this.prefixText,
+    this.prefixIcon,
     super.key,
   });
 
@@ -48,6 +52,7 @@ class InputContainer extends StatelessWidget {
       ),
       TextField(
         controller: controller,
+        textCapitalization: capitalization,
         inputFormatters: [
           if (formatter != null) formatter!,
         ],
@@ -56,7 +61,7 @@ class InputContainer extends StatelessWidget {
           border: const OutlineInputBorder(),
           hintText: hint,
           errorText: errorText,
-          prefixText: prefixText,
+          prefixIcon: prefixIcon,
         ),
       ),
       const SizedBox(height: 12),

@@ -21,11 +21,22 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
     ),
     body: RefreshIndicator.adaptive(
       onRefresh: model.init,
-      child: ListView.builder(
-        itemCount: model.allConversations.length,
-        itemBuilder: (context, index) => ConversationWidget(
-          conversation: model.allConversations[index],
-        ),
+      child: ListView(
+        children: [
+          SwitchListTile.adaptive(
+            title: const Text("Show archived"),
+            subtitle: model.showArchived
+              ? const Text("Long press to archive")
+              : const Text("Long press to unarchive"),
+            secondary: const Icon(Icons.archive),
+            value: model.showArchived, 
+            onChanged: model.updateShowArchive,
+          ),
+          for (final conversation in model.conversations) ConversationWidget(
+            conversation: conversation,
+            onArchive: () => model.toggleArchive(conversation.id),
+          ),
+        ],
       ),
     ),
   );

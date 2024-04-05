@@ -5,6 +5,7 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 
 import "src/pages/conversation.dart";
+import "src/pages/sellers.dart";
 import "src/pages/seller_profile.dart";
 import "src/pages/seller_profile_cta.dart";
 import "src/pages/shell.dart";
@@ -60,16 +61,67 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "View product",
-                  builder: (context, state) => ProductPage(state.pathParameters["id"] as ProductID),
+                  builder: (context, state) => ProductPage(
+                    id: state.pathParameters["id"] as ProductID,
+                    product: state.extra as Product?,
+                  ),
                   routes: [
                     GoRoute(
                       path: "edit",
                       name: "Edit a Product",
-                      builder: (context, state) => ProductEditor(id: state.pathParameters["id"] as ProductID),
+                      builder: (context, state) => ProductEditor(
+                        id: state.pathParameters["id"] as ProductID,
+                        initialProduct: state.extra as Product?,
+                      ),
                     ),
                   ],
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.sellers,
+              name: "View sellers",
+              builder: (context, state) => SellersPage(),
+              routes: [
+                GoRoute(
+                  path: "create",
+                  name: "Create a seller profile",
+                  builder: (context, state) => const SellerProfileEditor(),
+                ),
+              GoRoute(
+                path: "no-profile",
+                name: "No Seller Profile",
+                builder: (context, state) => const SellerProfileCallToAction(),
+              ),
+                GoRoute(
+                  path: ":id",
+                  name: "View seller",
+                  builder: (context, state) => SellerProfilePage(id: state.pathParameters["id"] as SellerID, profile: state.extra as SellerProfile?),
+                  routes: [
+                    GoRoute(
+                      path: "edit",
+                      name: "Edit profile",
+                      builder: (context, state) => SellerProfileEditor(
+                        id: state.pathParameters["id"] as SellerID,
+                        profile: state.extra as SellerProfile?,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: "/sell",
+              name: "Sell a product",
+              builder:(context, state) => const ProductEditor(),
             ),
           ],
         ),
@@ -87,39 +139,6 @@ final GoRouter router = GoRouter(
                     state.pathParameters["id"] as ConversationID,
                     state.extra as Conversation?,
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: Routes.sellers,
-              name: "View sellers",
-              builder: (context, state) => const Placeholder(),
-              routes: [
-                GoRoute(
-                  path: "create",
-                  name: "Create a seller profile",
-                  builder: (context, state) => const SellerProfileEditor(),
-                ),
-              GoRoute(
-                path: "no-profile",
-                name: "No Seller Profile",
-                builder: (context, state) => const SellerProfileCallToAction(),
-              ),
-                GoRoute(
-                  path: ":id",
-                  name: "View seller",
-                  builder: (context, state) => SellerProfilePage(state.pathParameters["id"] as SellerID),
-                  routes: [
-                    GoRoute(
-                      path: "edit",
-                      name: "Edit profile",
-                      builder: (context, state) => SellerProfileEditor(id: state.pathParameters["id"] as SellerID),
-                    ),
-                  ],
                 ),
               ],
             ),

@@ -9,8 +9,15 @@ class ConversationWidget extends StatelessWidget {
   /// The conversation to display.
   final Conversation conversation;
 
+  /// A callback to run when the tile is long-pressed.
+  final VoidCallback onArchive;
+
   /// Constructor of the ConversationWidget
-  const ConversationWidget({required this.conversation, super.key});
+  const ConversationWidget({
+    required this.conversation, 
+    required this.onArchive,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => ListTile(
@@ -30,5 +37,6 @@ class ConversationWidget extends StatelessWidget {
     ),
     trailing: Text(context.formatDateAndTime(conversation.lastUpdate)),
     onTap: () => context.go("/messages/${conversation.id}", extra: conversation),
+    onLongPress: onArchive,
   );
 }
