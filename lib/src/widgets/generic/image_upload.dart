@@ -55,8 +55,14 @@ class ImageUploader extends StatelessWidget {
   );
 }
 
+/// A widget that looks like [ImageUploader] without an image.
+/// 
+/// Useful as a [Hero.placeholderBuilder] because it takes the same shape and
+/// size as an [ImageUploader] without loading the image a second time.
 class PlaceholderImageUploader extends StatelessWidget {
+  /// A const constructor.
   const PlaceholderImageUploader();
+
   @override
   Widget build(BuildContext context) => const Center(
     child: SizedBox(

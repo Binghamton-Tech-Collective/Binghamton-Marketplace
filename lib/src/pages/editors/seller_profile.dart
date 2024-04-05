@@ -11,6 +11,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
   /// Id to edit the Seller Profile
   final SellerID? id;
 
+  /// The already-loaded profile to edit, if one is not being created.
   final SellerProfile? profile;
 
   /// Constructor to initialize the seller id
@@ -97,7 +98,7 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
                   ),
                   onPressed: () => showDialog<void>(
                     context: context,
-                    builder: (context) => ConfirmDeleteDialog(model.profile!)
+                    builder: (context) => ConfirmDeleteDialog(model.profile!),
                   ),
                   child: const Text("Delete Profile"),
                 ),

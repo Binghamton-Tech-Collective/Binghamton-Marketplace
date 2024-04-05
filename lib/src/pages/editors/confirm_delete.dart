@@ -5,11 +5,16 @@ import "package:btc_market/services.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 
+/// A view model to confirm deletion of a [SellerProfile].
 class ConfirmDeleteModel extends ViewModel {
+  /// The text controller for the user to re-enter their name.
   final controller = TextEditingController();
+  /// The profile being deleted.
   final SellerProfile profile;
+  /// Creates a view model to delete a seller's profile.
   ConfirmDeleteModel(this.profile);
   
+  /// Whether the user has confirmed they are ready to delete their profile.
   bool get isReady => controller.text.trim() == profile.name;
 
   @override
@@ -38,8 +43,11 @@ class ConfirmDeleteModel extends ViewModel {
   }
 }
 
+/// A popup dialog to confirm if the user really wants to delete their [SellerProfile].
 class ConfirmDeleteDialog extends ReactiveWidget<ConfirmDeleteModel> {
+  /// The profile to delete.
   final SellerProfile profile;
+  /// Creates a popup to confirm deletion of a seller's profile.
   const ConfirmDeleteDialog(this.profile);
 
   @override
