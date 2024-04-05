@@ -15,7 +15,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
   @override
   Widget build(BuildContext context, ProductsViewModel model) => Scaffold(
     appBar: AppBar(
-      title: const Text("Home"),
+      title: const Text("Browse products"),
       actions: [
         IconButton(
           onPressed: () => launchUrlString("https://forms.gle/fqDYHYx5EHtpbT129"),

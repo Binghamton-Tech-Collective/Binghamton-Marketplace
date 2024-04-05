@@ -60,7 +60,10 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ":id",
                   name: "View product",
-                  builder: (context, state) => ProductPage(state.pathParameters["id"] as ProductID),
+                  builder: (context, state) => ProductPage(
+                    id: state.pathParameters["id"] as ProductID,
+                    product: state.extra as Product?,
+                  ),
                   routes: [
                     GoRoute(
                       path: "edit",

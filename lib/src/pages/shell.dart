@@ -11,6 +11,7 @@ class ShellPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: shell,
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     bottomNavigationBar: NavigationBar(
       selectedIndex: shell.currentIndex,
       onDestinationSelected: shell.goBranch,

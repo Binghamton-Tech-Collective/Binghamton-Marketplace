@@ -9,11 +9,21 @@ import "package:btc_market/widgets.dart";
 class ProductPage extends ReactiveWidget<ProductViewModel>{
   /// ID of product
   final ProductID id;
+
+  /// The already-loaded product, if any.
+  final Product? product;
+  
   /// const constructor
-  const ProductPage(this.id);
+  const ProductPage({
+    required this.id, 
+    required this.product,
+  });
   
   @override
-  ProductViewModel createModel() => ProductViewModel(id);
+  ProductViewModel createModel() => ProductViewModel(
+    id: id,
+    initialProduct: product,
+  );
 
   @override
   void didUpdateWidget(ProductPage oldWidget, ProductViewModel model) {
@@ -63,7 +73,10 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
           
           // ---------- Name, price, and condition ----------
           const SizedBox(height: 24),
-          Text(model.product.title, style: context.textTheme.headlineLarge),
+          Hero(
+            tag: "${model.product.id}-name",
+            child: Text(model.product.title, style: context.textTheme.headlineLarge),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -73,7 +86,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             ],
           ),
           const SizedBox(height: 8),
-          if (model.averageRating != null) Row(children: [
+          if (!model.loadingDetails && model.averageRating != null) Row(children: [
             Text("User rating: ", style: context.textTheme.bodyLarge), 
             const SizedBox(width: 8),
             RatingBarIndicator(
@@ -106,13 +119,15 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
           ),
       
           // ---------- Seller Profile ----------
-          const SizedBox(height: 12),
-          Text("Sold by", style: context.textTheme.titleLarge),
-          SellerProfileWidget(
-            profile: model.sellerProfile, 
-            averageRating: model.sellerRating as double?,
-          ),
-          const SizedBox(height: 48),
+          if (!model.loadingDetails) ...[
+            const SizedBox(height: 12),
+            Text("Sold by", style: context.textTheme.titleLarge),
+            SellerProfileWidget(
+              profile: model.sellerProfile, 
+              averageRating: model.sellerRating as double?,
+            ),
+            const SizedBox(height: 48),
+          ],
         ],
       ),
     ),),

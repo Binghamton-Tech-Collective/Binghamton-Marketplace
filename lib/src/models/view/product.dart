@@ -9,6 +9,9 @@ class ProductViewModel extends ViewModel {
   /// The product being shown on the page.
   late Product product;
 
+  /// The already-loaded product, if any.
+  final Product? initialProduct;
+
   /// The profile of this product's seller.
   late SellerProfile sellerProfile;
 
@@ -22,14 +25,18 @@ class ProductViewModel extends ViewModel {
   ProductID id;
 
   /// Creates a new view model based on the given product.
-  ProductViewModel(this.id);
+  ProductViewModel({
+    required this.id,
+    required this.initialProduct,
+  });
 
   /// The average rating of the product, based on [reviews].
-  int? get averageRating =>
-    reviews.isEmpty ? null : calculateAverageRating(reviews);
+  int? get averageRating => reviews.isEmpty ? null : calculateAverageRating(reviews);
+
   /// The error while opening the conversation, if any.
   String? messageError;
-  /// Returning a Conversation
+  
+  /// Opens or starts a conversation with the seller.
   Future<void> openConversation() async {
     final buyer = models.user.userProfile!;
     final seller = sellerProfile;
@@ -58,27 +65,32 @@ class ProductViewModel extends ViewModel {
   int? get sellerRating => 
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
+  bool loadingDetails = true;
+
   @override
   Future<void> init() async {
-    errorText = null;
-    isLoading = true;
-    final tempProduct = await services.database.getProduct(id);
-    if (tempProduct == null) {
-      errorText = "Could not find product! $id";
+    if (initialProduct != null) {
+      product = initialProduct!;
+    } else {
+      isLoading = true;
+      final result = await services.database.getProduct(id);
       isLoading = false;
-      return;
+      if (result == null) {
+        errorText = "Could not find product with ID: $id";
+        return;
+      }
+      product = result;
     }
-    product = tempProduct;
+    loadingDetails = true;
     final tempSellerProfile = await services.database.getSellerProfile(product.sellerID);
     if (tempSellerProfile == null) {
       errorText = "Could not find sellerID! $product.sellerId";
-      isLoading = false;
       return;
     }
     sellerProfile = tempSellerProfile;
     reviews = await services.database.getReviewsByProductID(id);
     sellerReviews = await services.database.getReviewsBySellerID(product.sellerID);
-    isLoading = false;
+    loadingDetails = false;
     notifyListeners();
   }
 }
