@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:url_launcher/url_launcher_string.dart";
+import "package:url_launcher/url_launcher.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
@@ -24,7 +24,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
       title: const Text("Browse products"),
       actions: [
         IconButton(
-          onPressed: () => launchUrlString("https://forms.gle/fqDYHYx5EHtpbT129"),
+          onPressed: () => launchUrl(Uri.parse("https://forms.gle/fqDYHYx5EHtpbT129")),
           icon: const Icon(Icons.feedback),
           tooltip: "Submit feedback",
         ),

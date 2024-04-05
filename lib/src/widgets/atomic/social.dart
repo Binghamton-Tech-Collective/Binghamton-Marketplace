@@ -1,6 +1,6 @@
 import "package:btc_market/data.dart";
 import "package:flutter/material.dart";
-import "package:url_launcher/url_launcher_string.dart";
+import "package:url_launcher/url_launcher.dart";
 
 /// A button to show an icon for a [SocialMediaPlatform] and open [username]'s profile page.
 class SocialMediaButton extends StatelessWidget {
@@ -17,6 +17,6 @@ class SocialMediaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconButton(
     icon: platform.icon,
-    onPressed: () => launchUrlString(platform.getUrl(username)),
+    onPressed: () => launchUrl(Uri.parse(platform.getUrl(username))),
   );
 }
