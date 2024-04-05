@@ -72,7 +72,12 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   }
 
   @override
-  Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
+  Widget build(BuildContext context, ConversationViewModel model) {
+    if(model.conversation.lastMessage != null && model.conversation.lastMessage!.author != models.user.userProfile!.id) {
+      model.conversation.isRead = true;
+      model.updateStatus(model.conversation);
+    }
+    return Scaffold(
     appBar: AppBar(
       // If the keyboard is open, it will close and ruin the hero animation. 
       // This workaround overrides the back button to close the keyboard, wait
@@ -139,4 +144,5 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       ],
     ),
   );
+}
 }

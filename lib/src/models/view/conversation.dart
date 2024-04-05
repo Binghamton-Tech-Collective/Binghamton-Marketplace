@@ -103,6 +103,7 @@ class ConversationViewModel extends ViewModel {
     );
     conversation.messages.add(message);
     conversation.lastUpdate = DateTime.now();
+    conversation.isRead = false;
     try {
       messageController.clear();
       await services.database.saveConversation(conversation);
@@ -136,6 +137,15 @@ class ConversationViewModel extends ViewModel {
     } catch (error) {
       messageError = "Could not update message:\n$error";
       notifyListeners();
+    }
+  }
+
+  /// Function to update the status of the conversation
+  Future<void> updateStatus(Conversation conversation) async {
+    try {
+      await services.database.saveConversation(conversation);
+    }catch(error) {
+      errorText = "Error updating conversation $error";
     }
   }
 }

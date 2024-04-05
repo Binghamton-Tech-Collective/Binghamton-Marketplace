@@ -21,6 +21,9 @@ class ConversationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
+    tileColor: conversation.lastMessage != null &&
+    conversation.lastMessage!.author != models.user.userProfile!.id && !conversation.isRead ? 
+    Colors.grey[200] : Colors.white,
     title: Hero(
       tag: "name-${conversation.id}",
       child: Text(conversation.otherName),
