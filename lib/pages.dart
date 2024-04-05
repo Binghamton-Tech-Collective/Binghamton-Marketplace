@@ -97,6 +97,15 @@ final GoRouter router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
+              path: "/sell",
+              name: "Sell a product",
+              builder:(context, state) => const ProductEditor(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
               path: Routes.sellers,
               name: "View sellers",
               builder: (context, state) => SellersPage(),

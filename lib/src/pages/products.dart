@@ -63,9 +63,9 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           SizedBox(
-            height: 50,
+            height: 40,
             child: ListView.separated(
               itemCount: Category.values.length,
               scrollDirection: Axis.horizontal,
@@ -77,7 +77,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           const Text(
             "View Products",
             style: TextStyle(
@@ -85,10 +85,9 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
               fontWeight: FontWeight.bold,
             ),
           ),
-         const SizedBox(height: 16),
+          const SizedBox(height: 4),
           Expanded(
             child: GridView.count(
-              padding: const EdgeInsets.all(16),
               shrinkWrap: true,
               crossAxisCount: 2,
               children: List.generate(
