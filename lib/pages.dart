@@ -12,6 +12,7 @@ import "src/pages/product.dart";
 import "src/pages/products.dart";
 import "src/pages/conversations.dart";
 import "src/pages/login.dart";
+import "src/pages/coming_soon.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
