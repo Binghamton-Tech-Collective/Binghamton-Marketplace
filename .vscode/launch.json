@@ -8,7 +8,7 @@
       "name": "iPhone Simulator",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "test"],
+      "args": ["-d", "iPhone 15"],
     },
     {
       "name": "Web",

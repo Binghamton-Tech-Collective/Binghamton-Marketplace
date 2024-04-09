@@ -1,4 +1,5 @@
 import "package:btc_market/src/pages/coming_soon.dart";
+import "package:btc_market/src/pages/user_profile.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -149,7 +150,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.profile,
               name: "My profile",
-              builder: (context, state) => const ComingSoonPage(),
+              builder: (context, state) =>  UserProfilePage(id: null, profile: null),
             ),
           ],
         ),

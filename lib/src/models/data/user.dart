@@ -32,7 +32,7 @@ class UserModel extends DataModel {
       // create and save a new user profile
       userProfile = UserProfile.newProfile(
         name: services.auth.user!.displayName!,
-        id: services.auth.user!.uid as UserID,
+        id: services.auth.user!.uid as UserID, imageUrl: "",
       );
       await services.database.saveUserProfile(userProfile!);
     }
