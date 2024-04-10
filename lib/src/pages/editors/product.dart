@@ -175,18 +175,18 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             style: TextStyle(fontWeight: FontWeight.bold,),
                 ),
           ),
-    Row(
-      children: [
-        Checkbox(
-          value: model.agreedToTerms,
-          onChanged: (value) => model.terms = value!,
-        ),
-        const Text("I understand and agree to the terms and conditions.", style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),),
-      ],
-    ),
-    ],
+          Row(
+            children: [
+              Checkbox(
+                value: model.agreedToTerms,
+                onChanged: (value) => model.terms = value!,
+              ),
+              const Text("I understand and agree to the terms and conditions.", style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),),
+            ],
+          ),
+        ],
       ),
     ),
   );
