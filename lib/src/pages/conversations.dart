@@ -18,6 +18,7 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
           onPressed: model.init,
           tooltip: "Refresh",
         ),
+        ProfileButton(),
       ],
     ),
     body: model.allConversations.isEmpty

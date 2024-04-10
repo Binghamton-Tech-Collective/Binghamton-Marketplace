@@ -22,13 +22,12 @@ class ImageUploader extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Flexible(child: Container(
-        width: 200,
-        height: 200,
+      Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
         ),
         child: Card(
+          elevation: 12,
           child: InkWell(
             onTap: onTap,
             child: Center(
@@ -43,7 +42,7 @@ class ImageUploader extends StatelessWidget {
             ),
           ),
         ),
-      ),),
+      ),
       if (imageUrl != null) ...[
         const SizedBox(height: 8),
         TextButton(

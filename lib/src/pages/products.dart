@@ -28,6 +28,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
           icon: const Icon(Icons.feedback),
           tooltip: "Submit feedback",
         ),
+        ProfileButton(),
       ],
     ),
     body: Padding(

@@ -1,0 +1,14 @@
+{
+    "version": "0.2",
+    "ignorePaths": [
+        "lib/firebase_options.dart"
+    ],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "googleusercontent",
+        "pvmor"
+    ],
+    "ignoreWords": [],
+    "import": []
+}

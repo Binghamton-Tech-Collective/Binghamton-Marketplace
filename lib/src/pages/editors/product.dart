@@ -33,6 +33,9 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
     appBar: AppBar(
       backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
       title: const Text("List Item"),
+      actions: [
+        ProfileButton(),
+      ],
     ),
     body: Center(
       child: ListView(
@@ -81,9 +84,12 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 2,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
             children: [
               for (final index in range(4)) Hero(
                 tag: "${model.initialProduct?.id}-image-$index",
+                // child: ColoredBox(color: Colors.red),
                 child: ImageUploader(
                   imageUrl: model.imageUrls[index],
                   onTap: () => model.uploadImage(index),

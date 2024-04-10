@@ -74,6 +74,10 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
         profile = await services.database.getSellerProfile(initialID!);
         isLoading = false;
       }
+      if (!profile!.isUser) {
+        errorText = "You can't edit someone else's profile!";
+        return;
+      }
       final seller = profile!;
       profile = seller;
       sellerID = seller.id;

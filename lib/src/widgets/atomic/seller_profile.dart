@@ -10,6 +10,7 @@ class SellerProfileWidget extends StatelessWidget {
   final SellerProfile profile;
   /// The average rating of this user, if known.
   final double? averageRating;
+  
   /// Creates a widget to show off a seller's profile.
   const SellerProfileWidget({
     required this.profile,
