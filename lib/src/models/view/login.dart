@@ -6,7 +6,7 @@ import "package:firebase_ui_auth/firebase_ui_auth.dart";
 import "package:flutter/material.dart";
 
 /// A test account that is allowed to be used, even if it doesn't end in @binghamton.edu
-const testAccount = "levilesches@gmail.com";
+const testAccount = "btc-test@gmail.com";
 
 /// A view model to sign the user in, show a sign-up form if needed, then redirect to another route.
 class LoginViewModel extends BuilderModel<UserProfile> {
@@ -65,8 +65,8 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   Future<void> onAuth() async {
     error = null;
     notifyListeners();
+    await services.auth.signIn();
     await models.user.signIn();
-
     final email = services.auth.user?.email;
     if (email == null) return;
     if (!email.endsWith("binghamton.edu") && email != testAccount) {
@@ -92,7 +92,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     final profile = build();
     isSaving = true;
     notifyListeners();
-    await services.database.saveUserProfile(profile);
+    await models.user.updateProfile(profile);
     isSaving = false;
     notifyListeners();
     router.go(redirect);

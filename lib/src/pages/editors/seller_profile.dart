@@ -34,17 +34,13 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
       padding: const EdgeInsets.all(24),
       children: [
         // ========== Basic info ==========
-        SizedBox(
-          width: 200,
-          height: 200,
-          child: Hero(
-            tag: "${model.sellerID}-image",
-            placeholderBuilder: (_, __, ___) => const PlaceholderImageUploader(),
-            child: ImageUploader(
-              onTap: () => model.uploadImage(),
-              imageUrl: model.imageUrl,
-              onDelete: () => model.deleteImage(),
-            ),
+        Hero(
+          tag: "${model.sellerID}-image",
+          placeholderBuilder: (_, __, ___) => const PlaceholderImageUploader(),
+          child: ImageUploader(
+            onTap: () => model.uploadImage(),
+            imageUrl: model.imageUrl,
+            onDelete: () => model.deleteImage(),
           ),
         ),
         if (model.imageError != null) Text(

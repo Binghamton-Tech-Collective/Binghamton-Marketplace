@@ -1,6 +1,7 @@
 import "package:firebase_auth/firebase_auth.dart";
 
 import "package:btc_market/data.dart";
+import "package:flutter/foundation.dart";
 
 import "service.dart";
 
@@ -21,6 +22,16 @@ class AuthService extends Service {
   /// Signs the user out of Firebase.
   Future<void> signOut() async {
     await firebase.signOut();
+  }
+
+  /// Signs the user in using their Google Account.
+  Future<void> signIn() async {
+    final google = GoogleAuthProvider().setCustomParameters({"hd": "binghamton.edu", "prompt": "select_account"});
+    if (kIsWeb) {
+      await firebase.signInWithPopup(google);
+    } else {
+      await firebase.signInWithProvider(google);
+    }
   }
 
   /// The currently signed-in user.

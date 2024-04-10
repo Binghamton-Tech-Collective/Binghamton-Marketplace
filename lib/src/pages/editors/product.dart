@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/data.dart";
-import "package:flutter/services.dart";
 
 /// The Product Editor/Creator page.
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
@@ -38,114 +38,122 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
       ],
     ),
     body: Center(
-      child: ListView(
-        padding: const EdgeInsets.all(20),
+      child: Column(
         children: [
-          SpacedRow(
-            const Text("Profile", style: labelStyle),
-            DropdownMenu(
-              enabled: !model.isEditing,
-              onSelected: model.setProfile,
-              initialSelection: model.profile,
-              dropdownMenuEntries: [
-                for (final otherProfile in model.otherProfiles) DropdownMenuEntry(
-                  value: otherProfile,
-                  label: otherProfile.name,
-                  leadingIcon: CircleAvatar(backgroundImage: NetworkImage(otherProfile.imageUrl)),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(20),
+              children: [
+                SpacedRow(
+                  const Text("Profile", style: labelStyle),
+                  DropdownMenu(
+                    enabled: !model.isEditing,
+                    onSelected: model.setProfile,
+                    initialSelection: model.profile,
+                    dropdownMenuEntries: [
+                      for (final otherProfile in model.otherProfiles) DropdownMenuEntry(
+                        value: otherProfile,
+                        label: otherProfile.name,
+                        leadingIcon: CircleAvatar(backgroundImage: NetworkImage(otherProfile.imageUrl)),
+                      ),
+                    ],
+                  ),
+                ),
+                InputContainer(
+                  text: "Name of the Item",
+                  hint: "Item Name",
+                  controller: model.titleController,
+                ),
+                const SizedBox(height: 12),
+                InputContainer(
+                  text: "Price of the Item",
+                  hint: "Item Price",
+                  prefixIcon: const Icon(Icons.attach_money),
+                  controller: model.priceController,
+                  formatter: FilteringTextInputFormatter.allow(RegExp(r"[\d\.]")),
+                  inputType: const TextInputType.numberWithOptions(decimal: true),
+                  errorText: model.priceError,
+                ),
+                const SizedBox(height: 12),
+                const Center(
+                  child: Text("Upload Photos", style: labelStyle),
+                ),
+                const SizedBox(height: 8),
+                if (model.imageError != null) Text(
+                  model.imageError!,
+                  style: TextStyle(color: context.colorScheme.error),
+                ),
+                GridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
+                  children: [
+                    for (final index in range(4)) Hero(
+                      tag: "${model.initialProduct?.id}-image-$index",
+                      child: ImageUploader(
+                        imageUrl: model.imageUrls[index],
+                        onTap: () => model.uploadImage(index),
+                        onDelete: () => model.deleteImage(index),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                SpacedRow(
+                  const Text("Condition", style: labelStyle),
+                  DropdownMenu<ProductCondition>(
+                    initialSelection: model.condition,
+                    hintText: "Condition",
+                    onSelected: model.setCondition,
+                    enableSearch: false,
+                    dropdownMenuEntries: [
+                      for (final condition in ProductCondition.values) DropdownMenuEntry(
+                        value: condition,
+                        label: condition.displayName,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                InputContainer(
+                  text: "Description of the Item",
+                  hint: "Item Description",
+                  controller: model.descriptionController,
+                ),
+                const SizedBox(height: 12),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Categories",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: <Widget>[
+                    for (final category in Category.values) CategoryFilterChip(
+                      category: category,
+                      isSelected: model.categories.contains(category),
+                      onSelected: (selected) => model.setCategorySelected(category: category, selected: selected),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                if (model.isSaving) const LinearProgressIndicator(),
+                if (model.saveError != null) Text(
+                  model.saveError!,
+                  style: TextStyle(color: context.colorScheme.error),
                 ),
               ],
             ),
           ),
-          InputContainer(
-            text: "Name of the Item",
-            hint: "Item Name",
-            controller: model.titleController,
-          ),
-          const SizedBox(height: 12),
-          InputContainer(
-            text: "Price of the Item",
-            hint: "Item Price",
-            prefixIcon: const Icon(Icons.attach_money),
-            controller: model.priceController,
-            formatter: FilteringTextInputFormatter.allow(RegExp(r"[\d\.]")),
-            inputType: const TextInputType.numberWithOptions(decimal: true),
-            errorText: model.priceError,
-          ),
-          const SizedBox(height: 12),
-          const Center(
-            child: Text("Upload Photos", style: labelStyle),
-          ),
-          const SizedBox(height: 8),
-          if (model.imageError != null) Text(
-            model.imageError!,
-            style: TextStyle(color: context.colorScheme.error),
-          ),
-          GridView.count(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            children: [
-              for (final index in range(4)) Hero(
-                tag: "${model.initialProduct?.id}-image-$index",
-                // child: ColoredBox(color: Colors.red),
-                child: ImageUploader(
-                  imageUrl: model.imageUrls[index],
-                  onTap: () => model.uploadImage(index),
-                  onDelete: () => model.deleteImage(index),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SpacedRow(
-            const Text("Condition", style: labelStyle),
-            DropdownMenu<ProductCondition>(
-              initialSelection: model.condition,
-              hintText: "Condition",
-              onSelected: model.setCondition,
-              enableSearch: false,
-              dropdownMenuEntries: [
-                for (final condition in ProductCondition.values) DropdownMenuEntry(
-                  value: condition,
-                  label: condition.displayName,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          InputContainer(
-            text: "Description of the Item",
-            hint: "Item Description",
-            controller: model.descriptionController,
-          ),
-          const SizedBox(height: 12),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Categories",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: <Widget>[
-              for (final category in Category.values) CategoryFilterChip(
-                category: category,
-                isSelected: model.categories.contains(category),
-                onSelected: (selected) => model.setCategorySelected(category: category, selected: selected),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          if (model.isSaving) const LinearProgressIndicator(),
-          Row(
+          ButtonBar(
             children: [
               if (model.isEditing) Expanded(
                 child: FilledButton(
@@ -155,18 +163,11 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
               ),
               if (model.isEditing) const SizedBox(width: 12),
-              Expanded(
-                child: FilledButton(
-                  style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
-                  onPressed: model.isReady ? model.save : null,
-                  child: const Text("Save product"),
-                ),
+              FilledButton(
+                onPressed: model.isReady ? model.save : null,
+                child: const Text("Save product"),
               ),
             ],
-          ),
-          if (model.saveError != null) Text(
-            model.saveError!,
-            style: TextStyle(color: context.colorScheme.error),
           ),
         ],
       ),

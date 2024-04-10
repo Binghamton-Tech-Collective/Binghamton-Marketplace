@@ -43,8 +43,8 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
             SwitchListTile.adaptive(
               title: const Text("Show archived"),
               subtitle: model.showArchived
-                ? const Text("Long press to archive")
-                : const Text("Long press to unarchive"),
+                ? const Text("Long press to unarchive")
+                : const Text("Long press to archive"),
               secondary: const Icon(Icons.archive),
               value: model.showArchived, 
               onChanged: model.updateShowArchive,

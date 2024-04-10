@@ -1,6 +1,5 @@
-import "package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart";
 import "package:flutter/material.dart";
-import "package:firebase_ui_auth/firebase_ui_auth.dart";
+import "package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart";
 
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
@@ -32,19 +31,21 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
 
   List<Widget> _signIn(BuildContext context, LoginViewModel model) => [
     const Spacer(),
-    Text("Welcome to the BTC marketplace", style: context.textTheme.headlineLarge),
+    Text("ShopBing", style: context.textTheme.headlineMedium),
+    const SizedBox(height: 8),
     const SizedBox(height: 12),
     const SizedBox(height: 100, width: 200, child: Placeholder()),
     const SizedBox(height: 12),
-    Expanded(
-      child: SignInScreen(
-        auth: services.auth.firebase,
-        showAuthActionSwitch: false,
-        providers: [GoogleProvider(clientId: googleID)],
-        actions: [
-          AuthStateChangeAction<UserCreated>((context, __) => model.onAuth()),
-          AuthStateChangeAction<SignedIn>((context, state) => model.onAuth()),
-        ],
+    Text("Your one-stop shop for buying and selling at Binghamton University", style: context.textTheme.titleSmall, textAlign: TextAlign.center),
+    const SizedBox(height: 24),
+    SizedBox(
+      width: 300, 
+      child: GoogleSignInButton(
+        loadingIndicator: const CircularProgressIndicator(),
+        overrideDefaultTapAction: true,
+        onTap: model.onAuth, 
+        clientId: googleID,
+        label: "Sign in with Google",
       ),
     ),
     const SizedBox(height: 12),
@@ -68,7 +69,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     const SizedBox(height: 16),
     SizedBox(
       width: 200, 
-      child: InputContainer(text: "Username", controller: model.usernameController),
+      child: InputContainer(text: "Name", controller: model.usernameController),
     ),
     const SizedBox(height: 16),
     FilledButton(

@@ -47,4 +47,11 @@ class UserModel extends DataModel {
     notifyListeners();
     router.go("/login");
   }
+
+  /// Updates the user's profile.
+  Future<void> updateProfile(UserProfile profile) async {
+    await services.database.saveUserProfile(profile);
+    userProfile = profile;
+    notifyListeners();
+  }
 }
