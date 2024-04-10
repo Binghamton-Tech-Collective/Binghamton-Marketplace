@@ -169,7 +169,24 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               ),
             ],
           ),
-        ],
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: Text("By listing a product, you agree to our terms and conditions. This includes adhering to all applicable laws and regulations. Products that violate these terms, including the sale of illegal items, will be removed, and your account may be subject to permanent suspension and potential reporting to relevant authorities, including the university.",
+            style: TextStyle(fontWeight: FontWeight.bold,),
+                ),
+          ),
+    Row(
+      children: [
+        Checkbox(
+          value: model.agreedToTerms,
+          onChanged: (value) => model.terms = value!,
+        ),
+        const Text("I understand and agree to the terms and conditions.", style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),),
+      ],
+    ),
+    ],
       ),
     ),
   );
