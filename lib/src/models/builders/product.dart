@@ -119,6 +119,9 @@ class ProductBuilder extends BuilderModel<Product> {
     if (product == null) {
       errorText = "No product exists with ID: $initialID";
       return;
+    } else if (!product.isSeller) {
+      errorText = "You can't edit someone else's product!";
+      return;
     }
     // Prefill all the fields
     productID = product.id;

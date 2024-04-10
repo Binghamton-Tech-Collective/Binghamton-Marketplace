@@ -1,3 +1,4 @@
+import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 
 /// Coming Soon page for features that are a part of next phase
@@ -8,10 +9,10 @@ class ComingSoonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text("Coming Soon!",
-      style: TextStyle(
-        color: Colors.white,
-      ),),
+      title: const Text("Coming Soon!"),
+      actions: [
+        ProfileButton(),
+      ],
     ),
     body: Center(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

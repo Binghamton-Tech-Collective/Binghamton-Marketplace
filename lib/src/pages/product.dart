@@ -95,23 +95,26 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
           Text(model.product.description, style: context.textTheme.bodyLarge),
           
           // ---------- Categories ----------
-          const SizedBox(height: 12), 
-          Text("Categories", style: context.textTheme.titleLarge),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final category in model.product.categories)
-                CategoryChip(category),
-            ],
-          ),
-      
+          if (model.product.categories.isNotEmpty) ...[
+            const SizedBox(height: 12), 
+            Text("Categories", style: context.textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final category in model.product.categories)
+                  CategoryChip(category),
+              ],
+            ),
+          ],
+
           // ---------- Seller Profile ----------
           if (!model.loadingDetails) ...[
             const SizedBox(height: 12),
             Text("Sold by", style: context.textTheme.titleLarge),
             SellerProfileWidget(
+              // hero: false,
               profile: model.sellerProfile, 
               averageRating: model.sellerRating as double?,
             ),
