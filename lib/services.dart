@@ -1,5 +1,6 @@
-export "src/services/service.dart";
+export "src/services/auth.dart";
 export "src/services/database.dart";
+export "src/services/service.dart";
 
 import "package:btc_market/data.dart";
 

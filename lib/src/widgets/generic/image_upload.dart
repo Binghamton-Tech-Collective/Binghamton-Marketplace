@@ -22,28 +22,33 @@ class ImageUploader extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Flexible(child: Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Card(
-          child: InkWell(
-            onTap: onTap,
-            child: Center(
-              child: imageUrl == null
-                ? const Text(
-                  "Upload an Image!",
-                  textAlign: TextAlign.center,
-                ) : Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
+      Flexible(
+        child: SizedBox(
+          width: 200,
+          height: 200,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Card(
+              elevation: 12,
+              child: InkWell(
+                onTap: onTap,
+                child: Center(
+                  child: imageUrl == null
+                    ? const Text(
+                      "Upload an Image!",
+                      textAlign: TextAlign.center,
+                    ) : Ink.image(
+                      image: NetworkImage(imageUrl!),
+                      fit: BoxFit.contain,
+                    ),
                 ),
+              ),
             ),
           ),
         ),
-      ),),
+      ),
       if (imageUrl != null) ...[
         const SizedBox(height: 8),
         TextButton(

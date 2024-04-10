@@ -6,10 +6,7 @@ export "package:flutter/foundation.dart" show ChangeNotifier;
 /// This model may need to be initialized, so [init] should be called before using it. This model
 /// should also be held as a singleton in some global scope. [dispose] can be overriden to clean up
 /// any resources used by this model.
-abstract class DataModel with ChangeNotifier {
-	/// Initializes any data needed by the model.
-	Future<void> init();
-}
+abstract class DataModel extends ViewModel { }
 
 /// A model to load and manage state needed by any piece of UI.
 /// 
