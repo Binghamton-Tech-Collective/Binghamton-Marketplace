@@ -72,8 +72,8 @@ class ConversationViewModel extends ViewModel {
       notifyListeners();
       return;
     }
-    await updateIsRead();
     conversation = data;
+    await updateIsRead();
     isLoading = false;
   }
 
