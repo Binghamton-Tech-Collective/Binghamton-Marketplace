@@ -2,12 +2,12 @@ import "types.dart";
 
 /// A user of the app. Can be a customer or seller.
 class UserProfile {
-  /// The user's name.
-  final String name;
   /// The user's ID.
   final UserID id;
-  /// The user's profile picture.
-  final String? imageUrl;
+  /// The user's name.
+  final String name;
+  /// The user's profile photo.
+  final String imageUrl;
   /// The products on the user's watchlist
   final Set<ProductID> productsWatchlist;
   /// The sellers on the user's watchlist
@@ -17,8 +17,8 @@ class UserProfile {
 
   /// Creates a new User object.
   UserProfile({
-    required this.name, 
     required this.id,
+    required this.name, 
     required this.imageUrl,
     required this.productsWatchlist,
     required this.sellersWatchlist,
@@ -39,15 +39,16 @@ class UserProfile {
   UserProfile.fromJson(Json json) : 
     name = json["name"],
     id = json["id"],
-    imageUrl = null,
+    imageUrl = json["imageUrl"] ?? "https://picsum.photos/500",
     productsWatchlist = Set<ProductID>.from(json["productsWatchlist"] ?? []),
     sellersWatchlist  = Set<SellerID>.from(json["sellersWatchlist"] ?? []),
     archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []);
 
   /// Convert this user to its JSON representation
   Json toJson() => {
-    "name": name,
     "id": id,
+    "name": name,
+    "imageUrl": imageUrl,
     "productsWatchlist": List<String>.from(productsWatchlist),
     "sellersWatchlist": List<String>.from(sellersWatchlist),
     "archivedConversations": List<String>.from(archivedConversations),

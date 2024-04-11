@@ -17,6 +17,7 @@ class SellersPage extends ReactiveWidget<SellersViewModel> {
           onPressed: model.init,
           tooltip: "Refresh",
         ),
+        ProfileButton(),
       ],
     ),
     body: RefreshIndicator.adaptive(

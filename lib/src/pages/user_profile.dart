@@ -5,7 +5,6 @@ import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 import "package:flutter/services.dart";
 
-
 class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
   
   final UserID? id;
@@ -13,8 +12,8 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
   final UserProfile? profile;
 
   const UserProfilePage({
-    required this.id,
-    required this. profile,
+    this.id,
+    this. profile,
   });
 
   UserProfileViewModel createModel() => UserProfileViewModel(initialProfile: profile, id: id);

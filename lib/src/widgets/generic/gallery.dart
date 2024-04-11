@@ -81,7 +81,7 @@ class GalleryWidget extends ReactiveWidget<GalleryViewModel> {
           children: [
             for (final (index, imageUrl) in model.product.imageUrls.enumerate) Hero(
               tag: "${product.id}-image-$index",
-              child: Image.network(imageUrl, fit: BoxFit.cover),
+              child: Image.network(imageUrl, fit: BoxFit.contain),
             ),
           ],
         ),

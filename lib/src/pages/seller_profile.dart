@@ -41,11 +41,12 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
         ),
       ],
     ),
-    floatingActionButton: FloatingActionButton.extended(
-      icon: const Icon(Icons.message),
-      onPressed: model.openConversation, 
-      label: const Text("Contact Seller"),
-    ),
+    floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
+       ? null : FloatingActionButton.extended(
+        icon: const Icon(Icons.message),
+        onPressed: model.openConversation, 
+        label: const Text("Contact Seller"),
+      ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     body: ListView(
       padding: const EdgeInsets.all(16),
@@ -172,7 +173,9 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
       : model.productList.isEmpty
         ? const SizedBox(height: 200, child: Center(child: Text("This seller has no products")))
         : GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
+          childAspectRatio: 0.6,
           crossAxisCount: 3,
           children: [
             for (final product in model.productList) 

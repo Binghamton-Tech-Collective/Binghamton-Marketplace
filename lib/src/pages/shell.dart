@@ -1,20 +1,33 @@
+import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
-/// The navigation page, allows switching between other pages.
+/// A shell page that wraps the given page with a [BottomNavigationBar].
 class ShellPage extends StatelessWidget {
-  /// The body of the page, which also allows us to switch branches.
-  final StatefulNavigationShell shell;
-  /// A const constructor.
-  const ShellPage(this.shell);
+  /// The main body of the app.
+  final Widget child;
+  
+  /// Creates the navigation page.
+  const ShellPage(this.child);
+  
+  /// Goes to the page specified by the given index.
+  void goIndex(int index) {
+    final routeName = Routes.branches[index];
+    router.go(routeName);
+  }
+
+  /// Gets the index based on the current route.
+  int getIndex(BuildContext context) => Routes.branches.indexWhere(
+    (branch) => GoRouterState.of(context).uri.path.contains(branch),
+  );
   
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: shell,
+    body: child,
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     bottomNavigationBar: NavigationBar(
-      selectedIndex: shell.currentIndex,
-      onDestinationSelected: shell.goBranch,
+      selectedIndex: getIndex(context),
+      onDestinationSelected: goIndex,
       destinations: const [
         NavigationDestination(
           icon: Icon(Icons.storefront),

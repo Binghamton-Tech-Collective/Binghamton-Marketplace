@@ -55,11 +55,14 @@ class CloudStorageService extends Service {
   /// Deletes all data associated with a product.
   Future<void> deleteProduct(ProductID id) => _root.child("products/$id/").deleteFolder();
 
-  /// Returns the path of the seller's profile picture.
+  /// Gets the image path for [SellerProfile.imageUrl].
   String getSellerImagePath(SellerID id) => "sellers/$id/profile_pic";
 
-  /// Returns the path of the seller's profile picture.
+  /// Gets the image path for [Product.imageUrls].
   String getProductImage(ProductID id, int index) => "products/$id/$index";
+
+  /// Gets the image path for [UserProfile.imageUrl].
+  String getUserImagePath(UserID id) => "users/$id/profile_pic";
 }
 
 extension on Reference {

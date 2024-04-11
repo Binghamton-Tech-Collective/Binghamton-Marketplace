@@ -13,6 +13,7 @@ export "src/models/view/conversations.dart";
 export "src/models/view/product.dart";
 export "src/models/view/notifications.dart";
 export "src/models/view/seller_profile.dart";
+export "src/models/view/login.dart";
 export "src/models/view/products.dart";
 
 import "src/models/model.dart";
