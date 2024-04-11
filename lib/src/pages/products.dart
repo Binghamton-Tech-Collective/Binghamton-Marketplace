@@ -51,15 +51,15 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
           ),
           const SizedBox(height: 16),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Shop By Category",
+                "Categories",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
               ),
-              const Spacer(),
               OutlinedButton.icon(
                 icon: const Icon(Icons.tune),
                 label: const Text("More filters"),

@@ -22,7 +22,7 @@ class SellerProfileViewModel extends ViewModel {
 
   // The profile variable will hold the object of Seller Profile
   /// The profile will get the seller profile info from model of seller profile.
-  late SellerProfile profile;
+  late SellerProfile  profile;
 
   /// This set stores the categories in which the user has their products listed.
   /// It is calculated on the basis of the product listings that the user has.

@@ -1,8 +1,8 @@
-import "package:btc_market/models.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
 import "package:btc_market/data.dart";
+import "package:btc_market/models.dart";
 
 import "src/pages/conversation.dart";
 import "src/pages/sellers.dart";
@@ -13,7 +13,7 @@ import "src/pages/product.dart";
 import "src/pages/products.dart";
 import "src/pages/conversations.dart";
 import "src/pages/login.dart";
-import "src/pages/coming_soon.dart";
+import "src/pages/user_profile.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -172,7 +172,9 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: Routes.profile,
           name: "My profile",
-          pageBuilder: (context, state) => const NoTransitionPage(child: ComingSoonPage()),
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: UserProfilePage(),
+          ),
         ),
       ],
     ),
