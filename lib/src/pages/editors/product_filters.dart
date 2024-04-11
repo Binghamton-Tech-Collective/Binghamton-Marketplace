@@ -71,7 +71,6 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
         ),
       ),
       const SizedBox(height: 12),
-      const Text("Change the sort order for more options"),
       ...buildBody(context, model),
       const Spacer(),
       Row(
@@ -148,11 +147,11 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
 
   /// Builds the available filter options based on [ProductFiltersBuilder.sortOrder].
   List<Widget> buildBody(BuildContext context, ProductFiltersBuilder model) => [
-      const SizedBox(height: 12),
-      minPrice(context, model),
-      const SizedBox(height: 12),
-      maxPrice(context, model),
-      const SizedBox(height: 12),
-      minRating(context, model),
-    ];
+    const SizedBox(height: 12),
+    minPrice(context, model),
+    const SizedBox(height: 12),
+    maxPrice(context, model),
+    const SizedBox(height: 12),
+    minRating(context, model),
+  ];
 }
