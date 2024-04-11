@@ -155,14 +155,11 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
           ),
           ButtonBar(
             children: [
-              if (model.isEditing) Expanded(
-                child: FilledButton(
-                  style: FilledButton.styleFrom(backgroundColor: Colors.red, padding: const EdgeInsets.symmetric(vertical: 16)),
-                  onPressed: () => delete(context, model),
-                  child: const Text("Delete product"),
-                ),
+              if (model.isEditing) FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () => delete(context, model),
+                child: const Text("Delete product"),
               ),
-              if (model.isEditing) const SizedBox(width: 12),
               FilledButton(
                 onPressed: model.isReady ? model.save : null,
                 child: const Text("Save product"),

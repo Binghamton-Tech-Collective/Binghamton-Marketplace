@@ -128,7 +128,7 @@ class ProductBuilder extends BuilderModel<Product> {
     profile = otherProfiles.firstWhere((other) => other.id == product.sellerID);
     titleController.text = product.title;
     descriptionController.text = product.description;
-    priceController.text = product.price.toString();
+    priceController.text = product.formattedPrice.replaceAll(r"$", "");
     quantityController.text = product.quantity.toString();
     categories.addAll(product.categories);
     condition = product.condition;
