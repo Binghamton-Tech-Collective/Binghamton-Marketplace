@@ -9,7 +9,7 @@ export "src/models/builders/seller_profile.dart";
 
 export "src/models/view/conversation.dart";
 export "src/models/view/conversations.dart";
-// export "src/models/view/user_profile.dart";
+export "src/models/view/user_profile.dart";
 export "src/models/view/product.dart";
 export "src/models/view/notifications.dart";
 export "src/models/view/seller_profile.dart";

@@ -13,7 +13,6 @@ import "src/pages/product.dart";
 import "src/pages/products.dart";
 import "src/pages/conversations.dart";
 import "src/pages/login.dart";
-import "src/pages/coming_soon.dart";
 import "src/pages/user_profile.dart";
 
 import "src/pages/editors/product.dart";
@@ -173,8 +172,8 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: Routes.profile,
           name: "My profile",
-          pageBuilder: (context, state) => NoTransitionPage(
-            child: UserProfilePage(id: null, profile: null),
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: UserProfilePage(),
           ),
         ),
       ],

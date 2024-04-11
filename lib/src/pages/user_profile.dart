@@ -1,22 +1,15 @@
-import "package:btc_market/src/models/view/user_profile.dart";
 import "package:flutter/material.dart";
-import "package:btc_market/data.dart";
+
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
-import "package:flutter/services.dart";
 
+/// The user's profile page.
 class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
-  
-  final UserID? id;
+  /// A const constructor.
+  const UserProfilePage();
 
-  final UserProfile? profile;
-
-  const UserProfilePage({
-    this.id,
-    this. profile,
-  });
-
-  UserProfileViewModel createModel() => UserProfileViewModel(initialProfile: profile, id: id);
+  @override
+  UserProfileViewModel createModel() => UserProfileViewModel();
 
   @override
   Widget build(BuildContext context, UserProfileViewModel model) => Scaffold(
@@ -42,22 +35,17 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
         Text("Manage Profiles", style: Theme.of(context).textTheme.headlineMedium),
         DropdownMenu(
           label: const Text("Profile"),
-          dropdownMenuEntries: 
-            [
-            // if(model.sellerProfiles.length == 0) DropdownMenuEntry(
-            //   value: null,
-            //   label: Text("None"),
-            //   ),
+          dropdownMenuEntries: [
             for (final sellerProfile in model.sellerProfiles) DropdownMenuEntry(
               value: sellerProfile,
               label: sellerProfile.name,
               leadingIcon: CircleAvatar(backgroundImage: NetworkImage(sellerProfile.imageUrl)),
-              ),
-            ],
-          ),
-          const Divider(),
-          Text("Notifications", style: Theme.of(context).textTheme.headlineMedium),
-          Column(
+            ),
+          ],
+        ),
+        const Divider(),
+        Text("Notifications", style: Theme.of(context).textTheme.headlineMedium),
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/bearcat/confused.png", width: 200, height: 200),
@@ -72,5 +60,4 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
       ],
     ),
   );
-
 }
