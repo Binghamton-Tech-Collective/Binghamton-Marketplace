@@ -27,12 +27,12 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
               radius: 50,
             ),
             const SizedBox(width: 16),
-            Text("Sam", style: Theme.of(context).textTheme.headlineLarge),
+            Text("Sam", style: context.textTheme.headlineLarge),
           ],
         ),
         const SizedBox(height: 10),
         const Divider(),
-        Text("Manage Profiles", style: Theme.of(context).textTheme.headlineMedium),
+        Text("Manage Profiles", style: context.textTheme.headlineMedium),
         DropdownMenu(
           label: const Text("Profile"),
           dropdownMenuEntries: [
@@ -44,7 +44,7 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
           ],
         ),
         const Divider(),
-        Text("Notifications", style: Theme.of(context).textTheme.headlineMedium),
+        Text("Notifications", style: context.textTheme.headlineMedium),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
