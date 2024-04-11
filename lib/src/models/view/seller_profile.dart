@@ -87,7 +87,6 @@ class SellerProfileViewModel extends ViewModel {
         id: conversationID,
         buyer: buyer,
         seller: seller,
-        isRead : false,
       );
       await services.database.saveConversation(conversation);
     }

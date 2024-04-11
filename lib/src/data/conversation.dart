@@ -45,7 +45,6 @@ class Conversation {
     required ConversationID id,
     required UserProfile buyer,
     required SellerProfile seller,
-    required bool isRead,
   }) => Conversation(
     id: id,
     buyerUID: buyer.id,
@@ -57,7 +56,7 @@ class Conversation {
     sellerImage: seller.imageUrl,
     messages: [],
     lastUpdate: DateTime.now(),
-    isRead: isRead,
+    isRead: false,
   );
 
   /// Creates a new Conversation object from a JSON object.
