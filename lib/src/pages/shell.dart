@@ -1,62 +1,49 @@
-import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
-import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
-/// The navigation page, allows switching between other pages.
+/// A shell page that wraps the given page with a [BottomNavigationBar].
 class ShellPage extends StatelessWidget {
-  /// The body of the page, which also allows us to switch branches.
-  final StatefulNavigationShell shell;
-  /// A const constructor.
-  const ShellPage(this.shell);
+  /// The main body of the app.
+  final Widget child;
+  
+  /// Creates the navigation page.
+  const ShellPage(this.child);
+  
+  /// Goes to the page specified by the given index.
+  void goIndex(int index) {
+    final routeName = Routes.branches[index];
+    router.go(routeName);
+  }
+
+  /// Gets the index based on the current route.
+  int getIndex(BuildContext context) => Routes.branches.indexWhere(
+    (branch) => GoRouterState.of(context).uri.path.contains(branch),
+  );
   
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: shell,
+    body: child,
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     bottomNavigationBar: NavigationBar(
-      selectedIndex: switch (shell.currentIndex) {
-        0 || 1 => shell.currentIndex,
-        2 || 3 => shell.currentIndex + 1,
-        _ => shell.currentIndex,
-      },
-      onDestinationSelected: (index) => switch (index) {
-        0 || 1 => shell.goBranch(index),
-        2 => models.user.sellerProfiles.isNotEmpty
-          ? router.go("/products/create")
-          : router.go("/sellers/no-profile"),
-        3 || 4 => shell.goBranch(index - 1),
-        _ => null,
-      },
+      selectedIndex: getIndex(context),
+      onDestinationSelected: goIndex,
       destinations: const [
         NavigationDestination(
           icon: Icon(Icons.storefront),
           label: "Products",
-          ),
-        NavigationDestination(
-          icon: Icon(Icons.message),
-          label: "Messages",
-          ),
-        NavigationDestination(
-          icon: Icon(Icons.sell),
-          label: "Sell Something",
-          ),
-        // Column(
-        //   mainAxisSize: MainAxisSize.min,
-        //   children: [
-        //     IconButton(
-        //       onPressed: () => models.user.sellerProfiles.isNotEmpty
-        //         ? router.go("/products/create")
-        //         : router.go("/sellers/no-profile"),
-        //       tooltip: "Add Product",
-        //       icon: const Icon(Icons.sell),
-        //     ),
-        //     Text("Sell something", style: context.textTheme.labelMedium),
-        //   ],
-        // ),
+        ),
         NavigationDestination(
           icon: Icon(Icons.groups),
           label: "Sellers",
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.sell),
+          label: "Sell",
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.message),
+          label: "Messages",
         ),
         NavigationDestination(
           icon: Icon(Icons.person),
@@ -64,5 +51,5 @@ class ShellPage extends StatelessWidget {
         ),
       ],
     ),
-  );      
+  );
 } 

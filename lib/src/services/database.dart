@@ -109,6 +109,26 @@ class Database extends Service {
   Future<List<Conversation>> getConversationsByUserID(UserID id) =>
     conversations.where("members", arrayContains: id).getAll();
 
+  /// Gets the list of all sellers
+  Future<List<SellerProfile>> getAllSellers(UserID id) =>
+    sellers.getAll();
+
+  /// Deletes a review from the database.
+  Future<void> deleteReview(ReviewID id) => reviews.doc(id).delete();
+  /// Deletes a product from the database.
+  Future<void> deleteProduct(ProductID id) => products.doc(id).delete();
+
+  /// Deletes a seller profile and all associated data.
+  Future<void> deleteSellerProfile(SellerID id) async {
+    // Delete all reviews for this seller and their products.
+    final reviews = await getReviewsBySellerID(id);
+    for (final review in reviews) {
+      await deleteReview(review.id);
+    }
+    // Delete the seller profile.
+    await sellers.doc(id).delete();
+  }
+
   /// Queries products with the given criteria.
   /// 
   /// Firestore has two fundamental limitations that affect how this function works: 

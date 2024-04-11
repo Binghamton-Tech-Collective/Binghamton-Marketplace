@@ -2,48 +2,56 @@ import "types.dart";
 
 /// A user of the app. Can be a customer or seller.
 class UserProfile {
-  /// The user's name.
-  final String name;
   /// The user's ID.
   final UserID id;
+  /// The user's name.
+  final String name;
+  /// The user's profile photo.
+  final String imageUrl;
   /// The products on the user's watchlist
   final Set<ProductID> productsWatchlist;
   /// The sellers on the user's watchlist
   final Set<SellerID> sellersWatchlist;
+  /// The user's archived conversations.
+  final Set<ConversationID> archivedConversations;
 
   /// Creates a new User object.
   UserProfile({
-    required this.name, 
     required this.id,
+    required this.name, 
+    required this.imageUrl,
     required this.productsWatchlist,
     required this.sellersWatchlist,
+    required this.archivedConversations,
   });
 
   /// Creates a new profile, with all the default fields.
   UserProfile.newProfile({
     required this.name,
     required this.id,
+    required this.imageUrl,
   }) : 
     productsWatchlist = {},
-    sellersWatchlist = {};
+    sellersWatchlist = {},
+    archivedConversations = {};
 
   /// Creates a new User object from a JSON object.
   UserProfile.fromJson(Json json) : 
     name = json["name"],
     id = json["id"],
-    productsWatchlist = json["productsWatchlist"] == null
-                      ? <ProductID>{}
-                      : Set<ProductID>.from(json["productsWatchlist"] as List),
-    sellersWatchlist  = json["sellersWatchlist"] == null
-                      ? <SellerID>{}
-                      : Set<SellerID>.from(json["sellersWatchlist"] as List);
+    imageUrl = json["imageUrl"] ?? "https://picsum.photos/500",
+    productsWatchlist = Set<ProductID>.from(json["productsWatchlist"] ?? []),
+    sellersWatchlist  = Set<SellerID>.from(json["sellersWatchlist"] ?? []),
+    archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []);
 
   /// Convert this user to its JSON representation
   Json toJson() => {
-    "name": name,
     "id": id,
+    "name": name,
+    "imageUrl": imageUrl,
     "productsWatchlist": List<String>.from(productsWatchlist),
     "sellersWatchlist": List<String>.from(sellersWatchlist),
+    "archivedConversations": List<String>.from(archivedConversations),
   };
 
   /// Add a Product to the User's watchlist, by ProductID

@@ -27,13 +27,19 @@ abstract class ReactiveWidgetInterface<T extends ViewModel> extends StatefulWidg
 	Widget build(BuildContext context, T model);
 
   /// Builds the page when [ViewModel.errorText] is not null.
-  Widget buildError(BuildContext context, T model) => Center(
-    child: Text("An error occurred:\n${model.errorText!}"),
+  Widget buildError(BuildContext context, T model) => Scaffold(
+    appBar: AppBar(),
+    body: Center(
+      child: Text("An error occurred:\n${model.errorText!}"),
+    ),
   );
 
   /// Builds the page when [ViewModel.isLoading] is true.
-  Widget buildLoading(BuildContext context, T model) => const Center(
-    child: CircularProgressIndicator(),
+  Widget buildLoading(BuildContext context, T model) => Scaffold(
+    appBar: AppBar(),
+    body: const Center(
+      child: CircularProgressIndicator(),
+    ),
   );
 
   /// This function gives you an opportunity to update the view model when the widget updates. 

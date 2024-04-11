@@ -10,6 +10,7 @@ class SellerProfileWidget extends StatelessWidget {
   final SellerProfile profile;
   /// The average rating of this user, if known.
   final double? averageRating;
+  
   /// Creates a widget to show off a seller's profile.
   const SellerProfileWidget({
     required this.profile,
@@ -18,9 +19,17 @@ class SellerProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-    leading: Hero(tag: "profile-pic", child: CircleAvatar(backgroundImage: NetworkImage(profile.imageUrl),),),
-    title: Text(profile.name),
-    onTap: () => context.push("/sellers/${profile.id}"),
+    leading: Hero(
+      tag: "${profile.id}-image", 
+      child: CircleAvatar(
+        backgroundImage: NetworkImage(profile.imageUrl),
+      ),
+    ),
+    title: Hero(
+      tag: "${profile.id}-name", 
+      child: Text(profile.name),
+    ),
+    onTap: () => context.push("/sellers/${profile.id}", extra: profile),
     subtitle: averageRating == null ? null : RatingBarIndicator(
       rating: averageRating!,
       itemSize: 15,

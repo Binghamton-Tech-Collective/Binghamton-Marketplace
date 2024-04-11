@@ -30,6 +30,14 @@ extension StringUtils on String {
 
 /// Helpful methods on iterables.
 extension IterableUtils<E> on Iterable<E> {
+  /// Like Python's enumerate function.
+  Iterable<(int, E)> get enumerate sync* {
+    var index = 0;
+    for (final element in this) {
+      yield (index++, element);
+    }
+  }
+
   /// Returns this iterable, or null if this is empty.
   Iterable<E>? get nullIfEmpty => isEmpty ? null : this;
 
@@ -38,4 +46,25 @@ extension IterableUtils<E> on Iterable<E> {
 
   /// Returns the last element, or null if this list is empty.
   E? get lastOrNull => isEmpty ? null : last;
+}
+
+/// Like Python's range function.
+Iterable<int> range(int end) sync* {
+  for (var i = 0; i < end; i++) {
+    yield i;
+  }
+}
+
+/// Like Python's zip function.
+Iterable<(E1, E2)> zip<E1, E2>(List<E1> list1, List<E2> list2) sync* {
+  if (list1.length != list2.length) throw ArgumentError("Trying to zip lists of different lengths");
+  for (var index = 0; index < list1.length; index++) {
+    yield (list1[index], list2[index]);
+  }
+}
+
+/// Utils on [Map].
+extension MapUtils<K, V> on Map<K, V> {
+  /// Gets all the keys and values as 2-element records.
+	Iterable<(K, V)> get records => entries.map((entry) => (entry.key, entry.value));
 }
