@@ -66,14 +66,22 @@ class ConversationViewModel extends ViewModel {
     _subscription = services.database.listenToConversation(id).listen(_update);
   }
   
-  void _update(Conversation? data) {
+  Future<void> _update(Conversation? data) async {
     if (data == null) {
       errorText = "Could not find a conversation with id: $id";
       notifyListeners();
       return;
     }
+    await updateIsRead();
     conversation = data;
     isLoading = false;
+  }
+
+  Future<void> updateIsRead() async {
+    if (conversation.lastMessage != null && conversation.lastMessage!.author != models.user.userProfile!.id) {
+      conversation.isRead = true;
+      await updateStatus(conversation);
+    }
   }
 
   @override
