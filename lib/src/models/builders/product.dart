@@ -176,8 +176,8 @@ class ProductBuilder extends BuilderModel<Product> {
   );
 
   @override
-  bool get isReady =>
-    terms &&
+  bool get isReady => 
+    agreedToTerms &&
     titleController.text.isNotEmpty &&
     descriptionController.text.isNotEmpty &&
     priceController.text.isNotEmpty &&
@@ -240,20 +240,10 @@ class ProductBuilder extends BuilderModel<Product> {
   }
 
   /// Function to set if the user agreed to the terms
-  set terms(bool value) {
+  // ignore: avoid_positional_boolean_parameters
+  void updateTerms(bool? value) {
+    if (value == null) return;
     agreedToTerms = value;
     notifyListeners();
-  }
-
-  /// Getter to get if the user agreed to terms
-  bool get terms => agreedToTerms;
-
-  /// Function to submit the terms
-  void submitTerms() {
-    if(terms) {
-      router.go("/products/create");
-    } else {
-      router.go("/products");
-    }
   }
 }

@@ -176,7 +176,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             children: [
               Checkbox(
                 value: model.agreedToTerms,
-                onChanged: (value) => model.terms = value!,
+                onChanged: model.updateTerms,
               ),
               const Text("I understand and agree to the terms and conditions.", style: TextStyle(
                 fontWeight: FontWeight.bold,
