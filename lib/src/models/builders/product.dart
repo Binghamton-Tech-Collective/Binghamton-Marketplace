@@ -128,7 +128,7 @@ class ProductBuilder extends BuilderModel<Product> {
     profile = otherProfiles.firstWhere((other) => other.id == product.sellerID);
     titleController.text = product.title;
     descriptionController.text = product.description;
-    priceController.text = product.price.toString();
+    priceController.text = product.formattedPrice.replaceAll(r"$", "");
     quantityController.text = product.quantity.toString();
     categories.addAll(product.categories);
     condition = product.condition;
@@ -161,7 +161,7 @@ class ProductBuilder extends BuilderModel<Product> {
     userID: models.user.userProfile!.id,
     title: titleController.text,
     description: descriptionController.text,
-    price: double.parse(priceController.text),
+    price: (double.parse(priceController.text) * 100).round(),
     quantity: 1,
     imageUrls: [
       for (final url in imageUrls)

@@ -45,7 +45,7 @@ class Product {
   final String description;
 
   /// The price of this product
-  final double price;
+  final int price;
 
   /// The categories in which the Product can be mapped to
   final Set<Category> categories;
@@ -106,7 +106,7 @@ class Product {
         userID = json["userID"],
         title = json["title"],
         description = json["description"],
-        price = json["price"].toDouble(),
+        price = (json["price"].toDouble() * 100).round(),
         quantity = json["quantity"],
         imageUrls = List<String>.from(json["imageUrls"]),
         categories = {
@@ -144,4 +144,7 @@ class Product {
         "ratingCount": ratingCount,
         "averageRating": averageRating,
       };
+  
+  /// The price, in USD, as a string.
+  String get formattedPrice => "\$${(price / 100).toStringAsFixed(2)}";
 }
