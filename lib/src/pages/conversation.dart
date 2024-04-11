@@ -35,7 +35,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       controller: controller,
       focusNode: focusNode,
       keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.none,
+      textInputAction: TextInputAction.newline,
       maxLines: null,
       textCapitalization: TextCapitalization.sentences,
       onEditingComplete: () {

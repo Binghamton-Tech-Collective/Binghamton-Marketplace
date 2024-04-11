@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>458210387235-n5vgh2n4hm4mel2ru14tbssuto2955pf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.458210387235-n5vgh2n4hm4mel2ru14tbssuto2955pf</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>458210387235-tiqso408rnl7bjnfars25srq9jvun7g0.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCQDtwOt_p75n2gyRtNrUw1VTWj345EIjA</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.btcMarket</string>
+	<string>edu.binghamton.btc-market</string>
 	<key>PROJECT_ID</key>
 	<string>btc-market-575d9</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:458210387235:ios:98bc0c7cfcaedae28f9896</string>
+	<string>1:458210387235:ios:0f4a7b67a54f532d8f9896</string>
 </dict>
 </plist>
