@@ -162,29 +162,14 @@ class Database extends Service {
         ],
       );
     }
-    // Filter by [ProductFilters] options.
-    switch (filters) {
-      case FilterByPrice(:final minPrice, :final maxPrice):
-        if (minPrice != null) {
-          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
-        }
-        if (maxPrice != null) {
-          query = query.where("price", isLessThanOrEqualTo: maxPrice);
-        }
-      case FilterByRating(:final minRating):
-        if (minRating != null) {
-          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-        }
-      case NormalFilter(:final minPrice, :final maxPrice, :final minRating):
-        if (minPrice != null) {
-          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
-        }
-        if (maxPrice != null) {
-          query = query.where("price", isLessThanOrEqualTo: maxPrice);
-        }
-        if (minRating != null) {
-          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-        }
+    if (filters.minPrice != null) {
+        query = query.where("price", isGreaterThanOrEqualTo: filters.minPrice);
+    }
+    if (filters.maxPrice != null) {
+        query = query.where("price", isLessThanOrEqualTo: filters.maxPrice);
+    }
+    if (filters.minRating != null) {
+        query = query.where("averageRating", isGreaterThanOrEqualTo: filters.minRating);
     }
     // Sort by [ProductSortOrder] option.
     switch (sortOrder) {

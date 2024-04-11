@@ -22,13 +22,13 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
   /// Determines which filters are available. See [ProductFilters] and [Database.queryProducts].
   ProductSortOrder sortOrder = ProductSortOrder.byNew;
 
-  /// The minimum rating to filter by, if any. See [FilterByRating.minRating].
+  /// The minimum rating to filter by, if any.
   int? minRating;
 
-  /// The minimum price to filter by, if any. See [FilterByPrice.minPrice].
+  /// The minimum price to filter by, if any.
   int? minPrice;
 
-  /// The maximum price to filter by, if any. See [FilterByPrice.maxPrice].
+  /// The maximum price to filter by, if any.
   int? maxPrice;
   
   /// The text controller for [minPrice].
@@ -63,7 +63,7 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
   bool get isReady => !(sortOrder.isByPrice && hasPriceError);
 
   @override
-  ProductFilters build() => NormalFilter(
+  ProductFilters build() => ProductFilters(
     categories: categories,
     minPrice: minPrice,
     maxPrice: maxPrice,
