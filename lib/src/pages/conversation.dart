@@ -1,3 +1,4 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/data.dart";
@@ -35,10 +36,13 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       controller: controller,
       focusNode: focusNode,
       keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.none,
+      textInputAction: kIsWeb ? TextInputAction.send : TextInputAction.newline,
       maxLines: null,
       textCapitalization: TextCapitalization.sentences,
       onEditingComplete: () {
+        if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
+      },
+      onSubmitted: (_) {
         if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
       },
       decoration: InputDecoration(

@@ -87,7 +87,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
+                  crossAxisCount: MediaQuery.of(context).size.width ~/ 175,
                   children: [
                     for (final index in range(4)) Hero(
                       tag: "${model.initialProduct?.id}-image-$index",
@@ -155,14 +155,11 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
           ),
           ButtonBar(
             children: [
-              if (model.isEditing) Expanded(
-                child: FilledButton(
-                  style: FilledButton.styleFrom(backgroundColor: Colors.red, padding: const EdgeInsets.symmetric(vertical: 16)),
-                  onPressed: () => delete(context, model),
-                  child: const Text("Delete product"),
-                ),
+              if (model.isEditing) FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () => delete(context, model),
+                child: const Text("Delete product"),
               ),
-              if (model.isEditing) const SizedBox(width: 12),
               FilledButton(
                 onPressed: model.isReady ? model.save : null,
                 child: const Text("Save product"),

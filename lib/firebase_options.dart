@@ -25,7 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos; 
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -63,11 +63,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCQDtwOt_p75n2gyRtNrUw1VTWj345EIjA',
-    appId: '1:458210387235:ios:98bc0c7cfcaedae28f9896',
+    appId: '1:458210387235:ios:8c1a113c88597c0e8f9896',
     messagingSenderId: '458210387235',
     projectId: 'btc-market-575d9',
     storageBucket: 'btc-market-575d9.appspot.com',
-    iosBundleId: 'com.example.btcMarket',
+    androidClientId: '458210387235-tiqso408rnl7bjnfars25srq9jvun7g0.apps.googleusercontent.com',
+    iosClientId: '458210387235-r4sr3ett1oi4l470bbf22lorcssuf5vb.apps.googleusercontent.com',
+    iosBundleId: 'com.example.btcMarket.RunnerTests',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '458210387235',
     projectId: 'btc-market-575d9',
     storageBucket: 'btc-market-575d9.appspot.com',
+    androidClientId: '458210387235-tiqso408rnl7bjnfars25srq9jvun7g0.apps.googleusercontent.com',
+    iosClientId: '458210387235-r4sr3ett1oi4l470bbf22lorcssuf5vb.apps.googleusercontent.com',
     iosBundleId: 'com.example.btcMarket.RunnerTests',
   );
 }

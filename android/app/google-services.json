@@ -12,7 +12,20 @@
           "package_name": "com.example.btc_market"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "458210387235-tiqso408rnl7bjnfars25srq9jvun7g0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.btc_market",
+            "certificate_hash": "9496cad4efcc1b97b0b6ed2205e2abcd5a9ff66e"
+          }
+        },
+        {
+          "client_id": "458210387235-239q08kt8uat1pvmor529ve2p9v4kea0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCRBm2uVFlO4lxUYSAj7n4QxPTTEjRe8uM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458210387235-239q08kt8uat1pvmor529ve2p9v4kea0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "458210387235-ck0gvt76j2mvjtatitntdk2od7flu75t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.btcMarket"
+              }
+            }
+          ]
         }
       }
     }
