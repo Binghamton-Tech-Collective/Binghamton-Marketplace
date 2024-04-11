@@ -31,7 +31,7 @@ class ProductWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            subtitle: Text("\$${product.price}"),
+            subtitle: Text(product.formattedPrice),
             title: Hero(
               tag: "${product.id}-name",
               child: Text(

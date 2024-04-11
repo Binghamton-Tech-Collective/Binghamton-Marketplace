@@ -161,7 +161,7 @@ class ProductBuilder extends BuilderModel<Product> {
     userID: models.user.userProfile!.id,
     title: titleController.text,
     description: descriptionController.text,
-    price: double.parse(priceController.text),
+    price: (double.parse(priceController.text) * 100).round(),
     quantity: 1,
     imageUrls: [
       for (final url in imageUrls)
