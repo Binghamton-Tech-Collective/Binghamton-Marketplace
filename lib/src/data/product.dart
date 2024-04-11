@@ -106,7 +106,7 @@ class Product {
         userID = json["userID"],
         title = json["title"],
         description = json["description"],
-        price = (json["price"].toDouble() * 100).round(),
+        price = json["price"].round(),
         quantity = json["quantity"],
         imageUrls = List<String>.from(json["imageUrls"]),
         categories = {
