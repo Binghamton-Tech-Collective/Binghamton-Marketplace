@@ -125,7 +125,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: Routes.noSeller,
               name: "No Seller Profile",
-              builder: (context, state) => const SellerProfileCallToAction(),
+              pageBuilder: (context, state) => const NoTransitionPage(child: SellerProfileCallToAction()),
             ),
             GoRoute(
               path: ":id",

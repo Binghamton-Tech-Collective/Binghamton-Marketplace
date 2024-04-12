@@ -22,8 +22,8 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
         if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
         else Row(
           children: [
-            const CircleAvatar(
-              // backgroundImage: null,
+            CircleAvatar(
+              backgroundImage: NetworkImage(model.profile.imageUrl),
               radius: 50,
             ),
             const SizedBox(width: 16),
