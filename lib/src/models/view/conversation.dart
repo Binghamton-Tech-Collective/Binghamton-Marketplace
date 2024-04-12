@@ -78,10 +78,13 @@ class ConversationViewModel extends ViewModel {
   }
 
   Future<void> updateIsRead() async {
-    if (conversation.lastMessage != null && conversation.lastMessage!.author != models.user.userProfile!.id) {
-      conversation.isRead = true;
-      await updateStatus(conversation);
-    }
+    print("Last message: ${conversation.messages.last.content}");
+    print("User ID: ${models.user.userProfile?.id}");
+    final lastMessage = conversation.lastMessage;
+    if (lastMessage == null) return;
+    if (lastMessage.isAuthor) return;
+    conversation.isRead = true;
+    await updateStatus(conversation);
   }
 
   @override
@@ -114,6 +117,7 @@ class ConversationViewModel extends ViewModel {
     conversation.isRead = false;
     try {
       messageController.clear();
+      print("Sending: ${message.content}");
       await services.database.saveConversation(conversation);
       messageController.clear();
     } catch (error) {
