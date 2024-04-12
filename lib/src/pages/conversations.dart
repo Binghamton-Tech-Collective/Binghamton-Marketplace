@@ -9,7 +9,9 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
   ConversationsViewModel createModel() => ConversationsViewModel();
 
   @override
-  Widget build(BuildContext context, ConversationsViewModel model) => Scaffold(
+  Widget build(BuildContext context, ConversationsViewModel model) {
+    model.init();
+    return Scaffold(
     appBar: AppBar(
       title: const Text("Chats"),
       actions: [
@@ -57,4 +59,5 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
         ),
       ),
   );
+  }
 }
