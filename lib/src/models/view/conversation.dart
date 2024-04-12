@@ -79,8 +79,6 @@ class ConversationViewModel extends ViewModel {
 
   /// Function to update the read status of message
   Future<void> updateIsRead() async {
-    print("Last message: ${conversation.messages.last.content}");	
-    print("User ID: ${models.user.userProfile?.id}");
     final lastMessage = conversation.lastMessage;
     if (lastMessage == null) return;
     if (lastMessage.isAuthor) return;
@@ -118,7 +116,6 @@ class ConversationViewModel extends ViewModel {
     conversation.isRead = false;
     try {
       messageController.clear();
-      print("Sending: ${message.content}");
       await services.database.saveConversation(conversation);
       messageController.clear();
     } catch (error) {
