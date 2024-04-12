@@ -22,8 +22,8 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
         if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
         else Row(
           children: [
-            const CircleAvatar(
-              // backgroundImage: null,
+            CircleAvatar(
+              backgroundImage: NetworkImage(model.profile.imageUrl),
               radius: 50,
             ),
             const SizedBox(width: 16),
@@ -33,16 +33,8 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
         const SizedBox(height: 10),
         const Divider(),
         Text("Manage Profiles", style: context.textTheme.headlineMedium),
-        DropdownMenu(
-          label: const Text("Profile"),
-          dropdownMenuEntries: [
-            for (final sellerProfile in model.sellerProfiles) DropdownMenuEntry(
-              value: sellerProfile,
-              label: sellerProfile.name,
-              leadingIcon: CircleAvatar(backgroundImage: NetworkImage(sellerProfile.imageUrl)),
-            ),
-          ],
-        ),
+        for (final sellerProfile in model.sellerProfiles) 
+          SellerProfileWidget(profile: sellerProfile, averageRating: null),
         const Divider(),
         Text("Notifications", style: context.textTheme.headlineMedium),
         Column(
