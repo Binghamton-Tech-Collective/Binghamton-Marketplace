@@ -33,16 +33,8 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
         const SizedBox(height: 10),
         const Divider(),
         Text("Manage Profiles", style: context.textTheme.headlineMedium),
-        DropdownMenu(
-          label: const Text("Profile"),
-          dropdownMenuEntries: [
-            for (final sellerProfile in model.sellerProfiles) DropdownMenuEntry(
-              value: sellerProfile,
-              label: sellerProfile.name,
-              leadingIcon: CircleAvatar(backgroundImage: NetworkImage(sellerProfile.imageUrl)),
-            ),
-          ],
-        ),
+        for (final sellerProfile in model.sellerProfiles) 
+          SellerProfileWidget(profile: sellerProfile, averageRating: null),
         const Divider(),
         Text("Notifications", style: context.textTheme.headlineMedium),
         Column(
