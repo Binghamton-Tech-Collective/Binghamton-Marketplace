@@ -10,14 +10,20 @@ import "package:btc_market/widgets.dart";
 class LoginPage extends ReactiveWidget<LoginViewModel> {
   /// The route to redirect to after sign-in or sign-up, if any.
   final String? redirect;
+  /// Whether to skip to the signup page.
+  final bool? showSignUp;
   /// Creates the login page.
-  const LoginPage({this.redirect});
+  const LoginPage({this.redirect, this.showSignUp});
   
   @override
-  LoginViewModel createModel() => LoginViewModel(redirect: redirect ?? Routes.products);
+  LoginViewModel createModel() => LoginViewModel(
+    redirect: redirect ?? Routes.products,
+    showSignUp: showSignUp ?? false,
+  );
 
   @override
   Widget build(BuildContext context, LoginViewModel model) => Scaffold(
+    appBar: (showSignUp ?? false) ? AppBar(title: const Text("My Profile")) : null,
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -33,9 +39,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     const Spacer(),
     Text("ShopBing", style: context.textTheme.headlineMedium),
     const SizedBox(height: 8),
-    const SizedBox(height: 12),
-    const SizedBox(height: 100, width: 200, child: Placeholder()),
-    const SizedBox(height: 12),
+    Image.asset("assets/logos/btc.png", height: 200, width: 350),
     Text("Your one-stop shop for buying and selling at Binghamton University", style: context.textTheme.titleSmall, textAlign: TextAlign.center),
     const SizedBox(height: 24),
     SizedBox(
@@ -55,7 +59,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
   ];
 
   List<Widget> _signUp(BuildContext context, LoginViewModel model) => [
-    Text("Create an account", style: context.textTheme.headlineLarge),
+    Text((showSignUp ?? false) ? "Edit account" : "Create an account", style: context.textTheme.headlineLarge),
     const SizedBox(height: 16),
     SizedBox(
       width: 200,
@@ -74,7 +78,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     const SizedBox(height: 16),
     FilledButton(
       onPressed: model.isReady ? model.signUp : null, 
-      child: const Text("Create account"),
+      child: (showSignUp ?? false) ? const Text("Save") : const Text("Create account"),
     ),
   ];
 }

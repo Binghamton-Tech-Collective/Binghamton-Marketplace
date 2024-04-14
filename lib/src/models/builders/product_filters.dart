@@ -63,23 +63,12 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
   bool get isReady => !(sortOrder.isByPrice && hasPriceError);
 
   @override
-  ProductFilters build() => switch (sortOrder) {
-    ProductSortOrder.byRating => FilterByRating(
-      minRating: minRating,
-      categories: categories,
-    ),
-    ProductSortOrder.byNew || ProductSortOrder.byOld => NormalFilter(
-      categories: categories,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      minRating: minRating,
-    ),
-    ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => FilterByPrice(
-      minPrice: minPrice, 
-      maxPrice: maxPrice,
-      categories: categories,
-    ),
-  };
+  ProductFilters build() => NormalFilter(
+    categories: categories,
+    minPrice: minPrice == null ? null : minPrice! * 100,
+    maxPrice: maxPrice == null ? null : maxPrice! * 100,
+    minRating: minRating,
+  );
 
   /// Updates [minPrice] using the value in [minPriceController], and updates [minPriceError].
   void updateMinPrice() {
