@@ -1,8 +1,37 @@
 import "dart:async";
 
+import "package:flutter/services.dart";
+
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
+
+class ConversationData implements Comparable<ConversationData> {
+  ConversationID id;
+  Conversation? data;
+  VoidCallback callback;
+  late Stream<Conversation?> stream;
+  // ignore: cancel_subscriptions
+  late final StreamSubscription<Conversation?> subscription;
+
+  ConversationData({
+    required this.id,
+    required this.callback,
+  }) {
+    stream = services.database.listenToConversation(id);
+    subscription = stream.listen(_update);
+  }
+
+  void _update(Conversation? value) {
+    if (value == null) return;
+    data = value;
+    callback();
+  }
+
+  @override
+  int compareTo(ConversationData other) => (data == null || other.data == null)
+    ? id.compareTo(other.id) : data!.compareTo(other.data!);
+} 
 
 /// A data model to load and listen to conversations. 
 /// 
@@ -11,15 +40,10 @@ import "package:btc_market/services.dart";
 /// page without loading the conversation a second time, or subscribing and
 /// unsubscribing.
 class ConversationsModel extends DataModel {
-  /// All the conversations with this user, in chronologic order.
+
+  Map<ConversationID, ConversationData> allMap = {};
   List<Conversation> allList = [];
-  /// All the conversations with this user, keyed by ID.
-  Map<ConversationID, Conversation> allMap = {};
-
-  /// A list of all streams. 
-  Map<ConversationID, Stream<Conversation?>> streams = {};
-  List<StreamSubscription<Conversation?>> _subscriptions = [];
-
+  
   Set<ConversationID> get _archivedIDs => models.user.userProfile?.archivedConversations ?? {};
   
   /// All non-archived conversations.
@@ -38,27 +62,19 @@ class ConversationsModel extends DataModel {
   
   @override
   Future<void> onSignIn(UserProfile profile) async {
-    await onSignOut();  // can't be too careful!
-    allList = await services.database.getConversationsByUserID(profile.id)..sort();
+    await onSignOut();
+    final temp = await services.database.getConversationsByUserID(profile.id);
     allMap = {
-      for (final conversation in allList)
-        conversation.id: conversation,
+      for (final conversation in temp)
+        conversation.id: ConversationData(id: conversation.id, callback: _update),
     };
-    streams = {
-      for (final conversation in allList) 
-        conversation.id: services.database.listenToConversation(conversation.id),
-    };
-    _subscriptions = [
-      for (final stream in streams.values)
-        stream.listen(_update),
-    ];
     notifyListeners();
   }
 
   @override
   Future<void> onSignOut() async {
-    for (final subscription in _subscriptions) {
-      await subscription.cancel();
+    for (final data in allMap.values) {
+      await data.subscription.cancel();
     }
   }
 
@@ -69,22 +85,19 @@ class ConversationsModel extends DataModel {
   }
 
   /// Called when a conversation has been updated.
-  void _update(Conversation? conversation) {
-    if (conversation == null) return;
-    allMap[conversation.id] = conversation;
-    allList = allMap.values.toList()..sort();
+  void _update() {
+    allList = [
+      for (final conversation in allMap.values)
+        conversation.data!,
+    ]..sort();
     notifyListeners();
   }
 
   /// Starts a new conversation and listens to it.
   Future<void> startConversation(Conversation conversation) async {
     await services.database.saveConversation(conversation);
-    final id = conversation.id;
-    final stream = services.database.listenToConversation(id);
-    allList..add(conversation)..sort();
-    allMap[id] = conversation;
-    stream.listen(_update);
-    streams[id] = stream;
-    notifyListeners();
+    final data = ConversationData(id: conversation.id, callback: _update);
+    allMap[conversation.id] = data;
+    _update();
   }
 }
