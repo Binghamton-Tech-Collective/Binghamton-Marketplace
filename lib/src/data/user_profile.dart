@@ -1,3 +1,5 @@
+import "package:flutter/material.dart";
+
 import "types.dart";
 
 /// A user of the app. Can be a customer or seller.
@@ -15,6 +17,9 @@ class UserProfile {
   /// The user's archived conversations.
   final Set<ConversationID> archivedConversations;
 
+  /// The user's theme preference.
+  final ThemeMode theme;
+
   /// Creates a new User object.
   UserProfile({
     required this.id,
@@ -23,6 +28,7 @@ class UserProfile {
     required this.productsWatchlist,
     required this.sellersWatchlist,
     required this.archivedConversations,
+    required this.theme,
   });
 
   /// Creates a new profile, with all the default fields.
@@ -30,6 +36,7 @@ class UserProfile {
     required this.name,
     required this.id,
     required this.imageUrl,
+    required this.theme,
   }) : 
     productsWatchlist = {},
     sellersWatchlist = {},
@@ -42,7 +49,8 @@ class UserProfile {
     imageUrl = json["imageUrl"] ?? "https://picsum.photos/500",
     productsWatchlist = Set<ProductID>.from(json["productsWatchlist"] ?? []),
     sellersWatchlist  = Set<SellerID>.from(json["sellersWatchlist"] ?? []),
-    archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []);
+    archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []),
+    theme = json["theme"] == null ? ThemeMode.system : ThemeMode.values.byName(json["theme"]);
 
   /// Convert this user to its JSON representation
   Json toJson() => {
@@ -52,6 +60,7 @@ class UserProfile {
     "productsWatchlist": List<String>.from(productsWatchlist),
     "sellersWatchlist": List<String>.from(sellersWatchlist),
     "archivedConversations": List<String>.from(archivedConversations),
+    "theme": theme.name,
   };
 
   /// Add a Product to the User's watchlist, by ProductID

@@ -1,8 +1,7 @@
 import "package:btc_market/data.dart";
+import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
-
-import "../model.dart";
 
 /// A data model to track the user and sign them in or out.
 class UserModel extends DataModel {
@@ -30,6 +29,8 @@ class UserModel extends DataModel {
     if (uid == null) return;
     userProfile = await services.database.getUserProfile(uid);
     await loadSellerProfiles();
+    if (userProfile == null) return;
+    models.app.setTheme(userProfile!.theme);
   }
 
   /// Loads the user's seller profiles.

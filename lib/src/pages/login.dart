@@ -1,3 +1,5 @@
+import "package:btc_market/src/pages/editors/product_filters.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart";
 
@@ -74,6 +76,21 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     SizedBox(
       width: 200, 
       child: InputContainer(text: "Name", controller: model.usernameController),
+    ),
+    const SizedBox(height: 16),
+    SizedBox(
+      width: 300,
+      child: FilterOption(
+        name: "Theme",
+        child: DropdownMenu(
+          initialSelection: model.theme,
+          onSelected: model.updateTheme,
+          dropdownMenuEntries: [
+            for (final theme in ThemeMode.values)
+              DropdownMenuEntry(value: theme, label: theme.displayName),
+          ],
+        ),
+      ),
     ),
     const SizedBox(height: 16),
     FilledButton(

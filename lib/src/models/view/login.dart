@@ -31,6 +31,9 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   /// Whether the account is being saved.
   bool isSaving = false;
 
+  /// The user's theme preference.
+  ThemeMode theme = ThemeMode.system;
+
   /// The route to redirect to after a successful sign in or registration.
   final String redirect;
 
@@ -44,6 +47,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     if (profile != null) {
       imageUrl = profile.imageUrl;
       usernameController.text = profile.name;
+      theme = profile.theme;
     }
   }
 
@@ -64,6 +68,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     name: username!, 
     id: userID!,
     imageUrl: imageUrl!,
+    theme: theme,
   );
 
   /// Once the user is signed in, checks their profile and sets [showSignUp], if needed.
@@ -124,6 +129,14 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     if (url == null) error = "Could not upload image";
     imageUrl = url;
     isSaving = false;
+    notifyListeners();
+  }
+
+  /// Updates [theme] and refreshes the UI.
+  void updateTheme(ThemeMode? input) {
+    if (input == null) return;
+    theme = input;
+    models.app.setTheme(input);
     notifyListeners();
   }
 }
