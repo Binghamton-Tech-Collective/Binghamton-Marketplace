@@ -12,10 +12,10 @@ import "package:flutter/services.dart";
 /// Loads messages and has functions to send, edit and delete messages.
 class ConversationViewModel extends ViewModel {
   /// ID of the conversation
-  final ConversationID id;
+  ConversationID id;
 
   /// The initially loaded conversation, if any.
-  final Conversation? initialConversation;
+  Conversation? initialConversation;
 
   /// Constructor for the View model
   ConversationViewModel(this.id, this.initialConversation);
@@ -47,6 +47,14 @@ class ConversationViewModel extends ViewModel {
   /// 
   /// This lets us re-request focus when a message is sent.
   final focusNode = FocusNode();
+
+  /// Resets everything about this model.
+  void reset(ConversationID newID) {
+    id = newID;
+    initialConversation = null;
+    messageError = null;
+    _subscription?.cancel();
+  }
   
   @override
   Future<void> init() async {

@@ -9,6 +9,9 @@ class AppModel extends DataModel {
   /// The current theme mode: light, dark, or system default.
   ThemeMode get theme => _theme;
 
+  /// The last conversation with a notification, if any.
+  Conversation? conversationNotification;
+
   /// Sets the theme for the app.
   void setTheme(ThemeMode value) {
     _theme = value;
@@ -20,6 +23,13 @@ class AppModel extends DataModel {
 
   @override
   Future<void> onSignOut() async { }
+
+  /// Updates [conversationNotification] with this conversation.
+  void showMessage(Conversation conversation) {
+    if (!conversation.showNotification) return;
+    conversationNotification = conversation;
+    notifyListeners();
+  }
 }
 
 /// Useful methods on [ThemeMode]s.
