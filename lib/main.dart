@@ -17,7 +17,7 @@ void main() async {
 }
 
 /// The classic Binghamton green, "Pantone 342"
-const darkGreen = Color(0xFF005A43);
+const darkGreen = Color(0XFF005A43);
 /// A light grey to accent the dark green.
 const lightGrey = Color(0xFFDEDEDE);
 
