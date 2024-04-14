@@ -52,14 +52,14 @@ class ChatBubble extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: message.isAuthor 
                   ? context.colorScheme.primaryContainer
-                  : context.colorScheme.secondary,
+                  : context.colorScheme.secondaryContainer,
               ),
               child: Text(
                 message.content,                
                 style: context.textTheme.bodyLarge?.copyWith(
                   color: message.isAuthor 
                     ? context.colorScheme.onPrimaryContainer
-                    : context.colorScheme.onSecondary,
+                    : context.colorScheme.onSecondaryContainer,
                 ),
               ),
             ),

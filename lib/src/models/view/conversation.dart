@@ -66,14 +66,24 @@ class ConversationViewModel extends ViewModel {
     _subscription = services.database.listenToConversation(id).listen(_update);
   }
   
-  void _update(Conversation? data) {
+  Future<void> _update(Conversation? data) async {
     if (data == null) {
       errorText = "Could not find a conversation with id: $id";
       notifyListeners();
       return;
     }
     conversation = data;
+    await updateIsRead();
     isLoading = false;
+  }
+
+  /// Function to update the read status of message
+  Future<void> updateIsRead() async {
+    final lastMessage = conversation.lastMessage;
+    if (lastMessage == null) return;
+    if (lastMessage.isAuthor) return;
+    conversation.isRead = true;
+    await updateStatus(conversation);
   }
 
   @override
@@ -103,6 +113,7 @@ class ConversationViewModel extends ViewModel {
     );
     conversation.messages.add(message);
     conversation.lastUpdate = DateTime.now();
+    conversation.isRead = false;
     try {
       messageController.clear();
       await services.database.saveConversation(conversation);
@@ -136,6 +147,15 @@ class ConversationViewModel extends ViewModel {
     } catch (error) {
       messageError = "Could not update message:\n$error";
       notifyListeners();
+    }
+  }
+
+  /// Function to update the status of the conversation
+  Future<void> updateStatus(Conversation conversation) async {
+    try {
+      await services.database.saveConversation(conversation);
+    }catch(error) {
+      errorText = "Error updating conversation $error";
     }
   }
 }

@@ -6,12 +6,12 @@ import "package:firebase_ui_auth/firebase_ui_auth.dart";
 import "package:flutter/material.dart";
 
 /// A test account that is allowed to be used, even if it doesn't end in @binghamton.edu
-const testAccount = "btc-test@gmail.com";
+const testAccount = "harshvaghani98@gmail.com";
 
 /// A view model to sign the user in, show a sign-up form if needed, then redirect to another route.
 class LoginViewModel extends BuilderModel<UserProfile> {
   /// Whether to show the signup form.
-  bool showSignUp = false;
+  bool showSignUp;
   
   /// The user ID, if the user is signed in.
   UserID? get userID => services.auth.userID;
@@ -35,11 +35,16 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   final String redirect;
 
   /// Creates a view model to sign in or register then go to the redirect URL.
-  LoginViewModel({required this.redirect});
+  LoginViewModel({required this.redirect, required this.showSignUp});
 
   @override
   Future<void> init() async {
     usernameController.addListener(notifyListeners);
+    final profile = models.user.userProfile;
+    if (profile != null) {
+      imageUrl = profile.imageUrl;
+      usernameController.text = profile.name;
+    }
   }
 
   @override

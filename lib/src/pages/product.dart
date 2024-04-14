@@ -46,7 +46,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
         ),
       ],
     ),
-    floatingActionButton: FloatingActionButton.extended(
+    floatingActionButton: model.product.isSeller ? null : FloatingActionButton.extended(
       icon: const Icon(Icons.message),
       onPressed: model.openConversation, 
       label: const Text("Contact Seller"),

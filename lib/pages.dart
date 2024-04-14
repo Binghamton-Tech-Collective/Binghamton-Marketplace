@@ -137,7 +137,7 @@ final GoRouter router = GoRouter(
               routes: [
                 GoRoute(
                   path: "edit",
-                  name: "Edit profile",
+                  name: "Edit seller",
                   redirect: sellerRedirect,
                   builder: (context, state) => SellerProfileEditor(
                     id: state.pathParameters["id"] as SellerID,
@@ -175,6 +175,16 @@ final GoRouter router = GoRouter(
           pageBuilder: (context, state) => const NoTransitionPage(
             child: UserProfilePage(),
           ),
+          routes: [
+            GoRoute(
+              path: "edit",
+              name: "Edit profile",
+              builder: (context, state) => LoginPage(
+                redirect: state.extra as String?,
+                showSignUp: true,
+              ),
+            ),
+          ],
         ),
       ],
     ),

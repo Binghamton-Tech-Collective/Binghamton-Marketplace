@@ -22,6 +22,8 @@ class Conversation {
   final List<Message> messages;
   /// The time of the last update. Affects sorting order.
   DateTime lastUpdate;
+  /// Status of the conversation
+  bool isRead;
 
   /// A constructor to create a new Conversation.
   Conversation({
@@ -35,6 +37,7 @@ class Conversation {
     required this.buyerImage,
     required this.sellerImage,
     required this.lastUpdate,
+    required this.isRead,
   });
 
   /// Starts a new conversation between a buyer and a seller.
@@ -53,6 +56,7 @@ class Conversation {
     sellerImage: seller.imageUrl,
     messages: [],
     lastUpdate: DateTime.now(),
+    isRead: false,
   );
 
   /// Creates a new Conversation object from a JSON object.
@@ -69,7 +73,8 @@ class Conversation {
       for (final messageJson in json["messages"])
         Message.fromJson(messageJson),
     ],
-    lastUpdate = DateTime.parse(json["lastUpdate"]);
+    lastUpdate = DateTime.parse(json["lastUpdate"]),
+    isRead = json["isRead"] ?? false;
 
   /// Convert this Conversation to its JSON representation
   Json toJson() => {
@@ -87,5 +92,6 @@ class Conversation {
         message.toJson(),
     ],
     "lastUpdate": lastUpdate.toIso8601String(),
+    "isRead" : isRead,
   };
 }

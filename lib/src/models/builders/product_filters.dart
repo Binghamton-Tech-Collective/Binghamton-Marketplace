@@ -65,8 +65,8 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
   @override
   ProductFilters build() => ProductFilters(
     categories: categories,
-    minPrice: minPrice,
-    maxPrice: maxPrice,
+    minPrice: minPrice == null ? null : minPrice! * 100,
+    maxPrice: maxPrice == null ? null : maxPrice! * 100,
     minRating: minRating,
   );
 

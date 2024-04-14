@@ -10,6 +10,9 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Id of the product if we're editing it
   final ProductID? initialID;
 
+  /// If the user agreed to the terms of the app
+  bool agreedToTerms = false;
+
   /// The already loaded product, if any.
   final Product? initialProduct;
 
@@ -173,7 +176,8 @@ class ProductBuilder extends BuilderModel<Product> {
   );
 
   @override
-  bool get isReady =>
+  bool get isReady => 
+    agreedToTerms &&
     titleController.text.isNotEmpty &&
     descriptionController.text.isNotEmpty &&
     priceController.text.isNotEmpty &&
@@ -233,5 +237,13 @@ class ProductBuilder extends BuilderModel<Product> {
   Future<void> deleteProduct() async {
     await services.database.deleteProduct(initialID!);
     router.go("/products", extra: true);
+  }
+
+  /// Function to set if the user agreed to the terms
+  // ignore: avoid_positional_boolean_parameters
+  void updateTerms(bool? value) {
+    if (value == null) return;
+    agreedToTerms = value;
+    notifyListeners();
   }
 }

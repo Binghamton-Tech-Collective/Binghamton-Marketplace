@@ -106,7 +106,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
       controller: model.minPriceController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        prefixText: r"$",
+        prefixIcon: const Icon(Icons.attach_money),        
         border: const OutlineInputBorder(),
         hintText: "Min price",
         errorText: model.minPriceError,
@@ -122,7 +122,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
       controller: model.maxPriceController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        prefixText: r"$",
+        prefixIcon: const Icon(Icons.attach_money),
         border: const OutlineInputBorder(),
         hintText: "Max price",
         errorText: model.maxPriceError,

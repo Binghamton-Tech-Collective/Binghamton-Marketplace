@@ -1,6 +1,7 @@
 export "src/models/model.dart";
 export "src/models/utils.dart";
 
+export "src/models/data/app.dart";
 export "src/models/data/user.dart";
 
 export "src/models/builders/product.dart";
@@ -17,21 +18,26 @@ export "src/models/view/login.dart";
 export "src/models/view/products.dart";
 
 import "src/models/model.dart";
+import "src/models/data/app.dart";
 import "src/models/data/user.dart";
 
 /// A [DataModel] to manage all other data models.
 class Models extends DataModel {
   /// The user data model.
   final user = UserModel();
+  /// The app-wide data model.
+  final app = AppModel();
   
   @override
   Future<void> init() async {
+    await app.init();
     await user.init();
   }
 
   @override
   void dispose() {
     user.dispose();
+    app.dispose();
     super.dispose();
   }
 }
