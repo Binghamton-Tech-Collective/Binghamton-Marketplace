@@ -91,35 +91,32 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
 
         // ========== Confirmation and loading indicators ==========
         const SizedBox(height: 12),
-        SizedBox(
-          // height: 48,
-          child: Row(
-            children: [
-              if (model.isEditing) Expanded(
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.red,
-                  ),
-                  onPressed: () => showDialog<void>(
-                    context: context,
-                    builder: (context) => ConfirmDeleteDialog(model.profile!),
-                  ),
-                  child: const Text("Delete Profile"),
+        Row(
+          children: [
+            if (model.isEditing) Expanded(
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.red,
                 ),
-              ),
-              if (model.isEditing) const SizedBox(width: 12),
-              Expanded(
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: model.isReady ? model.save : null,
-                  child: const Text("Save Profile"),
+                onPressed: () => showDialog<void>(
+                  context: context,
+                  builder: (context) => ConfirmDeleteDialog(model.profile!),
                 ),
+                child: const Text("Delete Profile"),
               ),
-            ],
-          ),
+            ),
+            if (model.isEditing) const SizedBox(width: 12),
+            Expanded(
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                onPressed: model.isReady ? model.save : null,
+                child: const Text("Save Profile"),
+              ),
+            ),
+          ],
         ),
         if (model.saveError != null)
           Text(

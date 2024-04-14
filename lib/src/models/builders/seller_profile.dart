@@ -47,7 +47,6 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// The seller's ID.
   late final SellerID sellerID;
-  // SellerID get sellerID => SellerID("123");
 
   /// Fetching the email address of the seller
   String get email => services.auth.user!.email!;
@@ -90,7 +89,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
       twitterController.text = seller.contact.twitterUsername != null ? seller.contact.twitterUsername! : "";
       linkedinController.text = seller.contact.linkedInUsername != null ? seller.contact.linkedInUsername! : "";
     }
-    userID = models.user.userProfile!.id;
+    userID = models.user.userID!;
     for (final controller in allControllers) {
       controller.addListener(notifyListeners);
     }
@@ -148,7 +147,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage() async {
-    // [filename] cannot be null because imageUrl is required for seller profile, and we're copying it before nullifying it.
+    if (imageUrl == null) return;
     await services.cloudStorage.deleteFile(imageUrl!);
     imageUrl = null;
     notifyListeners();

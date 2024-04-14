@@ -161,7 +161,7 @@ class ProductBuilder extends BuilderModel<Product> {
   Product build() => Product(
     id: productID,
     sellerID: profile!.id,
-    userID: models.user.userProfile!.id,
+    userID: models.user.userID!,
     title: titleController.text,
     description: descriptionController.text,
     price: (double.parse(priceController.text) * 100).round(),

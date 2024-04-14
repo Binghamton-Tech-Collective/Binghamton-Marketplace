@@ -30,7 +30,6 @@ class ConversationViewModel extends ViewModel {
   String? messageError;
 
   /// Conversation object
-  // late Conversation conversation;
   Conversation get conversation => models.conversations.allMap[id]!;
 
   /// All messages of this conversation
@@ -67,7 +66,6 @@ class ConversationViewModel extends ViewModel {
       notifyListeners();
       return;
     }
-    // conversation = data;
     await updateIsRead();
     isLoading = false;
   }

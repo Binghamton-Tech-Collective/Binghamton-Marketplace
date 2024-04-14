@@ -114,7 +114,6 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             const SizedBox(height: 12),
             Text("Sold by", style: context.textTheme.titleLarge),
             SellerProfileWidget(
-              // hero: false,
               profile: model.sellerProfile, 
               averageRating: model.sellerRating as double?,
             ),

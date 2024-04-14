@@ -23,7 +23,6 @@ class GalleryViewModel extends ViewModel {
   /// Creates a view model to show a [GalleryWidget].
   GalleryViewModel({
     required this.product,
-    // required this.numPages,
     this.duration = const Duration(milliseconds: 250), 
     this.curve = Curves.easeInOut,
   });
