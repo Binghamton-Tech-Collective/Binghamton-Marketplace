@@ -36,9 +36,13 @@ class Models extends DataModel {
   
   @override
   Future<void> init() async {
-    await app.init();
-    await conversations.init();
-    await user.init();
+    try {
+      await app.init();
+      await conversations.init();
+      await user.init();
+    } catch (error) {
+      app.errorText = error.toString();
+    }
   }
 
   @override
