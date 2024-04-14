@@ -37,6 +37,9 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   /// The route to redirect to after a successful sign in or registration.
   final String redirect;
 
+  /// The profile to edit, if any.
+  UserProfile? initialProfile;
+
   /// Creates a view model to sign in or register then go to the redirect URL.
   LoginViewModel({required this.redirect, required this.showSignUp});
 
@@ -45,6 +48,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     usernameController.addListener(notifyListeners);
     final profile = models.user.userProfile;
     if (profile != null) {
+      initialProfile = profile;
       imageUrl = profile.imageUrl;
       usernameController.text = profile.name;
       theme = profile.theme;
@@ -64,10 +68,13 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     && !isSaving;  
 
   @override
-  UserProfile build() => UserProfile.newProfile(
+  UserProfile build() => UserProfile(
     name: username!, 
     id: userID!,
     imageUrl: imageUrl!,
+    archivedConversations: initialProfile?.archivedConversations ?? {},
+    productsWatchlist: initialProfile?.productsWatchlist ?? {},
+    sellersWatchlist: initialProfile?.sellersWatchlist ?? {},
     theme: theme,
   );
 

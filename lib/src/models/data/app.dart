@@ -14,7 +14,9 @@ class AppModel extends DataModel {
   }
 }
 
+/// Useful methods on [ThemeMode]s.
 extension ThemeModeUtils on ThemeMode {
+  /// A human-friendly name for this option.
   String get displayName => switch (this) {
     ThemeMode.dark => "Dark",
     ThemeMode.light => "Light",

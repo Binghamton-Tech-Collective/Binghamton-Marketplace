@@ -31,17 +31,6 @@ class UserProfile {
     required this.theme,
   });
 
-  /// Creates a new profile, with all the default fields.
-  UserProfile.newProfile({
-    required this.name,
-    required this.id,
-    required this.imageUrl,
-    required this.theme,
-  }) : 
-    productsWatchlist = {},
-    sellersWatchlist = {},
-    archivedConversations = {};
-
   /// Creates a new User object from a JSON object.
   UserProfile.fromJson(Json json) : 
     name = json["name"],

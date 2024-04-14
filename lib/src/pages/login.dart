@@ -1,5 +1,4 @@
 import "package:btc_market/src/pages/editors/product_filters.dart";
-import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart";
 
