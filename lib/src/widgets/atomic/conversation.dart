@@ -19,11 +19,17 @@ class ConversationWidget extends StatelessWidget {
     super.key,
   });
 
+  Color? getColor(BuildContext context) {
+    if (conversation.isRead) return null;
+    final message = conversation.lastMessage;
+    if (message == null) return null;
+    if (message.isAuthor) return null;
+    return context.colorScheme.surfaceVariant;
+  }
+
   @override
   Widget build(BuildContext context) => ListTile(
-    tileColor: conversation.lastMessage != null &&
-    conversation.lastMessage!.author != models.user.userProfile!.id && !conversation.isRead ? 
-    Colors.grey[200] : Colors.white,
+    tileColor: getColor(context), 
     title: Hero(
       tag: "name-${conversation.id}",
       child: Text(conversation.otherName),

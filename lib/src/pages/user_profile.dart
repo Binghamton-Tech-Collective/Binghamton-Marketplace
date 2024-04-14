@@ -14,6 +14,11 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
 
   @override
   Widget build(BuildContext context, UserProfileViewModel model) => Scaffold(
+        floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: models.app.toggle,
+    ),
+
     appBar: AppBar(
       title: const Text("My Profile"),
       actions: [

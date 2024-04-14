@@ -153,8 +153,6 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   style: TextStyle(color: context.colorScheme.error),
                 ),
                 const Divider(),
-                // const Padding(
-                  // padding: EdgeInsets.all(8),
                 Text(
                   "By listing a product, you agree to our terms and conditions. This includes adhering to all applicable laws and regulations. Products that violate these terms, including the sale of illegal items, will be removed, and your account may be subject to permanent suspension and potential reporting to relevant authorities, including the university.",
                   style: context.textTheme.bodyMedium,
