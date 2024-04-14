@@ -1,3 +1,4 @@
+import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -14,7 +15,15 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
   @override
   Widget build(BuildContext context, UserProfileViewModel model) => Scaffold(
     appBar: AppBar(
-      title: const Text("Profile"),
+      title: const Text("My Profile"),
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+          child: const Text("Edit profile"),
+          onPressed: () => context.push("${Routes.profile}/edit"),
+        ),
+        ProfileButton(),
+      ],
     ),
     body: ListView(
       padding: const EdgeInsets.all(16),
@@ -27,7 +36,7 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
               radius: 50,
             ),
             const SizedBox(width: 16),
-            Text("Sam", style: context.textTheme.headlineLarge),
+            Text(model.profile.name, style: context.textTheme.headlineLarge),
           ],
         ),
         const SizedBox(height: 10),

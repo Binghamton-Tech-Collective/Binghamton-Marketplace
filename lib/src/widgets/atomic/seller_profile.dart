@@ -39,12 +39,13 @@ class SellerProfileWidget extends StatelessWidget {
       ),
     ),
     trailing: SizedBox(
-      width: 200,
+      // width: 200,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           for (final (platform, username) in profile.contact.socials)
-            SocialMediaButton(platform: platform, username: username),
+            Flexible(child: SocialMediaButton(platform: platform, username: username)),
         ],
       ),
     ),
