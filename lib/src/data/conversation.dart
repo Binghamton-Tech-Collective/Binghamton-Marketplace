@@ -52,7 +52,7 @@ class Conversation implements Comparable<Conversation> {
     sellerID: seller.id,
     buyerName: buyer.name,
     sellerName: seller.name,
-    buyerImage: "https://picsum.photos/500",
+    buyerImage: buyer.imageUrl,
     sellerImage: seller.imageUrl,
     messages: [],
     lastUpdate: DateTime.now(),
