@@ -28,6 +28,37 @@ const lightGrey = Color(0xFFDEDEDE);
 class BtcMarket extends ReusableReactiveWidget<AppModel> {  
   /// A const constructor.
   const BtcMarket(super.model);
+
+  @override
+  Widget buildError(BuildContext context, AppModel model) => MaterialApp(
+    theme: ThemeData.light(useMaterial3: true),
+    themeMode: ThemeMode.dark,
+    darkTheme: ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      textTheme: Typography.material2021(colorScheme: const ColorScheme.dark()).white.apply(bodyColor: Colors.white, displayColor: Colors.white, decorationColor: Colors.white),
+      // colorScheme: ColorScheme.dark(onBackground: Colors.white),
+    ),
+    home: Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("An error occurred", textScaler: TextScaler.linear(2.5), textAlign: TextAlign.center,),
+            const SizedBox(height: 12),
+            const Text("We're sorry, ShopBing is down for today. Please check back tomorrow", textScaler: TextScaler.linear(1.5), textAlign: TextAlign.center,),
+            const SizedBox(height: 24),
+            const Text("This usually indicates high usage, so there may be lots of new products when you check back!", textScaler: TextScaler.linear(1.25), textAlign: TextAlign.center,),
+            const SizedBox(height: 24),
+            Image.asset("assets/bearcat/waiting.png", scale: 0.75),
+            const SizedBox(height: 24),
+            Text("The exact error was: ${model.errorText}"),
+          ],
+        ),
+      ),
+    ),
+  );
   
   @override
   Widget build(BuildContext context, AppModel model) => MaterialApp.router(
