@@ -37,6 +37,7 @@ class UserModel extends DataModel {
 
   @override
   Future<void> onSignIn(UserProfile profile) async {
+    userProfile = profile;
     sellerProfiles = await services.database.getSellerProfilesForUser(profile.id);
     notifyListeners();
   }

@@ -30,7 +30,7 @@ class ConversationViewModel extends ViewModel {
   String? messageError;
 
   /// Conversation object
-  Conversation get conversation => models.conversations.allMap[id]!.data!;
+  Conversation get conversation => models.conversations.all[id]!;
 
   /// All messages of this conversation
   List<Message> get reversedMessages => conversation.messages.reversed.toList();
@@ -50,13 +50,13 @@ class ConversationViewModel extends ViewModel {
   
   @override
   Future<void> init() async {
-    if (!models.conversations.allMap.containsKey(id)) {
+    if (!models.conversations.all.containsKey(id)) {
       errorText = "Could not find a conversation with ID: $id";
       return;
     }
     if (kIsWeb) await BrowserContextMenu.disableContextMenu();
     scrollController.addListener(notifyListeners);
-    _subscription = models.conversations.allMap[id]!.stream.listen(_update);
+    _subscription = models.conversations.streams[id]!.listen(_update);
     await updateIsRead();
   }
   

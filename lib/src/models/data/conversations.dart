@@ -1,37 +1,8 @@
 import "dart:async";
 
-import "package:flutter/services.dart";
-
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
-
-class ConversationData implements Comparable<ConversationData> {
-  ConversationID id;
-  Conversation? data;
-  VoidCallback callback;
-  late Stream<Conversation?> stream;
-  // ignore: cancel_subscriptions
-  late final StreamSubscription<Conversation?> subscription;
-
-  ConversationData({
-    required this.id,
-    required this.callback,
-  }) {
-    stream = services.database.listenToConversation(id);
-    subscription = stream.listen(_update);
-  }
-
-  void _update(Conversation? value) {
-    if (value == null) return;
-    data = value;
-    callback();
-  }
-
-  @override
-  int compareTo(ConversationData other) => (data == null || other.data == null)
-    ? id.compareTo(other.id) : data!.compareTo(other.data!);
-} 
 
 /// A data model to load and listen to conversations. 
 /// 
@@ -40,41 +11,52 @@ class ConversationData implements Comparable<ConversationData> {
 /// page without loading the conversation a second time, or subscribing and
 /// unsubscribing.
 class ConversationsModel extends DataModel {
+  /// A stream for every conversation, keyed by ID.
+  final Map<ConversationID, Stream<Conversation?>> streams = {};
+  /// A list of subscriptions on each conversation. Be sure to cancel these. 
+  final List<StreamSubscription<Conversation?>> _subscriptions = [];
+  /// All the conversations this user is a part of, keyed by ID.
+  final Map<ConversationID, Conversation> all = {};
+  List<Conversation> _allSorted = [];
 
-  Map<ConversationID, ConversationData> allMap = {};
-  List<Conversation> allList = [];
+  void _process(ConversationID id) {
+    final stream = services.database.listenToConversation(id);
+    final subscription = stream.listen(_update);
+    streams[id] = stream;
+    _subscriptions.add(subscription);
+  }
   
   Set<ConversationID> get _archivedIDs => models.user.userProfile?.archivedConversations ?? {};
   
   /// All non-archived conversations.
   List<Conversation> get unarchived => [
-    for (final conversation in allList) 
+    for (final conversation in _allSorted) 
       if (!_archivedIDs.contains(conversation.id))
         conversation,
   ];
 
   /// All archived conversations.
   List<Conversation> get archived => [
-    for (final conversation in allList) 
+    for (final conversation in _allSorted) 
       if (_archivedIDs.contains(conversation.id))
         conversation,
   ];
   
   @override
   Future<void> onSignIn(UserProfile profile) async {
-    await onSignOut();
     final temp = await services.database.getConversationsByUserID(profile.id);
-    allMap = {
-      for (final conversation in temp)
-        conversation.id: ConversationData(id: conversation.id, callback: _update),
-    };
+    for (final conversation in temp) {
+      final id = conversation.id;
+      all[id] = conversation;
+      _process(id);
+    }
     notifyListeners();
   }
 
   @override
   Future<void> onSignOut() async {
-    for (final data in allMap.values) {
-      await data.subscription.cancel();
+    for (final subscription in _subscriptions) {
+      await subscription.cancel();
     }
   }
 
@@ -85,19 +67,16 @@ class ConversationsModel extends DataModel {
   }
 
   /// Called when a conversation has been updated.
-  void _update() {
-    allList = [
-      for (final conversation in allMap.values)
-        conversation.data!,
-    ]..sort();
+  void _update(Conversation? conversation) {
+    if (conversation == null) return;
+    all[conversation.id] = conversation;
+    _allSorted = all.values.toList()..sort();
     notifyListeners();
   }
 
   /// Starts a new conversation and listens to it.
   Future<void> startConversation(Conversation conversation) async {
     await services.database.saveConversation(conversation);
-    final data = ConversationData(id: conversation.id, callback: _update);
-    allMap[conversation.id] = data;
-    _update();
+    _process(conversation.id);
   }
 }
