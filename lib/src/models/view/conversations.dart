@@ -14,7 +14,7 @@ class ConversationsViewModel extends ViewModel {
   bool showArchived = false;
 
   /// Whether the user has no conversations at all.
-  bool get isEmpty => models.conversations.all.isEmpty;
+  bool get isEmpty => models.conversations.allList.isEmpty;
 
   /// Shows conversations depending on [showArchived].
   List<Conversation> get conversations => showArchived 

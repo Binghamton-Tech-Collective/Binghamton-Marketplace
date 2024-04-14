@@ -55,11 +55,6 @@ class ConversationViewModel extends ViewModel {
       errorText = "Could not find a conversation with ID: $id";
       return;
     }
-    // if (initialConversation != null) {
-    //   conversation = initialConversation!;
-    // } else {
-    //   isLoading = true;
-    // }
     if (kIsWeb) await BrowserContextMenu.disableContextMenu();
     scrollController.addListener(notifyListeners);
     _subscription = models.conversations.streams[id]!.listen(_update);
@@ -89,7 +84,6 @@ class ConversationViewModel extends ViewModel {
   @override
   void dispose() {
     if (kIsWeb) BrowserContextMenu.enableContextMenu();
-    
     _subscription?.cancel();
     super.dispose();
   }
@@ -110,7 +104,7 @@ class ConversationViewModel extends ViewModel {
     final message = Message.send(
       content: messageController.text.trim(),
       author: models.user.userProfile!,
-      imageURL: "",
+      imageUrl: null,
     );
     conversation.messages.add(message);
     conversation.lastUpdate = DateTime.now();

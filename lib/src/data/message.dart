@@ -26,11 +26,11 @@ class Message {
   factory Message.send({
     required UserProfile author,
     required String content,
-    required String imageURL,
+    required String? imageUrl,
   }) => Message(
     author: author.id,
     content: content,
-    imageURL: imageURL,
+    imageURL: imageUrl,
     timeEdited: null,
     timeSent: DateTime.now(),
   );
