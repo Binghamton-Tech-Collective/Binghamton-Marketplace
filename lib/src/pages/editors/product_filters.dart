@@ -63,10 +63,12 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
           hintText: "Sort by...",
           onSelected: model.updateSortOrder,
           dropdownMenuEntries: [
-            for (final sortOrder in ProductSortOrder.values) DropdownMenuEntry(
-              value: sortOrder,
-              label: sortOrder.displayName,
-            ),
+            for (final sortOrder in ProductSortOrder.values) 
+              if (sortOrder != ProductSortOrder.byRating)
+              DropdownMenuEntry(
+                value: sortOrder,
+                label: sortOrder.displayName,
+              ),
           ],
         ),
       ),
@@ -151,7 +153,8 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
     minPrice(context, model),
     const SizedBox(height: 12),
     maxPrice(context, model),
-    const SizedBox(height: 12),
-    minRating(context, model),
+    // ===== Uncomment these when we support ratings =====  
+    // const SizedBox(height: 12),
+    // minRating(context, model),
   ];
 }
