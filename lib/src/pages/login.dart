@@ -23,7 +23,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
 
   @override
   Widget build(BuildContext context, LoginViewModel model) => Scaffold(
-    appBar: (showSignUp ?? false) ? AppBar() : null,
+    appBar: (showSignUp ?? false) ? AppBar(title: const Text("My Profile")) : null,
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

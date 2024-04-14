@@ -101,7 +101,7 @@ class ProductsPage extends ReactiveWidget<ProductsViewModel> {
               ? Center(child: Text("No products match your query", style: context.textTheme.titleLarge)) 
               : GridView.count(
               shrinkWrap: true,
-              crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
+              crossAxisCount: MediaQuery.of(context).size.width ~/ ProductWidget.minWidth,
               children: [
                 for (final product in model.productsToShow.take(model.productsPerPage))
                   ProductWidget(product: product),

@@ -5,6 +5,9 @@ import "package:btc_market/widgets.dart";
 
 /// A widget to show off a product.
 class ProductWidget extends StatelessWidget {
+  /// The minimum width of this widget. Use in responsive designs.
+  static const minWidth = 175;
+  
   /// The product to display on this widget
   final Product product;
 
