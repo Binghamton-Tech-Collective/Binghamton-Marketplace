@@ -2,6 +2,7 @@ import "dart:async";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
@@ -159,4 +160,7 @@ class ConversationViewModel extends ViewModel {
       errorText = "Error updating conversation $error";
     }
   }
+
+  /// Opens the seller's profile.
+  void openSellerProfile() => router.push("${Routes.sellers}/${conversation.sellerID}");
 }

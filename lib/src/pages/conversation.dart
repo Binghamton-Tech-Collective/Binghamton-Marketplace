@@ -97,6 +97,13 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
           context.pop();
         },
       ),
+      actions: [
+        if (!model.conversation.isSeller) TextButton(
+          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+          onPressed: model.openSellerProfile, 
+          child: const Text("View profile"),
+        ),
+      ],
       title: Row(
         children: [
           Hero(

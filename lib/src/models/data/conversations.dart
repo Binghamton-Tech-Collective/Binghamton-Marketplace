@@ -80,6 +80,7 @@ class ConversationsModel extends DataModel {
   /// Starts a new conversation and listens to it.
   Future<void> startConversation(Conversation conversation) async {
     await services.database.saveConversation(conversation);
+    all[conversation.id] = conversation;
     _process(conversation.id);
   }
 }

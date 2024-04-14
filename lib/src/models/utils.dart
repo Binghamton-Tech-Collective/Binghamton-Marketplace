@@ -10,7 +10,7 @@ extension ConversationUtils on Conversation {
   String get otherImage => isSeller ? buyerImage : sellerImage;
 
   /// Getting the appropriate name based on the role
-  String get otherName => isSeller ? buyerName : sellerName;
+  String get otherName => isSeller ? buyerName.trim() : sellerName.trim();
 
   /// Last message from the conversation, if there is any.
   Message? get lastMessage => messages.lastOrNull;
@@ -31,7 +31,7 @@ extension MessageUtils on Message {
   /// Gets the first name of this message's author.
   String getAuthorName(Conversation conversation) => (
     author == conversation.buyerUID ? conversation.buyerName : conversation.sellerName
-  ).split(" ").first;
+  ).trim().split(" ").first.trim();
 }
 
 /// Extension methods for products.
