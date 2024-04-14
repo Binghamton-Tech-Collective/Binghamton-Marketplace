@@ -64,15 +64,15 @@ class Database extends Service {
 
   /// Gets all the reviews of the seller with the given [sellerID]
   Future<List<Review>> getReviewsBySellerID(SellerID sellerID) =>
-    reviews.where("sellerID", isEqualTo: sellerID).getAll();
+    reviews.where("sellerID", isEqualTo: sellerID).limit(10).getAll();
 
   /// Gets a list of products listed by the seller with the given [sellerID].
   Future<List<Product>> getProductsBySellerID(SellerID sellerID) =>
-    products.where("sellerID", isEqualTo: sellerID).getAll();
+    products.where("sellerID", isEqualTo: sellerID).limit(20).getAll();
 
   /// Gets all the reviews about the given product with the given [productID]
   Future<List<Review>> getReviewsByProductID(ProductID productID) =>
-    reviews.where("productID", isEqualTo: productID).getAll();
+    reviews.where("productID", isEqualTo: productID).limit(10).getAll();
 
   /// Gets the seller profile owned by the given user ID
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
@@ -107,7 +107,7 @@ class Database extends Service {
 
   /// Gets the list of all sellers
   Future<List<SellerProfile>> getAllSellers(UserID id) =>
-    sellers.getAll();
+    sellers.limit(20).getAll();
 
   /// Deletes a review from the database.
   Future<void> deleteReview(ReviewID id) => reviews.doc(id).delete();
