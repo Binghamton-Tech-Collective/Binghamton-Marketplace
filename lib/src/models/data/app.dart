@@ -1,3 +1,4 @@
+import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/data.dart";
@@ -20,6 +21,43 @@ class AppModel extends DataModel {
 
   @override
   Future<void> onSignOut() async { }
+
+  /// A hook into the UI, to call [ScaffoldMessenger.of] with.
+  BuildContext? context;
+
+  /// Sends an in-app notification about this conversation via a [MaterialBanner].
+  void showMessage(Conversation conversation) {
+    if (context == null || !conversation.showNotification) return;
+    ScaffoldMessenger.of(context!).showMaterialBanner(
+      MaterialBanner(
+        content: ListTile(
+          title: Text("New message from ${conversation.otherName}"),
+          subtitle: Text(conversation.summary ?? "Tap to see details"),
+        ),
+        leading: CircleAvatar(
+          radius: 48,
+          backgroundImage: NetworkImage(conversation.otherImage),
+        ),
+        actions: [
+          TextButton(
+            child: const Text("Close"),
+            onPressed: () => ScaffoldMessenger.of(context!).hideCurrentMaterialBanner(),
+          ),
+          TextButton(
+            child: const Text("Reply"),
+            onPressed: () {
+              ScaffoldMessenger.of(context!).hideCurrentMaterialBanner();
+              router.go("${Routes.messages}/${conversation.id}");
+            },
+          ),
+        ],
+        margin: EdgeInsets.zero,
+        padding: const EdgeInsets.only(left: 16, top: 16),
+        elevation: 8,
+        forceActionsBelow: true,
+      ),
+    );
+  }
 }
 
 /// Useful methods on [ThemeMode]s.

@@ -16,7 +16,11 @@ extension ConversationUtils on Conversation {
   Message? get lastMessage => messages.lastOrNull;
 
   /// A summary of the last message.
-  String? get summary => "${lastMessage?.getAuthorName(this)}: ${lastMessage?.content.firstLine}";
+  String? get summary => lastMessage == null ? null 
+    : "${lastMessage?.getAuthorName(this)}: ${lastMessage?.content.firstLine}";
+
+  /// Whether this conversation should show a notification.
+  bool get showNotification => !isRead && !(lastMessage?.isAuthor ?? true);
 }
 
 /// Extension types on Message

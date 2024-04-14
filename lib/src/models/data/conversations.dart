@@ -47,7 +47,6 @@ class ConversationsModel extends DataModel {
     final temp = await services.database.getConversationsByUserID(profile.id);
     for (final conversation in temp) {
       final id = conversation.id;
-      all[id] = conversation;
       _process(id);
     }
     notifyListeners();
@@ -69,6 +68,10 @@ class ConversationsModel extends DataModel {
   /// Called when a conversation has been updated.
   void _update(Conversation? conversation) {
     if (conversation == null) return;
+    // Important: Only show a notification if the message was already loaded.
+    // Without this, EVERY message would show a notification when they first load
+    // and the app start experience would be awful.
+    if (all.containsKey(conversation.id)) models.app.showMessage(conversation);
     all[conversation.id] = conversation;
     _allSorted = all.values.toList()..sort();
     notifyListeners();
