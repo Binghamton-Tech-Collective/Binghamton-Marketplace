@@ -176,7 +176,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           childAspectRatio: 0.6,
-          crossAxisCount: 3,
+          crossAxisCount: MediaQuery.of(context).size.width ~/ 200,
           children: [
             for (final product in model.productList) 
               ProductWidget(product: product),

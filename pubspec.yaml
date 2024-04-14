@@ -37,10 +37,23 @@ dependencies:
   url_launcher: ^6.2.5
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 
   very_good_analysis: ^5.1.0
+
+flutter_launcher_icons:
+  image_path: "assets/logos/shopbing.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "assets/logos/shopbing.png"
+  web: 
+    generate: true
+    image_path: "assets/logos/shopbing.png"
+    background_color: "#005A43"
+    theme_color: "#005A43"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -51,6 +64,7 @@ flutter:
     - assets/
     - assets/categories/
     - assets/bearcat/
+    - assets/logos/
  
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

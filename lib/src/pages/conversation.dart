@@ -42,9 +42,6 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       onEditingComplete: () {
         if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
       },
-      onSubmitted: (_) {
-        if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
-      },
       decoration: InputDecoration(
         border: hasBorder ? const UnderlineInputBorder() : InputBorder.none,
         hintText: hint,

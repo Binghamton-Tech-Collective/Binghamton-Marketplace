@@ -87,7 +87,9 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  crossAxisCount: MediaQuery.of(context).size.width ~/ 175,
+                  crossAxisCount: MediaQuery.of(context).size.width ~/ ProductWidget.minWidth,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
                   children: [
                     for (final index in range(4)) Hero(
                       tag: "${model.initialProduct?.id}-image-$index",
