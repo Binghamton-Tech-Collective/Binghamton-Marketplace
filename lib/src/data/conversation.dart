@@ -1,7 +1,7 @@
 import "package:btc_market/data.dart";
 
 /// A conversation between a user and a seller
-class Conversation {
+class Conversation implements Comparable<Conversation> {
   /// The unique ID for a conversation
   final ConversationID id;
   /// The UserID of the buyer involved
@@ -94,4 +94,7 @@ class Conversation {
     "lastUpdate": lastUpdate.toIso8601String(),
     "isRead" : isRead,
   };
+
+  @override
+  int compareTo(Conversation other) => lastUpdate.compareTo(other.lastUpdate) * -1;
 }

@@ -49,7 +49,7 @@ class ProductViewModel extends ViewModel {
           buyer: buyer,
           seller: seller,
         );
-        await services.database.saveConversation(conversation);
+        await models.conversations.startConversation(conversation);
       }
       await router.push("/messages/${conversation.id}");
     } catch(error) {

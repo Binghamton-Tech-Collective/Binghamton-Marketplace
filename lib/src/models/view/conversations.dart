@@ -7,52 +7,36 @@ class ConversationsViewModel extends ViewModel {
   /// The user profile of the user signed in
   final user = models.user.userProfile!;
 
-  /// List of all the conversations for the user
-  late List<Conversation> allConversations;
-
   /// All the user's archived conversations.
   Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
 
   /// Whether to show archived conversations.
   bool showArchived = false;
 
-  /// All non-archived conversations.
-  List<Conversation> get unarchived => [
-    for (final conversation in allConversations)
-      if (!archivedIDs.contains(conversation.id))
-        conversation,
-  ];
-
-  /// All archived conversations.
-  List<Conversation> get archived => [
-    for (final conversation in allConversations)
-      if (archivedIDs.contains(conversation.id))
-        conversation,
-  ];
+  /// Whether the user has no conversations at all.
+  bool get isEmpty => models.conversations.all.isEmpty;
 
   /// Shows conversations depending on [showArchived].
-  List<Conversation> get conversations => showArchived ? archived : unarchived;
+  List<Conversation> get conversations => showArchived 
+    ? models.conversations.archived 
+    : models.conversations.unarchived;
+
+  @override
+  Future<void> init() async {
+    models.conversations.addListener(notifyListeners);
+  }
+
+  @override
+  void dispose() {
+    models.conversations.removeListener(notifyListeners);
+    super.dispose();
+  }
 
   /// Toggles whether the UI should show or hide archived conversations.
   // ignore: avoid_positional_boolean_parameters
   void updateShowArchive(bool input) {
     showArchived = input;
     notifyListeners();
-  }
-
-  @override
-  Future<void> init() async {
-    isLoading = true;
-    try {
-      allConversations = await services.database.getConversationsByUserID(user.id)..sort(
-        (a, b) => b.lastUpdate.compareTo(a.lastUpdate),
-      );
-    } catch (error) {
-      errorText = "Error loading your conversations: \n$error";
-      isLoading = false;
-      rethrow;
-    }
-    isLoading = false;
   }
 
   /// Toggles whether a specific conversation is archived.

@@ -86,10 +86,6 @@ class Database extends Service {
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
 
-  /// Gets the product from the the given product ID
-  Future<Conversation?> getConversationByID(ConversationID conversationID) =>
-    conversations.doc(conversationID).getData();
-
   /// Add the message to database
   Future<void> saveConversation(Conversation conversation) =>
     conversations.doc(conversation.id).set(conversation);

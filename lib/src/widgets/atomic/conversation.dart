@@ -36,7 +36,7 @@ class ConversationWidget extends StatelessWidget {
       child: Text(conversation.otherName),
     ),
     subtitle: conversation.lastMessage == null ? null : Text(
-      conversation.lastMessage!.content.firstLine,
+      conversation.summary!,
       overflow: TextOverflow.ellipsis,
     ),
     leading: Hero(

@@ -30,7 +30,8 @@ class ConversationViewModel extends ViewModel {
   String? messageError;
 
   /// Conversation object
-  late Conversation conversation;
+  // late Conversation conversation;
+  Conversation get conversation => models.conversations.allMap[id]!;
 
   /// All messages of this conversation
   List<Message> get reversedMessages => conversation.messages.reversed.toList();
@@ -50,20 +51,19 @@ class ConversationViewModel extends ViewModel {
   
   @override
   Future<void> init() async {
-    if (initialConversation != null) {
-      conversation = initialConversation!;
-    } else {
-      isLoading = true;
-    }
-    if (kIsWeb) await BrowserContextMenu.disableContextMenu();
-    final tempConversation = await services.database.getConversationByID(id);
-    scrollController.addListener(notifyListeners);
-    if (tempConversation == null) {
-      errorText = "Could not find the conversation! $id";
-      isLoading = false;
+    if (!models.conversations.allMap.containsKey(id)) {
+      errorText = "Could not find a conversation with ID: $id";
       return;
     }
-    _subscription = services.database.listenToConversation(id).listen(_update);
+    // if (initialConversation != null) {
+    //   conversation = initialConversation!;
+    // } else {
+    //   isLoading = true;
+    // }
+    if (kIsWeb) await BrowserContextMenu.disableContextMenu();
+    scrollController.addListener(notifyListeners);
+    _subscription = models.conversations.streams[id]!.listen(_update);
+    await updateIsRead();
   }
   
   Future<void> _update(Conversation? data) async {
@@ -72,7 +72,7 @@ class ConversationViewModel extends ViewModel {
       notifyListeners();
       return;
     }
-    conversation = data;
+    // conversation = data;
     await updateIsRead();
     isLoading = false;
   }
@@ -89,6 +89,7 @@ class ConversationViewModel extends ViewModel {
   @override
   void dispose() {
     if (kIsWeb) BrowserContextMenu.enableContextMenu();
+    
     _subscription?.cancel();
     super.dispose();
   }

@@ -108,10 +108,10 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   @override
   SellerProfile build() => SellerProfile(
     id: sellerID,
-    name: nameController.text,
+    name: nameController.text.trim(),
     userID: userID,
     imageUrl: imageUrl!,
-    bio: bioController.text,
+    bio: bioController.text.trim(),
     contact: ContactInfo(
       email: email,
       phoneNumber: phoneNumberController.text.nullIfEmpty,

@@ -14,12 +14,20 @@ extension ConversationUtils on Conversation {
 
   /// Last message from the conversation, if there is any.
   Message? get lastMessage => messages.lastOrNull;
+
+  /// A summary of the last message.
+  String? get summary => "${lastMessage?.getAuthorName(this)}: ${lastMessage?.content.firstLine}";
 }
 
 /// Extension types on Message
 extension MessageUtils on Message {
   /// Checking if the person sending the message is the author of the message
   bool get isAuthor => author == models.user.userProfile!.id;
+
+  /// Gets the first name of this message's author.
+  String getAuthorName(Conversation conversation) => (
+    author == conversation.buyerUID ? conversation.buyerName : conversation.sellerName
+  ).split(" ").first;
 }
 
 /// Extension methods for products.

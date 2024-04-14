@@ -88,7 +88,7 @@ class SellerProfileViewModel extends ViewModel {
         buyer: buyer,
         seller: seller,
       );
-      await services.database.saveConversation(conversation);
+      await models.conversations.startConversation(conversation);
     }
     router.push("/messages/${conversation.id}").ignore();
   }

@@ -8,6 +8,9 @@ class UserModel extends DataModel {
   /// The currently signed-in user.
   UserProfile? userProfile;
 
+  /// The user ID of the currently signed-in user, if any.
+  UserID? get userID => userProfile?.id;
+
   /// The seller profile owned by this user, if any.
   List<SellerProfile> sellerProfiles = [];
 
@@ -31,6 +34,7 @@ class UserModel extends DataModel {
     await loadSellerProfiles();
     if (userProfile == null) return;
     models.app.setTheme(userProfile!.theme);
+    await models.conversations.loadConversations();
   }
 
   /// Loads the user's seller profiles.
