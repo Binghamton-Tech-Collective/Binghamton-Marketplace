@@ -64,8 +64,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
           onSelected: model.updateSortOrder,
           dropdownMenuEntries: [
             for (final sortOrder in ProductSortOrder.values) 
-              if (sortOrder != ProductSortOrder.byRating)
-              DropdownMenuEntry(
+              if (sortOrder != ProductSortOrder.byRating) DropdownMenuEntry(
                 value: sortOrder,
                 label: sortOrder.displayName,
               ),
