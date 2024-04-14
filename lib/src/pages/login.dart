@@ -40,7 +40,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     Text("ShopBing", style: context.textTheme.headlineMedium),
     const SizedBox(height: 8),
     Image.asset("assets/logos/btc.png", height: 200, width: 350),
-    Text("Your one-stop shop for buying and selling at Binghamton University", style: context.textTheme.titleSmall, textAlign: TextAlign.center),
+    Text("Your one-stop shop for buying and selling at Binghamton University!", style: context.textTheme.titleSmall, textAlign: TextAlign.center),
     const SizedBox(height: 24),
     SizedBox(
       width: 300, 
