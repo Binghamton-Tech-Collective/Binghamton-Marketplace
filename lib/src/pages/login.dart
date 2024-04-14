@@ -10,11 +10,16 @@ import "package:btc_market/widgets.dart";
 class LoginPage extends ReactiveWidget<LoginViewModel> {
   /// The route to redirect to after sign-in or sign-up, if any.
   final String? redirect;
+  /// Whether to skip to the signup page.
+  final bool? showSignUp;
   /// Creates the login page.
-  const LoginPage({this.redirect});
+  const LoginPage({this.redirect, this.showSignUp});
   
   @override
-  LoginViewModel createModel() => LoginViewModel(redirect: redirect ?? Routes.products);
+  LoginViewModel createModel() => LoginViewModel(
+    redirect: redirect ?? Routes.products,
+    showSignUp: showSignUp ?? false,
+  );
 
   @override
   Widget build(BuildContext context, LoginViewModel model) => Scaffold(
@@ -72,7 +77,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     const SizedBox(height: 16),
     FilledButton(
       onPressed: model.isReady ? model.signUp : null, 
-      child: const Text("Create account"),
+      child: (showSignUp ?? false) ? const Text("Save") : const Text("Create account"),
     ),
   ];
 }

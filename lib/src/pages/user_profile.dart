@@ -20,7 +20,7 @@ class UserProfilePage extends ReactiveWidget<UserProfileViewModel>{
         TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           child: const Text("Edit profile"),
-          onPressed: () => context.push("${Routes.profile}/edit"),
+          onPressed: () => context.push("${Routes.profile}/edit", extra: Routes.profile),
         ),
         ProfileButton(),
       ],
