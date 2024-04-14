@@ -19,6 +19,7 @@ class ConversationWidget extends StatelessWidget {
     super.key,
   });
 
+  /// Gets the color of the conversation tile. Unread conversations are highlighted.
   Color? getColor(BuildContext context) {
     if (conversation.isRead) return null;
     final message = conversation.lastMessage;

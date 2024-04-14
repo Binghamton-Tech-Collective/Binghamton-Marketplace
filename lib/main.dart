@@ -2,7 +2,6 @@ import "package:btc_market/widgets.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter_web_plugins/url_strategy.dart";
-import "package:go_router/go_router.dart";
 
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
@@ -27,7 +26,8 @@ const lightGrey = Color(0xFFDEDEDE);
 
 /// Our main app. Remember, everything is a widget!
 class BtcMarket extends ReusableReactiveWidget<AppModel> {  
-  BtcMarket(super.model);
+  /// A const constructor.
+  const BtcMarket(super.model);
   
   @override
   Widget build(BuildContext context, AppModel model) => MaterialApp.router(

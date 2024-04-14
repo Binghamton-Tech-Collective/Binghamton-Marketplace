@@ -25,6 +25,7 @@ import "src/models/data/user.dart";
 class Models extends DataModel {
   /// The user data model.
   final user = UserModel();
+  /// The app-wide data model.
   final app = AppModel();
   
   @override
