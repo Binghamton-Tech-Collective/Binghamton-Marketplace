@@ -23,6 +23,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
 
   @override
   Widget build(BuildContext context, LoginViewModel model) => Scaffold(
+    appBar: (showSignUp ?? false) ? AppBar() : null,
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +59,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
   ];
 
   List<Widget> _signUp(BuildContext context, LoginViewModel model) => [
-    Text("Create an account", style: context.textTheme.headlineLarge),
+    Text((showSignUp ?? false) ? "Edit account" : "Create an account", style: context.textTheme.headlineLarge),
     const SizedBox(height: 16),
     SizedBox(
       width: 200,
