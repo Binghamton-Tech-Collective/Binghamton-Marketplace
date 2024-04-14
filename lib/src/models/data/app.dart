@@ -1,5 +1,7 @@
-import "package:btc_market/models.dart";
 import "package:flutter/material.dart";
+
+import "package:btc_market/data.dart";
+import "package:btc_market/models.dart";
 
 /// A data model with app-wide settings.
 class AppModel extends DataModel {
@@ -12,6 +14,12 @@ class AppModel extends DataModel {
     _theme = value;
     notifyListeners();
   }
+
+  @override
+  Future<void> onSignIn(UserProfile profile) async => setTheme(profile.theme);
+
+  @override
+  Future<void> onSignOut() async { }
 }
 
 /// Useful methods on [ThemeMode]s.

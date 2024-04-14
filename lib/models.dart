@@ -18,6 +18,8 @@ export "src/models/view/seller_profile.dart";
 export "src/models/view/login.dart";
 export "src/models/view/products.dart";
 
+import "package:btc_market/data.dart";
+
 import "src/models/model.dart";
 import "src/models/data/app.dart";
 import "src/models/data/conversations.dart";
@@ -45,6 +47,20 @@ class Models extends DataModel {
     conversations.dispose();
     app.dispose();
     super.dispose();
+  }
+
+  @override
+  Future<void> onSignIn(UserProfile profile) async {
+    await user.onSignIn(profile);
+    await app.onSignIn(profile);
+    await conversations.onSignIn(profile);
+  }
+
+  @override
+  Future<void> onSignOut() async {
+    await user.onSignOut();
+    await app.onSignOut();
+    await conversations.onSignOut();
   }
 }
 

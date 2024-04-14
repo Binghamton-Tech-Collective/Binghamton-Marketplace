@@ -165,8 +165,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
     saveError = null;
     try {
       final result = build();
-      await services.database.saveSellerProfile(result);
-      await models.user.loadSellerProfiles();
+      await models.user.addSellerProfile(result);
       if (isEditing) {
         router.pop(result);
       } else {

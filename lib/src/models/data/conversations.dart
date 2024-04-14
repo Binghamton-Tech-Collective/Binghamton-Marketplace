@@ -36,11 +36,10 @@ class ConversationsModel extends DataModel {
         conversation,
   ];
   
-  /// Loads all conversations from the database and streams them in real-time.
-  Future<void> loadConversations() async {
-    if (!models.user.isSignedIn) return;
-    await stopStreaming();
-    allList = await services.database.getConversationsByUserID(models.user.userID!)..sort();
+  @override
+  Future<void> onSignIn(UserProfile profile) async {
+    await onSignOut();  // can't be too careful!
+    allList = await services.database.getConversationsByUserID(profile.id)..sort();
     allMap = {
       for (final conversation in allList)
         conversation.id: conversation,
@@ -56,8 +55,8 @@ class ConversationsModel extends DataModel {
     notifyListeners();
   }
 
-  /// Stops listening to all conversations.
-  Future<void> stopStreaming() async {
+  @override
+  Future<void> onSignOut() async {
     for (final subscription in _subscriptions) {
       await subscription.cancel();
     }
@@ -65,7 +64,7 @@ class ConversationsModel extends DataModel {
 
   @override
   void dispose() {
-    stopStreaming();
+    onSignOut();
     super.dispose();
   }
 
