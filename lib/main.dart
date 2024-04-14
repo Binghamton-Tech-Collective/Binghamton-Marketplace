@@ -21,6 +21,9 @@ void main() async {
 /// Note that we are not authorized to use the Binghamton green, Pantone 342.
 const darkGreen = Color(0XFF005A43);
 
+/// A lighter green for high contrast in dark mode.
+const lightGreen = Color.fromARGB(255, 0, 175, 150);
+
 /// A light grey to accent the dark green.
 const lightGrey = Color(0xFFDEDEDE);
 
@@ -32,13 +35,7 @@ class BtcMarket extends ReusableReactiveWidget<AppModel> {
   @override
   Widget buildError(BuildContext context, AppModel model) => MaterialApp(
     theme: ThemeData.light(useMaterial3: true),
-    themeMode: ThemeMode.dark,
-    darkTheme: ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      textTheme: Typography.material2021(colorScheme: const ColorScheme.dark()).white.apply(bodyColor: Colors.white, displayColor: Colors.white, decorationColor: Colors.white),
-      // colorScheme: ColorScheme.dark(onBackground: Colors.white),
-    ),
+    darkTheme: ThemeData.dark(useMaterial3: true),
     home: Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -87,6 +84,9 @@ class BtcMarket extends ReusableReactiveWidget<AppModel> {
         onPrimaryContainer: Colors.white,
         secondaryContainer: Colors.grey.shade600,
         onSecondaryContainer: Colors.white,
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(foregroundColor: lightGreen),
       ),
     ),
     theme: ThemeData(

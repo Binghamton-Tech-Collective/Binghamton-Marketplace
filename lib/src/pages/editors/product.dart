@@ -31,7 +31,6 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
     appBar: AppBar(
-      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
       title: const Text("List Item"),
       actions: [
         ProfileButton(),
