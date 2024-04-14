@@ -46,7 +46,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
         ),
       ],
     ),
-    floatingActionButton: FloatingActionButton.extended(
+    floatingActionButton: model.product.isSeller ? null : FloatingActionButton.extended(
       icon: const Icon(Icons.message),
       onPressed: model.openConversation, 
       label: const Text("Contact Seller"),
@@ -114,7 +114,6 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             const SizedBox(height: 12),
             Text("Sold by", style: context.textTheme.titleLarge),
             SellerProfileWidget(
-              // hero: false,
               profile: model.sellerProfile, 
               averageRating: model.sellerRating as double?,
             ),

@@ -22,13 +22,13 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
   /// Determines which filters are available. See [ProductFilters] and [Database.queryProducts].
   ProductSortOrder sortOrder = ProductSortOrder.byNew;
 
-  /// The minimum rating to filter by, if any. See [FilterByRating.minRating].
+  /// The minimum rating to filter by, if any.
   int? minRating;
 
-  /// The minimum price to filter by, if any. See [FilterByPrice.minPrice].
+  /// The minimum price to filter by, if any.
   int? minPrice;
 
-  /// The maximum price to filter by, if any. See [FilterByPrice.maxPrice].
+  /// The maximum price to filter by, if any.
   int? maxPrice;
   
   /// The text controller for [minPrice].
@@ -63,23 +63,12 @@ class ProductFiltersBuilder extends BuilderModel<ProductFilters> {
   bool get isReady => !(sortOrder.isByPrice && hasPriceError);
 
   @override
-  ProductFilters build() => switch (sortOrder) {
-    ProductSortOrder.byRating => FilterByRating(
-      minRating: minRating,
-      categories: categories,
-    ),
-    ProductSortOrder.byNew || ProductSortOrder.byOld => NormalFilter(
-      categories: categories,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      minRating: minRating,
-    ),
-    ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => FilterByPrice(
-      minPrice: minPrice, 
-      maxPrice: maxPrice,
-      categories: categories,
-    ),
-  };
+  ProductFilters build() => ProductFilters(
+    categories: categories,
+    minPrice: minPrice == null ? null : minPrice! * 100,
+    maxPrice: maxPrice == null ? null : maxPrice! * 100,
+    minRating: minRating,
+  );
 
   /// Updates [minPrice] using the value in [minPriceController], and updates [minPriceError].
   void updateMinPrice() {

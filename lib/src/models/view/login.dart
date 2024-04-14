@@ -6,12 +6,12 @@ import "package:firebase_ui_auth/firebase_ui_auth.dart";
 import "package:flutter/material.dart";
 
 /// A test account that is allowed to be used, even if it doesn't end in @binghamton.edu
-const testAccount = "btc-test@gmail.com";
+const testAccount = "harshvaghani98@gmail.com";
 
 /// A view model to sign the user in, show a sign-up form if needed, then redirect to another route.
 class LoginViewModel extends BuilderModel<UserProfile> {
   /// Whether to show the signup form.
-  bool showSignUp = false;
+  bool showSignUp;
   
   /// The user ID, if the user is signed in.
   UserID? get userID => services.auth.userID;
@@ -31,15 +31,28 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   /// Whether the account is being saved.
   bool isSaving = false;
 
+  /// The user's theme preference.
+  ThemeMode theme = ThemeMode.system;
+
   /// The route to redirect to after a successful sign in or registration.
   final String redirect;
 
+  /// The profile to edit, if any.
+  UserProfile? initialProfile;
+
   /// Creates a view model to sign in or register then go to the redirect URL.
-  LoginViewModel({required this.redirect});
+  LoginViewModel({required this.redirect, required this.showSignUp});
 
   @override
   Future<void> init() async {
     usernameController.addListener(notifyListeners);
+    final profile = models.user.userProfile;
+    if (profile != null) {
+      initialProfile = profile;
+      imageUrl = profile.imageUrl;
+      usernameController.text = profile.name;
+      theme = profile.theme;
+    }
   }
 
   @override
@@ -55,10 +68,14 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     && !isSaving;  
 
   @override
-  UserProfile build() => UserProfile.newProfile(
+  UserProfile build() => UserProfile(
     name: username!, 
     id: userID!,
     imageUrl: imageUrl!,
+    archivedConversations: initialProfile?.archivedConversations ?? {},
+    productsWatchlist: initialProfile?.productsWatchlist ?? {},
+    sellersWatchlist: initialProfile?.sellersWatchlist ?? {},
+    theme: theme,
   );
 
   /// Once the user is signed in, checks their profile and sets [showSignUp], if needed.
@@ -119,6 +136,14 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     if (url == null) error = "Could not upload image";
     imageUrl = url;
     isSaving = false;
+    notifyListeners();
+  }
+
+  /// Updates [theme] and refreshes the UI.
+  void updateTheme(ThemeMode? input) {
+    if (input == null) return;
+    theme = input;
+    models.app.setTheme(input);
     notifyListeners();
   }
 }

@@ -48,5 +48,5 @@ extension QueryUtils<E> on Query<E> {
   ];
 
   /// Gets the first document that matches the query, if any exists.
-  Future<E?> getFirst() async => (await get()).docs.firstOrNull?.data();
+  Future<E?> getFirst() async => (await limit(1).get()).docs.firstOrNull?.data();
 }

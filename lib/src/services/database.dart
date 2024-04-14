@@ -64,15 +64,15 @@ class Database extends Service {
 
   /// Gets all the reviews of the seller with the given [sellerID]
   Future<List<Review>> getReviewsBySellerID(SellerID sellerID) =>
-    reviews.where("sellerID", isEqualTo: sellerID).getAll();
+    reviews.where("sellerID", isEqualTo: sellerID).limit(10).getAll();
 
   /// Gets a list of products listed by the seller with the given [sellerID].
   Future<List<Product>> getProductsBySellerID(SellerID sellerID) =>
-    products.where("sellerID", isEqualTo: sellerID).getAll();
+    products.where("sellerID", isEqualTo: sellerID).limit(20).getAll();
 
   /// Gets all the reviews about the given product with the given [productID]
   Future<List<Review>> getReviewsByProductID(ProductID productID) =>
-    reviews.where("productID", isEqualTo: productID).getAll();
+    reviews.where("productID", isEqualTo: productID).limit(10).getAll();
 
   /// Gets the seller profile owned by the given user ID
   Future<SellerProfile?> getSellerProfile(SellerID sellerID) =>
@@ -85,10 +85,6 @@ class Database extends Service {
   /// Gets the product from the the given product ID
   Future<Product?> getProduct(ProductID productID) =>
     products.doc(productID).getData();
-
-  /// Gets the product from the the given product ID
-  Future<Conversation?> getConversationByID(ConversationID conversationID) =>
-    conversations.doc(conversationID).getData();
 
   /// Add the message to database
   Future<void> saveConversation(Conversation conversation) =>
@@ -111,7 +107,7 @@ class Database extends Service {
 
   /// Gets the list of all sellers
   Future<List<SellerProfile>> getAllSellers(UserID id) =>
-    sellers.getAll();
+    sellers.limit(20).getAll();
 
   /// Deletes a review from the database.
   Future<void> deleteReview(ReviewID id) => reviews.doc(id).delete();
@@ -162,29 +158,14 @@ class Database extends Service {
         ],
       );
     }
-    // Filter by [ProductFilters] options.
-    switch (filters) {
-      case FilterByPrice(:final minPrice, :final maxPrice):
-        if (minPrice != null) {
-          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
-        }
-        if (maxPrice != null) {
-          query = query.where("price", isLessThanOrEqualTo: maxPrice);
-        }
-      case FilterByRating(:final minRating):
-        if (minRating != null) {
-          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-        }
-      case NormalFilter(:final minPrice, :final maxPrice, :final minRating):
-        if (minPrice != null) {
-          query = query.where("price", isGreaterThanOrEqualTo: minPrice);
-        }
-        if (maxPrice != null) {
-          query = query.where("price", isLessThanOrEqualTo: maxPrice);
-        }
-        if (minRating != null) {
-          query = query.where("averageRating", isGreaterThanOrEqualTo: minRating);
-        }
+    if (filters.minPrice != null) {
+        query = query.where("price", isGreaterThanOrEqualTo: filters.minPrice);
+    }
+    if (filters.maxPrice != null) {
+        query = query.where("price", isLessThanOrEqualTo: filters.maxPrice);
+    }
+    if (filters.minRating != null) {
+        query = query.where("averageRating", isGreaterThanOrEqualTo: filters.minRating);
     }
     // Sort by [ProductSortOrder] option.
     switch (sortOrder) {

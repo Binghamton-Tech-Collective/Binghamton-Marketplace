@@ -22,6 +22,15 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   @override
   ConversationViewModel createModel() => ConversationViewModel(id, initialConversation);
 
+  @override
+  void didUpdateWidget(ConversationPage oldWidget, ConversationViewModel model) {
+    if (oldWidget.id != id) {
+      model.reset(id);
+      model.init();
+    }
+    super.didUpdateWidget(oldWidget, model);
+  }
+
   /// Builds a text field with some shared attributes.
   Widget buildTextField({
     required TextEditingController controller,
@@ -40,9 +49,6 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       maxLines: null,
       textCapitalization: TextCapitalization.sentences,
       onEditingComplete: () {
-        if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
-      },
-      onSubmitted: (_) {
         if (!HardwareKeyboard.instance.isShiftPressed) onSubmit();
       },
       decoration: InputDecoration(

@@ -63,15 +63,15 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
           hintText: "Sort by...",
           onSelected: model.updateSortOrder,
           dropdownMenuEntries: [
-            for (final sortOrder in ProductSortOrder.values) DropdownMenuEntry(
-              value: sortOrder,
-              label: sortOrder.displayName,
-            ),
+            for (final sortOrder in ProductSortOrder.values) 
+              if (sortOrder != ProductSortOrder.byRating) DropdownMenuEntry(
+                value: sortOrder,
+                label: sortOrder.displayName,
+              ),
           ],
         ),
       ),
       const SizedBox(height: 12),
-      const Text("Change the sort order for more options"),
       ...buildBody(context, model),
       const Spacer(),
       Row(
@@ -107,7 +107,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
       controller: model.minPriceController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        prefixText: r"$",
+        prefixIcon: const Icon(Icons.attach_money),        
         border: const OutlineInputBorder(),
         hintText: "Min price",
         errorText: model.minPriceError,
@@ -123,7 +123,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
       controller: model.maxPriceController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        prefixText: r"$",
+        prefixIcon: const Icon(Icons.attach_money),
         border: const OutlineInputBorder(),
         hintText: "Max price",
         errorText: model.maxPriceError,
@@ -147,24 +147,13 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
   );
 
   /// Builds the available filter options based on [ProductFiltersBuilder.sortOrder].
-  List<Widget> buildBody(BuildContext context, ProductFiltersBuilder model) => switch (model.sortOrder) {
-    ProductSortOrder.byNew || ProductSortOrder.byOld => [
-      const SizedBox(height: 12),
-      minPrice(context, model),
-      const SizedBox(height: 12),
-      maxPrice(context, model),
-      const SizedBox(height: 12),
-      minRating(context, model),
-    ],
-    ProductSortOrder.byPriceAscending || ProductSortOrder.byPriceDescending => [
-      const SizedBox(height: 12),
-      minPrice(context, model),
-      const SizedBox(height: 12),
-      maxPrice(context, model),
-    ],
-    ProductSortOrder.byRating => [
-      const SizedBox(height: 12),
-      minRating(context, model),
-    ],
-  };
+  List<Widget> buildBody(BuildContext context, ProductFiltersBuilder model) => [
+    const SizedBox(height: 12),
+    minPrice(context, model),
+    const SizedBox(height: 12),
+    maxPrice(context, model),
+    // ===== Uncomment these when we support ratings =====  
+    // const SizedBox(height: 12),
+    // minRating(context, model),
+  ];
 }

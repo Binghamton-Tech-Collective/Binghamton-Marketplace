@@ -31,7 +31,6 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
   @override
   Widget build(BuildContext context, ProductBuilder model) => Scaffold(
     appBar: AppBar(
-      backgroundColor: const Color.fromRGBO(0, 90, 67, 1),
       title: const Text("List Item"),
       actions: [
         ProfileButton(),
@@ -87,7 +86,9 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  crossAxisCount: MediaQuery.of(context).size.width ~/ 175,
+                  crossAxisCount: MediaQuery.of(context).size.width ~/ ProductWidget.minWidth,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
                   children: [
                     for (final index in range(4)) Hero(
                       tag: "${model.initialProduct?.id}-image-$index",
@@ -149,6 +150,20 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 if (model.saveError != null) Text(
                   model.saveError!,
                   style: TextStyle(color: context.colorScheme.error),
+                ),
+                const Divider(),
+                Text(
+                  "By listing a product, you agree to our terms and conditions. This includes adhering to all applicable laws and regulations. Products that violate these terms, including the sale of illegal items, will be removed, and your account may be subject to permanent suspension and potential reporting to relevant authorities, including the university.",
+                  style: context.textTheme.bodyMedium,
+                ),
+                CheckboxListTile.adaptive(
+                  value: model.agreedToTerms, 
+                  onChanged: model.updateTerms,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: const Text(
+                    "I understand and agree to the terms", 
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),

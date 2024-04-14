@@ -17,7 +17,7 @@ extension type const SellerID(String id) { }
 extension type const ReviewID(String id) { }
 
 /// A unique ID for every conversation.
-extension type const ConversationID(String id) { }
+extension type const ConversationID(String id) implements String { }
 
 /// Helpful methods on strings.
 extension StringUtils on String {

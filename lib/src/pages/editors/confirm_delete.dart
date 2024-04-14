@@ -1,8 +1,8 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
-import "package:btc_market/services.dart";
 import "package:btc_market/widgets.dart";
+
 import "package:flutter/material.dart";
 
 /// A view model to confirm deletion of a [SellerProfile].
@@ -37,8 +37,7 @@ class ConfirmDeleteModel extends ViewModel {
   Future<void> deleteProfile() async {
     isDeleting = true;
     notifyListeners();
-    await services.deleteSellerProfile(profile.id);
-    await models.user.loadSellerProfiles();
+    await models.user.deleteSellerProfile(profile);
     isDeleting = false;
     notifyListeners();
     router.pop();  // out of editor

@@ -1,14 +1,18 @@
+import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
+import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
-import "package:go_router/go_router.dart";
 
 /// A shell page that wraps the given page with a [BottomNavigationBar].
-class ShellPage extends StatelessWidget {
+class ShellPage extends ReusableReactiveWidget<AppModel> {
   /// The main body of the app.
   final Widget child;
   
   /// Creates the navigation page.
-  const ShellPage(this.child);
+  ShellPage(this.child) : super(models.app);
+
+  @override
+  void initModel(BuildContext context, AppModel model) => model.context = context;
   
   /// Goes to the page specified by the given index.
   void goIndex(int index) {
@@ -22,7 +26,7 @@ class ShellPage extends StatelessWidget {
   );
   
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context, AppModel model) => Scaffold(
     body: child,
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     bottomNavigationBar: NavigationBar(

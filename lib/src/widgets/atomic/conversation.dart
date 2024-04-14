@@ -21,12 +21,14 @@ class ConversationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
+    tileColor: conversation.showNotification 
+      ? context.colorScheme.surfaceVariant : null,
     title: Hero(
       tag: "name-${conversation.id}",
       child: Text(conversation.otherName),
     ),
     subtitle: conversation.lastMessage == null ? null : Text(
-      conversation.lastMessage!.content.firstLine,
+      conversation.summary!,
       overflow: TextOverflow.ellipsis,
     ),
     leading: Hero(

@@ -12,10 +12,10 @@ import "package:flutter/services.dart";
 /// Loads messages and has functions to send, edit and delete messages.
 class ConversationViewModel extends ViewModel {
   /// ID of the conversation
-  final ConversationID id;
+  ConversationID id;
 
   /// The initially loaded conversation, if any.
-  final Conversation? initialConversation;
+  Conversation? initialConversation;
 
   /// Constructor for the View model
   ConversationViewModel(this.id, this.initialConversation);
@@ -30,7 +30,7 @@ class ConversationViewModel extends ViewModel {
   String? messageError;
 
   /// Conversation object
-  late Conversation conversation;
+  Conversation get conversation => models.conversations.all[id]!;
 
   /// All messages of this conversation
   List<Message> get reversedMessages => conversation.messages.reversed.toList();
@@ -47,33 +47,44 @@ class ConversationViewModel extends ViewModel {
   /// 
   /// This lets us re-request focus when a message is sent.
   final focusNode = FocusNode();
+
+  /// Resets everything about this model.
+  void reset(ConversationID newID) {
+    id = newID;
+    initialConversation = null;
+    messageError = null;
+    _subscription?.cancel();
+  }
   
   @override
   Future<void> init() async {
-    if (initialConversation != null) {
-      conversation = initialConversation!;
-    } else {
-      isLoading = true;
-    }
-    if (kIsWeb) await BrowserContextMenu.disableContextMenu();
-    final tempConversation = await services.database.getConversationByID(id);
-    scrollController.addListener(notifyListeners);
-    if (tempConversation == null) {
-      errorText = "Could not find the conversation! $id";
-      isLoading = false;
+    if (!models.conversations.all.containsKey(id)) {
+      errorText = "Could not find a conversation with ID: $id";
       return;
     }
-    _subscription = services.database.listenToConversation(id).listen(_update);
+    if (kIsWeb) await BrowserContextMenu.disableContextMenu();
+    scrollController.addListener(notifyListeners);
+    _subscription = models.conversations.streams[id]!.listen(_update);
+    await updateIsRead();
   }
   
-  void _update(Conversation? data) {
+  Future<void> _update(Conversation? data) async {
     if (data == null) {
       errorText = "Could not find a conversation with id: $id";
       notifyListeners();
       return;
     }
-    conversation = data;
+    await updateIsRead();
     isLoading = false;
+  }
+
+  /// Function to update the read status of message
+  Future<void> updateIsRead() async {
+    final lastMessage = conversation.lastMessage;
+    if (lastMessage == null) return;
+    if (lastMessage.isAuthor) return;
+    conversation.isRead = true;
+    await updateStatus(conversation);
   }
 
   @override
@@ -99,10 +110,11 @@ class ConversationViewModel extends ViewModel {
     final message = Message.send(
       content: messageController.text.trim(),
       author: models.user.userProfile!,
-      imageURL: "",
+      imageUrl: null,
     );
     conversation.messages.add(message);
     conversation.lastUpdate = DateTime.now();
+    conversation.isRead = false;
     try {
       messageController.clear();
       await services.database.saveConversation(conversation);
@@ -136,6 +148,15 @@ class ConversationViewModel extends ViewModel {
     } catch (error) {
       messageError = "Could not update message:\n$error";
       notifyListeners();
+    }
+  }
+
+  /// Function to update the status of the conversation
+  Future<void> updateStatus(Conversation conversation) async {
+    try {
+      await services.database.saveConversation(conversation);
+    }catch(error) {
+      errorText = "Error updating conversation $error";
     }
   }
 }

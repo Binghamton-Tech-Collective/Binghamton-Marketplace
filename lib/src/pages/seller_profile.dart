@@ -34,7 +34,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     appBar: AppBar(
       title: const Text("Profile"),
       actions: [
-        if (!model.isLoadingProfile && model.profile.userID == models.user.userProfile!.id) TextButton(
+        if (!model.isLoadingProfile && model.profile.isUser) TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           onPressed: model.editProfile,
           child: const Text("Edit profile"),
@@ -176,7 +176,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           childAspectRatio: 0.6,
-          crossAxisCount: 3,
+          crossAxisCount: MediaQuery.of(context).size.width ~/ ProductWidget.minWidth,
           children: [
             for (final product in model.productList) 
               ProductWidget(product: product),
