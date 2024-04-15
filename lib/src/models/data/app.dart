@@ -1,8 +1,9 @@
-import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/pages.dart";
+import "package:btc_market/widgets.dart";
 
 /// A data model with app-wide settings.
 class AppModel extends DataModel {
@@ -34,9 +35,9 @@ class AppModel extends DataModel {
           title: Text("New message from ${conversation.otherName}"),
           subtitle: Text(conversation.summary ?? "Tap to see details"),
         ),
-        leading: CircleAvatar(
+        leading: CircleStorageImage(
+          ref: conversation.otherImageRef,
           radius: 48,
-          backgroundImage: NetworkImage(conversation.otherImage),
         ),
         actions: [
           TextButton(

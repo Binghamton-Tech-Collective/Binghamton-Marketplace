@@ -19,11 +19,12 @@ class ConversationsModel extends DataModel {
   final Map<ConversationID, Conversation> all = {};
   List<Conversation> _allSorted = [];
 
-  void _process(ConversationID id) {
+  Future<Conversation?> _process(ConversationID id) {
     final stream = services.database.listenToConversation(id);
     final subscription = stream.listen(_update);
     streams[id] = stream;
     _subscriptions.add(subscription);
+    return stream.first;  // waits for the conversation to load the first time.
   }
   
   Set<ConversationID> get _archivedIDs => models.user.userProfile?.archivedConversations ?? {};
@@ -47,7 +48,7 @@ class ConversationsModel extends DataModel {
     final temp = await services.database.getConversationsByUserID(profile.id);
     for (final conversation in temp) {
       final id = conversation.id;
-      _process(id);
+      await _process(id);
     }
     notifyListeners();
   }
@@ -81,6 +82,6 @@ class ConversationsModel extends DataModel {
   Future<void> startConversation(Conversation conversation) async {
     await services.database.saveConversation(conversation);
     all[conversation.id] = conversation;
-    _process(conversation.id);
+    await _process(conversation.id);
   }
 }
