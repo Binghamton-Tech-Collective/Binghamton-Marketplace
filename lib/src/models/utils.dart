@@ -1,5 +1,6 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/services.dart";
 
 /// Extension type logics for the frontend code
 extension ConversationUtils on Conversation {
@@ -7,7 +8,9 @@ extension ConversationUtils on Conversation {
   bool get isSeller => models.user.userID == sellerUID;
 
   /// Getting the appropriate image based on the role
-  String get otherImage => isSeller ? buyerImage : sellerImage;
+  Reference get otherImageRef => isSeller
+    ? services.cloudStorage.getUserImagePath(buyerUID)
+    : services.cloudStorage.getSellerImagePath(sellerID);
 
   /// Getting the appropriate name based on the role
   String get otherName => isSeller ? buyerName.trim() : sellerName.trim();

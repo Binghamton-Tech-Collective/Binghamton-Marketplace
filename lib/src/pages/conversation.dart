@@ -108,9 +108,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
         children: [
           Hero(
             tag: "profile-pic-${model.conversation.id}",
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(model.conversation.otherImage),
-            ),
+            child: CircleStorageImage(ref: model.conversation.otherImageRef),
           ),
           const SizedBox(width: 12),
           Hero(

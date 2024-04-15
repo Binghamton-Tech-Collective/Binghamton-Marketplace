@@ -1,8 +1,8 @@
-import "package:btc_market/widgets.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/widgets.dart";
 
 /// A reusable widget for displaying conversations.
 class ConversationWidget extends StatelessWidget {
@@ -33,9 +33,7 @@ class ConversationWidget extends StatelessWidget {
     ),
     leading: Hero(
       tag: "profile-pic-${conversation.id}",
-      child: CircleAvatar(
-        backgroundImage: NetworkImage(conversation.otherImage),
-      ),
+      child: CircleStorageImage(ref: conversation.otherImageRef),
     ),
     trailing: Text(context.formatDateAndTime(conversation.lastUpdate)),
     onTap: () => context.go("/messages/${conversation.id}", extra: conversation),

@@ -10,6 +10,7 @@ export "src/widgets/atomic/seller_profile.dart";
 export "src/widgets/atomic/social.dart";
 
 export "src/widgets/generic/gallery.dart";
+export "src/widgets/generic/storage_image.dart";
 export "src/widgets/generic/image_upload.dart";
 export "src/widgets/generic/reactive_widget.dart";
 export "src/widgets/generic/spaced_row.dart";
