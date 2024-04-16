@@ -42,7 +42,7 @@ class ShellPage extends ReusableReactiveWidget<AppModel> {
           label: "Sellers",
         ),
         NavigationDestination(
-          icon: Icon(Icons.sell),
+          icon: Icon(Icons.add_circle, size: 32,),
           label: "Sell",
         ),
         NavigationDestination(
