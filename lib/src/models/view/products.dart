@@ -11,7 +11,7 @@ class ProductsViewModel extends ViewModel {
   List<Product> productsToShow = [];
 
   /// Number of products to show per page
-  final int productsPerPage = 20;
+  final int productsPerPage = 100;
 
   /// Current page number
   //int pageNumber;
