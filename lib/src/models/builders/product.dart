@@ -92,6 +92,7 @@ class ProductBuilder extends BuilderModel<Product> {
     descriptionController.addListener(notifyListeners);
     if (initialID == null) {
       productID = services.database.products.newID;
+      profile = otherProfiles[0];
       return;
     } else {
       await prefill();
