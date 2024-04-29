@@ -1,3 +1,4 @@
+import "package:btc_market/src/widgets/generic/snackbar.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
@@ -176,7 +177,10 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 child: const Text("Delete product"),
               ),
               FilledButton(
-                onPressed: model.isReady ? model.save : null,
+                onPressed: model.isReady ? () {
+                  model.save();
+                  ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(text: "Success", context: context),);
+                } : null,
                 child: const Text("Save product"),
               ),
             ],

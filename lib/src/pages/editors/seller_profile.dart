@@ -1,3 +1,4 @@
+import "package:btc_market/src/widgets/generic/snackbar.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -107,12 +108,15 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
               ),
             ),
             if (model.isEditing) const SizedBox(width: 12),
-            Expanded(
+            Expanded( 
               child: FilledButton(
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                onPressed: model.isReady ? model.save : null,
+                onPressed: model.isReady ? () {
+                  model.save();
+                  ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(text: "Success!", context: context,));
+                } : null,
                 child: const Text("Save Profile"),
               ),
             ),
