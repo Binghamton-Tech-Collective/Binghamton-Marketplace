@@ -45,7 +45,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               padding: const EdgeInsets.all(20),
               children: [
                 SpacedRow(
-                  const Text("Profile", style: labelStyle),
+                  const Text("Profile (Required)", style: labelStyle),
                   DropdownMenu(
                     enabled: !model.isEditing,
                     onSelected: model.setProfile,
@@ -60,13 +60,13 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ),
                 ),
                 InputContainer(
-                  text: "Name of the Item",
+                  text: "Name of the Item (Required)",
                   hint: "Item Name",
                   controller: model.titleController,
                 ),
                 const SizedBox(height: 12),
                 InputContainer(
-                  text: "Price of the Item",
+                  text: "Price of the Item (Required)",
                   hint: "Item Price",
                   prefixIcon: const Icon(Icons.attach_money),
                   controller: model.priceController,
@@ -76,7 +76,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 const Center(
-                  child: Text("Upload Photos", style: labelStyle),
+                  child: Text("Upload Photos (Atleast 1)", style: labelStyle),
                 ),
                 const SizedBox(height: 8),
                 if (model.imageError != null) Text(
@@ -102,7 +102,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 SpacedRow(
-                  const Text("Condition", style: labelStyle),
+                  const Text("Condition (Required)", style: labelStyle),
                   DropdownMenu<ProductCondition>(
                     initialSelection: model.condition,
                     hintText: "Condition",
@@ -118,7 +118,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 InputContainer(
-                  text: "Description of the Item",
+                  text: "Description of the Item (Required)",
                   hint: "Item Description",
                   controller: model.descriptionController,
                 ),
@@ -126,7 +126,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Categories",
+                    "Categories (Optional)",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

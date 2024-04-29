@@ -49,40 +49,40 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
         ),
         const SizedBox(height: 12),
         InputContainer(
-          text: "Name", 
+          text: "Name (Required)", 
           hint: "Your name will be visible to others", 
           controller: model.nameController,
         ),
         InputContainer(
-          text: "Bio", 
+          text: "Bio (Required)", 
           hint: "Tell us about yourself", 
           controller: model.bioController,
         ),
 
         // ========== Social media ==========
         InputContainer(
-          text: "Instagram", 
+          text: "Instagram (Optional)", 
           controller: model.instagramController,
           prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
           capitalization: TextCapitalization.none,
         ),
         InputContainer(
-          text: "LinkedIn", 
+          text: "LinkedIn (Optional)", 
           controller: model.linkedinController,
           hint: "profile url",
           prefixIcon: const Icon(Icons.http),
           capitalization: TextCapitalization.none,
         ),
         InputContainer(
-          text: "TikTok", 
+          text: "TikTok (Optional)", 
           controller: model.tikTokController,
           prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
           capitalization: TextCapitalization.none,
         ),
         InputContainer(
-          text: "Twitter / X", 
+          text: "Twitter / X (Optional)", 
           controller: model.twitterController,
           prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
