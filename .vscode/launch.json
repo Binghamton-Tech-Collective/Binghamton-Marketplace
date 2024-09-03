@@ -14,7 +14,7 @@
       "name": "Web",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "chrome", "--web-renderer", "skwasm", "--web-port", "5000"],
+      "args": ["-d", "chrome", "--web-renderer", "html", "--web-port", "5000"]
     },
   ]
 }
