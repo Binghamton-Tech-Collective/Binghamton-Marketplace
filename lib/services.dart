@@ -10,6 +10,8 @@ import "src/services/auth.dart";
 import "src/services/firebase.dart";
 import "src/services/database.dart";
 import "src/services/cloud_storage.dart";
+import "src/services/notifications.dart";
+
 
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
@@ -21,6 +23,8 @@ class Services extends Service {
   final auth = AuthService();
   /// The cloud_storage service
   final cloudStorage = CloudStorageService();
+  ///
+  final notifications = Notifications();
   
   @override
   Future<void> init() async {
@@ -28,6 +32,7 @@ class Services extends Service {
     await auth.init();
     await database.init();
     await cloudStorage.init();
+    await notifications.init();
   }
 
   @override
@@ -36,6 +41,7 @@ class Services extends Service {
     await auth.dispose();
     await firebase.dispose();
     await cloudStorage.dispose();
+    await notifications.dispose();
   }
 
   /// Deletes a [SellerProfile] and all of their associated data.
