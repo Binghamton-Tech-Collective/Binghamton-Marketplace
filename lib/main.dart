@@ -6,6 +6,7 @@ import "package:flutter_web_plugins/url_strategy.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
+import "package:btc_market/src/services/notifications.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,8 @@ void main() async {
   usePathUrlStrategy();
   await services.init();
   await models.init();
+  final notifications = Notifications();
+  await notifications.sendNotification();
   runApp(BtcMarket(models.app));
 }
 
