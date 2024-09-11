@@ -10,6 +10,8 @@ class UserProfile {
   final String name;
   /// The user's profile photo.
   final String imageUrl;
+  ///
+  String? token;
   /// The products on the user's watchlist
   final Set<ProductID> productsWatchlist;
   /// The sellers on the user's watchlist
@@ -29,6 +31,7 @@ class UserProfile {
     required this.sellersWatchlist,
     required this.archivedConversations,
     required this.theme,
+    this.token
   });
 
   /// Creates a new User object from a JSON object.
@@ -39,6 +42,7 @@ class UserProfile {
     productsWatchlist = Set<ProductID>.from(json["productsWatchlist"] ?? []),
     sellersWatchlist  = Set<SellerID>.from(json["sellersWatchlist"] ?? []),
     archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []),
+    token = json["token"],
     theme = json["theme"] == null ? ThemeMode.system : ThemeMode.values.byName(json["theme"]);
 
   /// Convert this user to its JSON representation
@@ -50,6 +54,7 @@ class UserProfile {
     "sellersWatchlist": List<String>.from(sellersWatchlist),
     "archivedConversations": List<String>.from(archivedConversations),
     "theme": theme.name,
+    "token" : token
   };
 
   /// Add a Product to the User's watchlist, by ProductID

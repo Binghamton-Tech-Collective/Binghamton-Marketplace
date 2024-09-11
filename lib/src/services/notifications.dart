@@ -1,3 +1,4 @@
+import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
@@ -34,6 +35,9 @@ class Notifications extends Service {
   Future<void> sendNotification() async {
     await firebaseMessaging.requestPermission();
     final fcmToken = await firebaseMessaging.getToken();
+    models.user.userProfile!.token = fcmToken;
+    await models.user.updateProfile(models.user.userProfile!);
+    print("The profile has been updated with the token!");
     print("TOKEN: $fcmToken");
   }
 
