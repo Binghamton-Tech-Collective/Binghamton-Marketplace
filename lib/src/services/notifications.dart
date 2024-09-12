@@ -35,11 +35,13 @@ class Notifications extends Service {
   Future<void> sendNotification() async {
     await firebaseMessaging.requestPermission();
     final fcmToken = await firebaseMessaging.getToken();
-    models.user.userProfile!.token = fcmToken;
-    await models.user.updateProfile(models.user.userProfile!);
-    print("The profile has been updated with the token!");
-    print("TOKEN: $fcmToken");
-    print("ID: ${models.user.userProfile!.id}");
+    if(models.user.userProfile != null) {
+      models.user.userProfile!.token = fcmToken;
+      await models.user.updateProfile(models.user.userProfile!);
+      print("The profile has been updated with the token!");
+      print("TOKEN: $fcmToken");
+      print("ID: ${models.user.userProfile!.id}");
+    }
   }
 
   @override

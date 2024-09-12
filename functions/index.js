@@ -47,27 +47,32 @@ exports.sendNotificationOnNewMessage = functions.firestore.onDocumentUpdated("co
             // Determine the recipient (receiver)
             const currentUserUID = newMessage.author;
             let receiverUID = null;
-
+            let senderUID = null;
             if (currentUserUID === buyerUID) {
                 receiverUID = sellerUID;
+                senderUID = buyerUID;
             } else if (currentUserUID === sellerUID) {
                 receiverUID = buyerUID;
+                senderUID = sellerUID;
             }
-            if (!receiverUID) {
-                console.log('Could not determine the receiver.');
+            if (!receiverUID || !sellerUID) {
+                console.log('Could not determine the receiver or the sender.');
                 return;
             }
 
             try {
                 // Get the receiver's FCM token from the users collection
                 const userDoc = await firestore.collection('users').doc(receiverUID).get();
-                if (!userDoc.exists) {
+                const senderDoc = await firestore.collection('users').doc(senderUID).get();
+                if (!userDoc.exists || !senderDoc.exists) {
                     console.log(`User with ID ${receiverUID} does not exist.`);
                     return;
                 }
 
                 const receiverData = userDoc.data();
-                const receiverFcmToken = receiverData.fcmToken;
+                const senderData = senderDoc.data();
+                const senderName = senderData.name;
+                const receiverFcmToken = receiverData.token;
 
                 if (!receiverFcmToken) {
                     console.log(`No FCM token found for user ${receiverUID}.`);
@@ -76,9 +81,9 @@ exports.sendNotificationOnNewMessage = functions.firestore.onDocumentUpdated("co
                 console.log(`This is the receiver's FCM Token: ${receiverFcmToken}`);
 
                 const payload = {
-                    receiverFcmToken: receiverFcmToken,
-                    data: {
-                        title: `New message from ${newMessage.author}`, // Customize the title
+                    token: receiverFcmToken,
+                    notification: {
+                        title: `New message from ${senderName}`, // Customize the title
                         body: newMessage.content || "A new Message",  // The message content
                     },
                 };
