@@ -53,7 +53,6 @@ exports.sendNotificationOnNewMessage = functions.firestore.onDocumentUpdated("co
             } else if (currentUserUID === sellerUID) {
                 receiverUID = buyerUID;
             }
-            receiverUID = currentUserUID;
             if (!receiverUID) {
                 console.log('Could not determine the receiver.');
                 return;
@@ -80,7 +79,7 @@ exports.sendNotificationOnNewMessage = functions.firestore.onDocumentUpdated("co
                     receiverFcmToken: receiverFcmToken,
                     data: {
                         title: `New message from ${newMessage.author}`, // Customize the title
-                        body: newMessage.content,  // The message content
+                        body: newMessage.content || "A new Message",  // The message content
                     },
                 };
 

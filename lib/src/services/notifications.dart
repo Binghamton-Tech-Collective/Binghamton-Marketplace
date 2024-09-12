@@ -39,6 +39,7 @@ class Notifications extends Service {
     await models.user.updateProfile(models.user.userProfile!);
     print("The profile has been updated with the token!");
     print("TOKEN: $fcmToken");
+    print("ID: ${models.user.userProfile!.id}");
   }
 
   @override
