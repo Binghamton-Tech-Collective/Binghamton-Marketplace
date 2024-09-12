@@ -31,7 +31,7 @@ class CategoryFilterChip extends StatelessWidget {
     showCheckmark: false,
     labelStyle: TextStyle(color: isSelected
       ? context.colorScheme.onPrimary
-      : context.colorScheme.onBackground,
+      : context.colorScheme.onSurface,
     ),
   );
 }

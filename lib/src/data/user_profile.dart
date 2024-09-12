@@ -31,7 +31,7 @@ class UserProfile {
     required this.sellersWatchlist,
     required this.archivedConversations,
     required this.theme,
-    this.token
+    this.token,
   });
 
   /// Creates a new User object from a JSON object.
@@ -54,7 +54,7 @@ class UserProfile {
     "sellersWatchlist": List<String>.from(sellersWatchlist),
     "archivedConversations": List<String>.from(archivedConversations),
     "theme": theme.name,
-    "token" : token
+    "token" : token,
   };
 
   /// Add a Product to the User's watchlist, by ProductID

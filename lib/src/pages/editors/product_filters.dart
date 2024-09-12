@@ -53,7 +53,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
         name: "Sort order",
         child: DropdownMenu<ProductSortOrder>(
           menuStyle: MenuStyle(
-            shape: MaterialStatePropertyAll(
+            shape: WidgetStatePropertyAll(
               ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

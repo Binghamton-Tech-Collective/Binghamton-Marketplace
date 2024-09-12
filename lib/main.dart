@@ -100,7 +100,7 @@ class BtcMarket extends ReusableReactiveWidget<AppModel> {
         primaryContainer: Colors.blueGrey.shade200,
         onPrimaryContainer: Colors.black,
         secondary: lightGrey,
-        surfaceVariant: Colors.grey[300],
+        surfaceContainerHighest: Colors.grey[300],
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: darkGreen,
