@@ -63,9 +63,13 @@ exports.sendNotificationOnNewMessage = functions.firestore.onDocumentUpdated("co
 
                 const payload = {
                     token: receiverFcmToken,
+                    data: {
+                        conversationId: event.params["id"],
+                    },
                     notification: {
                         title: `${senderName}`,
                         body: newMessage.content || "A new Message",
+                        
                     },
                 };
 
