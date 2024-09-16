@@ -1,3 +1,4 @@
+import "package:btc_market/src/widgets/generic/snackbar.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -49,40 +50,40 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
         ),
         const SizedBox(height: 12),
         InputContainer(
-          text: "Name", 
-          hint: "Your name will be visible to others", 
+          text: "Name (Required)",
+          hint: "Your name will be visible to others",
           controller: model.nameController,
         ),
         InputContainer(
-          text: "Bio", 
-          hint: "Tell us about yourself", 
+          text: "Bio (Required)",
+          hint: "Tell us about yourself",
           controller: model.bioController,
         ),
 
         // ========== Social media ==========
         InputContainer(
-          text: "Instagram", 
+          text: "Instagram (Optional)",
           controller: model.instagramController,
           prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
           capitalization: TextCapitalization.none,
         ),
         InputContainer(
-          text: "LinkedIn", 
+          text: "LinkedIn (Optional)",
           controller: model.linkedinController,
           hint: "profile url",
           prefixIcon: const Icon(Icons.http),
           capitalization: TextCapitalization.none,
         ),
         InputContainer(
-          text: "TikTok", 
+          text: "TikTok (Optional)",
           controller: model.tikTokController,
           prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
           capitalization: TextCapitalization.none,
         ),
         InputContainer(
-          text: "Twitter / X", 
+          text: "Twitter / X (Optional)",
           controller: model.twitterController,
           prefixIcon: const Icon(Icons.alternate_email),
           hint: "username",
@@ -112,7 +113,12 @@ class SellerProfileEditor extends ReactiveWidget<SellerProfileBuilder> {
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                onPressed: model.isReady ? model.save : null,
+                onPressed: model.isReady ? () async {
+                  await model.save();
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context)
+                    .showSnackBar(CustomSnackBar(text: "Success!", context: context));
+                } : null,
                 child: const Text("Save Profile"),
               ),
             ),
