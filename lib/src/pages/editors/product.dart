@@ -1,3 +1,4 @@
+import "package:btc_market/src/widgets/generic/snackbar.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
@@ -9,7 +10,7 @@ import "package:btc_market/data.dart";
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
   /// The [TextStyle] to use for labels throughout the page.
   static const labelStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-  
+
   /// Id of the product to be edited
   final ProductID? id;
 
@@ -18,7 +19,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
 
   /// Constructor to initialize the id fo the product
   const ProductEditor({
-    this.id, 
+    this.id,
     this.initialProduct,
   });
 
@@ -45,7 +46,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               padding: const EdgeInsets.all(20),
               children: [
                 SpacedRow(
-                  const Text("Profile", style: labelStyle),
+                  const Text("Profile (Required)", style: labelStyle),
                   DropdownMenu(
                     enabled: !model.isEditing,
                     onSelected: model.setProfile,
@@ -60,13 +61,13 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   ),
                 ),
                 InputContainer(
-                  text: "Name of the Item",
+                  text: "Name of the Item (Required)",
                   hint: "Item Name",
                   controller: model.titleController,
                 ),
                 const SizedBox(height: 12),
                 InputContainer(
-                  text: "Price of the Item",
+                  text: "Price of the Item (Required)",
                   hint: "Item Price",
                   prefixIcon: const Icon(Icons.attach_money),
                   controller: model.priceController,
@@ -76,7 +77,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 const Center(
-                  child: Text("Upload Photos", style: labelStyle),
+                  child: Text("Upload Photos (Atleast 1)", style: labelStyle),
                 ),
                 const SizedBox(height: 8),
                 if (model.imageError != null) Text(
@@ -102,7 +103,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 SpacedRow(
-                  const Text("Condition", style: labelStyle),
+                  const Text("Condition (Required)", style: labelStyle),
                   DropdownMenu<ProductCondition>(
                     initialSelection: model.condition,
                     hintText: "Condition",
@@ -118,7 +119,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 InputContainer(
-                  text: "Description of the Item",
+                  text: "Description of the Item (Required)",
                   hint: "Item Description",
                   controller: model.descriptionController,
                 ),
@@ -126,7 +127,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Categories",
+                    "Categories (Optional)",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -157,11 +158,11 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   style: context.textTheme.bodyMedium,
                 ),
                 CheckboxListTile.adaptive(
-                  value: model.agreedToTerms, 
+                  value: model.agreedToTerms,
                   onChanged: model.updateTerms,
                   controlAffinity: ListTileControlAffinity.leading,
                   title: const Text(
-                    "I understand and agree to the terms", 
+                    "I understand and agree to the terms",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -176,7 +177,12 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 child: const Text("Delete product"),
               ),
               FilledButton(
-                onPressed: model.isReady ? model.save : null,
+                onPressed: model.isReady ? () async {
+                  await model.save();
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context)
+                    .showSnackBar(CustomSnackBar(text: "Success", context: context));
+                } : null,
                 child: const Text("Save product"),
               ),
             ],
@@ -203,7 +209,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             await model.deleteProduct();
             if (!context.mounted) return;
             Navigator.of(context).pop();
-          }, 
+          },
           child: const Text("Delete"),
         ),
       ],
