@@ -10,7 +10,7 @@ import "package:btc_market/data.dart";
 class ProductEditor extends ReactiveWidget<ProductBuilder> {
   /// The [TextStyle] to use for labels throughout the page.
   static const labelStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-  
+
   /// Id of the product to be edited
   final ProductID? id;
 
@@ -19,7 +19,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
 
   /// Constructor to initialize the id fo the product
   const ProductEditor({
-    this.id, 
+    this.id,
     this.initialProduct,
   });
 
@@ -158,11 +158,11 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                   style: context.textTheme.bodyMedium,
                 ),
                 CheckboxListTile.adaptive(
-                  value: model.agreedToTerms, 
+                  value: model.agreedToTerms,
                   onChanged: model.updateTerms,
                   controlAffinity: ListTileControlAffinity.leading,
                   title: const Text(
-                    "I understand and agree to the terms", 
+                    "I understand and agree to the terms",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -177,9 +177,11 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 child: const Text("Delete product"),
               ),
               FilledButton(
-                onPressed: model.isReady ? () {
-                  model.save();
-                  ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(text: "Success", context: context),);
+                onPressed: model.isReady ? () async {
+                  await model.save();
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context)
+                    .showSnackBar(CustomSnackBar(text: "Success", context: context));
                 } : null,
                 child: const Text("Save product"),
               ),
@@ -207,7 +209,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
             await model.deleteProduct();
             if (!context.mounted) return;
             Navigator.of(context).pop();
-          }, 
+          },
           child: const Text("Delete"),
         ),
       ],
