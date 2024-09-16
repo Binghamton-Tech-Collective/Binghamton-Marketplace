@@ -33,6 +33,9 @@ class UserModel extends DataModel {
     final profile = await services.database.getUserProfile(uid);
     if (profile == null) return;
     await models.onSignIn(profile);
+
+    userProfile!.token = services.notifications.firebaseToken;
+    await updateProfile(models.user.userProfile!);
   }
 
   @override

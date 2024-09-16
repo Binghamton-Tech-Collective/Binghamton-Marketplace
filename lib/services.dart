@@ -23,9 +23,9 @@ class Services extends Service {
   final auth = AuthService();
   /// The cloud_storage service
   final cloudStorage = CloudStorageService();
-  ///
+  /// The push notifications service
   final notifications = Notifications();
-  
+
   @override
   Future<void> init() async {
     await firebase.init();

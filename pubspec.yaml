@@ -17,7 +17,6 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter 
-  win32: ^5.4.0
   # Firebase packages
   firebase_core: ^2.25.0
   firebase_auth: ^4.19.1
