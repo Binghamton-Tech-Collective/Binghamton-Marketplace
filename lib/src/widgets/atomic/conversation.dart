@@ -22,7 +22,7 @@ class ConversationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
     tileColor: conversation.showNotification 
-      ? context.colorScheme.surfaceVariant : null,
+      ? context.colorScheme.surfaceContainerHighest : null,
     title: Hero(
       tag: "name-${conversation.id}",
       child: Text(conversation.otherName),

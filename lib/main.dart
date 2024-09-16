@@ -16,8 +16,8 @@ void main() async {
   runApp(BtcMarket(models.app));
 }
 
-/// The Student Association of Binghamton green. 
-/// 
+/// The Student Association of Binghamton green.
+///
 /// Note that we are not authorized to use the Binghamton green, Pantone 342.
 const darkGreen = Color(0XFF005A43);
 
@@ -28,7 +28,7 @@ const lightGreen = Color.fromARGB(255, 0, 175, 150);
 const lightGrey = Color(0xFFDEDEDE);
 
 /// Our main app. Remember, everything is a widget!
-class BtcMarket extends ReusableReactiveWidget<AppModel> {  
+class BtcMarket extends ReusableReactiveWidget<AppModel> {
   /// A const constructor.
   const BtcMarket(super.model);
 
@@ -56,7 +56,7 @@ class BtcMarket extends ReusableReactiveWidget<AppModel> {
       ),
     ),
   );
-  
+
   @override
   Widget build(BuildContext context, AppModel model) => MaterialApp.router(
     debugShowCheckedModeBanner: false,
@@ -97,7 +97,7 @@ class BtcMarket extends ReusableReactiveWidget<AppModel> {
         primaryContainer: Colors.blueGrey.shade200,
         onPrimaryContainer: Colors.black,
         secondary: lightGrey,
-        surfaceVariant: Colors.grey[300],
+        surfaceContainerHighest: Colors.grey[300],
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: darkGreen,

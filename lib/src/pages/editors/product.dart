@@ -169,7 +169,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
               ],
             ),
           ),
-          ButtonBar(
+          OverflowBar(
             children: [
               if (model.isEditing) FilledButton(
                 style: FilledButton.styleFrom(backgroundColor: Colors.red),
