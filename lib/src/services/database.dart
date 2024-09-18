@@ -105,6 +105,10 @@ class Database extends Service {
   Future<List<Conversation>> getConversationsByUserID(UserID id) =>
     conversations.where("members", arrayContains: id).getAll();
 
+  /// Get all the conversations in the database
+  Future<List<Conversation>> getAllConversations() =>
+    conversations.getAll();
+
   /// Gets the list of all sellers
   Future<List<SellerProfile>> getAllSellers(UserID id) =>
     sellers.limit(20).getAll();
