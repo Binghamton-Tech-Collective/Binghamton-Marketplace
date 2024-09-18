@@ -20,25 +20,31 @@ class ImageUploader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
     children: [
-      Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Card(
-          child: InkWell(
-            onTap: onTap,
-            child: Center(
-              child: imageUrl == null
-                ? const Text(
-                  "Upload an Image!",
-                  textAlign: TextAlign.center,
-                ) : Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
+      Flexible(
+        child: SizedBox(
+          width: 200,
+          height: 200,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Card(
+              elevation: 12,
+              child: InkWell(
+                onTap: onTap,
+                child: Center(
+                  child: imageUrl == null
+                    ? const Text(
+                      "Upload an Image!",
+                      textAlign: TextAlign.center,
+                    ) : Ink.image(
+                      image: NetworkImage(imageUrl!),
+                      fit: BoxFit.contain,
+                    ),
                 ),
+              ),
             ),
           ),
         ),
@@ -51,5 +57,23 @@ class ImageUploader extends StatelessWidget {
         ),
       ],
     ],
+  );
+}
+
+/// A widget that looks like [ImageUploader] without an image.
+/// 
+/// Useful as a [Hero.placeholderBuilder] because it takes the same shape and
+/// size as an [ImageUploader] without loading the image a second time.
+class PlaceholderImageUploader extends StatelessWidget {
+  /// A const constructor.
+  const PlaceholderImageUploader();
+
+  @override
+  Widget build(BuildContext context) => const Center(
+    child: SizedBox(
+      height: 200,
+      width: 200,
+      child: Card(),
+    ),
   );
 }

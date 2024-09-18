@@ -1,11 +1,12 @@
-import "types.dart";
+import "package:btc_market/data.dart";
+import "package:meta/meta.dart";
 
 /// Represents information about a seller.
 ///
 /// Every user has a user profile and an associated User ID. If a user wants to sell on the app,
 /// they can also create a seller profile with some basic information about themselves. Users can
 /// then view these profiles as well as the products and reviews associated with them.
-
+@immutable
 class SellerProfile {
   /// The seller's unique Seller ID.
   final SellerID id;
@@ -53,6 +54,13 @@ class SellerProfile {
     "bio": bio,
     "contact": contact.toJson(),
   };
+
+  @override
+  bool operator ==(Object other) => other is SellerProfile
+    && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 /// Represents contact information for a seller.
@@ -103,4 +111,12 @@ class ContactInfo {
     "twitterUsername": twitterUsername,
     "linkedInUsername": linkedInUsername,
   };
+
+  /// A list of all the user's provided social media platforms and usernames.
+  List<(SocialMediaPlatform, String)> get socials => [
+    if (tikTokUsername != null) (SocialMediaPlatform.tiktok, tikTokUsername!),
+    if (instagramHandle != null) (SocialMediaPlatform.instagram, instagramHandle!),
+    if (twitterUsername != null) (SocialMediaPlatform.twitter, twitterUsername!),
+    if (linkedInUsername != null) (SocialMediaPlatform.linkedin, linkedInUsername!),
+  ];
 }

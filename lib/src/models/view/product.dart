@@ -1,11 +1,16 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/services.dart";
-import "../model.dart";
+import "package:btc_market/models.dart";
+
+import "package:btc_market/pages.dart";
 
 /// The view model for the product page.
 class ProductViewModel extends ViewModel {
   /// The product being shown on the page.
   late Product product;
+
+  /// The already-loaded product, if any.
+  final Product? initialProduct;
 
   /// The profile of this product's seller.
   late SellerProfile sellerProfile;
@@ -20,37 +25,80 @@ class ProductViewModel extends ViewModel {
   ProductID id;
 
   /// Creates a new view model based on the given product.
-  ProductViewModel(this.id);
+  ProductViewModel({
+    required this.id,
+    required this.initialProduct,
+  });
 
   /// The average rating of the product, based on [reviews].
-  int? get averageRating =>
-    reviews.isEmpty ? null : calculateAverageRating(reviews);
+  int? get averageRating => reviews.isEmpty ? null : calculateAverageRating(reviews);
+
+  /// The error while opening the conversation, if any.
+  String? messageError;
+  
+  /// Opens or starts a conversation with the seller.
+  Future<void> openConversation() async {
+    final buyer = models.user.userProfile!;
+    final seller = sellerProfile;
+    try {
+      var conversation = await services.database.getConversation(buyer, sellerProfile);
+      if (conversation == null) {
+        final conversationID = services.database.conversations.newID;
+        conversation = Conversation.start(
+          id: conversationID,
+          buyer: buyer,
+          seller: seller,
+        );
+        await models.conversations.startConversation(conversation);
+      }
+      await router.push("/messages/${conversation.id}");
+    } catch(error) {
+      messageError = "There was an error loading the conversations!";
+      rethrow;
+    }
+  }
+
+  /// Function to edit the product
+  Future<void> editProduct(ProductID id) async {
+    final result = await router.push("/products/$id/edit", extra: product) as Product?;
+    if (result == null) return;
+    product = result;
+    notifyListeners();
+  }
 
   /// The average rating for the seller, based on [sellerReviews].
   int? get sellerRating => 
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
+  /// Whether the view model is still loading more details about the product.
+  /// 
+  /// Even when this is true, [product] is still available.
+  bool loadingDetails = true;
+
   @override
   Future<void> init() async {
-    errorText = null;
-    isLoading = true;
-    final tempProduct = await services.database.getProduct(id);
-    if (tempProduct == null) {
-      errorText = "Could not find product! $id";
+    if (initialProduct != null) {
+      product = initialProduct!;
+    } else {
+      isLoading = true;
+      final result = await services.database.getProduct(id);
       isLoading = false;
-      return;
+      if (result == null) {
+        errorText = "Could not find product with ID: $id";
+        return;
+      }
+      product = result;
     }
-    product = tempProduct;
+    loadingDetails = true;
     final tempSellerProfile = await services.database.getSellerProfile(product.sellerID);
     if (tempSellerProfile == null) {
       errorText = "Could not find sellerID! $product.sellerId";
-      isLoading = false;
       return;
     }
     sellerProfile = tempSellerProfile;
     reviews = await services.database.getReviewsByProductID(id);
     sellerReviews = await services.database.getReviewsBySellerID(product.sellerID);
-    isLoading = false;
+    loadingDetails = false;
     notifyListeners();
   }
 }

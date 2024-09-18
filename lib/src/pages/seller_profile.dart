@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
@@ -8,181 +9,178 @@ import "package:btc_market/widgets.dart";
 class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   /// The ID of the seller to view.
   final SellerID id;
+  /// The already-loaded seller profile
+  final SellerProfile? profile;
   /// Creates the Seller Profile page. 
-  const SellerProfilePage(this.id);
+  const SellerProfilePage({
+    required this.id,
+    required this.profile,
+  });
   
   @override
-  SellerProfileViewModel createModel() => SellerProfileViewModel(id);
+  SellerProfileViewModel createModel() => SellerProfileViewModel(id: id, initialProfile: profile);
+
+  @override
+  void didUpdateWidget(SellerProfilePage oldWidget, SellerProfileViewModel model) {
+    if (id != model.id) {
+      model.id = id;
+      model.init();
+    }
+    super.didUpdateWidget(oldWidget, model);
+  }
 
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
-    body: Center(child: model.isLoading
-      ? const CircularProgressIndicator()
-      : CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 300,
-            collapsedHeight: 60,
-            pinned: true,
-            backgroundColor: Colors.white,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: 150,
-                      color: const Color.fromARGB(255, 0, 65, 44),
-                      alignment: const Alignment(0.75, 1),
-                      child: Text(
-                        "Samuel Montes",
-                        style: Theme.of(context).textTheme.headlineLarge
-                        ?.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    bottom: 100,
-                    left: 20,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage("https://media.licdn.com/dms/image/D4E03AQH1m-DsPxkXkQ/profile-displayphoto-shrink_800_800/0/1663694541598?e=2147483647&v=beta&t=jbiXqn5fY7dJUCgtYZ9a_KZrYWRmCHzg0YkJBdGoURg"),
-                      radius: 50,
-                    ),
-                  ),
-                  const Positioned(
-                    bottom: 130,
-                    left: 125,
-                    child: Row(
-                      children: [
-                        Text("Computer Science",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        SizedBox(width: 50),
-                      ], 
-                    ),
-                  ),
-                  const Positioned(
-                    left: 300,
-                    top: 150,
-                    child: SizedBox(
-                          width: 200,
-                          height: 200,
-                          child: Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eleifend turpis mauris.",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                          ),
-                         ),
-                        ),
-                   Positioned(
-                    bottom: 90,
-                    left: 125,
-                    child: Row(
-                      children: [
-                        ActionChip(
-                          avatar: const Icon(Icons.phone),
-                          shape: const StadiumBorder(),
-                          label: const Text("Call"),
-                          onPressed: () {},
-                        ),
-                        const VerticalDivider(
-                          width: 4,
-                        ),
-                        ActionChip(
-                          avatar: const Icon(Icons.email),
-                          shape: const StadiumBorder(),
-                          label: const SizedBox(),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+    appBar: AppBar(
+      title: const Text("Profile"),
+      actions: [
+        if (!model.isLoadingProfile && model.profile.isUser) TextButton(
+          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+          onPressed: model.editProfile,
+          child: const Text("Edit profile"),
+        ),
+      ],
+    ),
+    floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
+       ? null : FloatingActionButton.extended(
+        icon: const Icon(Icons.message),
+        onPressed: model.openConversation, 
+        label: const Text("Contact Seller"),
+      ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    body: ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
+        else Row(
+          children: [
+            const SizedBox(width: 16),
+            Hero(
+              tag: "${model.profile.id}-image",
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(model.profile.imageUrl),
+                radius: 50,
               ),
             ),
-          ),
-          SliverToBoxAdapter(
+            const SizedBox(width: 16),
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Divider(
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.grey,
-                    thickness: 3,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: Text("Seller Categories",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  Hero(
+                    tag: "${model.profile.id}-name",
+                    child: Text(
+                      model.profile.name,
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: SizedBox(
-                      height: 125,
-                      child: ListView.separated(
-                        itemBuilder: (_,i) => const Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children:  [
-                             CircleAvatar(backgroundColor: Colors.red, radius: 40),
-                             SizedBox(height: 10),
-                             Text("Test"),
-                          ],
+                  Row(
+                    children: [
+                      RatingBarIndicator(
+                        rating: 5,
+                        itemSize: 20,
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
                         ),
-                        separatorBuilder: (BuildContext context, int index) => const SizedBox(
-                          width: 20,
-                        ), 
-                        itemCount: 10,
-                        scrollDirection: Axis.horizontal,
                       ),
-                    ), 
-                  ), 
-                  const Divider(
-                    indent: 20,
-                    endIndent: 20,
-                    thickness: 3,
-                    color: Colors.grey,
+                      if (!model.isLoadingProducts)
+                        Text(" | ${model.productList.length} Products"),
+                    ],
+                  ),
+                  Text(
+                    model.profile.bio,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
+                  ),
+                  Row(
+                    children: [
+                      for (final (platform, username) in model.profile.contact.socials)
+                        SocialMediaButton(platform: platform, username: username),
+                    ],
                   ),
                 ],
               ),
             ),
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Listings",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  height: 200,
-                  child: ListView.separated(
-                    itemBuilder: (_,i) => const SizedBox(
-                      width: 170,
-                      child: ProductWidget(),
-                    ), 
-                    separatorBuilder: (BuildContext context, int i) => const SizedBox(
-                      width: 20,
-                    ), 
-                    itemCount: 10,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 1000,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
+          ],
+        ),
+        const Divider(
+          color: Colors.grey,
+          thickness: 3,
+        ),
+        Text(
+          "Product Categories",
+          style: context.textTheme.headlineMedium,
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: SizedBox(
+            height: 110,
+            child: buildCategories(context, model),
+          ), 
+        ), 
+        const Divider(
+          thickness: 3,
+          color: Colors.grey,
+        ),
+        Text(
+          "Listings",
+          style: context.textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 12),
+        buildProducts(context, model),
+      ],
     ),
   );
+
+  /// A loading spinner, an empty message, or the seller's categories.
+  Widget buildCategories(BuildContext context, SellerProfileViewModel model) =>
+    model.isLoadingCategories ? const Center(child: CircularProgressIndicator())
+      : model.categories.isEmpty
+        ? const Center(child: Text("This seller hasn't used any categories"))
+        : ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            for (final category in model.categories) Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children:  [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.transparent, // Set background color to transparent
+                    child: ClipOval(
+                      child: Image(
+                        image: AssetImage(category.imagePath),
+                        fit: BoxFit.cover, // Adjust the fit to cover the entire circular area
+                      ),
+                    ),
+                  ),
+                ),
+                Text(category.title),
+              ],
+            ),
+        ],
+      );
+
+  /// A loading spinner, an empty message, or the seller's products.
+  Widget buildProducts(BuildContext context, SellerProfileViewModel model) => 
+    model.isLoadingProducts 
+      ? const SizedBox(
+        height: 200, 
+        child: Center(child: CircularProgressIndicator()),
+      )
+      : model.productList.isEmpty
+        ? const SizedBox(height: 200, child: Center(child: Text("This seller has no products")))
+        : GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          childAspectRatio: 0.6,
+          crossAxisCount: MediaQuery.of(context).size.width ~/ ProductWidget.minWidth,
+          children: [
+            for (final product in model.productList) 
+              ProductWidget(product: product),
+          ],
+        );
+
 }

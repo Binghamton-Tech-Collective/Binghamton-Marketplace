@@ -1,29 +1,39 @@
-import "package:meta/meta.dart";
-
-import "types.dart";
+import "package:btc_market/data.dart";
 
 /// A message, sent from a user to a seller or vice versa
-@immutable
 class Message {
   /// The time the message was sent
   final DateTime timeSent;
   /// The contents of the message
-  final String content;
+  String content;
   /// The ID of the seller the message is from
-  final SellerID author;
+  final UserID author;
   /// The path to the image in the message, if any
   final String? imageURL;
   /// The time the message was edited, if ever
-  final DateTime? timeEdited;
+  DateTime? timeEdited;
 
   /// A constructor to create a new message.
-  const Message({
-    required this.timeSent,
-    required this.content,
+  Message({
     required this.author,
+    required this.content,
     required this.imageURL,
     required this.timeEdited,
+    required this.timeSent,
   });
+
+  /// A new message that's being sent.
+  factory Message.send({
+    required UserProfile author,
+    required String content,
+    required String? imageUrl,
+  }) => Message(
+    author: author.id,
+    content: content,
+    imageURL: imageUrl,
+    timeEdited: null,
+    timeSent: DateTime.now(),
+  );
 
   /// Creates a new Message object from a JSON object.
   Message.fromJson(Json json) : 
@@ -31,7 +41,7 @@ class Message {
     content = json["content"],
     author = json["author"],
     imageURL = json["imageURL"],
-    timeEdited = DateTime.parse(json["timeEdited"]);
+    timeEdited = json["timeEdited"] != null ? DateTime.parse(json["timeEdited"]) : null;
 
   /// Convert this Message to its JSON representation
   Json toJson() => {
@@ -41,21 +51,4 @@ class Message {
     "imageURL": imageURL,
     "timeEdited": timeEdited?.toIso8601String(),
   };
-   
-  @override
-  bool operator ==(Object other) => other is Message
-    && timeSent == other.timeSent
-    && timeEdited == other.timeEdited
-    && author == other.author
-    && imageURL == other.imageURL
-    && content == other.content;
-
-  @override
-  int get hashCode => Object.hash(
-    timeSent,
-    timeEdited,
-    author,
-    imageURL,
-    content,
-  );
 }

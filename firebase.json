@@ -5,6 +5,41 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "emulators": {
+    "functions": {
+      "port": 3001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 5005
+    },
+    "ui": {
+      "enabled": true,
+      "port": 3000
+    },
+    "singleProjectMode": true
   }
 }
