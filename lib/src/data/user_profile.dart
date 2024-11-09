@@ -25,7 +25,7 @@ class UserProfile {
   /// Creates a new User object.
   UserProfile({
     required this.id,
-    required this.name, 
+    required this.name,
     required this.imageUrl,
     required this.productsWatchlist,
     required this.sellersWatchlist,
@@ -35,7 +35,7 @@ class UserProfile {
   });
 
   /// Creates a new User object from a JSON object.
-  UserProfile.fromJson(Json json) : 
+  UserProfile.fromJson(Json json) :
     name = json["name"],
     id = json["id"],
     imageUrl = json["imageUrl"] ?? "https://picsum.photos/500",

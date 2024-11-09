@@ -7,12 +7,72 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:458210387235:android:e76a37835b39afcb8f9896",
+        "android_client_info": {
+          "package_name": "com.btc.shopbing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "458210387235-v7rn9isj87ap1bmmrfp8kr9s5rfip8ti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.btc.shopbing",
+            "certificate_hash": "e8d8d1ed73aac70a001d17d00be826be6eb598b3"
+          }
+        },
+        {
+          "client_id": "458210387235-239q08kt8uat1pvmor529ve2p9v4kea0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRBm2uVFlO4lxUYSAj7n4QxPTTEjRe8uM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458210387235-239q08kt8uat1pvmor529ve2p9v4kea0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "458210387235-ck0gvt76j2mvjtatitntdk2od7flu75t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.btcMarket"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:458210387235:android:eb2a786bd64acb5c8f9896",
         "android_client_info": {
           "package_name": "com.example.btc_market"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "458210387235-g2n1j84ogdrfd2v1hod6l1m4kp6m8t86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.btc_market",
+            "certificate_hash": "e8d8d1ed73aac70a001d17d00be826be6eb598b3"
+          }
+        },
+        {
+          "client_id": "458210387235-sqvm2ui37cf1m1g4aacvkp6173fs3qbq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.btc_market",
+            "certificate_hash": "018e51ab7a085c28a6f572e41c9171fc2ee104ca"
+          }
+        },
         {
           "client_id": "458210387235-tiqso408rnl7bjnfars25srq9jvun7g0.apps.googleusercontent.com",
           "client_type": 1,
