@@ -3,6 +3,8 @@ export "src/services/database.dart";
 export "src/services/cloud_storage.dart";
 export "src/services/service.dart";
 
+import "dart:io";
+import "package:flutter/foundation.dart" show kIsWeb;
 import "package:btc_market/data.dart";
 
 import "src/services/service.dart";
@@ -11,7 +13,6 @@ import "src/services/firebase.dart";
 import "src/services/database.dart";
 import "src/services/cloud_storage.dart";
 import "src/services/notifications.dart";
-
 
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
@@ -32,7 +33,9 @@ class Services extends Service {
     await auth.init();
     await database.init();
     await cloudStorage.init();
-    await notifications.init();
+    if(!kIsWeb && Platform.isAndroid) {
+      await notifications.init();
+    }
   }
 
   @override
