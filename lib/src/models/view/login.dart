@@ -12,13 +12,13 @@ const testAccount = "harshvaghani98@gmail.com";
 class LoginViewModel extends BuilderModel<UserProfile> {
   /// Whether to show the signup form.
   bool showSignUp;
-  
+
   /// The user ID, if the user is signed in.
   UserID? get userID => services.auth.userID;
-  
+
   /// The text controller for the username text field.
   final usernameController = TextEditingController();
-  
+
   /// The username entered in the text field, if any.
   String? get username => usernameController.text.trim().nullIfEmpty;
 
@@ -65,11 +65,11 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   bool get isReady => userID != null
     && username != null
     && imageUrl != null
-    && !isSaving;  
+    && !isSaving;
 
   @override
   UserProfile build() => UserProfile(
-    name: username!, 
+    name: username!,
     id: userID!,
     imageUrl: imageUrl!,
     archivedConversations: initialProfile?.archivedConversations ?? {},
@@ -94,6 +94,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
       return;
     }
     if (models.user.isSignedIn) {
+      // await services.notifications.requestPermission();
       router.go(redirect);
       return;
     } else {
