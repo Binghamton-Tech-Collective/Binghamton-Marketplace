@@ -3,6 +3,7 @@ import "dart:async";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
+import "package:encrypt/encrypt.dart";
 
 /// A data model to load and listen to conversations. 
 /// 
@@ -50,6 +51,7 @@ class ConversationsModel extends DataModel {
       final id = conversation.id;
       await _process(id);
     }
+    await encryptAllConversations();
     notifyListeners();
   }
 
@@ -84,4 +86,39 @@ class ConversationsModel extends DataModel {
     all[conversation.id] = conversation;
     await _process(conversation.id);
   }
+
+  /// Fetch all the conversations and encrypt them
+  Future<void> encryptAllConversations() async {
+    final allConversations = await services.database.getAllConversations();
+    var totalMessages = 0;
+    final key = Key.fromUtf8("my32lengthsupersecretnooneknows1");
+    final iv = IV.fromLength(16);
+    for(final conversation in allConversations) {
+      for(final message in conversation.messages) {
+        print("This is the plain text: ${message.content}");
+        final encryptedMessage = encryptMessage(message.content, key, iv);
+        print("This is the encrypted message: $encryptedMessage");
+        final decryptedMessage = decryptMessage(encryptedMessage, key, iv);
+        print("This is the decrypted message: $decryptedMessage");
+        totalMessages += 1;
+      }
+    }
+    print("Total messages in firebase: $totalMessages");
+  }
+  
+  ///
+  String encryptMessage(String message, Key key, IV iv) {
+    final encrypter = Encrypter(AES(key));
+
+    final encryptedMessage = encrypter.encrypt(message, iv: iv);
+    return encryptedMessage.base64;
+  }
+
+  ///
+  String decryptMessage(String message, Key key, IV iv) {
+    final encrypter = Encrypter(AES(key));
+    final decryptedMessage = encrypter.decrypt(Encrypted.fromBase64(message), iv: iv);
+    return decryptedMessage;
+  }
+
 }
