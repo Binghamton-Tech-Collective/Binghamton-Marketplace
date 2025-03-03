@@ -1,31 +1,33 @@
 name: Analyzer
 
-# Analyzes the project on every pull request. 
+# Analyzes the project on every pull request.
 # See analysis_options.yaml for lint configuration.
 
 on: [pull_request, merge_group]
 
-jobs: 
-  analyze: 
+jobs:
+  analyze:
     runs-on: ubuntu-latest
-    defaults: 
-      run: 
+    defaults:
+      run:
         working-directory: ./repo
 
-    steps: 
+    steps:
       - name: Cache Flutter
         id: cache-flutter
         uses: actions/cache@v2
-        with: 
+        with:
           path: flutter/
           key: ${{ runner.os }}-flutter
 
       - name: Install Flutter
         if: steps.cache-flutter.outputs.cache-hit != 'true'
-        uses: britannio/action-install-flutter@v1.0
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
 
       - uses: actions/checkout@v2
-        with: 
+        with:
           path: repo  # keeps Flutter separate from repo
           submodules: recursive
 
