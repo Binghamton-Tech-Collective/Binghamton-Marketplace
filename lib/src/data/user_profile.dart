@@ -10,7 +10,7 @@ class UserProfile {
   final String name;
   /// The user's profile photo.
   final String imageUrl;
-  ///
+  /// The user's authentication token
   String? token;
   /// The products on the user's watchlist
   final Set<ProductID> productsWatchlist;
@@ -18,7 +18,8 @@ class UserProfile {
   final Set<SellerID> sellersWatchlist;
   /// The user's archived conversations.
   final Set<ConversationID> archivedConversations;
-
+  /// The conversations blocked by the user.
+  final Set<ConversationID> blockedConversations;
   /// The user's theme preference.
   final ThemeMode theme;
 
@@ -30,6 +31,7 @@ class UserProfile {
     required this.productsWatchlist,
     required this.sellersWatchlist,
     required this.archivedConversations,
+    required this.blockedConversations,
     required this.theme,
     this.token,
   });
@@ -42,6 +44,7 @@ class UserProfile {
     productsWatchlist = Set<ProductID>.from(json["productsWatchlist"] ?? []),
     sellersWatchlist  = Set<SellerID>.from(json["sellersWatchlist"] ?? []),
     archivedConversations = Set<ConversationID>.from(json["archivedConversations"] ?? []),
+    blockedConversations = Set<ConversationID>.from(json["blockedConversations"] ?? []),
     token = json["token"],
     theme = json["theme"] == null ? ThemeMode.system : ThemeMode.values.byName(json["theme"]);
 
@@ -53,6 +56,7 @@ class UserProfile {
     "productsWatchlist": List<String>.from(productsWatchlist),
     "sellersWatchlist": List<String>.from(sellersWatchlist),
     "archivedConversations": List<String>.from(archivedConversations),
+    "blockedConversations": List<String>.from(blockedConversations),
     "theme": theme.name,
     "token" : token,
   };
@@ -66,4 +70,9 @@ class UserProfile {
   void watchSeller(SellerID seller) => sellersWatchlist.add(seller);
   /// Remove a Seller from the User's watchlist, by SellerID
   void unwatchSeller(SellerID seller) => sellersWatchlist.remove(seller);
+  /// Block a conversation
+  void blockConversation(ConversationID conversation) => blockedConversations.add(conversation);
+  /// Unblock a conversation
+  void unblockConversation(ConversationID conversation) => blockedConversations.remove(conversation);
+  
 }

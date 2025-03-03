@@ -24,6 +24,8 @@ class Conversation implements Comparable<Conversation> {
   DateTime lastUpdate;
   /// Status of the conversation
   bool isRead;
+    /// Whether the conversation is blocked
+  bool isBlocked;
 
   /// A constructor to create a new Conversation.
   Conversation({
@@ -38,6 +40,7 @@ class Conversation implements Comparable<Conversation> {
     required this.sellerImage,
     required this.lastUpdate,
     required this.isRead,
+    this.isBlocked = false,
   });
 
   /// Starts a new conversation between a buyer and a seller.
@@ -74,7 +77,8 @@ class Conversation implements Comparable<Conversation> {
         Message.fromJson(messageJson),
     ],
     lastUpdate = DateTime.parse(json["lastUpdate"]),
-    isRead = json["isRead"] ?? false;
+    isRead = json["isRead"] ?? false,
+    isBlocked = json["isBlocked"] ?? false;
 
   /// Convert this Conversation to its JSON representation
   Json toJson() => {
@@ -93,6 +97,7 @@ class Conversation implements Comparable<Conversation> {
     ],
     "lastUpdate": lastUpdate.toIso8601String(),
     "isRead" : isRead,
+    "isBlocked": isBlocked,
   };
 
   @override
