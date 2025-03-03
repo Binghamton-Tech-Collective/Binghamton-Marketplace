@@ -103,6 +103,19 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
           onPressed: model.openSellerProfile, 
           child: const Text("View profile"),
         ),
+        PopupMenuButton<String>(
+        onSelected: (value) {
+        if (value == "block") {
+          model.blockConversation(); // Implement this method in ConversationViewModel
+        }
+        },
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: "block",
+          child: Text("Block Conversation"),
+        ),
+      ],
+    ),
       ],
       title: Row(
         children: [

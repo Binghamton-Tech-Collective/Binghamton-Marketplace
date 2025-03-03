@@ -24,7 +24,7 @@ class ConversationsViewModel extends ViewModel {
   /// Shows unempty conversations
   List<Conversation> get conversations => [
     for (final conversation in archiveChoice)
-      if (conversation.messages.isNotEmpty)
+      if (conversation.messages.isNotEmpty && !conversation.isBlocked)
         conversation,
   ];
 
