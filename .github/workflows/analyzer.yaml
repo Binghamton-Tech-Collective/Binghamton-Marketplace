@@ -25,6 +25,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
+          cache-key: ${{ runner.os }}-flutter
+          cache-path: flutter/
 
       - uses: actions/checkout@v2
         with:
