@@ -4,6 +4,7 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 
+import "src/pages/blockedconversations.dart";
 import "src/pages/conversation.dart";
 import "src/pages/sellers.dart";
 import "src/pages/seller_profile.dart";
@@ -37,7 +38,7 @@ class Routes {
 
   /// The route for the login page.
   static const login = "/login";
-  
+
   /// The route for the page when a user needs a seller profile.
   static const noSeller = "no-profile";
 
@@ -50,12 +51,12 @@ extension on Object? {
 }
 
 /// Redirects users to the login page if they are not signed in.
-String? authRedirect(BuildContext context, GoRouterState state) =>  
-  (!models.user.isSignedIn && state.matchedLocation != Routes.login) 
+String? authRedirect(BuildContext context, GoRouterState state) =>
+  (!models.user.isSignedIn && state.matchedLocation != Routes.login)
     ? "${Routes.login}?redirect=${state.matchedLocation}" : null;
 
 /// Redirects users to the No Seller Profile page if they don't have a profile.
-String? sellerRedirect(BuildContext context, GoRouterState state) =>  
+String? sellerRedirect(BuildContext context, GoRouterState state) =>
   models.user.isSeller ? null : "${Routes.sellers}/${Routes.noSeller}";
 
 /// The [GoRouter] that controls the routing logic for the app.
@@ -131,7 +132,7 @@ final GoRouter router = GoRouter(
               path: ":id",
               name: "View seller",
               builder: (context, state) => SellerProfilePage(
-                id: state.pathParameters["id"] as SellerID, 
+                id: state.pathParameters["id"] as SellerID,
                 profile: state.extra.safeCast<SellerProfile>(),
               ),
               routes: [
@@ -159,6 +160,11 @@ final GoRouter router = GoRouter(
           name: "All chats",
           pageBuilder: (context, state) => NoTransitionPage(child: ConversationsPage()),
           routes: [
+            GoRoute(
+              path: "blocked",
+              name: "Blocked Conversations",
+              pageBuilder: (context, state) => NoTransitionPage(child: BlockedConversationsPage()),
+            ),
             GoRoute(
               path: ":id",
               name: "Chat with a seller",

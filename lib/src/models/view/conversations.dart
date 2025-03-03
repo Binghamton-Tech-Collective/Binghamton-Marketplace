@@ -10,6 +10,9 @@ class ConversationsViewModel extends ViewModel {
   /// All the user's archived conversations.
   Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
 
+  /// All the user's blocked conversations.
+  Set<ConversationID> get blockedIDs => models.user.userProfile!.blockedConversations;
+
   /// Whether to show archived conversations.
   bool showArchived = false;
 
@@ -17,14 +20,14 @@ class ConversationsViewModel extends ViewModel {
   bool get isEmpty => conversations.isEmpty;
 
   /// Shows conversations depending on [showArchived].
-  List<Conversation> get archiveChoice => showArchived 
-    ? models.conversations.archived 
+  List<Conversation> get archiveChoice => showArchived
+    ? models.conversations.archived
     : models.conversations.unarchived;
-  
-  /// Shows unempty conversations
+
+  /// Shows conversations depending on the current view.
   List<Conversation> get conversations => [
     for (final conversation in archiveChoice)
-      if (conversation.messages.isNotEmpty)
+      if (conversation.messages.isNotEmpty && !blockedIDs.contains(conversation.id))
         conversation,
   ];
 
@@ -56,4 +59,22 @@ class ConversationsViewModel extends ViewModel {
     await services.database.saveUserProfile(user);
     notifyListeners();
   }
+
+  /// Fetch conversations that the user has blocked
+List<Conversation> get blockedConversations => models.conversations.all.values
+    .where((conversation) => user.blockedConversations.contains(conversation.id))
+    .toList();
+
+    /// Unblock a conversation by updating UserProfile and conversation status
+  Future<void> unblockConversation(ConversationID id) async {
+    final conversation = models.conversations.all[id];
+    if (conversation != null) {
+      conversation.isBlocked = false;
+      user.blockedConversations.remove(id);
+      await services.database.saveConversation(conversation);
+      await services.database.saveUserProfile(user);
+      notifyListeners();
+    }
+  }
+
 }
