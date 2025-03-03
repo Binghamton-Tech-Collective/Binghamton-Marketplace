@@ -10,6 +10,9 @@ class ConversationsViewModel extends ViewModel {
   /// All the user's archived conversations.
   Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
 
+  /// All the user's blocked conversations.
+  Set<ConversationID> get blockedIDs => models.user.userProfile!.blockedConversations;
+
   /// Whether to show archived conversations.
   bool showArchived = false;
 
@@ -17,14 +20,14 @@ class ConversationsViewModel extends ViewModel {
   bool get isEmpty => conversations.isEmpty;
 
   /// Shows conversations depending on [showArchived].
-  List<Conversation> get archiveChoice => showArchived 
-    ? models.conversations.archived 
+  List<Conversation> get archiveChoice => showArchived
+    ? models.conversations.archived
     : models.conversations.unarchived;
-  
-  /// Shows unempty conversations
+
+  /// Shows conversations depending on the current view.
   List<Conversation> get conversations => [
     for (final conversation in archiveChoice)
-      if (conversation.messages.isNotEmpty && !conversation.isBlocked)
+      if (conversation.messages.isNotEmpty && !blockedIDs.contains(conversation.id))
         conversation,
   ];
 

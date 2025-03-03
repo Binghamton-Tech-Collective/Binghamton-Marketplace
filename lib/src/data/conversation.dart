@@ -63,7 +63,7 @@ class Conversation implements Comparable<Conversation> {
   );
 
   /// Creates a new Conversation object from a JSON object.
-  Conversation.fromJson(Json json) : 
+  Conversation.fromJson(Json json) :
     id = json["id"],
     buyerUID = json["buyerUID"],
     sellerUID = json["sellerUID"],
