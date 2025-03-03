@@ -56,4 +56,22 @@ class ConversationsViewModel extends ViewModel {
     await services.database.saveUserProfile(user);
     notifyListeners();
   }
+
+  /// Fetch conversations that the user has blocked
+List<Conversation> get blockedConversations => models.conversations.all.values
+    .where((conversation) => user.blockedConversations.contains(conversation.id))
+    .toList();
+
+    /// Unblock a conversation by updating UserProfile and conversation status
+  Future<void> unblockConversation(ConversationID id) async {
+    final conversation = models.conversations.all[id];
+    if (conversation != null) {
+      conversation.isBlocked = false;
+      user.blockedConversations.remove(id);
+      await services.database.saveConversation(conversation);
+      await services.database.saveUserProfile(user);
+      notifyListeners();
+    }
+  }
+
 }

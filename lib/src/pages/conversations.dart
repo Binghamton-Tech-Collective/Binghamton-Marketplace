@@ -40,6 +40,18 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
             value: model.showArchived, 
             onChanged: model.updateShowArchive,
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ElevatedButton.icon(
+              onPressed: () => context.push("/messages/blocked"), // Navigate to blocked conversations
+              icon: const Icon(Icons.block),
+              label: const Text("View Blocked Conversations"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+        ),
           for (final conversation in model.conversations) ConversationWidget(
             conversation: conversation,
             onArchive: () => model.toggleArchive(conversation.id),

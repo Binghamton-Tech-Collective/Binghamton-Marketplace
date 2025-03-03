@@ -1,3 +1,4 @@
+import "package:btc_market/src/pages/blockedconversations.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -159,6 +160,11 @@ final GoRouter router = GoRouter(
           name: "All chats",
           pageBuilder: (context, state) => NoTransitionPage(child: ConversationsPage()),
           routes: [
+            GoRoute(
+              path: "blocked",
+              name: "Blocked Conversations",
+              pageBuilder: (context, state) => NoTransitionPage(child: BlockedConversationsPage()),
+            ),
             GoRoute(
               path: ":id",
               name: "Chat with a seller",
