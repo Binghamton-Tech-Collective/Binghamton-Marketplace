@@ -2,10 +2,16 @@
 
 import "package:btc_market/data.dart";
 
+/// The type of item, used in reports only for now.  
 enum ItemType {
+  /// A product being sold
   product,
+  /// A conversation between buyer and seller
   conversation,
+  /// A user's profile. This isn't actually being used, 
+  /// but we keep it here in case
   userProfile,
+  /// A seller's profile
   sellerProfile;
 
   @override
