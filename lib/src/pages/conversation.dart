@@ -1,3 +1,5 @@
+import "package:btc_market/src/data/report.dart";
+import "package:btc_market/src/widgets/atomic/report_dialogue.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
@@ -82,76 +84,95 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   }
 
   @override
-  Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
-    appBar: AppBar(
-      // If the keyboard is open, it will close and ruin the hero animation. 
-      // This workaround overrides the back button to close the keyboard, wait
-      // a very small delay, *then* go back. 
-      // See: https://github.com/flutter/flutter/issues/86089
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () async {
-          FocusManager.instance.primaryFocus?.unfocus();
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          if (!context.mounted) return;
-          context.pop();
-        },
+  Widget build(BuildContext context, ConversationViewModel model) {
+    Future<void> showReportForm() async => showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => ReportDialogue(
+        itemType: ItemType.conversation, 
+        itemID: id.id,
       ),
-      actions: [
-        if (!model.conversation.isSeller) TextButton(
-          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-          onPressed: model.openSellerProfile, 
-          child: const Text("View profile"),
+    );
+    
+    return Scaffold(
+      appBar: AppBar(
+        // If the keyboard is open, it will close and ruin the hero animation. 
+        // This workaround overrides the back button to close the keyboard, wait
+        // a very small delay, *then* go back. 
+        // See: https://github.com/flutter/flutter/issues/86089
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            FocusManager.instance.primaryFocus?.unfocus();
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+            if (!context.mounted) return;
+            context.pop();
+          },
         ),
-      ],
-      title: Row(
-        children: [
-          Hero(
-            tag: "profile-pic-${model.conversation.id}",
-            child: CircleStorageImage(ref: model.conversation.otherImageRef),
+        actions: [
+          TextButton(
+            onPressed: showReportForm,
+            child: const Text(
+              "Report",
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
           ),
-          const SizedBox(width: 12),
-          Hero(
-            tag: "name-${model.conversation.id}",
-            child: Text(model.conversation.otherName),
+          if (!model.conversation.isSeller) TextButton(
+            style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+            onPressed: model.openSellerProfile, 
+            child: const Text("View profile"),
+          ),
+        ],
+        title: Row(
+          children: [
+            Hero(
+              tag: "profile-pic-${model.conversation.id}",
+              child: CircleStorageImage(ref: model.conversation.otherImageRef),
+            ),
+            const SizedBox(width: 12),
+            Hero(
+              tag: "name-${model.conversation.id}",
+              child: Text(model.conversation.otherName),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              reverse: true,
+              controller: model.scrollController,
+              itemCount: model.reversedMessages.length,
+              itemBuilder: (context, index) => ChatBubble(
+                message: model.reversedMessages[index],
+                onEdit: () => editMessage(context, model, index),
+                onDelete: () => model.deleteMessage(index),
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            color: context.colorScheme.surface,
+            child: Row(children: [
+              Expanded(child: buildTextField(
+                autofocus: true,
+                focusNode: model.focusNode,
+                controller: model.messageController,
+                onSubmit: model.send,
+                hint: "Type a message...",
+                hasBorder: false,
+              ),),
+              if (!model.isScrolledToBottom) IconButton(
+                icon: const Icon(Icons.arrow_downward),
+                tooltip: "Scroll to bottom",
+                onPressed: model.scrollToBottom,
+              ),
+            ],),
           ),
         ],
       ),
-    ),
-    body: Column(
-      children: <Widget>[
-        Expanded(
-          child: ListView.builder(
-            reverse: true,
-            controller: model.scrollController,
-            itemCount: model.reversedMessages.length,
-            itemBuilder: (context, index) => ChatBubble(
-              message: model.reversedMessages[index],
-              onEdit: () => editMessage(context, model, index),
-              onDelete: () => model.deleteMessage(index),
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          color: context.colorScheme.surface,
-          child: Row(children: [
-            Expanded(child: buildTextField(
-              autofocus: true,
-              focusNode: model.focusNode,
-              controller: model.messageController,
-              onSubmit: model.send,
-              hint: "Type a message...",
-              hasBorder: false,
-            ),),
-            if (!model.isScrolledToBottom) IconButton(
-              icon: const Icon(Icons.arrow_downward),
-              tooltip: "Scroll to bottom",
-              onPressed: model.scrollToBottom,
-            ),
-          ],),
-        ),
-      ],
-    ),
-  );
+    );
+  }
 }

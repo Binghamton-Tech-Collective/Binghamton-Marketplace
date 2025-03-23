@@ -1,3 +1,4 @@
+import "package:btc_market/src/data/report.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 import "package:btc_market/data.dart";
@@ -34,10 +35,16 @@ class Database extends Service {
     toJson: (product) => product.toJson(),
   );
 
-  /// A collection of [Product] objects.
+  /// A collection of [Conversation] objects.
   Collection<Conversation, ConversationID> get conversations => firestore.collection("conversations").convert(
     fromJson: Conversation.fromJson,
     toJson: (conversation) => conversation.toJson(),
+  );
+
+  /// A collection of [Report] objects.
+  Collection<Report, ReportID> get reports => firestore.collection("reports").convert(
+    fromJson: Report.fromJson,
+    toJson: (report) => report.toJson(),
   );
 
   @override
@@ -108,6 +115,10 @@ class Database extends Service {
   /// Gets the list of all sellers
   Future<List<SellerProfile>> getAllSellers(UserID id) =>
     sellers.limit(20).getAll();
+
+  /// Saves a user's report
+  Future<void> saveReport(Report report) =>
+    reports.doc(report.id).set(report);
 
   /// Deletes a review from the database.
   Future<void> deleteReview(ReviewID id) => reviews.doc(id).delete();
