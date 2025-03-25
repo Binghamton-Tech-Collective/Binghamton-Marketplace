@@ -3,7 +3,6 @@ import "package:btc_market/services.dart";
 import "package:btc_market/models.dart";
 
 import "package:btc_market/pages.dart";
-import "package:flutter/material.dart";
 
 /// The view model for the product page.
 class ProductViewModel extends ViewModel {
@@ -65,10 +64,6 @@ class ProductViewModel extends ViewModel {
     if (result == null) return;
     product = result;
     notifyListeners();
-  }
-
-  Future<void> report() async {
-    
   }
 
   /// The average rating for the seller, based on [sellerReviews].

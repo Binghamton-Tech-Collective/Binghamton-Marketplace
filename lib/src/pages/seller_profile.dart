@@ -1,5 +1,3 @@
-import "package:btc_market/src/data/report.dart";
-import "package:btc_market/src/widgets/atomic/report_dialogue.dart";
 import "package:flutter/material.dart";
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
@@ -31,130 +29,130 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     super.didUpdateWidget(oldWidget, model);
   }
 
+  /// Opens a popup to report this item
+  Future<void> showReportForm(BuildContext context) async => showDialog<void>(
+    context: context,
+    builder: (BuildContext context) => ReportDialogue(
+      type: ReportType.sellerProfile, 
+      itemID: id.id,
+    ),
+  );
+
   @override
-  Widget build(BuildContext context, SellerProfileViewModel model) {
-    Future<void> showReportForm() async => showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => ReportDialogue(
-        itemType: ItemType.sellerProfile, 
-        itemID: id.id,
-      ),
-    );
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-        actions: [
-          if (!model.isLoadingProfile) 
-            if (model.profile.isUser) TextButton(
-              style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-              onPressed: model.editProfile,
-              child: const Text("Edit profile"),
-            ) else 
-            TextButton(
-              onPressed: showReportForm,
-              child: const Text(
-                "Report",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 20,
-                ),
+  Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
+    appBar: AppBar(
+      title: const Text("Profile"),
+      actions: [
+        if (!model.isLoadingProfile) 
+          if (model.profile.isUser) TextButton(
+            style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+            onPressed: model.editProfile,
+            child: const Text("Edit profile"),
+          ) else 
+          TextButton(
+            onPressed: () => showReportForm(context),
+            child: const Text(
+              "Report",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 20,
               ),
-          ),
-        ],
-      ),
-      floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
-        ? null : FloatingActionButton.extended(
-          icon: const Icon(Icons.message),
-          onPressed: model.openConversation, 
-          label: const Text("Contact Seller"),
+            ),
         ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
-          else Row(
-            children: [
-              const SizedBox(width: 16),
-              Hero(
-                tag: "${model.profile.id}-image",
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(model.profile.imageUrl),
-                  radius: 50,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Hero(
-                      tag: "${model.profile.id}-name",
-                      child: Text(
-                        model.profile.name,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        RatingBarIndicator(
-                          rating: 5,
-                          itemSize: 20,
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                        ),
-                        if (!model.isLoadingProducts)
-                          Text(" | ${model.productList.length} Products"),
-                      ],
-                    ),
-                    Text(
-                      model.profile.bio,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                    ),
-                    Row(
-                      children: [
-                        for (final (platform, username) in model.profile.contact.socials)
-                          SocialMediaButton(platform: platform, username: username),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const Divider(
-            color: Colors.grey,
-            thickness: 3,
-          ),
-          Text(
-            "Product Categories",
-            style: context.textTheme.headlineMedium,
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: SizedBox(
-              height: 110,
-              child: buildCategories(context, model),
-            ), 
-          ), 
-          const Divider(
-            thickness: 3,
-            color: Colors.grey,
-          ),
-          Text(
-            "Listings",
-            style: context.textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 12),
-          buildProducts(context, model),
-        ],
+      ],
+    ),
+    floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
+      ? null : FloatingActionButton.extended(
+        icon: const Icon(Icons.message),
+        onPressed: model.openConversation, 
+        label: const Text("Contact Seller"),
       ),
-    );
-  }
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    body: ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        if (model.isLoadingProfile) const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()))
+        else Row(
+          children: [
+            const SizedBox(width: 16),
+            Hero(
+              tag: "${model.profile.id}-image",
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(model.profile.imageUrl),
+                radius: 50,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: "${model.profile.id}-name",
+                    child: Text(
+                      model.profile.name,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      RatingBarIndicator(
+                        rating: 5,
+                        itemSize: 20,
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                      ),
+                      if (!model.isLoadingProducts)
+                        Text(" | ${model.productList.length} Products"),
+                    ],
+                  ),
+                  Text(
+                    model.profile.bio,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
+                  ),
+                  Row(
+                    children: [
+                      for (final (platform, username) in model.profile.contact.socials)
+                        SocialMediaButton(platform: platform, username: username),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const Divider(
+          color: Colors.grey,
+          thickness: 3,
+        ),
+        Text(
+          "Product Categories",
+          style: context.textTheme.headlineMedium,
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: SizedBox(
+            height: 110,
+            child: buildCategories(context, model),
+          ), 
+        ), 
+        const Divider(
+          thickness: 3,
+          color: Colors.grey,
+        ),
+        Text(
+          "Listings",
+          style: context.textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 12),
+        buildProducts(context, model),
+      ],
+    ),
+  );
+
   /// A loading spinner, an empty message, or the seller's categories.
   Widget buildCategories(BuildContext context, SellerProfileViewModel model) =>
     model.isLoadingCategories ? const Center(child: CircularProgressIndicator())

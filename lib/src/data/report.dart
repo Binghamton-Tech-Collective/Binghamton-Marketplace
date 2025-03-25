@@ -1,9 +1,7 @@
-
-
 import "package:btc_market/data.dart";
 
-/// The type of item, used in reports only for now.  
-enum ItemType {
+/// The type of item to be reported.  
+enum ReportType {
   /// A product being sold
   product,
   /// A conversation between buyer and seller
@@ -14,38 +12,34 @@ enum ItemType {
   /// A seller's profile
   sellerProfile;
 
-  @override
-  String toString() {
-    switch (this) {
-      case ItemType.product:
-        return "product";
-      case ItemType.conversation:
-        return "conversation";
-      case ItemType.userProfile:
-        return "user";
-      case ItemType.sellerProfile:
-        return "seller";
-    }
-  }
+  /// Method to convert a ReportType variant to a string
+  /// for serialization 
+  String toJson() => switch (this) {
+    product => "product",
+    conversation => "conversation",
+    sellerProfile => "seller",
+    userProfile => "user",
+  };
 
-  factory ItemType.fromString(String s) {
-    switch (s) {
-      case "product":
-        return ItemType.product;
-      case "conversation":
-        return ItemType.conversation;
-      case "user":
-        return ItemType.userProfile;
-      case "seller":
-        return ItemType.sellerProfile;
-      default:
-        throw Exception("Unreachable");
-    }
-  }
+  factory ReportType.fromJson(String s) => switch (s) {
+    "product" => product,
+    "conversation" => conversation,
+    "seller" => sellerProfile,
+    "user" => userProfile,
+    _ => throw FormatException("Unrecognized ItemType: $s"),
+  };
 }
 
 /// A general purpose report
 class Report {
+  /// A list of reasons for reporting an item
+  static final reasons = [
+    "Other",
+    "Innappropriate", 
+    "Disrespectful",
+    "Fradulent",
+  ];
+  
   /// The ID of the user who sent this report
   final UserID author;
   /// The reason for the report
@@ -59,7 +53,7 @@ class Report {
   /// The ID of the report
   final ReportID id;
   /// The type of item this report is targeting
-  final ItemType type;
+  final ReportType type;
 
   /// A constructor to create a new report
   Report({
@@ -79,7 +73,7 @@ class Report {
     timeSent = DateTime.parse(json["timeSent"]),
     itemID = json["itemID"],
     id = json["id"],
-    type = ItemType.fromString(json["type"]);
+    type = ReportType.fromJson(json["type"]);
 
   /// Convert this Report to its JSON representation
   Json toJson() => {
