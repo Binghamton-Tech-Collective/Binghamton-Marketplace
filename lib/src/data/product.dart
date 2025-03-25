@@ -106,8 +106,8 @@ class Product {
         userID = json["userID"],
         title = json["title"],
         description = json["description"],
-        price = json["price"].round(),
-        quantity = json["quantity"],
+        price = json["price"].round().toInt(),
+        quantity = json["quantity"].toInt(),
         imageUrls = List<String>.from(json["imageUrls"]),
         categories = {
           for (final categoryJson in json["categories"])
@@ -116,9 +116,9 @@ class Product {
         condition = ProductCondition.values.byName(json["condition"]),
         dateListed = DateTime.parse(json["dateListed"]),
         delisted = json["delisted"] ?? false,
-        ratingSum = json["ratingSum"] ?? 0,
-        ratingCount = json["ratingCount"] ?? 0,
-        averageRating = json["averageRating"];
+        ratingSum = json["ratingSum"]?.toInt() ?? 0,
+        ratingCount = json["ratingCount"]?.toInt() ?? 0,
+        averageRating = json["averageRating"]?.toInt();
 
   /// Convert this Product to its JSON representation
   Json toJson() => {
@@ -127,7 +127,7 @@ class Product {
         "userID": userID,
         "title": title,
         "_searchKeywords": [
-          for (final word in title.split(" ")) 
+          for (final word in title.split(" "))
             word.toLowerCase(),
         ],
         "description": description,
@@ -144,7 +144,7 @@ class Product {
         "ratingCount": ratingCount,
         "averageRating": ratingSum / ratingCount == 0 ? 1 : ratingCount,
       };
-  
+
   /// The price, in USD, as a string.
   String get formattedPrice => "\$${(price / 100).toStringAsFixed(2)}";
 }
