@@ -81,6 +81,15 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
     await model.editMessage(index, result);
   }
 
+  /// Opens a popup to report this item
+  Future<void> showReportForm(BuildContext context) async => showDialog<void>(
+    context: context,
+    builder: (BuildContext context) => ReportDialogue(
+      type: ReportType.conversation, 
+      itemID: id.id,
+    ),
+  );
+
   @override
   Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
     appBar: AppBar(
@@ -98,6 +107,15 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
         },
       ),
       actions: [
+        TextButton(
+          onPressed: () => showReportForm(context),
+          child: const Text(
+            "Report",
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+        ),
         if (!model.conversation.isSeller) TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           onPressed: model.openSellerProfile, 

@@ -29,20 +29,40 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     super.didUpdateWidget(oldWidget, model);
   }
 
+  /// Opens a popup to report this item
+  Future<void> showReportForm(BuildContext context) async => showDialog<void>(
+    context: context,
+    builder: (BuildContext context) => ReportDialogue(
+      type: ReportType.sellerProfile, 
+      itemID: id.id,
+    ),
+  );
+
   @override
   Widget build(BuildContext context, SellerProfileViewModel model) => Scaffold(
     appBar: AppBar(
       title: const Text("Profile"),
       actions: [
-        if (!model.isLoadingProfile && model.profile.isUser) TextButton(
-          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-          onPressed: model.editProfile,
-          child: const Text("Edit profile"),
+        if (!model.isLoadingProfile) 
+          if (model.profile.isUser) TextButton(
+            style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+            onPressed: model.editProfile,
+            child: const Text("Edit profile"),
+          ) else 
+          TextButton(
+            onPressed: () => showReportForm(context),
+            child: const Text(
+              "Report",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 20,
+              ),
+            ),
         ),
       ],
     ),
     floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
-       ? null : FloatingActionButton.extended(
+      ? null : FloatingActionButton.extended(
         icon: const Icon(Icons.message),
         onPressed: model.openConversation, 
         label: const Text("Contact Seller"),

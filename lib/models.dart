@@ -17,6 +17,7 @@ export "src/models/view/notifications.dart";
 export "src/models/view/seller_profile.dart";
 export "src/models/view/login.dart";
 export "src/models/view/products.dart";
+export "src/models/view/report.dart";
 
 import "package:btc_market/data.dart";
 
