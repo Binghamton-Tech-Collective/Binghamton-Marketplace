@@ -36,7 +36,4 @@ class Notifications extends Service {
     final location = "/messages/$conversationId";
     router.go(location);
   }
-
-  @override
-  Future<void> dispose() async { }
 }

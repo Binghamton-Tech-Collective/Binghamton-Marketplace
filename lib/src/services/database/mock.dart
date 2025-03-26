@@ -74,9 +74,6 @@ class MockDatabase extends Database {
   Future<void> init() async { }
 
   @override
-  Future<void> dispose() async { }
-
-  @override
   Future<UserProfile> getUserProfile(_) async => _mockUser;
 
   @override

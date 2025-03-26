@@ -36,14 +36,6 @@ class Services extends Service {
     await notifications.init();
   }
 
-  @override
-  Future<void> dispose() async {
-    await database.dispose();
-    await auth.dispose();
-    await firebase.dispose();
-    await cloudStorage.dispose();
-    await notifications.dispose();
-  }
 
   /// Deletes a [SellerProfile] and all of their associated data.
   Future<void> deleteSellerProfile(SellerID id) async {

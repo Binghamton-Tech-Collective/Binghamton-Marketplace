@@ -45,9 +45,6 @@ class FirestoreDatabase extends Database {
   @override
   Future<void> init() async { }
 
-  @override
-  Future<void> dispose() async { }
-
   // ==================== Users ====================
 
   @override

@@ -10,14 +10,11 @@ export "package:firebase_storage/firebase_storage.dart" show Reference;
 /// A service to use CRUD operations on Google Cloud Storage for Firebase.
 class CloudStorageService extends Service {
   late final Reference _root = FirebaseStorage.instance.ref();
-  
+
   @override
   Future<void> init() async {}
 
-  @override
-  Future<void> dispose() async {}
-
-  /// Returns a file picked by the user. 
+  /// Returns a file picked by the user.
   Future<Uint8List?> pickImage() async {
     final result = await FilePicker.platform.pickFiles(
       dialogTitle: "Pick an image",
@@ -52,7 +49,7 @@ class CloudStorageService extends Service {
 
   /// Deletes all data associated with a seller profile.
   Future<void> deleteSellerProfile(SellerID id) => _root.child("sellers/$id/").deleteFolder();
-  
+
   /// Deletes all data associated with a product.
   Future<void> deleteProduct(ProductID id) => _root.child("products/$id/").deleteFolder();
 
@@ -68,7 +65,7 @@ class CloudStorageService extends Service {
 
 extension on Reference {
   Future<void> deleteFolder() async {
-    final result = await listAll(); 
+    final result = await listAll();
     for (final file in result.items) {
       await file.delete();
     }

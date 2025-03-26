@@ -16,9 +16,6 @@ class AuthService extends Service {
   @override
   Future<void> init() async { }
 
-  @override
-  Future<void> dispose() async { }
-
   /// Signs the user out of Firebase.
   Future<void> signOut() async {
     await firebase.signOut();
