@@ -35,7 +35,7 @@ class ProductViewModel extends ViewModel {
 
   /// The error while opening the conversation, if any.
   String? messageError;
-  
+
   /// Opens or starts a conversation with the seller.
   Future<void> openConversation() async {
     final buyer = models.user.userProfile!;
@@ -43,7 +43,7 @@ class ProductViewModel extends ViewModel {
     try {
       var conversation = await services.database.getConversation(buyer, sellerProfile);
       if (conversation == null) {
-        final conversationID = services.database.conversations.newID;
+        final conversationID = services.database.newConversationID;
         conversation = Conversation.start(
           id: conversationID,
           buyer: buyer,
@@ -67,11 +67,11 @@ class ProductViewModel extends ViewModel {
   }
 
   /// The average rating for the seller, based on [sellerReviews].
-  int? get sellerRating => 
+  int? get sellerRating =>
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
   /// Whether the view model is still loading more details about the product.
-  /// 
+  ///
   /// Even when this is true, [product] is still available.
   bool loadingDetails = true;
 

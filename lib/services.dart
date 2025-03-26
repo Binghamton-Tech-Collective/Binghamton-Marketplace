@@ -4,6 +4,7 @@ export "src/services/cloud_storage.dart";
 export "src/services/service.dart";
 
 import "package:btc_market/data.dart";
+import "package:flutter/foundation.dart" show kDebugMode;
 
 import "src/services/service.dart";
 import "src/services/auth.dart";
@@ -12,13 +13,13 @@ import "src/services/database.dart";
 import "src/services/cloud_storage.dart";
 import "src/services/notifications.dart";
 
-
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
   /// The Firebase service
   final firebase = FirebaseService();
   /// The database service.
-  final database = Database();
+  final database = kDebugMode
+    ? MockDatabase() : FirestoreDatabase();
   /// The authentication service.
   final auth = AuthService();
   /// The cloud_storage service

@@ -9,7 +9,7 @@ import "package:btc_market/pages.dart";
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Id of the seller to be edited
   final SellerID? initialID;
-  
+
   /// Constructor to initialize the SellerID
   SellerProfileBuilder({this.initialID, this.profile});
 
@@ -65,8 +65,8 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   @override
   Future<void> init() async {
-    if (initialID == null) { 
-      sellerID = services.database.sellers.newID;
+    if (initialID == null) {
+      sellerID = services.database.newSellerID;
     } else {
       if (profile == null) {
         isLoading = true;
@@ -129,7 +129,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// The error when uploading or downloading the image, if any.
   String? imageError;
-  
+
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
     final bytes = await services.cloudStorage.pickImage();

@@ -18,7 +18,7 @@ class ProductBuilder extends BuilderModel<Product> {
 
   /// Constructor to initialize the initialID
   ProductBuilder({
-    required this.initialID, 
+    required this.initialID,
     required this.initialProduct,
   });
 
@@ -91,7 +91,7 @@ class ProductBuilder extends BuilderModel<Product> {
     titleController.addListener(notifyListeners);
     descriptionController.addListener(notifyListeners);
     if (initialID == null) {
-      productID = services.database.products.newID;
+      productID = services.database.newProductID;
       profile = otherProfiles[0];
       return;
     } else {
@@ -100,8 +100,8 @@ class ProductBuilder extends BuilderModel<Product> {
     notifyListeners();
   }
 
-  /// Gets the product to edit. 
-  /// 
+  /// Gets the product to edit.
+  ///
   /// Returns null if creating, the product could not be found, or an error occurred.
   Future<Product?> getProduct() async {
     if (initialProduct != null) return initialProduct!;
@@ -177,7 +177,7 @@ class ProductBuilder extends BuilderModel<Product> {
   );
 
   @override
-  bool get isReady => 
+  bool get isReady =>
     agreedToTerms &&
     titleController.text.isNotEmpty &&
     descriptionController.text.isNotEmpty &&

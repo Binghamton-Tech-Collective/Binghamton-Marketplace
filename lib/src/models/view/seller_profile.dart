@@ -82,7 +82,7 @@ class SellerProfileViewModel extends ViewModel {
 
     var conversation = await services.database.getConversation(buyer, profile);
     if (conversation == null) {
-      final conversationID = services.database.conversations.newID;
+      final conversationID = services.database.newConversationID;
       conversation = Conversation.start(
         id: conversationID,
         buyer: buyer,
