@@ -23,7 +23,8 @@ class Services extends Service {
     ? MockDatabase() : FirestoreDatabase();
 
   /// The authentication service.
-  final auth = FirebaseAuthService();
+  final auth = kDebugMode
+    ? MockAuth() : FirebaseAuthService();
 
   /// The cloud_storage service
   final cloudStorage = CloudStorageService();
