@@ -30,7 +30,7 @@ class Services extends Service {
     ? MockAuth() : FirebaseAuthService();
 
   /// The cloud_storage service
-  final cloudStorage = CloudStorageService();
+  final cloudStorage = FirebaseStorageService();
 
   /// The push notifications service
   final notifications = Notifications();
