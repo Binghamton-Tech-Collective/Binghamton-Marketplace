@@ -10,7 +10,7 @@ export "package:firebase_storage/firebase_storage.dart" show Reference;
 export "dart:typed_data" show Uint8List;
 
 /// A service to perform CRUD operations on files in the cloud.
-abstract class CloudStorage extends Service {
+abstract class FilesService extends Service {
   /// Returns a file picked by the user.
   ///
   /// This isn't mocked by default since it's an offline function.

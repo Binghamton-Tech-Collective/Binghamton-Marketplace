@@ -30,7 +30,7 @@ class Services extends Service {
     ? MockAuth() : FirebaseAuthService();
 
   /// The cloud_storage service
-  final cloudStorage = FirebaseStorageService();
+  final files = CloudStorageService();
 
   /// The push notifications service
   final notifications = Notifications();
@@ -40,7 +40,7 @@ class Services extends Service {
     await firebase.init();
     await auth.init();
     await database.init();
-    await cloudStorage.init();
+    await files.init();
     await notifications.init();
   }
 
@@ -56,7 +56,7 @@ class Services extends Service {
       await deleteProduct(product.id);
     }
     await database.deleteSellerProfile(id);
-    await cloudStorage.deleteSellerProfile(id);
+    await files.deleteSellerProfile(id);
   }
 
   /// Deletes a product and all data associated with it.
@@ -66,7 +66,7 @@ class Services extends Service {
       await deleteReview(review.id);
     }
     await database.deleteProduct(id);
-    await cloudStorage.deleteProduct(id);
+    await files.deleteProduct(id);
   }
 
   /// Deletes a review and all data associated with it.

@@ -116,7 +116,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   /// Deletes the image from Firebase Cloud Storage.
   Future<void> deleteImage() async {
     if (imageUrl == null) return;
-    await services.cloudStorage.deleteFile(imageUrl!);
+    await services.files.deleteFile(imageUrl!);
     imageUrl = null;
     notifyListeners();
   }
@@ -124,13 +124,13 @@ class LoginViewModel extends BuilderModel<UserProfile> {
   /// Picks an image and uploads it to Firebase Cloud Storage.
   Future<void> pickImage() async {
     if (userID == null) return;
-    final file = await services.cloudStorage.pickImage();
+    final file = await services.files.pickImage();
     isSaving = true;
     error = null;
     notifyListeners();
     if (file == null) return;
-    final filename = services.cloudStorage.getUserImagePath(userID!);
-    final url = await services.cloudStorage.uploadFile(file, filename);
+    final filename = services.files.getUserImagePath(userID!);
+    final url = await services.files.uploadFile(file, filename);
     if (url == null) error = "Could not upload image";
     imageUrl = url;
     isSaving = false;

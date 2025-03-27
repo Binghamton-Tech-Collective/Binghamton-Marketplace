@@ -12,8 +12,8 @@ extension on Reference {
   }
 }
 
-/// An implementation of [CloudStorage] with Firebase.
-class FirebaseStorageService extends CloudStorage {
+/// An implementation of [FilesService] with Firebase.
+class CloudStorageService extends FilesService {
   late final Reference _root = FirebaseStorage.instance.ref();
 
   @override
