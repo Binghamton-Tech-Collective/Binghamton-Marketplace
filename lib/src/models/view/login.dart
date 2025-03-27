@@ -2,7 +2,6 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/pages.dart";
 import "package:btc_market/services.dart";
-import "package:firebase_ui_auth/firebase_ui_auth.dart";
 import "package:flutter/material.dart";
 
 /// A test account that is allowed to be used, even if it doesn't end in @binghamton.edu
@@ -89,7 +88,6 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     if (!email.endsWith("binghamton.edu") && email != testAccount) {
       error = "Please sign in with your Binghamton email";
       notifyListeners();
-      await FirebaseUIAuth.signOut(auth: services.auth.firebase);
       await services.auth.signOut();
       return;
     }

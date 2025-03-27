@@ -1,6 +1,7 @@
 import "package:firebase_auth/firebase_auth.dart";
 
 import "package:btc_market/data.dart";
+import "package:firebase_ui_auth/firebase_ui_auth.dart";
 import "package:flutter/foundation.dart" show kIsWeb;
 
 import "interface.dart";
@@ -19,6 +20,7 @@ class FirebaseAuthService extends Auth {
   @override
   Future<void> signOut() async {
     await firebase.signOut();
+    await FirebaseUIAuth.signOut(auth: firebase);
   }
 
   @override
