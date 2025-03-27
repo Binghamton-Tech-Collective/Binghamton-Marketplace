@@ -8,7 +8,7 @@ extension ConversationUtils on Conversation {
   bool get isSeller => models.user.userID == sellerUID;
 
   /// Getting the appropriate image based on the role
-  Reference get otherImageRef => isSeller
+  FileHandle get otherImageRef => isSeller
     ? services.files.getUserImagePath(buyerUID)
     : services.files.getSellerImagePath(sellerID);
 

@@ -32,18 +32,14 @@ class AppModel extends DataModel {
     ScaffoldMessenger.of(context!).showMaterialBanner(
       MaterialBanner(
         content: ListTile(
-            onTap: () {
-              ScaffoldMessenger.of(context!).hideCurrentMaterialBanner();
-              router.go("${Routes.messages}/${conversation.id}");
-            },
-            title: Text("New message from ${conversation.otherName}"),
-            subtitle: Text(conversation.summary ?? "Tap to see details"),
-            leading: CircleStorageImage(
-              ref: conversation.otherImageRef,
-              // radius: 36,
-            ),
+          onTap: () {
+            ScaffoldMessenger.of(context!).hideCurrentMaterialBanner();
+            router.go("${Routes.messages}/${conversation.id}");
+          },
+          title: Text("New message from ${conversation.otherName}"),
+          subtitle: Text(conversation.summary ?? "Tap to see details"),
+          leading: CircleFileImage(file: conversation.otherImageRef),
         ),
-
         actions: [
           TextButton(
             child: const Text("Close"),

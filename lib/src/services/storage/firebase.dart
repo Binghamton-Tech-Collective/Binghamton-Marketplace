@@ -16,11 +16,18 @@ extension on Reference {
 class CloudStorageService extends FilesService {
   late final Reference _root = FirebaseStorage.instance.ref();
 
+  /// Converts an agnostic [FileHandle] to a Firebase [Reference].
+  ///
+  /// Not all handles represent Firebase references, so only use this if you're sure
+  /// your handle came from this class (which always uses references).
+  Reference toFirebase(FileHandle handle) => _root.child(handle.path);
+
   @override
   Future<void> init() async {}
 
   @override
-  Future<String?> uploadFile(Uint8List data, Reference reference) async {
+  Future<String?> uploadFile(Uint8List data, FileHandle handle) async {
+    final reference = _root.child(handle.path);
     try {
       await reference.putData(data);
       final downloadURL = await reference.getDownloadURL();
@@ -48,11 +55,14 @@ class CloudStorageService extends FilesService {
   Future<void> deleteProduct(ProductID id) => _root.child("products/$id/").deleteFolder();
 
   @override
-  Reference getSellerImagePath(SellerID id) => _root.child("sellers/$id/profile_pic");
+  FileHandle getSellerImagePath(SellerID id) =>
+    FileHandle(_root.child("sellers/$id/profile_pic").fullPath);
 
   @override
-  Reference getProductImage(ProductID id, int index) => _root.child("products/$id/$index");
+  FileHandle getProductImage(ProductID id, int index) =>
+    FileHandle(_root.child("products/$id/$index").fullPath);
 
   @override
-  Reference getUserImagePath(UserID id) => _root.child("users/$id/profile_pic");
+  FileHandle getUserImagePath(UserID id) =>
+    FileHandle(_root.child("users/$id/profile_pic").fullPath);
 }

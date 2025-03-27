@@ -14,14 +14,14 @@ class ConversationWidget extends StatelessWidget {
 
   /// Constructor of the ConversationWidget
   const ConversationWidget({
-    required this.conversation, 
+    required this.conversation,
     required this.onArchive,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) => ListTile(
-    tileColor: conversation.showNotification 
+    tileColor: conversation.showNotification
       ? context.colorScheme.surfaceContainerHighest : null,
     title: Hero(
       tag: "name-${conversation.id}",
@@ -33,7 +33,7 @@ class ConversationWidget extends StatelessWidget {
     ),
     leading: Hero(
       tag: "profile-pic-${conversation.id}",
-      child: CircleStorageImage(ref: conversation.otherImageRef),
+      child: CircleFileImage(file: conversation.otherImageRef),
     ),
     trailing: Text(context.formatDateAndTime(conversation.lastUpdate)),
     onTap: () => context.go("/messages/${conversation.id}", extra: conversation),

@@ -12,7 +12,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   final ConversationID id;
 
   /// The already loaded conversation, if any.
-  /// 
+  ///
   /// This will be null if this page is loaded through a URL.
   final Conversation? initialConversation;
 
@@ -66,7 +66,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   Future<void> editMessage(BuildContext context, ConversationViewModel model, int index) async {
     final controller = TextEditingController(text: model.reversedMessages[index].content);
     final result = await showAdaptiveDialog<String>(
-      context: context, 
+      context: context,
       builder: (context) => AlertDialog(
         title: const Text("Edit your message"),
         content: buildTextField(
@@ -84,9 +84,9 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
   @override
   Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
     appBar: AppBar(
-      // If the keyboard is open, it will close and ruin the hero animation. 
+      // If the keyboard is open, it will close and ruin the hero animation.
       // This workaround overrides the back button to close the keyboard, wait
-      // a very small delay, *then* go back. 
+      // a very small delay, *then* go back.
       // See: https://github.com/flutter/flutter/issues/86089
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
@@ -100,7 +100,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
       actions: [
         if (!model.conversation.isSeller) TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-          onPressed: model.openSellerProfile, 
+          onPressed: model.openSellerProfile,
           child: const Text("View profile"),
         ),
       ],
@@ -108,7 +108,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
         children: [
           Hero(
             tag: "profile-pic-${model.conversation.id}",
-            child: CircleStorageImage(ref: model.conversation.otherImageRef),
+            child: CircleFileImage(file: model.conversation.otherImageRef),
           ),
           const SizedBox(width: 12),
           Hero(
