@@ -17,13 +17,17 @@ import "src/services/notifications.dart";
 class Services extends Service {
   /// The Firebase service
   final firebase = FirebaseService();
+
   /// The database service.
   final database = kDebugMode
     ? MockDatabase() : FirestoreDatabase();
+
   /// The authentication service.
   final auth = FirebaseAuthService();
+
   /// The cloud_storage service
   final cloudStorage = CloudStorageService();
+
   /// The push notifications service
   final notifications = Notifications();
 
