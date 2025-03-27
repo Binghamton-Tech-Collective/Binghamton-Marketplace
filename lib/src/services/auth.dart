@@ -32,8 +32,11 @@ class AuthService extends Service {
   }
 
   /// The currently signed-in user.
-  User? get user => firebase.currentUser;
+  User? get _user => firebase.currentUser;
+
+  /// The currently signed-in user's email.
+  String? get email => _user?.email;
 
   /// Gets the [UserID] of the currently signed-in user.
-  UserID? get userID => user == null ? null : UserID(user!.uid);
+  UserID? get userID => _user == null ? null : UserID(_user!.uid);
 }

@@ -49,7 +49,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   late final SellerID sellerID;
 
   /// Fetching the email address of the seller
-  String get email => services.auth.user!.email!;
+  String get email => services.auth.email!;
 
   /// Fetching User ID of the seller
   late final UserID userID;
