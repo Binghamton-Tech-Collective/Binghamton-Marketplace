@@ -43,12 +43,16 @@ class CloudStorageService extends FilesService {
 
   @override
   Future<void> deleteSellerProfile(SellerID id) => _root.child("sellers/$id/").deleteFolder();
+
   @override
   Future<void> deleteProduct(ProductID id) => _root.child("products/$id/").deleteFolder();
+
   @override
   Reference getSellerImagePath(SellerID id) => _root.child("sellers/$id/profile_pic");
+
   @override
   Reference getProductImage(ProductID id, int index) => _root.child("products/$id/$index");
+
   @override
   Reference getUserImagePath(UserID id) => _root.child("users/$id/profile_pic");
 }

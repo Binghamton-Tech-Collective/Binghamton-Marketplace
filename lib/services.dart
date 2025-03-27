@@ -1,6 +1,6 @@
 export "src/services/auth.dart";
 export "src/services/database.dart";
-export "src/services/cloud_storage.dart";
+export "src/services/files.dart";
 export "src/services/service.dart";
 
 import "package:btc_market/data.dart";
@@ -10,7 +10,7 @@ import "src/services/service.dart";
 import "src/services/auth.dart";
 import "src/services/firebase.dart";
 import "src/services/database.dart";
-import "src/services/cloud_storage.dart";
+import "src/services/files.dart";
 import "src/services/notifications.dart";
 
 /// Set this to true to never use mocks, even in tests.
@@ -29,7 +29,7 @@ class Services extends Service {
   final auth = kDebugMode && !neverMock
     ? MockAuth() : FirebaseAuthService();
 
-  /// The cloud_storage service
+  /// The files service
   final files = CloudStorageService();
 
   /// The push notifications service
