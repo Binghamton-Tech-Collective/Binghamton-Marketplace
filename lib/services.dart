@@ -14,10 +14,17 @@ import "src/services/files.dart";
 import "src/services/notifications.dart";
 
 /// Set this to true to never use mocks, even in tests.
+///
+/// Can be useful to iterate on the UI without using the network.
 const neverMock = false;
 
+/// Set this to true to always use mock data, even in release builds.
+///
+/// Can be useful for testing performance without downloading real data.
+const alwaysMock = false;
+
 /// Whether to use mock services and data.
-const useMock = kDebugMode && !neverMock;
+const useMock = alwaysMock || (kDebugMode && !neverMock);
 
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
