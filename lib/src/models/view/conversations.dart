@@ -17,10 +17,10 @@ class ConversationsViewModel extends ViewModel {
   bool get isEmpty => conversations.isEmpty;
 
   /// Shows conversations depending on [showArchived].
-  List<Conversation> get archiveChoice => showArchived 
-    ? models.conversations.archived 
+  List<Conversation> get archiveChoice => showArchived
+    ? models.conversations.archived
     : models.conversations.unarchived;
-  
+
   /// Shows unempty conversations
   List<Conversation> get conversations => [
     for (final conversation in archiveChoice)

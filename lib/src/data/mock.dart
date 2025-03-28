@@ -8,8 +8,20 @@ UserProfile mockUser = UserProfile(
   archivedConversations: {},
   productsWatchlist: {},
   sellersWatchlist: {},
-  theme: ThemeMode.dark,
+  theme: ThemeMode.light,
   token: "mock_user_id",
+);
+
+/// A second mock user, to be used for [mockSeller].
+UserProfile mockUser2 = UserProfile(
+  id: const UserID("mock_user_2_id"),
+  imageUrl: "https://picsum.photos/200",
+  name: "Mock Seller",
+  archivedConversations: {},
+  productsWatchlist: {},
+  sellersWatchlist: {},
+  theme: ThemeMode.dark,
+  token: "mock_user_2_id_",
 );
 
 /// A mock seller for testing, owned by [mockUser].
@@ -18,7 +30,7 @@ SellerProfile mockSeller = SellerProfile(
   id: const SellerID("mock_seller_id"),
   imageUrl: "https://picsum.photos/200",
   name: "Mock Seller",
-  userID: mockUser.id,
+  userID: mockUser2.id,
   contact: const ContactInfo(
     email: "mock@binghamton.edu",
     instagramHandle: "@mockInstagramUser",
@@ -45,7 +57,7 @@ Product mockProduct = Product(
   quantity: 3,
   sellerID: mockSeller.id,
   title: "Mock Product",
-  userID: mockUser.id,
+  userID: mockSeller.userID,
   ratingCount: 10,
   ratingSum: 40,
 );
@@ -57,9 +69,9 @@ Review mockReview = Review(
   body: "This is a mock review",
   dateTime: DateTime.now(),
   id: const ReviewID("mock_review_id"),
-  sellerID: mockSeller.id,
   stars: 3,
   title: "Mock Review",
+  sellerID: mockSeller.id,
   productID: mockProduct.id,
 );
 
@@ -68,4 +80,11 @@ Conversation mockConversation = Conversation.start(
   id: const ConversationID("mock_conversation_id"),
   buyer: mockUser,
   seller: mockSeller,
+  firstMessage: Message(
+    author: mockSeller.userID,
+    content: "Hey, did you like the product?",
+    imageURL: null,
+    timeEdited: DateTime.now(),
+    timeSent: DateTime.now(),
+  ),
 );

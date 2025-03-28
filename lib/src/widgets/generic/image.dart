@@ -23,8 +23,8 @@ class CircleFileImage extends StatelessWidget {
       final ref = service.toFirebase(file);
       return CircleStorageImage(ref: ref);
     } else {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(file.path),
+      return CircleBtcImage(
+        image: NetworkImage(file.path),
       );
     }
   }
