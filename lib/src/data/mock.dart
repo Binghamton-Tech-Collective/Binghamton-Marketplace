@@ -21,7 +21,7 @@ SellerProfile mockSeller = SellerProfile(
   userID: mockUser.id,
   contact: const ContactInfo(
     email: "mock@binghamton.edu",
-    instagramHandle: "@mockInstaUser",
+    instagramHandle: "@mockInstagramUser",
     linkedInUsername: "mock_linkedin_user",
     phoneNumber: "+1 (123) 456-7890",
     tikTokUsername: "@mockTikTokUser",

@@ -77,7 +77,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 const Center(
-                  child: Text("Upload Photos (Atleast 1)", style: labelStyle),
+                  child: Text("Upload Photos (At least 1)", style: labelStyle),
                 ),
                 const SizedBox(height: 8),
                 if (model.imageError != null) Text(
