@@ -14,37 +14,31 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
       title: const Text("Chats"),
       actions: [ProfileButton()],
     ),
-    body: model.isEmpty
-      ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/bearcat/confused.png", width: 200, height: 200),
-            const SizedBox(height: 16),
-            const Text(
-              "You don't have any conversations.\nStart one by clicking on a seller or a product!",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-              textAlign: TextAlign.center,
-            ),
-          ],
+    body: ListView(
+      children: [
+        SwitchListTile.adaptive(
+          title: const Text("Show archived"),
+          subtitle: model.showArchived
+            ? const Text("Long press to unarchive")
+            : const Text("Long press to archive"),
+          secondary: const Icon(Icons.archive),
+          value: model.showArchived,
+          onChanged: model.updateShowArchive,
         ),
-      )
-      : ListView(
-        children: [
-          SwitchListTile.adaptive(
-            title: const Text("Show archived"),
-            subtitle: model.showArchived
-              ? const Text("Long press to unarchive")
-              : const Text("Long press to archive"),
-            secondary: const Icon(Icons.archive),
-            value: model.showArchived, 
-            onChanged: model.updateShowArchive,
-          ),
-          for (final conversation in model.conversations) ConversationWidget(
-            conversation: conversation,
-            onArchive: () => model.toggleArchive(conversation.id),
+        if (model.isEmpty) ...[
+          Image.asset("assets/bearcat/confused.png", width: 200, height: 200),
+          const SizedBox(height: 16),
+          const Text(
+            "You don't have any conversations.\nStart one by clicking on a seller or a product!",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+            textAlign: TextAlign.center,
           ),
         ],
-      ),
+        for (final conversation in model.conversations) ConversationWidget(
+          conversation: conversation,
+          onArchive: () => model.toggleArchive(conversation.id),
+        ),
+      ],
+    ),
   );
 }

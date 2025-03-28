@@ -9,7 +9,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
 /// The view model for a single conversation.
-/// 
+///
 /// Loads messages and has functions to send, edit and delete messages.
 class ConversationViewModel extends ViewModel {
   /// ID of the conversation
@@ -37,7 +37,7 @@ class ConversationViewModel extends ViewModel {
   List<Message> get reversedMessages => conversation.messages.reversed.toList();
 
   /// Whether the page is scrolled to the bottom.
-  /// 
+  ///
   /// When the page first loads, on the frame before [scrollController] is attached to a [ListView],
   /// this cannot be determined. In that case, we return true so the page doesn't offer any button.
   bool get isScrolledToBottom => scrollController.hasClients && scrollController.position.pixels == 0;
@@ -45,7 +45,7 @@ class ConversationViewModel extends ViewModel {
   StreamSubscription<Conversation?>? _subscription;
 
   /// The focus node for the text field.
-  /// 
+  ///
   /// This lets us re-request focus when a message is sent.
   final focusNode = FocusNode();
 
@@ -56,7 +56,7 @@ class ConversationViewModel extends ViewModel {
     messageError = null;
     _subscription?.cancel();
   }
-  
+
   @override
   Future<void> init() async {
     if (!models.conversations.all.containsKey(id)) {
@@ -68,7 +68,7 @@ class ConversationViewModel extends ViewModel {
     _subscription = models.conversations.streams[id]!.listen(_update);
     await updateIsRead();
   }
-  
+
   Future<void> _update(Conversation? data) async {
     if (data == null) {
       errorText = "Could not find a conversation with id: $id";
@@ -84,6 +84,7 @@ class ConversationViewModel extends ViewModel {
     final lastMessage = conversation.lastMessage;
     if (lastMessage == null) return;
     if (lastMessage.isAuthor) return;
+    if (conversation.isRead) return;
     conversation.isRead = true;
     await updateStatus(conversation);
   }

@@ -1,48 +1,57 @@
 export "src/services/auth.dart";
 export "src/services/database.dart";
-export "src/services/cloud_storage.dart";
+export "src/services/files.dart";
 export "src/services/service.dart";
 
 import "package:btc_market/data.dart";
+import "package:flutter/foundation.dart" show kDebugMode;
 
 import "src/services/service.dart";
 import "src/services/auth.dart";
 import "src/services/firebase.dart";
 import "src/services/database.dart";
-import "src/services/cloud_storage.dart";
+import "src/services/files.dart";
 import "src/services/notifications.dart";
 
+/// Set this to true to never use mocks, even in tests.
+///
+/// Can be useful to iterate on the UI without using the network.
+const neverMock = false;
+
+/// Set this to true to always use mock data, even in release builds.
+///
+/// Can be useful for testing performance without downloading real data.
+const alwaysMock = false;
+
+/// Whether to use mock services and data.
+const useMock = alwaysMock || (kDebugMode && !neverMock);
 
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
   /// The Firebase service
   final firebase = FirebaseService();
+
   /// The database service.
-  final database = Database();
+  final database = useMock ? MockDatabase() : FirestoreDatabase();
+
   /// The authentication service.
-  final auth = AuthService();
-  /// The cloud_storage service
-  final cloudStorage = CloudStorageService();
+  final auth = useMock ? MockAuth() : FirebaseAuthService();
+
+  /// The files service
+  final files = useMock ? MockFilesService() : CloudStorageService();
+
   /// The push notifications service
-  final notifications = Notifications();
+  final notifications = useMock ? MockPushNotifications() : FirebaseNotifications();
 
   @override
   Future<void> init() async {
-    await firebase.init();
+    if (!useMock) await firebase.init();
     await auth.init();
     await database.init();
-    await cloudStorage.init();
+    await files.init();
     await notifications.init();
   }
 
-  @override
-  Future<void> dispose() async {
-    await database.dispose();
-    await auth.dispose();
-    await firebase.dispose();
-    await cloudStorage.dispose();
-    await notifications.dispose();
-  }
 
   /// Deletes a [SellerProfile] and all of their associated data.
   Future<void> deleteSellerProfile(SellerID id) async {
@@ -55,7 +64,7 @@ class Services extends Service {
       await deleteProduct(product.id);
     }
     await database.deleteSellerProfile(id);
-    await cloudStorage.deleteSellerProfile(id);
+    await files.deleteSellerProfile(id);
   }
 
   /// Deletes a product and all data associated with it.
@@ -65,7 +74,7 @@ class Services extends Service {
       await deleteReview(review.id);
     }
     await database.deleteProduct(id);
-    await cloudStorage.deleteProduct(id);
+    await files.deleteProduct(id);
   }
 
   /// Deletes a review and all data associated with it.

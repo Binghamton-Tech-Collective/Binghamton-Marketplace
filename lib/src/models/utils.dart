@@ -8,9 +8,9 @@ extension ConversationUtils on Conversation {
   bool get isSeller => models.user.userID == sellerUID;
 
   /// Getting the appropriate image based on the role
-  Reference get otherImageRef => isSeller
-    ? services.cloudStorage.getUserImagePath(buyerUID)
-    : services.cloudStorage.getSellerImagePath(sellerID);
+  FileHandle get otherImageRef => isSeller
+    ? services.files.getUserImagePath(buyerUID)
+    : services.files.getSellerImagePath(sellerID);
 
   /// Getting the appropriate name based on the role
   String get otherName => isSeller ? buyerName.trim() : sellerName.trim();
@@ -19,7 +19,7 @@ extension ConversationUtils on Conversation {
   Message? get lastMessage => messages.lastOrNull;
 
   /// A summary of the last message.
-  String? get summary => lastMessage == null ? null 
+  String? get summary => lastMessage == null ? null
     : "${lastMessage?.getAuthorName(this)}: ${lastMessage?.content.firstLine}";
 
   /// Whether this conversation should show a notification.

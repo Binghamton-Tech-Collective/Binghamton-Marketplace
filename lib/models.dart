@@ -33,7 +33,7 @@ class Models extends DataModel {
   final app = AppModel();
   /// The conversations data model.
   final conversations = ConversationsModel();
-  
+
   @override
   Future<void> init() async {
     try {

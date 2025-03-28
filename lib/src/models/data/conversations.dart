@@ -4,8 +4,8 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 
-/// A data model to load and listen to conversations. 
-/// 
+/// A data model to load and listen to conversations.
+///
 /// By keeping all messages in memory throughout the lifetime of the app,
 /// we can support refreshing the conversations page and the conversation
 /// page without loading the conversation a second time, or subscribing and
@@ -13,7 +13,7 @@ import "package:btc_market/services.dart";
 class ConversationsModel extends DataModel {
   /// A stream for every conversation, keyed by ID.
   final Map<ConversationID, Stream<Conversation?>> streams = {};
-  /// A list of subscriptions on each conversation. Be sure to cancel these. 
+  /// A list of subscriptions on each conversation. Be sure to cancel these.
   final List<StreamSubscription<Conversation?>> _subscriptions = [];
   /// All the conversations this user is a part of, keyed by ID.
   final Map<ConversationID, Conversation> all = {};
@@ -26,23 +26,23 @@ class ConversationsModel extends DataModel {
     _subscriptions.add(subscription);
     return stream.first;  // waits for the conversation to load the first time.
   }
-  
+
   Set<ConversationID> get _archivedIDs => models.user.userProfile?.archivedConversations ?? {};
-  
+
   /// All non-archived conversations.
   List<Conversation> get unarchived => [
-    for (final conversation in _allSorted) 
+    for (final conversation in _allSorted)
       if (!_archivedIDs.contains(conversation.id))
         conversation,
   ];
 
   /// All archived conversations.
   List<Conversation> get archived => [
-    for (final conversation in _allSorted) 
+    for (final conversation in _allSorted)
       if (_archivedIDs.contains(conversation.id))
         conversation,
   ];
-  
+
   @override
   Future<void> onSignIn(UserProfile profile) async {
     final temp = await services.database.getConversationsByUserID(profile.id);
