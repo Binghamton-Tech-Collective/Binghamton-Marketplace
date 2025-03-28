@@ -81,6 +81,7 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
     await model.editMessage(index, result);
   }
 
+
   @override
   Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
     appBar: AppBar(
