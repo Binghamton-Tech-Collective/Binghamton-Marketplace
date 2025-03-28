@@ -1,5 +1,3 @@
-import "dart:io";
-
 import "package:btc_market/models.dart";
 import "package:btc_market/services.dart";
 import "package:btc_market/widgets.dart";
@@ -26,7 +24,7 @@ class CircleFileImage extends StatelessWidget {
       return CircleStorageImage(ref: ref);
     } else {
       return CircleAvatar(
-        backgroundImage: FileImage(File(file.path)),
+        backgroundImage: NetworkImage(file.path),
       );
     }
   }

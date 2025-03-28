@@ -16,21 +16,22 @@ import "src/services/notifications.dart";
 /// Set this to true to never use mocks, even in tests.
 const neverMock = false;
 
+/// Whether to use mock services and data.
+const useMock = kDebugMode && !neverMock;
+
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {
   /// The Firebase service
   final firebase = FirebaseService();
 
   /// The database service.
-  final database = kDebugMode && !neverMock
-    ? MockDatabase() : FirestoreDatabase();
+  final database = useMock ? MockDatabase() : FirestoreDatabase();
 
   /// The authentication service.
-  final auth = kDebugMode && !neverMock
-    ? MockAuth() : FirebaseAuthService();
+  final auth = useMock ? MockAuth() : FirebaseAuthService();
 
   /// The files service
-  final files = CloudStorageService();
+  final files = useMock ? MockFilesService() : CloudStorageService();
 
   /// The push notifications service
   final notifications = Notifications();
