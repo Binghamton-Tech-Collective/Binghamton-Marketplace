@@ -30,29 +30,40 @@ class CircleFileImage extends StatelessWidget {
   }
 }
 
+/// A standard [Image.network] or [Ink.image] that can be mocked.
+///
+/// If [useMock] is true, this widget will build a [Placeholder] instead.
 class BtcNetworkImage extends StatelessWidget {
+  /// The URL to use for the real image.
   final String url;
+  /// The [BoxFit] to use for the real image.
   final BoxFit? fit;
+  /// Whether to use [Ink.image] instead of [Image.network].
   final bool isInk;
+  /// A const constructor.
   const BtcNetworkImage(this.url, {this.fit, this.isInk = false});
 
   @override
   Widget build(BuildContext context) => useMock
-    ? Placeholder() : isInk
+    ? const Placeholder() : isInk
       ? Ink.image(image: NetworkImage(url), fit: fit)
       : Image.network(url, fit: fit);
 }
 
+/// A [CircleAvatar] whose image can be mocked if [useMock] is true.
 class CircleBtcImage extends StatelessWidget {
+  /// The image provider to use for the real image, typically a [NetworkImage].
   final ImageProvider image;
+  /// The radius to use for the [CircleAvatar].
   final double? radius;
+  /// A const constructor.
   const CircleBtcImage({required this.image, this.radius});
 
   @override
   Widget build(BuildContext context) => CircleAvatar(
     backgroundImage: useMock ? null : image,
     radius: radius,
-    child: useMock ? Placeholder() : null,
+    child: useMock ? const Placeholder() : null,
   );
 }
 
