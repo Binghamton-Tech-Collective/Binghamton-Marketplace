@@ -34,7 +34,7 @@ class Services extends Service {
   final files = useMock ? MockFilesService() : CloudStorageService();
 
   /// The push notifications service
-  final notifications = Notifications();
+  final notifications = FirebaseNotifications();
 
   @override
   Future<void> init() async {
@@ -42,7 +42,7 @@ class Services extends Service {
     await auth.init();
     await database.init();
     await files.init();
-    await notifications.init();
+    if (!useMock) await notifications.init();
   }
 
 
