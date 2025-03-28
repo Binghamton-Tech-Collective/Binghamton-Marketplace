@@ -30,6 +30,32 @@ class CircleFileImage extends StatelessWidget {
   }
 }
 
+class BtcNetworkImage extends StatelessWidget {
+  final String url;
+  final BoxFit? fit;
+  final bool isInk;
+  const BtcNetworkImage(this.url, {this.fit, this.isInk = false});
+
+  @override
+  Widget build(BuildContext context) => useMock
+    ? Placeholder() : isInk
+      ? Ink.image(image: NetworkImage(url), fit: fit)
+      : Image.network(url, fit: fit);
+}
+
+class CircleBtcImage extends StatelessWidget {
+  final ImageProvider image;
+  final double? radius;
+  const CircleBtcImage({required this.image, this.radius});
+
+  @override
+  Widget build(BuildContext context) => CircleAvatar(
+    backgroundImage: useMock ? null : image,
+    radius: radius,
+    child: useMock ? Placeholder() : null,
+  );
+}
+
 /// A view model to load an image from Firebase.
 class StorageImageViewModel extends ViewModel {
   /// A cache of all the URLs that have been loaded in the past.

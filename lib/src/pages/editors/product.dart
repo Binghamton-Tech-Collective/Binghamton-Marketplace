@@ -55,7 +55,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                       for (final otherProfile in model.otherProfiles) DropdownMenuEntry(
                         value: otherProfile,
                         label: otherProfile.name,
-                        leadingIcon: CircleAvatar(backgroundImage: NetworkImage(otherProfile.imageUrl)),
+                        leadingIcon: CircleBtcImage(image: NetworkImage(otherProfile.imageUrl)),
                       ),
                     ],
                   ),

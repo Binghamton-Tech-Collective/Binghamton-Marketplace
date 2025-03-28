@@ -26,9 +26,10 @@ class ProductWidget extends StatelessWidget {
             child: Align(
               child: Hero(
                 tag: "${product.id}-image",
-                child: Ink.image(
-                  image: NetworkImage(product.imageUrls[0]),
+                child: BtcNetworkImage(
+                  product.imageUrls[0],
                   fit: BoxFit.contain,
+                  isInk: true,
                 ),
               ),
             ),

@@ -70,10 +70,13 @@ class MockDatabase extends Database {
   @override
   Future<Conversation?> getConversation(UserProfile buyer, SellerProfile seller) async => mockConversation;
 
-  final StreamController<Conversation> _conversationController = StreamController();
+  final StreamController<Conversation> _conversationController = StreamController.broadcast();
 
   @override
-  Stream<Conversation?> listenToConversation(ConversationID id) => _conversationController.stream;
+  Stream<Conversation?> listenToConversation(ConversationID id) {
+    Timer.run(() => _conversationController.add(mockConversation));
+    return _conversationController.stream;
+  }
 
   @override
   Future<List<Conversation>> getConversationsByUserID(UserID id) async => [mockConversation];

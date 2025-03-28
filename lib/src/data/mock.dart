@@ -20,7 +20,7 @@ SellerProfile mockSeller = SellerProfile(
   name: "Mock Seller",
   userID: mockUser.id,
   contact: const ContactInfo(
-    email: "mock@gmail.com",
+    email: "mock@binghamton.edu",
     instagramHandle: "@mockInstaUser",
     linkedInUsername: "mock_linkedin_user",
     phoneNumber: "+1 (123) 456-7890",

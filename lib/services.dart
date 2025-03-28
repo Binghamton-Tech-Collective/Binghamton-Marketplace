@@ -38,11 +38,11 @@ class Services extends Service {
 
   @override
   Future<void> init() async {
-    await firebase.init();
+    if (!useMock) await firebase.init();
     await auth.init();
     await database.init();
     await files.init();
-    if (!useMock) await notifications.init();
+    await notifications.init();
   }
 
 

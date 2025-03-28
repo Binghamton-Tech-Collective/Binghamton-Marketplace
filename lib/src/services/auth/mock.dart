@@ -19,5 +19,5 @@ class MockAuth extends Auth {
   UserID? get userID => _isSignedIn ? mockUser.id : null;
 
   @override
-  String? get email => _isSignedIn ? "mockUser@gmail.com" : null;
+  String? get email => _isSignedIn ? "mockUser@binghamton.edu" : null;
 }
