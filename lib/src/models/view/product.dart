@@ -31,7 +31,7 @@ class ProductViewModel extends ViewModel {
   });
 
   /// The average rating of the product, based on [reviews].
-  int? get averageRating => reviews.isEmpty ? null : calculateAverageRating(reviews);
+  double? get averageRating => reviews.isEmpty ? null : calculateAverageRating(reviews);
 
   /// The error while opening the conversation, if any.
   String? messageError;
@@ -67,7 +67,7 @@ class ProductViewModel extends ViewModel {
   }
 
   /// The average rating for the seller, based on [sellerReviews].
-  int? get sellerRating =>
+  double? get sellerRating =>
     sellerReviews.isEmpty ? null : calculateAverageRating(sellerReviews);
 
   /// Whether the view model is still loading more details about the product.

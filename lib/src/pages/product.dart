@@ -12,13 +12,13 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
 
   /// The already-loaded product, if any.
   final Product? product;
-  
+
   /// const constructor
   const ProductPage({
-    required this.id, 
+    required this.id,
     required this.product,
   });
-  
+
   @override
   ProductViewModel createModel() => ProductViewModel(
     id: id,
@@ -48,7 +48,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
     ),
     floatingActionButton: model.product.isSeller ? null : FloatingActionButton.extended(
       icon: const Icon(Icons.message),
-      onPressed: model.openConversation, 
+      onPressed: model.openConversation,
       label: const Text("Contact Seller"),
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -59,7 +59,7 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
         children: [
           // ---------- Image gallery ----------
           SizedBox(height: 400, child: GalleryWidget(product: model.product)),
-          
+
           // ---------- Name, price, and condition ----------
           const SizedBox(height: 24),
           Hero(
@@ -76,10 +76,10 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
           ),
           const SizedBox(height: 8),
           if (!model.loadingDetails && model.averageRating != null) Row(children: [
-            Text("User rating: ", style: context.textTheme.bodyLarge), 
+            Text("User rating: ", style: context.textTheme.bodyLarge),
             const SizedBox(width: 8),
             RatingBarIndicator(
-              rating: model.averageRating! as double, 
+              rating: model.averageRating!,
               itemSize: 20,
               itemBuilder: (context, _) => const Icon(
                 Icons.star,
@@ -87,16 +87,16 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
               ),
             ),
           ],),
-          
+
           // ---------- Description ----------
           const SizedBox(height: 8),
           Text("Description", style: context.textTheme.titleLarge),
           const SizedBox(height: 8),
           Text(model.product.description, style: context.textTheme.bodyLarge),
-          
+
           // ---------- Categories ----------
           if (model.product.categories.isNotEmpty) ...[
-            const SizedBox(height: 12), 
+            const SizedBox(height: 12),
             Text("Categories", style: context.textTheme.titleLarge),
             const SizedBox(height: 8),
             Wrap(
@@ -114,8 +114,8 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
             const SizedBox(height: 12),
             Text("Sold by", style: context.textTheme.titleLarge),
             SellerProfileWidget(
-              profile: model.sellerProfile, 
-              averageRating: model.sellerRating as double?,
+              profile: model.sellerProfile,
+              averageRating: model.sellerRating,
             ),
             const SizedBox(height: 48),
           ],
