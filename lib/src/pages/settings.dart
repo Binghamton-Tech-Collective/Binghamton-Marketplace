@@ -1,3 +1,4 @@
+import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -13,6 +14,11 @@ class SettingsPage extends ReactiveWidget<SettingsViewModel> {
     appBar: AppBar(
       title: const Text("Settings"),
       actions: [ProfileButton()],
+      leading: router.canPop() ? null : IconButton(
+        icon: const Icon(Icons.home),
+        tooltip: "Go home",
+        onPressed: () => router.go(Routes.products),
+      ),
     ),
     body: Column(
       children: [
