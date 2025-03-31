@@ -33,7 +33,12 @@ class SettingsPage extends ReactiveWidget<SettingsViewModel> {
               if (model.hasNotificationPermission) const ListTile(
                 title: Text("Notifications"),
                 subtitle: Text("You have granted notification permissions"),
-              ) else ListTile(
+              ) else if (model.requestedPermission) const ListTile(
+                title: Text("Notifications"),
+                subtitle: Text("You have denied notification permissions\nTo grant access, check your browser or app settings"),
+                isThreeLine: true,
+              )
+              else ListTile(
                 title: const Text("Notifications"),
                 subtitle: const Text("Tap or click to grant permission"),
                 onTap: model.requestNotificationPermission,
