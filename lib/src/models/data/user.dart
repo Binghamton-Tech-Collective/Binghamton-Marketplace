@@ -18,14 +18,24 @@ class UserModel extends DataModel {
   Future<void> init() async {
     // Try to automatically sign-in
     await signIn();
-    // If the user grants notification access using the browser or OS settings,
-    // then the user's FCM token will never have been set in the database.
-    // So we check here if we're signed in, have permission, but no FCM token.
-    if (isSignedIn) {
-      final hasPermission = await services.notifications.hasPermission();
-      if (hasPermission && !userProfile!.hasNotificationsEnabled) {
-        await updateNotificationsToken();
-      }
+    await checkNotificationPermissions();
+  }
+
+  /// Ensures the user's [UserProfile.token] is in sync with notification permissions.
+  ///
+  /// If the user grants notification access using the browser or OS settings,
+  /// then the user's FCM token will never have been set in the database.
+  /// So we check here if we're signed in, have permission, but no FCM token.
+  Future<void> checkNotificationPermissions() async {
+    final profile = userProfile;
+    if (profile == null) return;
+    final hasPermission = await services.notifications.hasPermission();
+    if (hasPermission && !profile.hasNotificationsEnabled) {
+      await updateNotificationsToken();
+    } else if (!hasPermission && profile.hasNotificationsEnabled) {
+      profile.token = null;
+      await services.database.saveUserProfile(profile);
+      notifyListeners();
     }
   }
 
