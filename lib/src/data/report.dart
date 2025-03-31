@@ -36,7 +36,7 @@ class Report {
   static final reasons = [
     "Other",
     "Innappropriate",
-    "Disrespectful",
+    "Offensive",
     "Fradulent",
   ];
 
