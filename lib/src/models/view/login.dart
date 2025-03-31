@@ -92,7 +92,6 @@ class LoginViewModel extends BuilderModel<UserProfile> {
       return;
     }
     if (models.user.isSignedIn) {
-      await services.notifications.requestPermission();
       router.go(redirect);
       return;
     } else {

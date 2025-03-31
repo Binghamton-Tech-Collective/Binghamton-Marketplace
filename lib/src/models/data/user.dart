@@ -33,7 +33,14 @@ class UserModel extends DataModel {
     final profile = await services.database.getUserProfile(uid);
     if (profile == null) return;
     await models.onSignIn(profile);
+  }
 
+  /// Asks the user for permission to send push notifications, and saves their unique token.
+  ///
+  /// Chrome will automatically reject this permission unless it's requested in response to a
+  /// button press, so this method should *not* be called automatically.
+  Future<void> updateNotificationsToken() async {
+    await services.notifications.requestPermission();
     userProfile!.token = services.notifications.firebaseToken;
     await updateProfile(models.user.userProfile!);
   }
