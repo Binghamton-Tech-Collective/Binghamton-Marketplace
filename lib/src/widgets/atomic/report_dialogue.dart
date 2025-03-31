@@ -52,6 +52,11 @@ class ReportDialogue extends ReactiveWidget<ReportViewModel> {
     ),
     actions: <Widget>[
       TextButton(
+        child: const Text("Cancel"),
+        onPressed: () => context.pop(),
+      ),
+      FilledButton(
+        style: FilledButton.styleFrom(backgroundColor: Colors.red),
         child: const Text("Submit"),
         onPressed: () async {
           await model.submit();

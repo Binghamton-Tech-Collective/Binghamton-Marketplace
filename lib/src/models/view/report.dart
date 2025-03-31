@@ -46,7 +46,6 @@ class ReportViewModel extends ViewModel {
       type: type,
       id: services.database.newReportID,
     );
-
     await services.database.saveReport(report);
   }
 }
