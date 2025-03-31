@@ -12,5 +12,12 @@ abstract class NotificationsService extends Service {
   /// This should be done in response to a user-initiated button press, and not automatically on
   /// startup. Not only is it good practice and UI design (don't bother the user unless they ask),
   /// but Chrome will actually reject all requests that don't follow a user gesture.
+  ///
+  /// To check if permission has already been granted, use [hasPermission].
   Future<void> requestPermission();
+
+  /// Whether the user has granted permission to send push notifications.
+  ///
+  /// To request permissions, use [requestPermission].
+  Future<bool> hasPermission();
 }

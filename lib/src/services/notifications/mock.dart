@@ -10,4 +10,7 @@ class MockPushNotifications extends NotificationsService {
 
   @override
   Future<void> requestPermission() async => false;
+
+  @override
+  Future<bool> hasPermission() async => false;
 }

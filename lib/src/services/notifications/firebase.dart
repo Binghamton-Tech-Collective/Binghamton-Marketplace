@@ -6,6 +6,10 @@ import "interface.dart";
 @pragma("vm:entry-point")
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
+extension on NotificationSettings {
+  bool get accessGranted => authorizationStatus == AuthorizationStatus.authorized;
+}
+
 /// A push notifications service powered by Firebase Cloud Messaging.
 class FirebaseNotifications extends NotificationsService {
   /// The global instance of the Firebase messaging service.
@@ -15,9 +19,15 @@ class FirebaseNotifications extends NotificationsService {
   String? firebaseToken;
 
   @override
+  Future<bool> hasPermission() async {
+    final settings = await firebase.getNotificationSettings() ;
+    return settings.accessGranted;
+  }
+
+  @override
   Future<void> requestPermission() async {
     final settings = await firebase.requestPermission();
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    if (settings.accessGranted) {
       firebaseToken = await firebase.getToken();
     }
   }
