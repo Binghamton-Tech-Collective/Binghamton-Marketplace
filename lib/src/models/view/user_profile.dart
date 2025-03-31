@@ -6,6 +6,17 @@ class UserProfileViewModel extends ViewModel {
   ///The initially loaded profile, if any.
   UserProfile get profile => models.user.userProfile!;
 
+  @override
+  Future<void> init() async {
+    models.user.addListener(notifyListeners);
+  }
+
+  @override
+  void dispose() {
+    models.user.removeListener(notifyListeners);
+    super.dispose();
+  }
+
   /// Whether the profile is loading or not
   bool isLoadingProfile = false;
 
@@ -16,5 +27,5 @@ class UserProfileViewModel extends ViewModel {
   String? getImageURL() => null;
 
   /// Getter for user profile name
-  String get name => profile.name;  
+  String get name => profile.name;
 }
