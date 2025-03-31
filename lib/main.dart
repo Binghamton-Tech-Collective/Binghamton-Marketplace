@@ -39,19 +39,21 @@ class BtcMarket extends ReusableReactiveWidget<AppModel> {
     home: Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("An error occurred", textScaler: TextScaler.linear(2.5), textAlign: TextAlign.center,),
-            const SizedBox(height: 12),
-            const Text("We're sorry, ShopBing is down for today. Please check back tomorrow", textScaler: TextScaler.linear(1.5), textAlign: TextAlign.center,),
-            const SizedBox(height: 24),
-            const Text("This usually indicates high usage, so there may be lots of new products when you check back!", textScaler: TextScaler.linear(1.25), textAlign: TextAlign.center,),
-            const SizedBox(height: 24),
-            Image.asset("assets/bearcat/waiting.png", scale: 0.75),
-            const SizedBox(height: 24),
-            Text("The exact error was: ${model.errorText}"),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("An error occurred", textScaler: TextScaler.linear(2.5), textAlign: TextAlign.center,),
+              const SizedBox(height: 12),
+              const Text("We're sorry, ShopBing is down for today. Please check back tomorrow", textScaler: TextScaler.linear(1.5), textAlign: TextAlign.center,),
+              const SizedBox(height: 24),
+              const Text("This usually indicates high usage, so there may be lots of new products when you check back!", textScaler: TextScaler.linear(1.25), textAlign: TextAlign.center,),
+              const SizedBox(height: 24),
+              Image.asset("assets/bearcat/waiting.png", scale: 0.75),
+              const SizedBox(height: 24),
+              Text("The exact error was:\n${model.errorText}"),
+            ],
+          ),
         ),
       ),
     ),

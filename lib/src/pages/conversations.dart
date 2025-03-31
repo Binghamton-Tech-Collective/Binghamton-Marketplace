@@ -1,3 +1,4 @@
+import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -16,6 +17,19 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
     ),
     body: ListView(
       children: [
+        if (!model.user.hasNotificationsEnabled) MaterialBanner(
+          content: const ListTile(
+            leading: Icon(Icons.notification_important),
+            title: Text("Never miss a message"),
+            subtitle: Text("Go to your settings to enable notifications"),
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Go to settings"),
+              onPressed: () => router.push(Routes.settings),
+            ),
+          ],
+        ),
         SwitchListTile.adaptive(
           title: const Text("Show archived"),
           subtitle: model.showArchived

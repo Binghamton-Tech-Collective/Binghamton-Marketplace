@@ -136,12 +136,4 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     isSaving = false;
     notifyListeners();
   }
-
-  /// Updates [theme] and refreshes the UI.
-  void updateTheme(ThemeMode? input) {
-    if (input == null) return;
-    theme = input;
-    models.app.setTheme(input);
-    notifyListeners();
-  }
 }

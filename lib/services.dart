@@ -2,15 +2,12 @@ export "src/services/auth.dart";
 export "src/services/database.dart";
 export "src/services/files.dart";
 export "src/services/service.dart";
+export "src/services/firebase.dart";
+export "src/services/notifications.dart";
 
 import "package:btc_market/data.dart";
 
-import "src/services/service.dart";
-import "src/services/auth.dart";
-import "src/services/firebase.dart";
-import "src/services/database.dart";
-import "src/services/files.dart";
-import "src/services/notifications.dart";
+import "";  // imports everything this exports
 
 /// Whether to use mock services and data.
 const useMock = bool.fromEnvironment("mock");

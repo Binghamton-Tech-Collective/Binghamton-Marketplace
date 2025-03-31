@@ -1,3 +1,4 @@
+import "package:btc_market/pages.dart";
 import "package:flutter/material.dart";
 
 import "package:btc_market/models.dart";
@@ -15,9 +16,13 @@ class ProfileButton extends ReusableReactiveWidget<UserModel> {
         image: NetworkImage(model.userProfile!.imageUrl),
       ),
       onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-      tooltip: "Profile",
+      tooltip: model.userProfile!.name,
     ),
     menuChildren: [
+      MenuItemButton(
+        onPressed: () => router.push(Routes.settings),
+        child: const Text("Settings"),
+      ),
       MenuItemButton(
         onPressed: models.user.signOut,
         child: const Text("Sign out"),

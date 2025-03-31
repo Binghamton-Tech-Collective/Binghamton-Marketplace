@@ -5,7 +5,7 @@ import "package:btc_market/services.dart";
 /// The view model for loading list of all conversations for a user
 class ConversationsViewModel extends ViewModel {
   /// The user profile of the user signed in
-  final user = models.user.userProfile!;
+  UserProfile get user => models.user.userProfile!;
 
   /// All the user's archived conversations.
   Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
@@ -31,11 +31,13 @@ class ConversationsViewModel extends ViewModel {
   @override
   Future<void> init() async {
     models.conversations.addListener(notifyListeners);
+    models.user.addListener(notifyListeners);
   }
 
   @override
   void dispose() {
     models.conversations.removeListener(notifyListeners);
+    models.user.removeListener(notifyListeners);
     super.dispose();
   }
 
