@@ -16,6 +16,9 @@ extension type const SellerID(String id) { }
 /// A unique ID for every review.
 extension type const ReviewID(String id) { }
 
+/// A unique ID for every report.
+extension type const ReportID(String id) { }
+
 /// A unique ID for every conversation.
 extension type const ConversationID(String id) implements String { }
 

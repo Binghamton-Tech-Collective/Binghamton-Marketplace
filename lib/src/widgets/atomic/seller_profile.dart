@@ -6,7 +6,7 @@ import "package:btc_market/widgets.dart";
 
 /// A widget to show off a [SellerProfile].
 class SellerProfileWidget extends StatelessWidget {
-  /// THe profile being displayed.
+  /// The profile being displayed.
   final SellerProfile profile;
   /// The average rating of this user, if known.
   final double? averageRating;

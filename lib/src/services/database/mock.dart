@@ -83,4 +83,10 @@ class MockDatabase extends Database {
 
   @override
   ConversationID get newConversationID => mockConversation.id;
+
+  @override
+  ReportID get newReportID => mockReport.id;
+
+  @override
+  Future<void> saveReport(Report report) async => mockReport = report;
 }

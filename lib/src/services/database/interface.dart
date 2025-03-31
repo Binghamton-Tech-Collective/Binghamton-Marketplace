@@ -98,4 +98,12 @@ abstract class Database extends Service {
 
   /// Returns a new, unique [ConversationID].
   ConversationID get newConversationID;
+
+  // ==================== Reports ====================
+
+  /// Returns a new, unique [ReportID].
+  ReportID get newReportID;
+
+  /// Saves a user's report.
+  Future<void> saveReport(Report report);
 }
