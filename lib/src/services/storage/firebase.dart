@@ -32,7 +32,7 @@ class CloudStorageService extends FilesService {
       await reference.putData(data);
       final downloadURL = await reference.getDownloadURL();
       return downloadURL;
-    } catch (error) {
+    } on FirebaseException {
       return null;
     }
   }
