@@ -63,6 +63,8 @@ class CircleBtcImage extends StatelessWidget {
   Widget build(BuildContext context) => CircleAvatar(
     backgroundImage: useMock ? null : image,
     radius: radius,
+    // This line is not redundant when running with mocks
+    // ignore: avoid_redundant_argument_values
     child: useMock ? const Placeholder() : null,
   );
 }

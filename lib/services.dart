@@ -4,7 +4,6 @@ export "src/services/files.dart";
 export "src/services/service.dart";
 
 import "package:btc_market/data.dart";
-import "package:flutter/foundation.dart" show kDebugMode;
 
 import "src/services/service.dart";
 import "src/services/auth.dart";
@@ -13,18 +12,8 @@ import "src/services/database.dart";
 import "src/services/files.dart";
 import "src/services/notifications.dart";
 
-/// Set this to true to never use mocks, even in tests.
-///
-/// Can be useful to iterate on the UI without using the network.
-const neverMock = false;
-
-/// Set this to true to always use mock data, even in release builds.
-///
-/// Can be useful for testing performance without downloading real data.
-const alwaysMock = false;
-
 /// Whether to use mock services and data.
-const useMock = alwaysMock || (kDebugMode && !neverMock);
+const useMock = bool.fromEnvironment("mock");
 
 /// A [Service] that manages all other services used by the app.
 class Services extends Service {

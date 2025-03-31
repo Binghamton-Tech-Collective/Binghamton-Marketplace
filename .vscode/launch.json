@@ -5,28 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Windows",
+      "name": "Windows (mock)",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "windows"]
+      "args": ["-d", "windows", "--dart-define=mock=true"]
     },
     {
-      "name": "Web",
+      "name": "Web (mock)",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "chrome", "--web-renderer", "html", "--web-port", "5000"]
+      "args": ["-d", "chrome", "--web-port", "5000", "--wasm", "--dart-define=mock=true"]
     },
     {
-      "name": "iPhone Simulator",
+      "name": "Web (real)",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "iPhone 15"],
-    },
-    {
-      "name": "Android Emulator",
-      "request": "launch",
-      "type": "dart",
-      "args": ["-d", "emulator-5554"]
+      "args": ["-d", "chrome", "--web-port", "5000"]
     },
   ]
 }
