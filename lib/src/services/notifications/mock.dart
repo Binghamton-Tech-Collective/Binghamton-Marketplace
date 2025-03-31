@@ -9,5 +9,5 @@ class MockPushNotifications extends NotificationsService {
   String? get firebaseToken => null;
 
   @override
-  Future<void> requestPermission() async { }
+  Future<void> requestPermission() async => false;
 }

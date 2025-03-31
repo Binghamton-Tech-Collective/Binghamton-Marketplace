@@ -15,12 +15,16 @@ class FirebaseNotifications extends NotificationsService {
   String? firebaseToken;
 
   @override
-  Future<void> requestPermission() => firebase.requestPermission();
+  Future<void> requestPermission() async {
+    final settings = await firebase.requestPermission();
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      firebaseToken = await firebase.getToken();
+    }
+  }
 
   @override
   Future<void> init() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    firebaseToken = await firebase.getToken();
     final initialMessage = await firebase.getInitialMessage();
     if (initialMessage != null) _handleNotification(initialMessage);
     FirebaseMessaging.onMessage.listen(_handleNotification);
