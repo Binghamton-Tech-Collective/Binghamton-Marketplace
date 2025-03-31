@@ -1,5 +1,6 @@
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
+import "package:btc_market/services.dart";
 
 /// A view model for the settings page.
 class SettingsViewModel extends ViewModel {
@@ -9,9 +10,15 @@ class SettingsViewModel extends ViewModel {
   /// The currently signed-in user.
   UserProfile get profile => models.user.userProfile!;
 
+  /// Whether the user has granted us push notification permission.
+  ///
+  /// See [NotificationsService.hasPermission].
+  bool hasNotificationPermission = false;
+
   @override
   Future<void> init() async {
     theme = profile.theme;
+    hasNotificationPermission = await services.notifications.hasPermission();
     notifyListeners();
   }
 
@@ -28,4 +35,8 @@ class SettingsViewModel extends ViewModel {
     await models.user.updateProfile(profile);
     models.app.setTheme(theme);
   }
+
+  /// Requests notification access from the user.
+  Future<void> requestNotificationPermission() =>
+    services.notifications.requestPermission();
 }
