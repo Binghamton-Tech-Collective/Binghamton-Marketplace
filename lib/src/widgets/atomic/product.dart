@@ -7,7 +7,7 @@ import "package:btc_market/widgets.dart";
 class ProductWidget extends StatelessWidget {
   /// The minimum width of this widget. Use in responsive designs.
   static const minWidth = 175;
-  
+
   /// The product to display on this widget
   final Product product;
 
@@ -17,7 +17,7 @@ class ProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
     child: InkWell(
-      splashColor: context.colorScheme.primary.withOpacity(0.2),
+      splashColor: context.colorScheme.primary.withValues(alpha: 0.2),
       onTap: () => context.push("/products/${product.id}", extra: product),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,9 +26,10 @@ class ProductWidget extends StatelessWidget {
             child: Align(
               child: Hero(
                 tag: "${product.id}-image",
-                child: Ink.image(
-                  image: NetworkImage(product.imageUrls[0]),
+                child: BtcNetworkImage(
+                  product.imageUrls[0],
                   fit: BoxFit.contain,
+                  isInk: true,
                 ),
               ),
             ),
