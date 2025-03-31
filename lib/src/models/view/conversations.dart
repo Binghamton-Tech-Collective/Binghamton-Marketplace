@@ -7,9 +7,6 @@ class ConversationsViewModel extends ViewModel {
   /// The user profile of the user signed in
   UserProfile get user => models.user.userProfile!;
 
-  /// Whether the user has granted push notification access.
-  bool get hasNotificationPermission => user.token != null;
-
   /// All the user's archived conversations.
   Set<ConversationID> get archivedIDs => models.user.userProfile!.archivedConversations;
 

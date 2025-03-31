@@ -17,7 +17,7 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
     ),
     body: ListView(
       children: [
-        if (!model.hasNotificationPermission) MaterialBanner(
+        if (!model.user.hasNotificationsEnabled) MaterialBanner(
           content: const ListTile(
             leading: Icon(Icons.notification_important),
             title: Text("Never miss a message"),
