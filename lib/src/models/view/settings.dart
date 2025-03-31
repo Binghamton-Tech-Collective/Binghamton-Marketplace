@@ -46,7 +46,7 @@ class SettingsViewModel extends ViewModel {
   /// Requests notification access from the user.
   Future<void> requestNotificationPermission() async {
     requestedPermission = true;
-    await services.notifications.requestPermission();
+    await models.user.updateNotificationsToken();
     hasNotificationPermission = await services.notifications.hasPermission();
     notifyListeners();
   }

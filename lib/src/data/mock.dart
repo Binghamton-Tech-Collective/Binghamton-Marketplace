@@ -9,7 +9,6 @@ UserProfile mockUser = UserProfile(
   productsWatchlist: {},
   sellersWatchlist: {},
   theme: ThemeMode.light,
-  token: "mock_user_id",
 );
 
 /// A second mock user, to be used for [mockSeller].
