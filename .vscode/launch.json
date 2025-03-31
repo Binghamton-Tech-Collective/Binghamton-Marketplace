@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "iPhone Simulator",
+      "name": "Windows",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "iPhone 15"],
+      "args": ["-d", "windows"]
     },
     {
       "name": "Web",
@@ -17,17 +17,16 @@
       "args": ["-d", "chrome", "--web-renderer", "html", "--web-port", "5000"]
     },
     {
+      "name": "iPhone Simulator",
+      "request": "launch",
+      "type": "dart",
+      "args": ["-d", "iPhone 15"],
+    },
+    {
       "name": "Android Emulator",
       "request": "launch",
       "type": "dart",
-      "args": ["-d", "emulator-5554"] 
+      "args": ["-d", "emulator-5554"]
     },
-    {
-      "name": "Levi's Pixel 7",
-      "request": "launch",
-      "type": "dart",
-      "args": ["-d", "28181FDH200GUQ"]
-    }
-    
   ]
 }
