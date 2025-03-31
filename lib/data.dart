@@ -1,5 +1,6 @@
 export "src/data/conversation.dart";
 export "src/data/category.dart";
+export "src/data/mock.dart";
 export "src/data/message.dart";
 export "src/data/types.dart";
 export "src/data/user_profile.dart";

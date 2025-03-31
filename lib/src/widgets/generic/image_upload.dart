@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+import "package:btc_market/widgets.dart";
+
 /// A widget that prompts the user for an image then uploads and displays it.
 class ImageUploader extends StatelessWidget {
   /// Link to the image
@@ -10,10 +12,10 @@ class ImageUploader extends StatelessWidget {
 
   /// A callback to run when the user presses "clear"
   final VoidCallback onDelete;
-  
+
   /// Constructor to initialize the widget
   const ImageUploader({
-    required this.imageUrl, 
+    required this.imageUrl,
     required this.onDelete,
     required this.onTap,
   });
@@ -39,8 +41,9 @@ class ImageUploader extends StatelessWidget {
                     ? const Text(
                       "Upload an Image!",
                       textAlign: TextAlign.center,
-                    ) : Ink.image(
-                      image: NetworkImage(imageUrl!),
+                    ) : BtcNetworkImage(
+                      imageUrl!,
+                      isInk: true,
                       fit: BoxFit.contain,
                     ),
                 ),
@@ -61,7 +64,7 @@ class ImageUploader extends StatelessWidget {
 }
 
 /// A widget that looks like [ImageUploader] without an image.
-/// 
+///
 /// Useful as a [Hero.placeholderBuilder] because it takes the same shape and
 /// size as an [ImageUploader] without loading the image a second time.
 class PlaceholderImageUploader extends StatelessWidget {

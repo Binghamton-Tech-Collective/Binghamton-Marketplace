@@ -6,7 +6,7 @@ import "package:btc_market/services.dart";
 /// The view model for the report dialogue
 class ReportViewModel extends ViewModel {
   /// Report reasons
-  List<String> get reasons => Report.reasons; 
+  List<String> get reasons => Report.reasons;
 
   /// The selected report reason
   late String selectedReason = reasons.first;
@@ -27,7 +27,7 @@ class ReportViewModel extends ViewModel {
   void updateReason(String? reason) {
     if (reason == null) return;
     selectedReason = reason;
-    notifyListeners(); 
+    notifyListeners();
   }
 
   /// Updates the user's comments
@@ -44,9 +44,9 @@ class ReportViewModel extends ViewModel {
       author: services.auth.userID!,
       itemID: itemID,
       type: type,
-      id: services.database.reports.newID,
+      id: services.database.newReportID,
     );
-    
+
     await services.database.saveReport(report);
   }
 }

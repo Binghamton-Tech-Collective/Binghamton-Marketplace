@@ -1,19 +1,19 @@
 import "package:btc_market/data.dart";
 
-/// The type of item to be reported.  
+/// The type of item to be reported.
 enum ReportType {
   /// A product being sold
   product,
   /// A conversation between buyer and seller
   conversation,
-  /// A user's profile. This isn't actually being used, 
+  /// A user's profile. This isn't actually being used,
   /// but we keep it here in case
   userProfile,
   /// A seller's profile
   sellerProfile;
 
   /// Method to convert a ReportType variant to a string
-  /// for serialization 
+  /// for serialization
   String toJson() => switch (this) {
     product => "product",
     conversation => "conversation",
@@ -35,11 +35,11 @@ class Report {
   /// A list of reasons for reporting an item
   static final reasons = [
     "Other",
-    "Innappropriate", 
+    "Innappropriate",
     "Disrespectful",
     "Fradulent",
   ];
-  
+
   /// The ID of the user who sent this report
   final UserID author;
   /// The reason for the report
@@ -66,7 +66,7 @@ class Report {
   }) : timeSent = DateTime.now();
 
   /// Creates a new Report object from a JSON object.
-  Report.fromJson(Json json) : 
+  Report.fromJson(Json json) :
     author = json["author"],
     reason = json["reason"],
     comment = json["comment"],
@@ -83,6 +83,6 @@ class Report {
     "timeSent": timeSent.toIso8601String(),
     "itemID": itemID,
     "id": id,
-    "type": type.toString()
+    "type": type.toString(),
   };
 }

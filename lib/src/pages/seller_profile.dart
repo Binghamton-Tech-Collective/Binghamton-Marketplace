@@ -11,12 +11,12 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
   final SellerID id;
   /// The already-loaded seller profile
   final SellerProfile? profile;
-  /// Creates the Seller Profile page. 
+  /// Creates the Seller Profile page.
   const SellerProfilePage({
     required this.id,
     required this.profile,
   });
-  
+
   @override
   SellerProfileViewModel createModel() => SellerProfileViewModel(id: id, initialProfile: profile);
 
@@ -64,7 +64,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
       ? null : FloatingActionButton.extended(
         icon: const Icon(Icons.message),
-        onPressed: model.openConversation, 
+        onPressed: model.openConversation,
         label: const Text("Contact Seller"),
       ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -77,8 +77,8 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
             const SizedBox(width: 16),
             Hero(
               tag: "${model.profile.id}-image",
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(model.profile.imageUrl),
+              child: CircleBtcImage(
+                image: NetworkImage(model.profile.imageUrl),
                 radius: 50,
               ),
             ),
@@ -137,8 +137,8 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           child: SizedBox(
             height: 110,
             child: buildCategories(context, model),
-          ), 
-        ), 
+          ),
+        ),
         const Divider(
           thickness: 3,
           color: Colors.grey,
@@ -184,10 +184,10 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
       );
 
   /// A loading spinner, an empty message, or the seller's products.
-  Widget buildProducts(BuildContext context, SellerProfileViewModel model) => 
-    model.isLoadingProducts 
+  Widget buildProducts(BuildContext context, SellerProfileViewModel model) =>
+    model.isLoadingProducts
       ? const SizedBox(
-        height: 200, 
+        height: 200,
         child: Center(child: CircularProgressIndicator()),
       )
       : model.productList.isEmpty
@@ -198,7 +198,7 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
           childAspectRatio: 0.6,
           crossAxisCount: MediaQuery.of(context).size.width ~/ ProductWidget.minWidth,
           children: [
-            for (final product in model.productList) 
+            for (final product in model.productList)
               ProductWidget(product: product),
           ],
         );

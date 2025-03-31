@@ -55,7 +55,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                       for (final otherProfile in model.otherProfiles) DropdownMenuEntry(
                         value: otherProfile,
                         label: otherProfile.name,
-                        leadingIcon: CircleAvatar(backgroundImage: NetworkImage(otherProfile.imageUrl)),
+                        leadingIcon: CircleBtcImage(image: NetworkImage(otherProfile.imageUrl)),
                       ),
                     ],
                   ),
@@ -77,7 +77,7 @@ class ProductEditor extends ReactiveWidget<ProductBuilder> {
                 ),
                 const SizedBox(height: 12),
                 const Center(
-                  child: Text("Upload Photos (Atleast 1)", style: labelStyle),
+                  child: Text("Upload Photos (At least 1)", style: labelStyle),
                 ),
                 const SizedBox(height: 8),
                 if (model.imageError != null) Text(

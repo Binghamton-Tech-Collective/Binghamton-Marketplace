@@ -1,4 +1,3 @@
-import "package:btc_market/src/pages/editors/product_filters.dart";
 import "package:flutter/material.dart";
 import "package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart";
 
@@ -15,7 +14,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
   final bool? showSignUp;
   /// Creates the login page.
   const LoginPage({this.redirect, this.showSignUp});
-  
+
   @override
   LoginViewModel createModel() => LoginViewModel(
     redirect: redirect ?? Routes.products,
@@ -29,7 +28,7 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (model.showSignUp) ..._signUp(context, model) 
+          if (model.showSignUp) ..._signUp(context, model)
           else ..._signIn(context, model),
         ],
       ),
@@ -43,12 +42,15 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
     Image.asset("assets/logos/btc.png", height: 200, width: 350),
     Text("Your one-stop shop for buying and selling at Binghamton University!", style: context.textTheme.titleSmall, textAlign: TextAlign.center),
     const SizedBox(height: 24),
-    SizedBox(
-      width: 300, 
+    if (useMock) OutlinedButton(
+      onPressed: model.onAuth,
+      child: const Text("Sign in with mock data"),
+    ) else SizedBox(
+      width: 300,
       child: GoogleSignInButton(
         loadingIndicator: const CircularProgressIndicator(),
         overrideDefaultTapAction: true,
-        onTap: model.onAuth, 
+        onTap: model.onAuth,
         clientId: googleID,
         label: "Sign in with Google",
       ),
@@ -66,34 +68,19 @@ class LoginPage extends ReactiveWidget<LoginViewModel> {
       width: 200,
       height: 200,
       child: ImageUploader(
-        imageUrl: model.imageUrl, 
-        onDelete: model.deleteImage, 
+        imageUrl: model.imageUrl,
+        onDelete: model.deleteImage,
         onTap: model.pickImage,
       ),
     ),
     const SizedBox(height: 16),
     SizedBox(
-      width: 200, 
+      width: 200,
       child: InputContainer(text: "Name", controller: model.usernameController),
     ),
     const SizedBox(height: 16),
-    SizedBox(
-      width: 300,
-      child: FilterOption(
-        name: "Theme",
-        child: DropdownMenu(
-          initialSelection: model.theme,
-          onSelected: model.updateTheme,
-          dropdownMenuEntries: [
-            for (final theme in ThemeMode.values)
-              DropdownMenuEntry(value: theme, label: theme.displayName),
-          ],
-        ),
-      ),
-    ),
-    const SizedBox(height: 16),
     FilledButton(
-      onPressed: model.isReady ? model.signUp : null, 
+      onPressed: model.isReady ? model.signUp : null,
       child: (showSignUp ?? false) ? const Text("Save") : const Text("Create account"),
     ),
   ];
