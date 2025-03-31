@@ -21,7 +21,7 @@ class UserProfile {
   final Set<ConversationID> archivedConversations;
 
   /// The user's theme preference.
-  final ThemeMode theme;
+  ThemeMode theme;
 
   /// Creates a new User object.
   UserProfile({

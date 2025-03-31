@@ -16,7 +16,7 @@ class ProfileButton extends ReusableReactiveWidget<UserModel> {
         image: NetworkImage(model.userProfile!.imageUrl),
       ),
       onPressed: () => controller.isOpen ? controller.close() : controller.open(),
-      tooltip: "Profile",
+      tooltip: model.userProfile!.name,
     ),
     menuChildren: [
       MenuItemButton(
