@@ -5,7 +5,7 @@ import "package:btc_market/services.dart";
 import "package:flutter/material.dart";
 
 /// A test account that is allowed to be used, even if it doesn't end in @binghamton.edu
-const testAccount = "harshvaghani98@gmail.com";
+const testAccount = "bingtechcollectivetest@gmail.com";
 
 /// A view model to sign the user in, show a sign-up form if needed, then redirect to another route.
 class LoginViewModel extends BuilderModel<UserProfile> {
