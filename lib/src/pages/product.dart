@@ -43,6 +43,10 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           onPressed: () => model.editProduct(model.id),
           child: const Text("Edit product"),
+        ) else 
+        ReportButton(
+          itemID: id.id, 
+          type: ReportType.product,
         ),
       ],
     ),

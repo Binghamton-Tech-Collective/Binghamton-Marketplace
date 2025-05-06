@@ -87,3 +87,13 @@ Conversation mockConversation = Conversation.start(
     timeSent: DateTime.now(),
   ),
 );
+
+/// A mock report about [mockProduct], filed by [mockUser].
+Report mockReport = Report(
+  author: mockUser.id,
+  comment: "This is a mock report",
+  id: const ReportID("mock_report_id"),
+  itemID: mockProduct.id.id,
+  reason: "Offensive",
+  type: ReportType.product,
+);

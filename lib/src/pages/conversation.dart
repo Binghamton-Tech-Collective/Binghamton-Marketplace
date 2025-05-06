@@ -81,7 +81,6 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
     await model.editMessage(index, result);
   }
 
-
   @override
   Widget build(BuildContext context, ConversationViewModel model) => Scaffold(
     appBar: AppBar(
@@ -99,6 +98,10 @@ class ConversationPage extends ReactiveWidget<ConversationViewModel> {
         },
       ),
       actions: [
+        ReportButton(
+          itemID: id.id,
+          type: ReportType.conversation,
+        ),
         if (!model.conversation.isSeller) TextButton(
           style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
           onPressed: model.openSellerProfile,

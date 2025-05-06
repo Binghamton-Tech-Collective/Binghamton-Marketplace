@@ -180,4 +180,18 @@ class FirestoreDatabase extends Database {
 
   @override
   ConversationID get newConversationID => conversations.newID;
+
+  // ==================== Reviews ====================
+  /// A collection of [Report] objects.
+  Collection<Report, ReportID> get reports => firestore.collection("reports").convert(
+    fromJson: Report.fromJson,
+    toJson: (report) => report.toJson(),
+  );
+
+  @override
+  ReportID get newReportID => reports.newID;
+
+  @override
+  Future<void> saveReport(Report report) =>
+    reports.doc(report.id).set(report);
 }

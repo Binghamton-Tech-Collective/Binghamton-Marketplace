@@ -34,15 +34,20 @@ class SellerProfilePage extends ReactiveWidget<SellerProfileViewModel> {
     appBar: AppBar(
       title: const Text("Profile"),
       actions: [
-        if (!model.isLoadingProfile && model.profile.isUser) TextButton(
-          style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
-          onPressed: model.editProfile,
-          child: const Text("Edit profile"),
-        ),
+        if (!model.isLoadingProfile) 
+          if (model.profile.isUser) TextButton(
+            style: TextButton.styleFrom(foregroundColor: context.colorScheme.onPrimary),
+            onPressed: model.editProfile,
+            child: const Text("Edit profile"),
+          ) else 
+          ReportButton(
+            itemID: id.id, 
+            type: ReportType.sellerProfile,
+          ),
       ],
     ),
     floatingActionButton: (!model.isLoadingProfile && model.profile.isUser)
-       ? null : FloatingActionButton.extended(
+      ? null : FloatingActionButton.extended(
         icon: const Icon(Icons.message),
         onPressed: model.openConversation,
         label: const Text("Contact Seller"),
