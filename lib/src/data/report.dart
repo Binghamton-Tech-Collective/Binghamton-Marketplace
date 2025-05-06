@@ -2,30 +2,24 @@ import "package:btc_market/data.dart";
 
 /// The type of item to be reported.
 enum ReportType {
-  /// A product being sold
+  /// A product being sold.  
   product,
-  /// A conversation between buyer and seller
+  /// A conversation between buyer and seller.  
   conversation,
-  /// A user's profile. This isn't actually being used,
-  /// but we keep it here in case
-  userProfile,
   /// A seller's profile
   sellerProfile;
 
-  /// Method to convert a ReportType variant to a string
-  /// for serialization
+  /// Converts a [ReportType] to its JSON representation.  
   String toJson() => switch (this) {
     product => "product",
     conversation => "conversation",
     sellerProfile => "seller",
-    userProfile => "user",
   };
 
   factory ReportType.fromJson(String s) => switch (s) {
     "product" => product,
     "conversation" => conversation,
     "seller" => sellerProfile,
-    "user" => userProfile,
     _ => throw FormatException("Unrecognized ItemType: $s"),
   };
 }

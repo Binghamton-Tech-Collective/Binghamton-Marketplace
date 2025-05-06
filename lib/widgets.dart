@@ -9,6 +9,7 @@ export "src/widgets/atomic/product.dart";
 export "src/widgets/atomic/seller_profile.dart";
 export "src/widgets/atomic/social.dart";
 export "src/widgets/atomic/report_dialogue.dart";
+export "src/widgets/atomic/report_button.dart";
 
 export "src/widgets/generic/gallery.dart";
 export "src/widgets/generic/image.dart";

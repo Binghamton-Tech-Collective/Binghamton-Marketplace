@@ -34,15 +34,6 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
     super.didUpdateWidget(oldWidget, model);
   }
 
-  /// Opens a popup to report this item
-  Future<void> showReportForm(BuildContext context) async => showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => ReportDialogue(
-        type: ReportType.product, 
-        itemID: id.id,
-      ),
-    );
-
   @override
   Widget build(BuildContext context, ProductViewModel model) => Scaffold(
     appBar: AppBar(
@@ -53,15 +44,9 @@ class ProductPage extends ReactiveWidget<ProductViewModel>{
           onPressed: () => model.editProduct(model.id),
           child: const Text("Edit product"),
         ) else 
-        TextButton(
-          onPressed: () => showReportForm(context),
-          child: const Text(
-            "Report",
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 20,
-            ),
-          ),
+        ReportButton(
+          itemID: id.id, 
+          type: ReportType.product,
         ),
       ],
     ),

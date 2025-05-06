@@ -1,18 +1,19 @@
-import "package:btc_market/src/data/report.dart";
+import "package:btc_market/data.dart";
 import "package:btc_market/widgets.dart";
 import "package:btc_market/models.dart";
 import "package:flutter/material.dart";
 
-/// A report form.
-/// Should be used as the content of an AlertDialogue.
+/// A report form that allows the user to report an item of [ReportType].
+/// 
+/// For now, this widget is only used in the [ReportButton] widget.  
 class ReportDialogue extends ReactiveWidget<ReportViewModel> {
-  /// The type of item being reported
+  /// The type of item being reported.
   final ReportType type;
 
-  /// The ID of the item being reported
+  /// The ID of the item being reported.
   final String itemID;
 
-  /// Constructs a new report dialogue widget
+  /// Constructs a new report dialogue widget.
   const ReportDialogue({required this.type, required this.itemID, super.key});
 
   @override
