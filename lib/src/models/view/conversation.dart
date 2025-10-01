@@ -164,10 +164,8 @@ class ConversationViewModel extends ViewModel {
   /// Function to block the conversation
   Future<void> blockConversation() async {
     try {
-      conversation.isBlocked = true;
       final user = models.user.userProfile;
       user!.blockConversation(conversation.id);
-      await services.database.saveConversation(conversation);
       await services.database.saveUserProfile(user);
       notifyListeners();
       router.pop();

@@ -69,9 +69,7 @@ List<Conversation> get blockedConversations => models.conversations.all.values
   Future<void> unblockConversation(ConversationID id) async {
     final conversation = models.conversations.all[id];
     if (conversation != null) {
-      conversation.isBlocked = false;
       user.blockedConversations.remove(id);
-      await services.database.saveConversation(conversation);
       await services.database.saveUserProfile(user);
       notifyListeners();
     }
