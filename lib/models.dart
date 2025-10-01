@@ -15,6 +15,7 @@ export "src/models/view/user_profile.dart";
 export "src/models/view/product.dart";
 export "src/models/view/notifications.dart";
 export "src/models/view/seller_profile.dart";
+export "src/models/view/settings.dart";
 export "src/models/view/login.dart";
 export "src/models/view/products.dart";
 
@@ -33,7 +34,7 @@ class Models extends DataModel {
   final app = AppModel();
   /// The conversations data model.
   final conversations = ConversationsModel();
-  
+
   @override
   Future<void> init() async {
     try {

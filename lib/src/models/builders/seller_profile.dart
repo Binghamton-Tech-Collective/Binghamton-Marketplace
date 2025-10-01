@@ -9,7 +9,7 @@ import "package:btc_market/pages.dart";
 class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Id of the seller to be edited
   final SellerID? initialID;
-  
+
   /// Constructor to initialize the SellerID
   SellerProfileBuilder({this.initialID, this.profile});
 
@@ -49,7 +49,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   late final SellerID sellerID;
 
   /// Fetching the email address of the seller
-  String get email => services.auth.user!.email!;
+  String get email => services.auth.email!;
 
   /// Fetching User ID of the seller
   late final UserID userID;
@@ -65,8 +65,8 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   @override
   Future<void> init() async {
-    if (initialID == null) { 
-      sellerID = services.database.sellers.newID;
+    if (initialID == null) {
+      sellerID = services.database.newSellerID;
     } else {
       if (profile == null) {
         isLoading = true;
@@ -129,13 +129,13 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
 
   /// The error when uploading or downloading the image, if any.
   String? imageError;
-  
+
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage() async {
-    final bytes = await services.cloudStorage.pickImage();
+    final bytes = await services.files.pickImage();
     if (bytes == null) return;
-    final path = services.cloudStorage.getSellerImagePath(sellerID);
-    final url = await services.cloudStorage.uploadFile(bytes, path);
+    final path = services.files.getSellerImagePath(sellerID);
+    final url = await services.files.uploadFile(bytes, path);
     if (url == null) {
       imageError = "Could not upload image";
       notifyListeners();
@@ -148,7 +148,7 @@ class SellerProfileBuilder extends BuilderModel<SellerProfile> {
   /// Deletes the image at the given index.
   Future<void> deleteImage() async {
     if (imageUrl == null) return;
-    await services.cloudStorage.deleteFile(imageUrl!);
+    await services.files.deleteFile(imageUrl!);
     imageUrl = null;
     notifyListeners();
   }

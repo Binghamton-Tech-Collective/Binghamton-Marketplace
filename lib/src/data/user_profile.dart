@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+export "package:flutter/material.dart" show ThemeMode;
 
 import "types.dart";
 
@@ -10,7 +11,7 @@ class UserProfile {
   final String name;
   /// The user's profile photo.
   final String imageUrl;
-  /// The user's authentication token
+  /// The user's unique Firebase Cloud Messaging token for push notifications.
   String? token;
   /// The products on the user's watchlist
   final Set<ProductID> productsWatchlist;
@@ -21,7 +22,7 @@ class UserProfile {
   /// The conversations blocked by the user.
   final Set<ConversationID> blockedConversations;
   /// The user's theme preference.
-  final ThemeMode theme;
+  ThemeMode theme;
 
   /// Creates a new User object.
   UserProfile({
@@ -60,6 +61,9 @@ class UserProfile {
     "theme": theme.name,
     "token" : token,
   };
+
+  /// Whether the user has agreed to push notifications.
+  bool get hasNotificationsEnabled => token != null;
 
   /// Add a Product to the User's watchlist, by ProductID
   void watchProduct(ProductID product) => productsWatchlist.add(product);

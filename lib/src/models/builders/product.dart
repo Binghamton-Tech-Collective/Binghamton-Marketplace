@@ -18,7 +18,7 @@ class ProductBuilder extends BuilderModel<Product> {
 
   /// Constructor to initialize the initialID
   ProductBuilder({
-    required this.initialID, 
+    required this.initialID,
     required this.initialProduct,
   });
 
@@ -91,7 +91,7 @@ class ProductBuilder extends BuilderModel<Product> {
     titleController.addListener(notifyListeners);
     descriptionController.addListener(notifyListeners);
     if (initialID == null) {
-      productID = services.database.products.newID;
+      productID = services.database.newProductID;
       profile = otherProfiles[0];
       return;
     } else {
@@ -100,8 +100,8 @@ class ProductBuilder extends BuilderModel<Product> {
     notifyListeners();
   }
 
-  /// Gets the product to edit. 
-  /// 
+  /// Gets the product to edit.
+  ///
   /// Returns null if creating, the product could not be found, or an error occurred.
   Future<Product?> getProduct() async {
     if (initialProduct != null) return initialProduct!;
@@ -177,7 +177,7 @@ class ProductBuilder extends BuilderModel<Product> {
   );
 
   @override
-  bool get isReady => 
+  bool get isReady =>
     agreedToTerms &&
     titleController.text.isNotEmpty &&
     descriptionController.text.isNotEmpty &&
@@ -192,10 +192,10 @@ class ProductBuilder extends BuilderModel<Product> {
   /// Upload the image provided by the user and set the imageURL to the link obtained
   Future<void> uploadImage(int index) async {
     imageError = null;
-    final file = await services.cloudStorage.pickImage();
+    final file = await services.files.pickImage();
     if (file == null) return;
-    final filename = services.cloudStorage.getProductImage(productID, index);
-    final url = await services.cloudStorage.uploadFile(file, filename);
+    final filename = services.files.getProductImage(productID, index);
+    final url = await services.files.uploadFile(file, filename);
     if (url == null) imageError = "Could not upload image";
     imageUrls[index] = url;
     notifyListeners();
@@ -203,7 +203,7 @@ class ProductBuilder extends BuilderModel<Product> {
 
   /// Deletes the image at the given index.
   Future<void> deleteImage(int index) async {
-    await services.cloudStorage.deleteFile(imageUrls[index]!);
+    await services.files.deleteFile(imageUrls[index]!);
     imageUrls[index] = null;
     notifyListeners();
   }

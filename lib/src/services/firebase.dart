@@ -11,7 +11,4 @@ class FirebaseService extends Service {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-
-  @override
-  Future<void> dispose() async { }
 }

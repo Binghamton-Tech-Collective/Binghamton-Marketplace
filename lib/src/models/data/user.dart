@@ -18,6 +18,25 @@ class UserModel extends DataModel {
   Future<void> init() async {
     // Try to automatically sign-in
     await signIn();
+    await checkNotificationPermissions();
+  }
+
+  /// Ensures the user's [UserProfile.token] is in sync with notification permissions.
+  ///
+  /// If the user grants notification access using the browser or OS settings,
+  /// then the user's FCM token will never have been set in the database.
+  /// So we check here if we're signed in, have permission, but no FCM token.
+  Future<void> checkNotificationPermissions() async {
+    final profile = userProfile;
+    if (profile == null) return;
+    final hasPermission = await services.notifications.hasPermission();
+    if (hasPermission && !profile.hasNotificationsEnabled) {
+      await updateNotificationsToken();
+    } else if (!hasPermission && profile.hasNotificationsEnabled) {
+      profile.token = null;
+      await services.database.saveUserProfile(profile);
+      notifyListeners();
+    }
   }
 
   /// Whether the user is signed in.
@@ -33,7 +52,14 @@ class UserModel extends DataModel {
     final profile = await services.database.getUserProfile(uid);
     if (profile == null) return;
     await models.onSignIn(profile);
+  }
 
+  /// Asks the user for permission to send push notifications, and saves their unique token.
+  ///
+  /// Chrome will automatically reject this permission unless it's requested in response to a
+  /// button press, so this method should *not* be called automatically.
+  Future<void> updateNotificationsToken() async {
+    await services.notifications.requestPermission();
     userProfile!.token = services.notifications.firebaseToken;
     await updateProfile(models.user.userProfile!);
   }

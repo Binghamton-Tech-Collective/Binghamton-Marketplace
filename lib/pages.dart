@@ -15,6 +15,7 @@ import "src/pages/products.dart";
 import "src/pages/conversations.dart";
 import "src/pages/login.dart";
 import "src/pages/user_profile.dart";
+import "src/pages/settings.dart";
 
 import "src/pages/editors/product.dart";
 import "src/pages/editors/seller_profile.dart";
@@ -41,6 +42,9 @@ class Routes {
 
   /// The route for the page when a user needs a seller profile.
   static const noSeller = "no-profile";
+
+  /// The route for the settings page.
+  static const settings = "/settings";
 
   /// All the routes on the bottom nav bar. Used in [ShellPage].
   static const branches = [products, sellers, sell, messages, profile];
@@ -71,6 +75,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: "/login",
       builder: (context, state) => LoginPage(redirect: state.uri.queryParameters["redirect"]),
+    ),
+    GoRoute(
+      path: Routes.settings,
+      builder: (context, state) => SettingsPage(),
     ),
     ShellRoute(
       pageBuilder: (context, state, child) => NoTransitionPage(

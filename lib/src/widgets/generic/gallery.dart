@@ -7,7 +7,7 @@ import "package:flutter/material.dart";
 class GalleryViewModel extends ViewModel {
   /// The product being shown off.
   final Product product;
-  
+
   /// THe number of pages being displayed.
   int get numPages => product.imageUrls.length;
 
@@ -16,14 +16,14 @@ class GalleryViewModel extends ViewModel {
 
   /// The curve for the page transition animation.
   final Curve curve;
-  
-  /// The Flutter [PageView] controller. 
+
+  /// The Flutter [PageView] controller.
   final controller = PageController();
-  
+
   /// Creates a view model to show a [GalleryWidget].
   GalleryViewModel({
     required this.product,
-    this.duration = const Duration(milliseconds: 250), 
+    this.duration = const Duration(milliseconds: 250),
     this.curve = Curves.easeInOut,
   });
 
@@ -80,7 +80,7 @@ class GalleryWidget extends ReactiveWidget<GalleryViewModel> {
           children: [
             for (final (index, imageUrl) in model.product.imageUrls.enumerate) Hero(
               tag: "${product.id}-image-$index",
-              child: Image.network(imageUrl, fit: BoxFit.contain),
+              child: BtcNetworkImage(imageUrl, fit: BoxFit.contain),
             ),
           ],
         ),

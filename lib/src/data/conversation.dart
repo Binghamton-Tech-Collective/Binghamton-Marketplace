@@ -45,6 +45,7 @@ class Conversation implements Comparable<Conversation> {
     required ConversationID id,
     required UserProfile buyer,
     required SellerProfile seller,
+    Message? firstMessage,
   }) => Conversation(
     id: id,
     buyerUID: buyer.id,
@@ -54,7 +55,10 @@ class Conversation implements Comparable<Conversation> {
     sellerName: seller.name,
     buyerImage: buyer.imageUrl,
     sellerImage: seller.imageUrl,
-    messages: [],
+    messages: [
+      if (firstMessage != null)
+        firstMessage,
+    ],
     lastUpdate: DateTime.now(),
     isRead: false,
   );
