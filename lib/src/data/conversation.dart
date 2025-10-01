@@ -78,7 +78,7 @@ class Conversation implements Comparable<Conversation> {
         Message.fromJson(messageJson),
     ],
     lastUpdate = DateTime.parse(json["lastUpdate"]),
-    isRead = json["isRead"] ?? false,
+    isRead = json["isRead"] ?? false;
 
   /// Convert this Conversation to its JSON representation
   Json toJson() => {
