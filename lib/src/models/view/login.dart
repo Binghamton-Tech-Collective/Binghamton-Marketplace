@@ -74,6 +74,7 @@ class LoginViewModel extends BuilderModel<UserProfile> {
     archivedConversations: initialProfile?.archivedConversations ?? {},
     productsWatchlist: initialProfile?.productsWatchlist ?? {},
     sellersWatchlist: initialProfile?.sellersWatchlist ?? {},
+    blockedConversations: initialProfile?.blockedConversations ?? {},
     theme: theme,
   );
 

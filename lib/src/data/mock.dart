@@ -6,6 +6,7 @@ UserProfile mockUser = UserProfile(
   imageUrl: "https://picsum.photos/200",
   name: "Mock User",
   archivedConversations: {},
+  blockedConversations: {const ConversationID("mock_blocked_conversation_id")},
   productsWatchlist: {},
   sellersWatchlist: {},
   theme: ThemeMode.light,
@@ -17,10 +18,23 @@ UserProfile mockUser2 = UserProfile(
   imageUrl: "https://picsum.photos/200",
   name: "Mock Seller",
   archivedConversations: {},
+  blockedConversations: {},
   productsWatchlist: {},
   sellersWatchlist: {},
   theme: ThemeMode.dark,
   token: "mock_user_2_id_",
+);
+
+/// A third mock user for testing blocked conversations.
+UserProfile mockUser3 = UserProfile(
+  id: const UserID("mock_user_3_id"),
+  imageUrl: "https://picsum.photos/200",
+  name: "Mock User 3",
+  archivedConversations: {},
+  blockedConversations: {},
+  productsWatchlist: {},
+  sellersWatchlist: {},
+  theme: ThemeMode.light,
 );
 
 /// A mock seller for testing, owned by [mockUser].
@@ -82,6 +96,20 @@ Conversation mockConversation = Conversation.start(
   firstMessage: Message(
     author: mockSeller.userID,
     content: "Hey, did you like the product?",
+    imageURL: null,
+    timeEdited: DateTime.now(),
+    timeSent: DateTime.now(),
+  ),
+);
+
+/// A blocked conversation for testing the block feature.
+Conversation mockBlockedConversation = Conversation.start(
+  id: const ConversationID("mock_blocked_conversation_id"),
+  buyer: mockUser3,
+  seller: mockSeller,
+  firstMessage: Message(
+    author: mockSeller.userID,
+    content: "I hate you, burn now.",
     imageURL: null,
     timeEdited: DateTime.now(),
     timeSent: DateTime.now(),

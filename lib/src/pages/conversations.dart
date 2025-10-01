@@ -36,8 +36,20 @@ class ConversationsPage extends ReactiveWidget<ConversationsViewModel> {
             ? const Text("Long press to unarchive")
             : const Text("Long press to archive"),
           secondary: const Icon(Icons.archive),
-          value: model.showArchived,
+          value: model.showArchived, 
           onChanged: model.updateShowArchive,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ElevatedButton.icon(
+            onPressed: () => context.push("/messages/blocked"), // Navigate to blocked conversations
+            icon: const Icon(Icons.block),
+            label: const Text("View Blocked Conversations"),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
         ),
         if (model.isEmpty) ...[
           Image.asset("assets/bearcat/confused.png", width: 200, height: 200),

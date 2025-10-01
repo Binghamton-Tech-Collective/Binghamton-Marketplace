@@ -4,6 +4,7 @@ import "package:go_router/go_router.dart";
 import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 
+import "src/pages/blockedconversations.dart";
 import "src/pages/conversation.dart";
 import "src/pages/sellers.dart";
 import "src/pages/seller_profile.dart";
@@ -167,6 +168,11 @@ final GoRouter router = GoRouter(
           name: "All chats",
           pageBuilder: (context, state) => NoTransitionPage(child: ConversationsPage()),
           routes: [
+            GoRoute(
+              path: "blocked",
+              name: "Blocked Conversations",
+              pageBuilder: (context, state) => NoTransitionPage(child: BlockedConversationsPage()),
+            ),
             GoRoute(
               path: ":id",
               name: "Chat with a seller",

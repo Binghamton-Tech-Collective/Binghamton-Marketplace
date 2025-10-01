@@ -19,6 +19,9 @@ jobs:
           cache: true
           cache-key: flutter-linux
           channel: stable
+          cache: true
+          cache-key: ${{ runner.os }}-flutter
+          cache-path: flutter/
 
       - uses: actions/checkout@v4
         with:
