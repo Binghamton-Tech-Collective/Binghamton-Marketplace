@@ -5,40 +5,6 @@ import "package:btc_market/data.dart";
 import "package:btc_market/models.dart";
 import "package:btc_market/widgets.dart";
 
-/// A name and widget in a row, on opposite sides of each other,
-class FilterOption extends StatelessWidget {
-  /// The name of the option.
-  final String name;
-  /// The option to show.
-  final Widget child;
-  /// Creates a filter option widget.
-  const FilterOption({
-    required this.name,
-    required this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: [
-      const SizedBox(width: 16),
-      Text(
-        name,
-        style: context.textTheme.titleMedium,
-      ),
-      const Spacer(),
-      Expanded(
-        flex: 3, 
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: child,
-        ),
-      ),
-      const SizedBox(width: 16),
-    ],
-  );
-}
-
 /// A widget to customize [ProductFilters] based on [ProductFiltersBuilder].
 class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder> {
   /// Builds a widget to customize [ProductFilters] and [ProductSortOrder].
@@ -49,7 +15,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
     mainAxisSize: MainAxisSize.min,
     children: [
       const SizedBox(height: 12),
-      FilterOption(
+      LabelledOption(
         name: "Sort order",
         child: DropdownMenu<ProductSortOrder>(
           menuStyle: MenuStyle(
@@ -63,7 +29,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
           hintText: "Sort by...",
           onSelected: model.updateSortOrder,
           dropdownMenuEntries: [
-            for (final sortOrder in ProductSortOrder.values) 
+            for (final sortOrder in ProductSortOrder.values)
               if (sortOrder != ProductSortOrder.byRating) DropdownMenuEntry(
                 value: sortOrder,
                 label: sortOrder.displayName,
@@ -101,13 +67,13 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
   );
 
   /// A widget to pick the minimum price in a filter.
-  Widget minPrice(BuildContext context, ProductFiltersBuilder model) => FilterOption(
+  Widget minPrice(BuildContext context, ProductFiltersBuilder model) => LabelledOption(
     name: "Minimum price",
     child: TextField(
       controller: model.minPriceController,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.attach_money),        
+        prefixIcon: const Icon(Icons.attach_money),
         border: const OutlineInputBorder(),
         hintText: "Min price",
         errorText: model.minPriceError,
@@ -117,7 +83,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
   );
 
   /// A widget to pick the maximum price in a filter.
-  Widget maxPrice(BuildContext context, ProductFiltersBuilder model) => FilterOption(
+  Widget maxPrice(BuildContext context, ProductFiltersBuilder model) => LabelledOption(
     name: "Maximum price",
     child: TextField(
       controller: model.maxPriceController,
@@ -133,8 +99,8 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
   );
 
   /// A widget to pick the minimum rating in a filter.
-  Widget minRating(BuildContext context, ProductFiltersBuilder model) => FilterOption(
-    name: "Minimum Rating", 
+  Widget minRating(BuildContext context, ProductFiltersBuilder model) => LabelledOption(
+    name: "Minimum Rating",
     child: RatingBar(
       initialRating: model.minRating?.toDouble() ?? 0,
       onRatingUpdate: model.updateMinRating,
@@ -152,7 +118,7 @@ class ProductFiltersEditor extends ReusableReactiveWidget<ProductFiltersBuilder>
     minPrice(context, model),
     const SizedBox(height: 12),
     maxPrice(context, model),
-    // ===== Uncomment these when we support ratings =====  
+    // ===== Uncomment these when we support ratings =====
     // const SizedBox(height: 12),
     // minRating(context, model),
   ];
